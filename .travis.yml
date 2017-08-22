@@ -1,0 +1,9 @@
+language: csharp
+solution: bCC.sln
+
+install:
+	- nuget restore bCC.sln
+	- nuget install NUnit.Runners -Version 3.7.1 -OutputDirectory testrunner
+
+script:
+	- xbuild /p:Configuration=Release cBB.sln
