@@ -4,6 +4,7 @@ namespace bCC_AST
 {
 	public abstract class Type
 	{
+		public Environment Env;
 		public readonly string Name;
 
 		protected Type(string name) => Name = name;

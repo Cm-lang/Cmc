@@ -6,6 +6,7 @@ namespace bCC_AST
 {
 	public class Declaration : IAst
 	{
+		public Environment Env;
 		public virtual IList<Declaration> FindDependencies() => new List<Declaration> {this};
 
 		public readonly string Name;
@@ -33,6 +34,7 @@ namespace bCC_AST
 			base(metaData, name)
 		{
 			Expression = expression;
+			Expression.Env = Env;
 			var exprType = expression.GetExpressionType();
 			Type = type ?? exprType;
 			if (Type != exprType)
@@ -47,8 +49,11 @@ namespace bCC_AST
 	{
 		public override IList<Declaration> FindDependencies() => new List<Declaration>();
 
-		public Macro(MetaData metaData, string name) : base(metaData, name)
+		public string Content;
+
+		public Macro(MetaData metaData, string name, string content) : base(metaData, name)
 		{
+			Content = content;
 		}
 	}
 }

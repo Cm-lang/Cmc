@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO.Pipes;
 using System.Linq;
 
 #pragma warning disable 659
@@ -7,6 +8,7 @@ namespace bCC_AST
 {
 	public abstract class Expression : IAst
 	{
+		public Environment Env;
 		public abstract IList<Declaration> GetDependencies();
 		public abstract Type GetExpressionType();
 
@@ -52,10 +54,16 @@ namespace bCC_AST
 
 		public override Type GetExpressionType()
 		{
-			throw new System.NotImplementedException();
+			var declaration = Env.FindDeclarationByName(Name);
+			if (declaration is VariableDeclaration variableDeclaration) return variableDeclaration.Type;
+			Errors.Add(MetaData.GetErrorHeader() + "Wtf");
+			throw new CompilerException();
 		}
 
-		public VariableExpression(MetaData metaData, string name) : base(metaData) => Name = name;
+		public VariableExpression(MetaData metaData, string name) : base(metaData)
+		{
+			Name = name;
+		}
 	}
 
 	public class FunctionCallExpression : AtomicExpression
