@@ -9,4 +9,11 @@ namespace bCC_AST
 		public static Action<string> Add = ErrList.Add;
 		public static Predicate<string> Remove = ErrList.Remove;
 	}
+
+	public class CompilerException : Exception
+	{
+		public CompilerException(string message = "") : base(message)
+		{
+		}
+	}
 }

@@ -60,14 +60,14 @@ namespace bCC_AST
 
 	public class FunctionCallExpression : AtomicExpression
 	{
-		public readonly Expression Reciever;
+		public readonly Expression Receiver;
 		public readonly IList<Expression> ParameterList;
 
-		public FunctionCallExpression(MetaData metaData, Expression expression, IList<Expression> parameterList) :
+		public FunctionCallExpression(MetaData metaData, Expression receiver, IList<Expression> parameterList) :
 			base(metaData)
 		{
 			ParameterList = parameterList;
-			Reciever = expression;
+			Receiver = receiver;
 		}
 
 		public override IList<Declaration> GetDependencies() =>
@@ -75,7 +75,11 @@ namespace bCC_AST
 
 		public override Type GetExpressionType()
 		{
-			throw new System.NotImplementedException();
+			var hisType = Receiver.GetExpressionType();
+			if (hisType is LambdaType lambdaType) return lambdaType.RetType;
+			Errors.Add(MetaData.GetErrorHeader() + "the function call receiver shoule be a lambda. Currently it's " +
+			           hisType + ".");
+			throw new CompilerException();
 		}
 	}
 }
