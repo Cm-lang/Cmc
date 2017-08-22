@@ -38,13 +38,10 @@ namespace bCC_AST
 			throw new System.NotImplementedException();
 		}
 
-		public Lambda(MetaData metaData, string name, StatementList body) : base(metaData, name)
+		public Lambda(MetaData metaData, StatementList body) : base(metaData)
 		{
 			Body = body;
 		}
-
-		/// TODO: add type check
-		public override bool Equals(object obj) => obj is Declaration declaration && declaration.Name == Name;
 	}
 
 	public class VariableExpression : AtomicExpression

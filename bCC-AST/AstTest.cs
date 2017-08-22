@@ -9,7 +9,9 @@ namespace bCC_AST
 		[Test]
 		public void StatementTest1()
 		{
-			foreach (var stmt in new StatementList(new Statement(), new Statement()).Statements)
+			foreach (var stmt in new StatementList(MetaData.DefaultMetaData,
+				new Statement(MetaData.DefaultMetaData),
+				new Statement(MetaData.DefaultMetaData)).Statements)
 				Console.WriteLine(stmt);
 		}
 	}
