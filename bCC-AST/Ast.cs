@@ -79,16 +79,18 @@ namespace bCC_AST
 		public BcFile(params Declaration[] declarations)
 		{
 			Declarations = declarations;
+			AnalyzeDependencies();
+		}
+
+		/// <summary>
+		/// When undefined dependencies appear, this method will give errors.
+		/// </summary>
+		private void AnalyzeDependencies()
+		{
 			foreach (var declaration in Declarations)
-			{
-				foreach (var dependency in declaration.FindDependencies())
-				{
-					if (!Declarations.Contains(dependency))
-					{
-						Console.WriteLine("Error: ");
-					}
-				}
-			}
+			foreach (var dependency in declaration.FindDependencies())
+				if (!Declarations.Contains(dependency))
+					Errors.Add(declaration.MetaData.GetErrorHeader() + dependency + " undefined.");
 		}
 	}
 }

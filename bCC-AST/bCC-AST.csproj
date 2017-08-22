@@ -35,6 +35,7 @@
   <ItemGroup>
     <Compile Include="Ast.cs" />
     <Compile Include="AstTest.cs" />
+    <Compile Include="Errors.cs" />
     <Compile Include="MetaData.cs" />
   </ItemGroup>
   <ItemGroup>
