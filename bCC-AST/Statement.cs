@@ -45,10 +45,14 @@ namespace bCC
 				var env = new Environment(Env);
 				foreach (var statement in Statements)
 				{
-					if (!(statement is Declaration declaration)) continue;
-					statement.Env = env;
-					env = new Environment(env);
-					env.Declarations.Add(declaration);
+					if (!(statement is Declaration declaration))
+						statement.Env = env;
+					else
+					{
+						statement.Env = env;
+						env = new Environment(env);
+						env.Declarations.Add(declaration);
+					}
 				}
 			}
 		}
