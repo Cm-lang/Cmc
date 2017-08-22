@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using NUnit.Framework;
+using System.Linq;
 
 namespace bCC_AST
 {
@@ -39,9 +39,7 @@ namespace bCC_AST
 			Name = name;
 		}
 
-		public override IList<Declaration> GetDependencies()
-		{
-			throw new System.NotImplementedException();
-		}
+		public override IList<Declaration> GetDependencies() =>
+			ParameterList.SelectMany(param => param.GetDependencies()).ToList();
 	}
 }

@@ -25,6 +25,7 @@ namespace bCC_AST
 
 		/// <summary>
 		/// When undefined dependencies appear, this method will give errors.
+		/// TODO: check for local variables
 		/// </summary>
 		private void AnalyzeDependencies()
 		{

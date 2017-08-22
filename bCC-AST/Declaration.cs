@@ -30,7 +30,7 @@ namespace bCC_AST
 			Body = body;
 		}
 
-		// TODO: add type check
+		/// TODO: add type check
 		public override bool Equals(object obj) => obj is Declaration declaration && declaration.Name == Name;
 	}
 
@@ -39,10 +39,7 @@ namespace bCC_AST
 		public readonly bool Mutability;
 		public readonly Expression Expression;
 
-		public override IList<Declaration> FindDependencies()
-		{
-			throw new NotImplementedException();
-		}
+		public override IList<Declaration> FindDependencies() => Expression.GetDependencies();
 
 		public VariableDeclaration(MetaData metaData, string name, Expression expression, bool isMutable = false) :
 			base(metaData, name)
