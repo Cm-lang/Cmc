@@ -26,7 +26,7 @@ namespace bCC_AST
 	/// A function is a variable with the type of lambda
 	/// This is the class for anonymous lambda
 	/// </summary>
-	public class LambdaDeclaration : AtomicExpression
+	public class Lambda : AtomicExpression
 	{
 		public readonly StatementList Body;
 
@@ -38,7 +38,7 @@ namespace bCC_AST
 			throw new System.NotImplementedException();
 		}
 
-		public LambdaDeclaration(MetaData metaData, string name, StatementList body) : base(metaData, name)
+		public Lambda(MetaData metaData, string name, StatementList body) : base(metaData, name)
 		{
 			Body = body;
 		}
