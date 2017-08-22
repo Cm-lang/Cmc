@@ -33,9 +33,11 @@ namespace bCC_AST
 	public abstract class Declaration : IAst
 	{
 		public abstract IList<Declaration> FindDependencies();
+		public readonly string Name;
 
-		protected Declaration(MetaData metaData) : base(metaData)
+		protected Declaration(MetaData metaData, string name) : base(metaData)
 		{
+			Name = name;
 		}
 	}
 
@@ -46,7 +48,7 @@ namespace bCC_AST
 			throw new NotImplementedException();
 		}
 
-		public FunctionDeclaration(MetaData metaData) : base(metaData)
+		public FunctionDeclaration(MetaData metaData, string name) : base(metaData, name)
 		{
 		}
 	}
@@ -58,7 +60,7 @@ namespace bCC_AST
 			throw new NotImplementedException();
 		}
 
-		public VariableDeclaration(MetaData metaData) : base(metaData)
+		public VariableDeclaration(MetaData metaData, string name) : base(metaData, name)
 		{
 		}
 	}
@@ -67,7 +69,7 @@ namespace bCC_AST
 	{
 		public override IList<Declaration> FindDependencies() => new List<Declaration>();
 
-		public Macro(MetaData metaData) : base(metaData)
+		public Macro(MetaData metaData, string name) : base(metaData, name)
 		{
 		}
 	}
