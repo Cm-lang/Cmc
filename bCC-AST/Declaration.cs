@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 
 #pragma warning disable 659
 
@@ -18,33 +16,23 @@ namespace bCC_AST
 		}
 	}
 
-	public class FunctionDeclaration : Declaration
-	{
-		public readonly StatementList Body;
-
-		public override IList<Declaration> FindDependencies() =>
-			Body.Statements.SelectMany(i => i.GetDependencies()).ToList();
-
-		public FunctionDeclaration(MetaData metaData, string name, StatementList body) : base(metaData, name)
-		{
-			Body = body;
-		}
-
-		/// TODO: add type check
-		public override bool Equals(object obj) => obj is Declaration declaration && declaration.Name == Name;
-	}
-
 	public class VariableDeclaration : Declaration
 	{
 		public readonly bool Mutability;
 		public readonly Expression Expression;
+		public readonly Type Type;
 
 		public override IList<Declaration> FindDependencies() => Expression.GetDependencies();
 
-		public VariableDeclaration(MetaData metaData, string name, Expression expression, bool isMutable = false) :
+		public VariableDeclaration(MetaData metaData, string name, Expression expression, bool isMutable = false,
+			Type type = null) :
 			base(metaData, name)
 		{
 			Expression = expression;
+			var exprType = expression.GetExpressionType();
+			Type = type ?? exprType;
+			if (Type != exprType)
+				Errors.Add(metaData.GetErrorHeader() + "type mismatch, expected: " + Type.Name + ", actual: " + exprType);
 			Mutability = isMutable;
 		}
 
