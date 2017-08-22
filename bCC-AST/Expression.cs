@@ -60,13 +60,14 @@ namespace bCC_AST
 
 	public class FunctionCallExpression : AtomicExpression
 	{
-		public readonly string Name;
+		public readonly Expression Reciever;
 		public readonly IList<Expression> ParameterList;
 
-		public FunctionCallExpression(MetaData metaData, string name, IList<Expression> parameterList) : base(metaData)
+		public FunctionCallExpression(MetaData metaData, Expression expression, IList<Expression> parameterList) :
+			base(metaData)
 		{
 			ParameterList = parameterList;
-			Name = name;
+			Reciever = expression;
 		}
 
 		public override IList<Declaration> GetDependencies() =>
