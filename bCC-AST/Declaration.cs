@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+
+#pragma warning disable 659
 
 namespace bCC_AST
 {
-	public abstract class Declaration : IAst
+	public class Declaration : IAst
 	{
-		public abstract IList<Declaration> FindDependencies();
+		public virtual IList<Declaration> FindDependencies() => new List<Declaration> {this};
+
 		public readonly string Name;
 
-		protected Declaration(MetaData metaData, string name) : base(metaData)
+		public Declaration(MetaData metaData, string name) : base(metaData)
 		{
 			Name = name;
 		}
@@ -18,15 +22,16 @@ namespace bCC_AST
 	{
 		public readonly StatementList Body;
 
-		public override IList<Declaration> FindDependencies()
-		{
-			throw new NotImplementedException();
-		}
+		public override IList<Declaration> FindDependencies() =>
+			Body.Statements.SelectMany(i => i.GetDependencies()).ToList();
 
 		public FunctionDeclaration(MetaData metaData, string name, StatementList body) : base(metaData, name)
 		{
 			Body = body;
 		}
+
+		// TODO: add type check
+		public override bool Equals(object obj) => obj is Declaration declaration && declaration.Name == Name;
 	}
 
 	public class VariableDeclaration : Declaration
@@ -45,6 +50,8 @@ namespace bCC_AST
 			Expression = expression;
 			Mutability = isMutable;
 		}
+
+		public override bool Equals(object obj) => obj is Declaration declaration && declaration.Name == Name;
 	}
 
 	public class Macro : Declaration
