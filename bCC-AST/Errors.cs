@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace bCC_AST
+namespace bCC
 {
 	public static class Errors
 	{

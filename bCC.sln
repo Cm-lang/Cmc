@@ -4,6 +4,8 @@ VisualStudioVersion = 15.1.371.0
 MinimumVisualStudioVersion = 15.1.371.0
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bCC_AST", "bCC-AST/bCC-AST.csproj", "{17E0DE41-2426-4616-8424-BA6C0F97F7C0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bCC-Test", "bCC-Test\bCC-Test.csproj", "{22B2B630-2AB0-46A0-B5B7-279D6FE88069}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -14,6 +16,10 @@ Global
 		{17E0DE41-2426-4616-8424-BA6C0F97F7C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{17E0DE41-2426-4616-8424-BA6C0F97F7C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{17E0DE41-2426-4616-8424-BA6C0F97F7C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22B2B630-2AB0-46A0-B5B7-279D6FE88069}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22B2B630-2AB0-46A0-B5B7-279D6FE88069}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22B2B630-2AB0-46A0-B5B7-279D6FE88069}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22B2B630-2AB0-46A0-B5B7-279D6FE88069}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

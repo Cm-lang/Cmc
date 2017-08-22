@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace bCC_AST
+namespace bCC
 {
 	public class Environment
 	{

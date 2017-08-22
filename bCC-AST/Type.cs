@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace bCC_AST
+namespace bCC
 {
 	public abstract class Type
 	{
@@ -8,6 +8,7 @@ namespace bCC_AST
 		public readonly string Name;
 
 		protected Type(string name) => Name = name;
+		public override string ToString() => Name;
 	}
 
 	public class SecondaryType : Type

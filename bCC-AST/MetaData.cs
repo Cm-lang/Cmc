@@ -1,4 +1,4 @@
-﻿namespace bCC_AST
+﻿namespace bCC
 {
 	public struct MetaData
 	{

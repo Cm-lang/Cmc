@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using System.IO.Pipes;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 #pragma warning disable 659
 
-namespace bCC_AST
+namespace bCC
 {
 	public abstract class Expression : IAst
 	{
@@ -24,6 +24,22 @@ namespace bCC_AST
 		}
 	}
 
+	public class LiteralExpression : AtomicExpression
+	{
+		public readonly Type Type;
+		protected LiteralExpression(MetaData metaData, Type type) : base(metaData) => Type = type;
+		public override IList<Declaration> GetDependencies() => new List<Declaration>();
+		public override Type GetExpressionType() => Type;
+	}
+
+	public class IntLiteralExpression : LiteralExpression
+	{
+		public readonly string Value;
+
+		public IntLiteralExpression(MetaData metaData, string value, bool isSigned, int length = 32)
+			: base(metaData, new SecondaryType((isSigned ? "i" : "u") + length)) => Value = value;
+	}
+
 	/// <summary>
 	/// A function is a variable with the type of lambda
 	/// This is the class for anonymous lambda
@@ -37,7 +53,7 @@ namespace bCC_AST
 
 		public override Type GetExpressionType()
 		{
-			throw new System.NotImplementedException();
+			throw new NotImplementedException();
 		}
 
 		public Lambda(MetaData metaData, StatementList body) : base(metaData)

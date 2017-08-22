@@ -2,11 +2,10 @@
 
 #pragma warning disable 659
 
-namespace bCC_AST
+namespace bCC
 {
-	public class Declaration : IAst
+	public class Declaration : Statement
 	{
-		public Environment Env;
 		public virtual IList<Declaration> FindDependencies() => new List<Declaration> {this};
 
 		public readonly string Name;
@@ -17,7 +16,7 @@ namespace bCC_AST
 		}
 	}
 
-	public class VariableDeclaration : Declaration
+	public sealed class VariableDeclaration : Declaration
 	{
 		public readonly bool Mutability;
 		public readonly Expression Expression;
