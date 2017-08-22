@@ -6,7 +6,7 @@ namespace bCC_AST
 	{
 	}
 
-	public abstract class Statement : IAst
+	public class Statement : IAst
 	{
 	}
 
