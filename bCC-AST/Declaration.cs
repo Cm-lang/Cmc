@@ -24,7 +24,11 @@ namespace bCC_AST
 
 		public override IList<Declaration> FindDependencies() => Expression.GetDependencies();
 
-		public VariableDeclaration(MetaData metaData, string name, Expression expression, bool isMutable = false,
+		public VariableDeclaration(
+			MetaData metaData,
+			string name,
+			Expression expression,
+			bool isMutable = false,
 			Type type = null) :
 			base(metaData, name)
 		{
