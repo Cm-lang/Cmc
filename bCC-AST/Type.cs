@@ -16,12 +16,12 @@ namespace bCC_AST
 		}
 	}
 
-	public class PrimaryType : Type
+	public class ThirdLevelType : Type
 	{
 		public readonly Type Container;
 		public readonly Type Parameter;
 
-		public PrimaryType(Type container, Type parameter) : base(PrimaryTypeToString(container, parameter))
+		public ThirdLevelType(Type container, Type parameter) : base(PrimaryTypeToString(container, parameter))
 		{
 			Container = container;
 			Parameter = parameter;

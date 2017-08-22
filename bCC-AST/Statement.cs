@@ -24,4 +24,22 @@ namespace bCC_AST
 			Statements = statements;
 		}
 	}
+
+	public class IfStatement : Statement
+	{
+		public readonly Expression Condition;
+		public readonly StatementList IfStatementList;
+		public readonly StatementList ElseStatementList;
+
+		public IfStatement(
+			MetaData metaData,
+			Expression condition,
+			StatementList ifStatementList,
+			StatementList elseStatementList = null) : base(metaData)
+		{
+			Condition = condition;
+			IfStatementList = ifStatementList;
+			ElseStatementList = elseStatementList;
+		}
+	}
 }

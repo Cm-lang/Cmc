@@ -8,7 +8,7 @@ namespace bCC_AST
 		public readonly IList<Declaration> Declarations = new List<Declaration>();
 		public readonly Environment Outer;
 
-		public Environment(Environment outer)
+		public Environment(Environment outer = null)
 		{
 			Outer = outer;
 		}
