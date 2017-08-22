@@ -23,10 +23,13 @@ namespace bCC_AST
 		public readonly IList<Type> ArgsList;
 		public readonly Type RetType;
 
-		public LambdaType(IList<Type> args, Type ret) : base(string.Join(",", args) + "->" + ret)
+		public LambdaType(IList<Type> args, Type ret) : base(LambdaTypeToString(args, ret))
 		{
 			ArgsList = args;
 			RetType = ret;
 		}
+
+		public override string ToString() => LambdaTypeToString(ArgsList, RetType);
+		public static string LambdaTypeToString(IList<Type> args, Type ret) => string.Join(",", args) + "->" + ret;
 	}
 }
