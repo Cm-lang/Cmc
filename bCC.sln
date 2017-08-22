@@ -1,8 +1,7 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2015
 VisualStudioVersion = 14.0.22823.1
-MinimumVisualStudioVersion = 10.0.0.1
+MinimumVisualStudioVersion = 14.0.22823.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bCC_AST", "bCC-AST/bCC-AST.csproj", "{17E0DE41-2426-4616-8424-BA6C0F97F7C0}"
 EndProject
 Global

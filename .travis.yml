@@ -5,4 +5,4 @@ install:
   - nuget restore bCC.sln
 
 script:
-  - xbuild /p:Configuration=Release cBB.sln
+  - xbuild /p:Configuration=Release bCC.sln
