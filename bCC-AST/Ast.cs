@@ -12,11 +12,23 @@ namespace bCC_AST
 
 	public class StatementList : Statement
 	{
-		public readonly IList<Statement> Statements = new List<Statement>();
+		public readonly IList<Statement> Statements;
+
+		public StatementList(params Statement[] statements)
+		{
+			Statements = statements;
+		}
 	}
 
-	public class FunctionDeclaration : Statement
+	public abstract class Declaration : IAst
 	{
-		
+	}
+
+	public class FunctionDeclaration : Declaration
+	{
+	}
+
+	public class VariableDeclaration : Declaration
+	{
 	}
 }
