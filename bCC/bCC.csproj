@@ -34,7 +34,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Ast.cs" />
-    <Compile Include="AstTest.cs" />
     <Compile Include="Declaration.cs" />
     <Compile Include="Environment.cs" />
     <Compile Include="Errors.cs" />

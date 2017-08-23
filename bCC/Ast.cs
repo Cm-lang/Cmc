@@ -10,9 +10,9 @@ namespace bCC
 
 		public MetaData MetaData;
 
-		protected Ast(MetaData metaData)
-		{
-			MetaData = metaData;
-		}
+		protected Ast(MetaData metaData) => MetaData = metaData;
+
+		[NotNull]
+		public virtual string Dump() => ToString();
 	}
 }
