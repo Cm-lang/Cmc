@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 using static System.StringComparison;
 
 #pragma warning disable 659
@@ -43,6 +42,13 @@ namespace bCC
 		}
 
 		public override bool Equals(object obj) => obj is Declaration declaration && declaration.Name == Name;
+
+		public override string[] Dump() => new[]
+		{
+			"variable declaration " + Name + ":\n",
+			"  " + string.Join("  ", Type.Dump()) + "\n",
+			"  " + string.Join("  ", Expression.Dump()) + "\n"
+		};
 	}
 
 	/// <summary>

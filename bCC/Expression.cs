@@ -33,6 +33,8 @@ namespace bCC
 		}
 
 		public override Type GetExpressionType() => new SecondaryType(MetaData, NullType);
+
+		public override string[] Dump() => new[] {"null expression\n"};
 	}
 
 	public class LiteralExpression : AtomicExpression
@@ -48,6 +50,14 @@ namespace bCC
 
 		public IntLiteralExpression(MetaData metaData, [NotNull] string value, bool isSigned, int length = 32)
 			: base(metaData, new SecondaryType(metaData, (isSigned ? "i" : "u") + length)) => Value = value;
+
+		public override string[] Dump() => new[]
+		{
+			"literal expression:\n",
+			"  " + string.Join("  ", Type.Dump()) + "\n",
+			"  value:\n",
+			"    " + Value + "\n"
+		};
 	}
 
 	/// <summary>

@@ -29,6 +29,12 @@ namespace bCC
 		[NotNull] public readonly Expression Expression;
 		private Environment _env;
 		public ExpressionStatement(MetaData metaData, Expression expression) : base(metaData) => Expression = expression;
+
+		public override string[] Dump() => new[]
+		{
+			"expression statement:\n",
+			"  " + string.Join("  ", Expression.Dump())
+		};
 	}
 
 	public class ReturnStatement : ExpressionStatement
@@ -36,6 +42,12 @@ namespace bCC
 		public ReturnStatement(MetaData metaData, Expression expression) : base(metaData, expression)
 		{
 		}
+
+		public override string[] Dump() => new[]
+		{
+			"return statement:\n",
+			"  " + base.Dump().Last()
+		};
 	}
 
 	public class StatementList : Statement
@@ -64,10 +76,13 @@ namespace bCC
 			}
 		}
 
-		public StatementList(MetaData metaData, params Statement[] statements) : base(metaData)
+		public StatementList(MetaData metaData, params Statement[] statements) : base(metaData) => Statements = statements;
+
+		public override string[] Dump() => new[]
 		{
-			Statements = statements;
-		}
+			"statement list:\n",
+			"  " + string.Join("  ", Statements.Select(i => string.Join("  ", i.Dump())))
+		};
 	}
 
 	public class AssignmentStatement : Statement

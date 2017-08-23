@@ -19,6 +19,8 @@ namespace bCC
 		public SecondaryType(MetaData metaData, [NotNull] string name) : base(metaData, name)
 		{
 		}
+
+		public override string[] Dump() => new[] {"secondary type:\n", "  " + Name};
 	}
 
 	/// <summary>
@@ -61,8 +63,7 @@ namespace bCC
 	{
 		public override Environment Env
 		{
-			[NotNull]
-			get => _env;
+			[NotNull] get => _env;
 			set
 			{
 				_env = value;

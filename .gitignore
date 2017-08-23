@@ -360,3 +360,5 @@ __pycache__/
 # Compiled Static libraries
 *.lai
 # Executables
+
+testrunner

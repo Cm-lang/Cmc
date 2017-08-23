@@ -13,6 +13,6 @@ namespace bCC
 		protected Ast(MetaData metaData) => MetaData = metaData;
 
 		[NotNull]
-		public virtual string Dump() => ToString();
+		public virtual string[] Dump() => new[] {ToString()};
 	}
 }

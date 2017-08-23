@@ -45,6 +45,7 @@ namespace bCC
 			{
 				Env = new Environment()
 			};
+			Console.WriteLine(string.Join("", example.Statements.First().Dump()));
 			// ReSharper disable once PossibleNullReferenceException
 			Assert.AreEqual("u8", (example.Statements.Last() as ExpressionStatement).Expression.GetExpressionType().ToString());
 		}
@@ -64,6 +65,7 @@ namespace bCC
 			{
 				Env = new Environment()
 			};
+			Console.WriteLine(string.Join("", example.Statements.First().Dump()));
 			// ReSharper disable once PossibleNullReferenceException
 			Assert.AreEqual(NullExpression.NullType,
 				(example.Statements.Last() as ExpressionStatement).Expression.GetExpressionType().ToString());
@@ -86,6 +88,7 @@ namespace bCC
 			{
 				Env = new Environment()
 			};
+			Console.WriteLine(string.Join("", example.Dump()));
 			// ReSharper disable once PossibleNullReferenceException
 			Assert.AreEqual("i8", (example.Statements.Last() as ExpressionStatement).Expression.GetExpressionType().ToString());
 		}
