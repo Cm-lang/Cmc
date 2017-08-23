@@ -16,7 +16,7 @@ namespace bCC
 	/// </summary>
 	public class SecondaryType : Type
 	{
-		public SecondaryType(string name) : base(name)
+		public SecondaryType(MetaData metaData, string name) : base(metaData, name)
 		{
 		}
 	}

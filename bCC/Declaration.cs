@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using static System.StringComparison;
 
 #pragma warning disable 659
 
@@ -27,17 +28,18 @@ namespace bCC
 		public VariableDeclaration(
 			MetaData metaData,
 			string name,
-			Expression expression,
+			Expression expression = null,
 			bool isMutable = false,
 			Type type = null) :
 			base(metaData, name)
 		{
-			Expression = expression;
+			Expression = expression ?? new NullExpression(MetaData);
 			Expression.Env = Env;
-			var exprType = expression.GetExpressionType();
+			var exprType = Expression.GetExpressionType();
 			// FEATURE #8
 			Type = type ?? exprType;
-			if (Type != exprType)
+			// FEATURE #11
+			if (!string.Equals(Type.Name, NullExpression.NullType, Ordinal) && Type != exprType)
 				// FEATURE #9
 				Errors.Add(metaData.GetErrorHeader() + "type mismatch, expected: " + Type.Name + ", actual: " + exprType);
 			Mutability = isMutable;

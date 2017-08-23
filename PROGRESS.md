@@ -10,10 +10,11 @@ Please add feature request here.
 ## types
 
 + [X] primitive types with name (#0)
-+ [X] function type, which combines parameters' types and return type (#6)
++ [X] function type, consisting of the parameters' types and the return type (#6)
 + [X] types with single type parameter (#7)
 + [ ] infer function's return type from the last return statement
-+ [X] infer variable's type by the assignment expression (#8)
++ [X] infer variable's type by the assignment expression (#8) (tested)
++ [X] `nulltype` can be assigned to variables with any type (#11)
 + [ ] an HM type system (extra)
 
 ## variables

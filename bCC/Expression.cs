@@ -24,15 +24,16 @@ namespace bCC
 		}
 	}
 
-	public class NullExpression : Expression
+	public sealed class NullExpression : Expression
 	{
+		public const string NullType = "nulltype";
+
 		public NullExpression(MetaData metaData) : base(metaData)
 		{
 		}
 
 		public override IList<Declaration> GetDependencies() => new List<Declaration>();
-
-		public override Type GetExpressionType()=>
+		public override Type GetExpressionType() => new SecondaryType(MetaData, NullType);
 	}
 
 	public class LiteralExpression : AtomicExpression
@@ -48,7 +49,7 @@ namespace bCC
 		public readonly string Value;
 
 		public IntLiteralExpression(MetaData metaData, string value, bool isSigned, int length = 32)
-			: base(metaData, new SecondaryType((isSigned ? "i" : "u") + length)) => Value = value;
+			: base(metaData, new SecondaryType(metaData, (isSigned ? "i" : "u") + length)) => Value = value;
 	}
 
 	/// <summary>

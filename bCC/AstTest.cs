@@ -50,6 +50,22 @@ namespace bCC
 		}
 
 		[Test]
+		public void TypeInferenceTest2()
+		{
+			const string varName = "someOtherVar";
+			var example = new StatementList(MetaData.DefaultMetaData,
+				new VariableDeclaration(MetaData.DefaultMetaData, varName,
+					new NullExpression(MetaData.DefaultMetaData)),
+				new ExpressionStatement(MetaData.DefaultMetaData, new VariableExpression(MetaData.DefaultMetaData, varName)))
+			{
+				Env = new Environment()
+			};
+			// ReSharper disable once PossibleNullReferenceException
+			Assert.AreEqual(NullExpression.NullType,
+				(example.Statements.Last() as ExpressionStatement).Expression.GetExpressionType().ToString());
+		}
+
+		[Test]
 		public void StatementTest2()
 		{
 //			var stmt = new IfStatement(MetaData.DefaultMetaData, new AtomicExpression(MetaData.DefaultMetaData),);
