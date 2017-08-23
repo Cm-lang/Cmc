@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using static System.StringComparison;
 
 namespace bCC
 {
@@ -43,8 +44,8 @@ namespace bCC
 			{
 				_env = value;
 				var env = new Environment(Env);
+				// FEATURE #4
 				foreach (var statement in Statements)
-				{
 					if (!(statement is Declaration declaration))
 						statement.Env = env;
 					else
@@ -53,7 +54,6 @@ namespace bCC
 						env = new Environment(env);
 						env.Declarations.Add(declaration);
 					}
-				}
 			}
 		}
 
@@ -79,6 +79,12 @@ namespace bCC
 			set
 			{
 				_env = value;
+				Condition.Env = Env;
+				// FEATURE #1
+				var conditionType = Condition.GetExpressionType().Name;
+				if (!string.Equals(conditionType, "bool", Ordinal))
+					Errors.Add(MetaData.GetErrorHeader() + "expected a bool as the \"if\" statement's condition, found " +
+					           conditionType);
 				IfStatementList.Env = new Environment(Env);
 				if (ElseStatementList != null) ElseStatementList.Env = new Environment(Env);
 			}
@@ -92,6 +98,7 @@ namespace bCC
 		{
 			Condition = condition;
 			IfStatementList = ifStatementList;
+			// FEATURE #2
 			ElseStatementList = elseStatementList;
 		}
 	}

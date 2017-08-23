@@ -30,6 +30,10 @@ namespace bCC
 			Assert.AreEqual("u64", example.Type.ToString());
 		}
 
+		/// <summary>
+		/// var someVar = 123u8;
+		/// someVar; // the type of this expression will be inferred as "u8".
+		/// </summary>
 		[Test]
 		public void TypeInferenceTest1()
 		{

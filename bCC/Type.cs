@@ -11,6 +11,9 @@ namespace bCC
 		public override string ToString() => Name;
 	}
 
+	/// <summary>
+	/// FEATURE #0
+	/// </summary>
 	public class SecondaryType : Type
 	{
 		public SecondaryType(string name) : base(name)
@@ -18,6 +21,9 @@ namespace bCC
 		}
 	}
 
+	/// <summary>
+	/// FEATURE #7
+	/// </summary>
 	public class ThirdLevelType : Type
 	{
 		public readonly Type Container;
@@ -34,6 +40,9 @@ namespace bCC
 		public override string ToString() => PrimaryTypeToString(Container, Parameter);
 	}
 
+	/// <summary>
+	/// FEATURE #6
+	/// </summary>
 	public class LambdaType : Type
 	{
 		public readonly IList<Type> ArgsList;
