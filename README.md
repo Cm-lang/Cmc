@@ -1,9 +1,9 @@
 # bC-Compiler
 
-CI|Status
+<!-- CI|Status
 :---:|:---:
-Travis CI|[![Build Status](https://travis-ci.org/bC-Programming-Language-StandardCouncil/bC-Compiler.svg?branch=master)](https://travis-ci.org/bC-Programming-Language-StandardCouncil/bC-Compiler)
-CircleCI|[![CircleCI](https://circleci.com/gh/bC-Programming-Language-StandardCouncil/bC-Compiler.svg?style=svg)](https://circleci.com/gh/bC-Programming-Language-StandardCouncil/bC-Compiler)
+Travis CI|
+-->[![Build Status](https://travis-ci.org/bC-Programming-Language-StandardCouncil/bC-Compiler.svg?branch=master)](https://travis-ci.org/bC-Programming-Language-StandardCouncil/bC-Compiler)
 
 [![](https://img.shields.io/badge/bC--lang-Compiler-blue.svg)](https://github.com/bC-Programming-Language-StandardCouncil/bC-Compiler)
 [![license](https://img.shields.io/github/license/bC-Programming-Language-StandardCouncil/bC-Compiler.svg)](https://github.com/bC-Programming-Language-StandardCouncil/bC-Compiler)
