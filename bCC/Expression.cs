@@ -128,7 +128,7 @@ namespace bCC
 		{
 			var hisType = Receiver.GetExpressionType();
 			if (hisType is LambdaType lambdaType) return lambdaType.RetType;
-			Errors.Add(MetaData.GetErrorHeader() + "the function call receiver shoule be a lambda. Currently it's " +
+			Errors.Add(MetaData.GetErrorHeader() + "the function call receiver shoule be a function, not " +
 			           hisType + ".");
 			throw new CompilerException();
 		}

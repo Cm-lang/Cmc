@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using JetBrains.Annotations;
 using static System.StringComparison;
 
 #pragma warning disable 659
@@ -7,11 +8,12 @@ namespace bCC
 {
 	public class Declaration : Statement
 	{
+		[NotNull]
 		public virtual IList<Declaration> FindDependencies() => new List<Declaration> {this};
 
-		public readonly string Name;
+		[NotNull] public readonly string Name;
 
-		public Declaration(MetaData metaData, string name) : base(metaData)
+		public Declaration(MetaData metaData, [NotNull] string name) : base(metaData)
 		{
 			Name = name;
 		}
@@ -20,17 +22,17 @@ namespace bCC
 	public sealed class VariableDeclaration : Declaration
 	{
 		public readonly bool Mutability;
-		public readonly Expression Expression;
-		public readonly Type Type;
+		[NotNull] public readonly Expression Expression;
+		[NotNull] public readonly Type Type;
 
 		public override IList<Declaration> FindDependencies() => Expression.GetDependencies();
 
 		public VariableDeclaration(
 			MetaData metaData,
-			string name,
-			Expression expression = null,
+			[NotNull] string name,
+			[CanBeNull] Expression expression = null,
 			bool isMutable = false,
-			Type type = null) :
+			[CanBeNull] Type type = null) :
 			base(metaData, name)
 		{
 			Expression = expression ?? new NullExpression(MetaData);
@@ -52,9 +54,9 @@ namespace bCC
 	{
 		public override IList<Declaration> FindDependencies() => new List<Declaration>();
 
-		public string Content;
+		[NotNull] public string Content;
 
-		public Macro(MetaData metaData, string name, string content) : base(metaData, name)
+		public Macro(MetaData metaData, [NotNull] string name, [NotNull] string content) : base(metaData, name)
 		{
 			Content = content;
 		}

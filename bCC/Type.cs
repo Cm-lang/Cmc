@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
+using JetBrains.Annotations;
 
 namespace bCC
 {
 	public abstract class Type : Ast
 	{
-		public readonly string Name;
+		[NotNull] public readonly string Name;
 
-		protected Type(MetaData metaData, string name) : base(metaData) => Name = name;
+		protected Type(MetaData metaData, [NotNull] string name) : base(metaData) => Name = name;
 		public override string ToString() => Name;
 	}
 
@@ -15,7 +16,7 @@ namespace bCC
 	/// </summary>
 	public class SecondaryType : Type
 	{
-		public SecondaryType(MetaData metaData, string name) : base(metaData, name)
+		public SecondaryType(MetaData metaData, [NotNull] string name) : base(metaData, name)
 		{
 		}
 	}
@@ -25,17 +26,30 @@ namespace bCC
 	/// </summary>
 	public class ThirdLevelType : Type
 	{
-		public readonly Type Container;
-		public readonly Type Parameter;
+		public override Environment Env
+		{
+			[NotNull] get => _env;
+			set
+			{
+				_env = value;
+				Container.Env = Env;
+				Parameter.Env = Env;
+			}
+		}
 
-		public ThirdLevelType(MetaData metaData, Type container, Type parameter) :
+		[NotNull] public readonly Type Container;
+		[NotNull] public readonly Type Parameter;
+		private Environment _env;
+
+		public ThirdLevelType(MetaData metaData, [NotNull] Type container, [NotNull] Type parameter) :
 			base(metaData, PrimaryTypeToString(container, parameter))
 		{
 			Container = container;
 			Parameter = parameter;
 		}
 
-		public static string PrimaryTypeToString(Type args, Type ret) => args + "<" + ret + ">";
+		[NotNull]
+		public static string PrimaryTypeToString([NotNull] Type args, [NotNull] Type ret) => args + "<" + ret + ">";
 
 		public override string ToString() => PrimaryTypeToString(Container, Parameter);
 	}
@@ -45,10 +59,10 @@ namespace bCC
 	/// </summary>
 	public class LambdaType : Type
 	{
-		public readonly IList<Type> ArgsList;
-		public readonly Type RetType;
+		[NotNull] public readonly IList<Type> ArgsList;
+		[NotNull] public readonly Type RetType;
 
-		public LambdaType(MetaData metaData, IList<Type> args, Type ret) :
+		public LambdaType(MetaData metaData, [NotNull] IList<Type> args, [NotNull] Type ret) :
 			base(metaData, LambdaTypeToString(args, ret))
 		{
 			ArgsList = args;
@@ -56,6 +70,9 @@ namespace bCC
 		}
 
 		public override string ToString() => LambdaTypeToString(ArgsList, RetType);
-		public static string LambdaTypeToString(IList<Type> args, Type ret) => string.Join(",", args) + "->" + ret;
+
+		[NotNull]
+		public static string LambdaTypeToString([NotNull] IList<Type> args, [NotNull] Type ret) =>
+			string.Join(",", args) + "->" + ret;
 	}
 }

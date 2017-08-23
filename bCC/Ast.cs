@@ -18,9 +18,9 @@ namespace bCC
 
 	public class BcFile
 	{
-		public readonly IList<Declaration> Declarations;
+		[NotNull] public readonly IList<Declaration> Declarations;
 
-		public BcFile(params Declaration[] declarations)
+		public BcFile([NotNull] params Declaration[] declarations)
 		{
 			Declarations = declarations;
 			AnalyzeDependencies();
