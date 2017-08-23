@@ -118,10 +118,9 @@ namespace bCC
 			{
 				"variable expression:\n",
 				"  name: " + Name + "\n",
-				"  type:\n",
-				"  "
+				"  type:\n"
 			}
-			.Concat(_type.Dump().Select(MapFunc));
+			.Concat(_type.Dump().Select(MapFunc).Select(MapFunc));
 	}
 
 	public class FunctionCallExpression : AtomicExpression

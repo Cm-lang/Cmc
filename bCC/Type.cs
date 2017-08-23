@@ -20,7 +20,7 @@ namespace bCC
 		{
 		}
 
-		public override IEnumerable<string> Dump() => new[] {"secondary type:\n", "  " + Name + "\n"};
+		public override IEnumerable<string> Dump() => new[] {"secondary type [" + Name + "]\n"};
 	}
 
 	/// <summary>
