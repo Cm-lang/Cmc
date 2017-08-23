@@ -57,8 +57,7 @@ namespace bCC
 				.Concat(Type.Dump().Select(MapFunc))
 				.Concat(new[]
 				{
-					"  value:\n",
-					"    " + Value + "\n"
+					"  value [" + Value + "]\n"
 				});
 	}
 
