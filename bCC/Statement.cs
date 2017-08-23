@@ -48,7 +48,7 @@ namespace bCC
 
 	public class StatementList : Statement
 	{
-		[NotNull] public readonly IList<Statement> Statements;
+		[NotNull] public IList<Statement> Statements;
 		private Environment _env;
 
 		public sealed override Environment Env
@@ -74,8 +74,9 @@ namespace bCC
 
 		public StatementList(MetaData metaData, params Statement[] statements) : base(metaData) => Statements = statements;
 
-		public override IEnumerable<string> Dump() =>
-			new[] {"statement list:\n"}
+		public override IEnumerable<string> Dump() => Statements.Count == 0
+			? new[] {"empty statement list\n"}
+			: new[] {"statement list:\n"}
 				.Concat(Statements.SelectMany(i => i.Dump().Select(MapFunc)));
 	}
 
@@ -113,7 +114,7 @@ namespace bCC
 	public class WhileStatement : Statement
 	{
 		[NotNull] public readonly Expression Condition;
-		[NotNull] public readonly StatementList OkStatementList;
+		[NotNull] public StatementList OkStatementList;
 		private Environment _env;
 
 		public override Environment Env
@@ -154,7 +155,7 @@ namespace bCC
 
 	public class IfStatement : WhileStatement
 	{
-		[CanBeNull] public readonly StatementList ElseStatementList;
+		[NotNull] public StatementList ElseStatementList;
 		private Environment _env;
 
 		public override Environment Env
@@ -171,7 +172,11 @@ namespace bCC
 					Errors.Add(MetaData.GetErrorHeader() + "expected a bool as the \"if\" statement's condition, found " +
 					           conditionType);
 				OkStatementList.Env = new Environment(Env);
-				if (ElseStatementList != null) ElseStatementList.Env = new Environment(Env);
+				ElseStatementList.Env = new Environment(Env);
+				// FEATURE #17
+				if (Condition is BoolLiteralExpression boolean)
+					if (boolean.Value) ElseStatementList.Statements = new List<Statement>();
+					else OkStatementList.Statements = new List<Statement>();
 			}
 		}
 
@@ -182,7 +187,7 @@ namespace bCC
 			[CanBeNull] StatementList elseStatementList = null) : base(metaData, condition, ifStatementList)
 		{
 			// FEATURE #2
-			ElseStatementList = elseStatementList;
+			ElseStatementList = elseStatementList ?? new StatementList(MetaData);
 		}
 
 		public override IEnumerable<string> Dump() => new[]
@@ -194,6 +199,6 @@ namespace bCC
 			.Concat(new[] {"  true branch:\n"})
 			.Concat(OkStatementList.Dump().Select(MapFunc).Select(MapFunc))
 			.Concat(new[] {"  false branch:\n"})
-			.Concat(ElseStatementList?.Dump().Select(MapFunc).Select(MapFunc) ?? new[] {"    empty"});
+			.Concat(ElseStatementList.Dump().Select(MapFunc).Select(MapFunc));
 	}
 }

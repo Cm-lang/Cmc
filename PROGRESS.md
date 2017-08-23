@@ -22,6 +22,8 @@ Please add feature request here.
 + [X] initialize variable with null or given expression (#13)
 + [ ] check for mutability
 + [X] check for assignment type (#14)
++ [ ] validate lhs
++ [ ] inline
 
 ## functions
 
@@ -32,11 +34,11 @@ Please add feature request here.
 
 + [X] check for condition type (#1)
 + [X] optional else branch (#2)
++ [X] when condition is constant value, delete redundant branch (#17)
 
 ## while
 
 + [X] check for condition type (#16)
-+ [ ] while
 + [ ] do while
 
 ## errors

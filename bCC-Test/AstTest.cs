@@ -114,7 +114,8 @@ namespace bCC
 			{
 				Env = new Environment()
 			};
-			Console.WriteLine("\n\n");
+			Console.WriteLine("");
+			Console.WriteLine("");
 			Assert.IsNotEmpty(Errors.ErrList);
 			Console.WriteLine(string.Join("", stmt2.Dump()));
 		}
