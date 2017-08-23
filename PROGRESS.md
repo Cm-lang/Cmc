@@ -35,7 +35,7 @@ Please add feature request here.
 
 ## while
 
-+ [ ] check for condition type
++ [X] check for condition type (#16)
 + [ ] while
 + [ ] do while
 

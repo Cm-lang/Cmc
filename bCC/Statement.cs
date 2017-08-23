@@ -110,10 +110,41 @@ namespace bCC
 		}
 	}
 
-	public class IfStatement : Statement
+	public class WhileStatement : Statement
 	{
 		[NotNull] public readonly Expression Condition;
-		[NotNull] public readonly StatementList IfStatementList;
+		[NotNull] public readonly StatementList OkStatementList;
+		private Environment _env;
+
+		public override Environment Env
+		{
+			get => _env;
+			[NotNull]
+			set
+			{
+				_env = value;
+				Condition.Env = Env;
+				// FEATURE #16
+				var conditionType = Condition.GetExpressionType().Name;
+				if (!string.Equals(conditionType, "bool", Ordinal))
+					Errors.Add(MetaData.GetErrorHeader() + "expected a bool as the \"while\" statement's condition, found " +
+					           conditionType);
+				OkStatementList.Env = new Environment(Env);
+			}
+		}
+
+		public WhileStatement(
+			MetaData metaData,
+			[NotNull] Expression condition,
+			[NotNull] StatementList okStatementList) : base(metaData)
+		{
+			Condition = condition;
+			OkStatementList = okStatementList;
+		}
+	}
+
+	public class IfStatement : WhileStatement
+	{
 		[CanBeNull] public readonly StatementList ElseStatementList;
 		private Environment _env;
 
@@ -130,7 +161,7 @@ namespace bCC
 				if (!string.Equals(conditionType, "bool", Ordinal))
 					Errors.Add(MetaData.GetErrorHeader() + "expected a bool as the \"if\" statement's condition, found " +
 					           conditionType);
-				IfStatementList.Env = new Environment(Env);
+				OkStatementList.Env = new Environment(Env);
 				if (ElseStatementList != null) ElseStatementList.Env = new Environment(Env);
 			}
 		}
@@ -139,10 +170,8 @@ namespace bCC
 			MetaData metaData,
 			[NotNull] Expression condition,
 			[NotNull] StatementList ifStatementList,
-			[CanBeNull] StatementList elseStatementList = null) : base(metaData)
+			[CanBeNull] StatementList elseStatementList = null) : base(metaData, condition, ifStatementList)
 		{
-			Condition = condition;
-			IfStatementList = ifStatementList;
 			// FEATURE #2
 			ElseStatementList = elseStatementList;
 		}

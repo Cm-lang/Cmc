@@ -98,5 +98,14 @@ namespace bCC
 		[NotNull]
 		public static string LambdaTypeToString([NotNull] IList<Type> args, [NotNull] Type ret) =>
 			string.Join(",", args) + "->" + ret;
+
+		public override IEnumerable<string> Dump() => new[]
+			{
+				"lambda type:\n",
+				"  parameters' types:\n"
+			}
+			.Concat(ArgsList.SelectMany(i => i.Dump().Select(MapFunc).Select(MapFunc)))
+			.Concat(new[] {"  return type:\n"})
+			.Concat(RetType.Dump().Select(MapFunc).Select(MapFunc));
 	}
 }
