@@ -59,8 +59,21 @@ namespace bCC
 	/// </summary>
 	public class LambdaType : Type
 	{
+		public override Environment Env
+		{
+			[NotNull]
+			get => _env;
+			set
+			{
+				_env = value;
+				foreach (var type in ArgsList) type.Env = Env;
+				RetType.Env = Env;
+			}
+		}
+
 		[NotNull] public readonly IList<Type> ArgsList;
 		[NotNull] public readonly Type RetType;
+		private Environment _env;
 
 		public LambdaType(MetaData metaData, [NotNull] IList<Type> args, [NotNull] Type ret) :
 			base(metaData, LambdaTypeToString(args, ret))

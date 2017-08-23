@@ -110,8 +110,20 @@ namespace bCC
 
 	public class FunctionCallExpression : AtomicExpression
 	{
+		public override Environment Env
+		{
+			[NotNull] get => _env;
+			set
+			{
+				_env = value;
+				Receiver.Env = Env;
+				foreach (var expression in ParameterList) expression.Env = Env;
+			}
+		}
+
 		[NotNull] public readonly Expression Receiver;
 		[NotNull] public readonly IList<Expression> ParameterList;
+		private Environment _env;
 
 		public FunctionCallExpression(MetaData metaData, [NotNull] Expression receiver,
 			[NotNull] IList<Expression> parameterList) :
