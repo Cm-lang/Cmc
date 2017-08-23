@@ -85,25 +85,30 @@ namespace bCC
 
 		public override Type GetExpressionType() => _type;
 
-		public Lambda(MetaData metaData, StatementList body) : base(metaData)
-		{
-			Body = body;
-		}
+		public Lambda(MetaData metaData, [NotNull] StatementList body) : base(metaData) => Body = body;
 	}
 
 	public class VariableExpression : AtomicExpression
 	{
+		public override Environment Env
+		{
+			get => _env;
+			set
+			{
+				_env = value;
+				var declaration = Env.FindDeclarationByName(Name);
+				if (declaration is VariableDeclaration variableDeclaration) _type = variableDeclaration.Type;
+				else Errors.Add(MetaData.GetErrorHeader() + "Wtf");
+			}
+		}
+
 		[NotNull] public readonly string Name;
+		private Type _type;
+		private Environment _env;
 
 		public override IList<Declaration> GetDependencies() => new List<Declaration> {new Declaration(MetaData, Name)};
 
-		public override Type GetExpressionType()
-		{
-			var declaration = Env.FindDeclarationByName(Name);
-			if (declaration is VariableDeclaration variableDeclaration) return variableDeclaration.Type;
-			Errors.Add(MetaData.GetErrorHeader() + "Wtf");
-			throw new CompilerException();
-		}
+		public override Type GetExpressionType() => _type ?? throw new CompilerException();
 
 		public VariableExpression(MetaData metaData, [NotNull] string name) : base(metaData) => Name = name;
 	}
@@ -117,12 +122,17 @@ namespace bCC
 			{
 				_env = value;
 				Receiver.Env = Env;
+				var hisType = Receiver.GetExpressionType();
+				if (hisType is LambdaType lambdaType) _type = lambdaType.RetType;
+				else
+					Errors.Add(MetaData.GetErrorHeader() + "the function call receiver shoule be a function, not " + hisType + ".");
 				foreach (var expression in ParameterList) expression.Env = Env;
 			}
 		}
 
 		[NotNull] public readonly Expression Receiver;
 		[NotNull] public readonly IList<Expression> ParameterList;
+		private Type _type;
 		private Environment _env;
 
 		public FunctionCallExpression(MetaData metaData, [NotNull] Expression receiver,
@@ -136,13 +146,6 @@ namespace bCC
 		public override IList<Declaration> GetDependencies() =>
 			ParameterList.SelectMany(param => param.GetDependencies()).ToList();
 
-		public override Type GetExpressionType()
-		{
-			var hisType = Receiver.GetExpressionType();
-			if (hisType is LambdaType lambdaType) return lambdaType.RetType;
-			Errors.Add(MetaData.GetErrorHeader() + "the function call receiver shoule be a function, not " +
-			           hisType + ".");
-			throw new CompilerException();
-		}
+		public override Type GetExpressionType() => _type ?? throw new CompilerException();
 	}
 }

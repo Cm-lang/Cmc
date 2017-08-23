@@ -19,7 +19,7 @@ Please add feature request here.
 
 ## variables
 
-+ [ ] initialize variable with null or given expression
++ [X] initialize variable with null or given expression (#13)
 + [ ] check for mutability
 
 ## functions
