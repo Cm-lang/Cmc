@@ -14,6 +14,7 @@ dependencies:
         - sudo apt-get update
         # http://www.mono-project.com/docs/getting-started/install/linux/#usage
         - sudo apt-get install -y mono-complete
+        - sudo apt-get install -y nuget
         - sudo apt-get install -y referenceassemblies-pcl
         - sudo apt-get install -y ca-certificates-mono
 
