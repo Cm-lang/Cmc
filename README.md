@@ -1,5 +1,7 @@
 # bC-Compiler
 
+[![Join the chat at https://gitter.im/bC-Programming-Language-StandardCouncil/bC-Compiler](https://badges.gitter.im/bC-Programming-Language-StandardCouncil/bC-Compiler.svg)](https://gitter.im/bC-Programming-Language-StandardCouncil/bC-Compiler?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 CI|Status
 :---:|:---:
 Travis CI|[![Build Status](https://travis-ci.org/bC-Programming-Language-StandardCouncil/bC-Compiler.svg?branch=master)](https://travis-ci.org/bC-Programming-Language-StandardCouncil/bC-Compiler)
