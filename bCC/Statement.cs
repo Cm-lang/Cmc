@@ -7,9 +7,6 @@ namespace bCC
 {
 	public class Statement : Ast
 	{
-		[NotNull]
-		public virtual IList<Declaration> GetDependencies() => new List<Declaration>();
-
 		public Statement(MetaData metaData) : base(metaData)
 		{
 		}
@@ -66,12 +63,23 @@ namespace bCC
 			}
 		}
 
-		public override IList<Declaration> GetDependencies() =>
-			Statements.SelectMany(statement => statement.GetDependencies()).ToList();
-
 		public StatementList(MetaData metaData, params Statement[] statements) : base(metaData)
 		{
 			Statements = statements;
+		}
+	}
+
+	public class AssignmentStatement : Statement
+	{
+		public override Environment Env { get; set; }
+		[NotNull] public readonly Expression LhsExpression;
+		[NotNull] public readonly Expression RhsExpression;
+
+		public AssignmentStatement(MetaData metaData, [NotNull] Expression lhsExpression, [NotNull] Expression rhsExpression)
+			: base(metaData)
+		{
+			LhsExpression = lhsExpression;
+			RhsExpression = rhsExpression;
 		}
 	}
 

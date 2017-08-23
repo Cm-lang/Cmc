@@ -15,27 +15,4 @@ namespace bCC
 			MetaData = metaData;
 		}
 	}
-
-	public class BcFile
-	{
-		[NotNull] public readonly IList<Declaration> Declarations;
-
-		public BcFile([NotNull] params Declaration[] declarations)
-		{
-			Declarations = declarations;
-			AnalyzeDependencies();
-		}
-
-		/// <summary>
-		/// When undefined dependencies appear, this method will give errors.
-		/// TODO: check for local variables
-		/// </summary>
-		private void AnalyzeDependencies()
-		{
-			foreach (var declaration in Declarations)
-			foreach (var dependency in declaration.FindDependencies())
-				if (!Declarations.Contains(dependency))
-					Errors.Add(declaration.MetaData.GetErrorHeader() + dependency + " undefined.");
-		}
-	}
 }

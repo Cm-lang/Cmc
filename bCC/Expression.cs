@@ -10,9 +10,6 @@ namespace bCC
 	public abstract class Expression : Ast
 	{
 		[NotNull]
-		public abstract IList<Declaration> GetDependencies();
-
-		[NotNull]
 		public abstract Type GetExpressionType();
 
 		protected Expression(MetaData metaData) : base(metaData)
@@ -35,7 +32,6 @@ namespace bCC
 		{
 		}
 
-		public override IList<Declaration> GetDependencies() => new List<Declaration>();
 		public override Type GetExpressionType() => new SecondaryType(MetaData, NullType);
 	}
 
@@ -43,7 +39,6 @@ namespace bCC
 	{
 		[NotNull] public readonly Type Type;
 		protected LiteralExpression(MetaData metaData, [NotNull] Type type) : base(metaData) => Type = type;
-		public override IList<Declaration> GetDependencies() => new List<Declaration>();
 		public override Type GetExpressionType() => Type;
 	}
 
@@ -80,9 +75,6 @@ namespace bCC
 			}
 		}
 
-		public override IList<Declaration> GetDependencies() =>
-			Body.Statements.SelectMany(i => i.GetDependencies()).ToList();
-
 		public override Type GetExpressionType() => _type;
 
 		public Lambda(MetaData metaData, [NotNull] StatementList body) : base(metaData) => Body = body;
@@ -106,8 +98,6 @@ namespace bCC
 		private Type _type;
 		private Environment _env;
 
-		public override IList<Declaration> GetDependencies() => new List<Declaration> {new Declaration(MetaData, Name)};
-
 		public override Type GetExpressionType() => _type ?? throw new CompilerException();
 
 		public VariableExpression(MetaData metaData, [NotNull] string name) : base(metaData) => Name = name;
@@ -122,6 +112,8 @@ namespace bCC
 			{
 				_env = value;
 				Receiver.Env = Env;
+				foreach (var expression in ParameterList) expression.Env = Env;
+				// TODO check parameter type
 				var hisType = Receiver.GetExpressionType();
 				if (hisType is LambdaType lambdaType) _type = lambdaType.RetType;
 				else
@@ -142,9 +134,6 @@ namespace bCC
 			ParameterList = parameterList;
 			Receiver = receiver;
 		}
-
-		public override IList<Declaration> GetDependencies() =>
-			ParameterList.SelectMany(param => param.GetDependencies()).ToList();
 
 		public override Type GetExpressionType() => _type ?? throw new CompilerException();
 	}

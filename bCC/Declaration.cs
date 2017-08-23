@@ -8,9 +8,6 @@ namespace bCC
 {
 	public class Declaration : Statement
 	{
-		[NotNull]
-		public virtual IList<Declaration> FindDependencies() => new List<Declaration> {this};
-
 		[NotNull] public readonly string Name;
 
 		public Declaration(MetaData metaData, [NotNull] string name) : base(metaData)
@@ -24,8 +21,6 @@ namespace bCC
 		public readonly bool Mutability;
 		[NotNull] public readonly Expression Expression;
 		[NotNull] public readonly Type Type;
-
-		public override IList<Declaration> FindDependencies() => Expression.GetDependencies();
 
 		public VariableDeclaration(
 			MetaData metaData,
@@ -52,8 +47,6 @@ namespace bCC
 
 	public class Macro : Declaration
 	{
-		public override IList<Declaration> FindDependencies() => new List<Declaration>();
-
 		[NotNull] public string Content;
 
 		public Macro(MetaData metaData, [NotNull] string name, [NotNull] string content) : base(metaData, name)
