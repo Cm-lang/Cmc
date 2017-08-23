@@ -2,7 +2,7 @@
 # Visual Studio 2015
 VisualStudioVersion = 15.1.371.0
 MinimumVisualStudioVersion = 15.1.371.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bCC_AST", "bCC-AST/bCC-AST.csproj", "{17E0DE41-2426-4616-8424-BA6C0F97F7C0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bCC", "bCC/bCC.csproj", "{17E0DE41-2426-4616-8424-BA6C0F97F7C0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bCC-Test", "bCC-Test\bCC-Test.csproj", "{22B2B630-2AB0-46A0-B5B7-279D6FE88069}"
 EndProject
