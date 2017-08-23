@@ -32,7 +32,7 @@ namespace bCC
 		{
 		}
 
-		public override Type GetExpressionType() => new SecondaryType(MetaData, NullType);
+		public override Type GetExpressionType() => new PrimaryType(MetaData, NullType);
 
 		public override IEnumerable<string> Dump() => new[] {"null expression\n"};
 	}
@@ -49,7 +49,7 @@ namespace bCC
 		[NotNull] public readonly string Value;
 
 		public IntLiteralExpression(MetaData metaData, [NotNull] string value, bool isSigned, int length = 32)
-			: base(metaData, new SecondaryType(metaData, (isSigned ? "i" : "u") + length)) => Value = value;
+			: base(metaData, new PrimaryType(metaData, (isSigned ? "i" : "u") + length)) => Value = value;
 
 		public override IEnumerable<string> Dump() =>
 			new[] {"literal expression [ " + Value + "]:\n"}
@@ -77,7 +77,7 @@ namespace bCC
 				// FEATURE #12
 				_type = Body.Statements.Last() is ReturnStatement ret
 					? ret.Expression.GetExpressionType()
-					: new SecondaryType(MetaData, "void");
+					: new PrimaryType(MetaData, "void");
 			}
 		}
 
@@ -149,5 +149,16 @@ namespace bCC
 		}
 
 		public override Type GetExpressionType() => _type ?? throw new CompilerException();
+
+		public override IEnumerable<string> Dump() => new[]
+			{
+				"function call expression:\n",
+				"  receiver:\n"
+			}
+			.Concat(Receiver.Dump().Select(MapFunc).Select(MapFunc))
+			.Concat(new[] {"  parameters:\n"})
+			.Concat(ParameterList.SelectMany(i => i.Dump().Select(MapFunc).Select(MapFunc)))
+			.Concat(new[] {"  type:\n"})
+			.Concat(_type.Dump().Select(MapFunc));
 	}
 }

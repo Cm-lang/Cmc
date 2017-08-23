@@ -83,7 +83,7 @@ namespace bCC
 			var example = new StatementList(MetaData.DefaultMetaData,
 				new VariableDeclaration(MetaData.DefaultMetaData, varName,
 					new NullExpression(MetaData.DefaultMetaData),
-					type: new SecondaryType(MetaData.DefaultMetaData, "i8")),
+					type: new PrimaryType(MetaData.DefaultMetaData, "i8")),
 				new ExpressionStatement(MetaData.DefaultMetaData, new VariableExpression(MetaData.DefaultMetaData, varName)))
 			{
 				Env = new Environment()

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using JetBrains.Annotations;
 
 namespace bCC
@@ -14,19 +15,19 @@ namespace bCC
 	/// <summary>
 	/// FEATURE #0
 	/// </summary>
-	public class SecondaryType : Type
+	public class PrimaryType : Type
 	{
-		public SecondaryType(MetaData metaData, [NotNull] string name) : base(metaData, name)
+		public PrimaryType(MetaData metaData, [NotNull] string name) : base(metaData, name)
 		{
 		}
 
-		public override IEnumerable<string> Dump() => new[] {"secondary type [" + Name + "]\n"};
+		public override IEnumerable<string> Dump() => new[] {"primary type [" + Name + "]\n"};
 	}
 
 	/// <summary>
 	/// FEATURE #7
 	/// </summary>
-	public class ThirdLevelType : Type
+	public class SecondaryType : Type
 	{
 		public override Environment Env
 		{
@@ -43,17 +44,26 @@ namespace bCC
 		[NotNull] public readonly Type Parameter;
 		private Environment _env;
 
-		public ThirdLevelType(MetaData metaData, [NotNull] Type container, [NotNull] Type parameter) :
-			base(metaData, PrimaryTypeToString(container, parameter))
+		public SecondaryType(MetaData metaData, [NotNull] Type container, [NotNull] Type parameter) :
+			base(metaData, SecondaryTypeToString(container, parameter))
 		{
 			Container = container;
 			Parameter = parameter;
 		}
 
 		[NotNull]
-		public static string PrimaryTypeToString([NotNull] Type args, [NotNull] Type ret) => args + "<" + ret + ">";
+		public static string SecondaryTypeToString([NotNull] Type args, [NotNull] Type ret) => args + "<" + ret + ">";
 
-		public override string ToString() => PrimaryTypeToString(Container, Parameter);
+		public override string ToString() => SecondaryTypeToString(Container, Parameter);
+
+		public override IEnumerable<string> Dump() => new[]
+			{
+				"secondary type:\n",
+				"  container type:\n"
+			}
+			.Concat(Container.Dump().Select(MapFunc).Select(MapFunc))
+			.Concat(new[] {"  parameter type:\n"})
+			.Concat(Parameter.Dump().Select(MapFunc).Select(MapFunc));
 	}
 
 	/// <summary>

@@ -60,5 +60,7 @@ namespace bCC
 
 		public Macro(MetaData metaData, [NotNull] string name, [NotNull] string content) : base(metaData, name) =>
 			Content = content;
+
+		public override IEnumerable<string> Dump() => new[] {"macro(this shouldn't appear)\n"};
 	}
 }
