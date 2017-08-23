@@ -34,7 +34,7 @@ namespace bCC
 
 		public override Type GetExpressionType() => new SecondaryType(MetaData, NullType);
 
-		public override string[] Dump() => new[] {"null expression\n"};
+		public override IEnumerable<string> Dump() => new[] {"null expression\n"};
 	}
 
 	public class LiteralExpression : AtomicExpression
@@ -51,13 +51,15 @@ namespace bCC
 		public IntLiteralExpression(MetaData metaData, [NotNull] string value, bool isSigned, int length = 32)
 			: base(metaData, new SecondaryType(metaData, (isSigned ? "i" : "u") + length)) => Value = value;
 
-		public override string[] Dump() => new[]
-		{
-			"literal expression:\n",
-			"  " + string.Join("  ", Type.Dump()) + "\n",
-			"  value:\n",
-			"    " + Value + "\n"
-		};
+		public override IEnumerable<string> Dump() =>
+			new[]
+					{"literal expression:\n"}
+				.Concat(Type.Dump().Select(MapFunc))
+				.Concat(new[]
+				{
+					"  value:\n",
+					"    " + Value + "\n"
+				});
 	}
 
 	/// <summary>
@@ -111,6 +113,15 @@ namespace bCC
 		public override Type GetExpressionType() => _type ?? throw new CompilerException();
 
 		public VariableExpression(MetaData metaData, [NotNull] string name) : base(metaData) => Name = name;
+
+		public override IEnumerable<string> Dump() => new[]
+			{
+				"variable expression:\n",
+				"  name: " + Name + "\n",
+				"  type:\n",
+				"  "
+			}
+			.Concat(_type.Dump().Select(MapFunc));
 	}
 
 	public class FunctionCallExpression : AtomicExpression

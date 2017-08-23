@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using JetBrains.Annotations;
 
 namespace bCC
@@ -13,6 +14,8 @@ namespace bCC
 		protected Ast(MetaData metaData) => MetaData = metaData;
 
 		[NotNull]
-		public virtual string[] Dump() => new[] {ToString()};
+		public virtual IEnumerable<string> Dump() => new[] {ToString()};
+
+		public static Func<string, string> MapFunc = i => "  " + i;
 	}
 }

@@ -30,11 +30,9 @@ namespace bCC
 		private Environment _env;
 		public ExpressionStatement(MetaData metaData, Expression expression) : base(metaData) => Expression = expression;
 
-		public override string[] Dump() => new[]
-		{
-			"expression statement:\n",
-			"  " + string.Join("  ", Expression.Dump())
-		};
+		public override IEnumerable<string> Dump() =>
+			new[] {"expression statement:\n"}
+				.Concat(Expression.Dump().Select(i => "  " + i));
 	}
 
 	public class ReturnStatement : ExpressionStatement
@@ -43,11 +41,9 @@ namespace bCC
 		{
 		}
 
-		public override string[] Dump() => new[]
-		{
-			"return statement:\n",
-			"  " + base.Dump().Last()
-		};
+		public override IEnumerable<string> Dump() =>
+			new[] {"return statement:\n"}
+				.Concat(Expression.Dump().Select(i => "  " + i));
 	}
 
 	public class StatementList : Statement
@@ -78,11 +74,9 @@ namespace bCC
 
 		public StatementList(MetaData metaData, params Statement[] statements) : base(metaData) => Statements = statements;
 
-		public override string[] Dump() => new[]
-		{
-			"statement list:\n",
-			"  " + string.Join("  ", Statements.Select(i => string.Join("  ", i.Dump())))
-		};
+		public override IEnumerable<string> Dump() =>
+			new[] {"statement list:\n"}
+				.Concat(Statements.SelectMany(i => i.Dump().Select(MapFunc)));
 	}
 
 	public class AssignmentStatement : Statement
