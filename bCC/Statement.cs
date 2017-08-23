@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 using static System.StringComparison;
 
 namespace bCC
 {
-	public class Statement : IAst
+	public class Statement : Ast
 	{
-		public virtual Environment Env { get; set; }
-
+		[NotNull]
 		public virtual IList<Declaration> GetDependencies() => new List<Declaration>();
 
 		public Statement(MetaData metaData) : base(metaData)
@@ -19,7 +19,8 @@ namespace bCC
 	{
 		public override Environment Env
 		{
-			get => _env;
+			[CanBeNull] get => _env;
+			[NotNull]
 			set
 			{
 				_env = value;
@@ -27,19 +28,27 @@ namespace bCC
 			}
 		}
 
-		public readonly Expression Expression;
+		[NotNull] public readonly Expression Expression;
 		private Environment _env;
 		public ExpressionStatement(MetaData metaData, Expression expression) : base(metaData) => Expression = expression;
 	}
 
+	public class ReturnStatement : ExpressionStatement
+	{
+		public ReturnStatement(MetaData metaData, Expression expression) : base(metaData, expression)
+		{
+		}
+	}
+
 	public class StatementList : Statement
 	{
-		public readonly IList<Statement> Statements;
+		[NotNull] public readonly IList<Statement> Statements;
 		private Environment _env;
 
 		public sealed override Environment Env
 		{
 			get => _env;
+			[NotNull]
 			set
 			{
 				_env = value;
@@ -68,14 +77,15 @@ namespace bCC
 
 	public class IfStatement : Statement
 	{
-		public readonly Expression Condition;
-		public readonly StatementList IfStatementList;
-		public readonly StatementList ElseStatementList;
+		[NotNull] public readonly Expression Condition;
+		[NotNull] public readonly StatementList IfStatementList;
+		[CanBeNull] public readonly StatementList ElseStatementList;
 		private Environment _env;
 
 		public override Environment Env
 		{
 			get => _env;
+			[NotNull]
 			set
 			{
 				_env = value;
@@ -92,9 +102,9 @@ namespace bCC
 
 		public IfStatement(
 			MetaData metaData,
-			Expression condition,
-			StatementList ifStatementList,
-			StatementList elseStatementList = null) : base(metaData)
+			[NotNull] Expression condition,
+			[NotNull] StatementList ifStatementList,
+			[CanBeNull] StatementList elseStatementList = null) : base(metaData)
 		{
 			Condition = condition;
 			IfStatementList = ifStatementList;

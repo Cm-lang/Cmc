@@ -2,9 +2,8 @@
 
 namespace bCC
 {
-	public abstract class Type : IAst
+	public abstract class Type : Ast
 	{
-		public Environment Env;
 		public readonly string Name;
 
 		protected Type(MetaData metaData, string name) : base(metaData) => Name = name;

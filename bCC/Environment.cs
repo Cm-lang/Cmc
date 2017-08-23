@@ -1,18 +1,20 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 using static System.StringComparison;
 
 namespace bCC
 {
 	public class Environment
 	{
-		public readonly IList<Declaration> Declarations = new List<Declaration>();
-		public readonly Environment Outer;
+		[NotNull] public readonly IList<Declaration> Declarations = new List<Declaration>();
+		[CanBeNull] public readonly Environment Outer;
 
 		public Environment(Environment outer = null) => Outer = outer;
 
 		/// FEATURE #3
-		public IList<Declaration> FindAllDeclarationsByName(string name)
+		[NotNull]
+		public IList<Declaration> FindAllDeclarationsByName([NotNull] string name)
 		{
 			var env = this;
 			var list = new List<Declaration>();
@@ -26,7 +28,8 @@ namespace bCC
 		/// </summary>
 		/// <param name="name">the name of the required declaration</param>
 		/// <returns></returns>
-		public Declaration FindDeclarationByName(string name)
+		[CanBeNull]
+		public Declaration FindDeclarationByName([NotNull] string name)
 		{
 			var env = this;
 			do

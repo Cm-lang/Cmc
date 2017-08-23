@@ -1,12 +1,16 @@
 ﻿using System.Collections.Generic;
+using JetBrains.Annotations;
 
 namespace bCC
 {
-	public abstract class IAst
+	public abstract class Ast
 	{
+		[NotNull]
+		public virtual Environment Env { [CanBeNull] get; [NotNull] set; }
+
 		public MetaData MetaData;
 
-		protected IAst(MetaData metaData)
+		protected Ast(MetaData metaData)
 		{
 			MetaData = metaData;
 		}

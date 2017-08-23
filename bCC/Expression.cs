@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 
 #pragma warning disable 659
 
 namespace bCC
 {
-	public abstract class Expression : IAst
+	public abstract class Expression : Ast
 	{
-		public Environment Env;
+		[NotNull]
 		public abstract IList<Declaration> GetDependencies();
+
+		[NotNull]
 		public abstract Type GetExpressionType();
 
 		protected Expression(MetaData metaData) : base(metaData)
@@ -38,17 +41,17 @@ namespace bCC
 
 	public class LiteralExpression : AtomicExpression
 	{
-		public readonly Type Type;
-		protected LiteralExpression(MetaData metaData, Type type) : base(metaData) => Type = type;
+		[NotNull] public readonly Type Type;
+		protected LiteralExpression(MetaData metaData, [NotNull] Type type) : base(metaData) => Type = type;
 		public override IList<Declaration> GetDependencies() => new List<Declaration>();
 		public override Type GetExpressionType() => Type;
 	}
 
 	public class IntLiteralExpression : LiteralExpression
 	{
-		public readonly string Value;
+		[NotNull] public readonly string Value;
 
-		public IntLiteralExpression(MetaData metaData, string value, bool isSigned, int length = 32)
+		public IntLiteralExpression(MetaData metaData, [NotNull] string value, bool isSigned, int length = 32)
 			: base(metaData, new SecondaryType(metaData, (isSigned ? "i" : "u") + length)) => Value = value;
 	}
 
@@ -58,15 +61,29 @@ namespace bCC
 	/// </summary>
 	public class Lambda : AtomicExpression
 	{
-		public readonly StatementList Body;
+		[NotNull] public readonly StatementList Body;
+		private Type _type;
+		private Environment _env;
+
+		public override Environment Env
+		{
+			get => _env;
+			[NotNull]
+			set
+			{
+				_env = value;
+				Body.Env = Env;
+				// FEATURE #12
+				_type = Body.Statements.Last() is ReturnStatement ret
+					? ret.Expression.GetExpressionType()
+					: new SecondaryType(MetaData, "void");
+			}
+		}
 
 		public override IList<Declaration> GetDependencies() =>
 			Body.Statements.SelectMany(i => i.GetDependencies()).ToList();
 
-		public override Type GetExpressionType()
-		{
-			throw new NotImplementedException();
-		}
+		public override Type GetExpressionType() => _type;
 
 		public Lambda(MetaData metaData, StatementList body) : base(metaData)
 		{
@@ -76,7 +93,7 @@ namespace bCC
 
 	public class VariableExpression : AtomicExpression
 	{
-		public readonly string Name;
+		[NotNull] public readonly string Name;
 
 		public override IList<Declaration> GetDependencies() => new List<Declaration> {new Declaration(MetaData, Name)};
 
@@ -88,18 +105,16 @@ namespace bCC
 			throw new CompilerException();
 		}
 
-		public VariableExpression(MetaData metaData, string name) : base(metaData)
-		{
-			Name = name;
-		}
+		public VariableExpression(MetaData metaData, [NotNull] string name) : base(metaData) => Name = name;
 	}
 
 	public class FunctionCallExpression : AtomicExpression
 	{
-		public readonly Expression Receiver;
-		public readonly IList<Expression> ParameterList;
+		[NotNull] public readonly Expression Receiver;
+		[NotNull] public readonly IList<Expression> ParameterList;
 
-		public FunctionCallExpression(MetaData metaData, Expression receiver, IList<Expression> parameterList) :
+		public FunctionCallExpression(MetaData metaData, [NotNull] Expression receiver,
+			[NotNull] IList<Expression> parameterList) :
 			base(metaData)
 		{
 			ParameterList = parameterList;
