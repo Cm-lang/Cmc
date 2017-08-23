@@ -24,6 +24,17 @@ namespace bCC
 		}
 	}
 
+	public class NullExpression : Expression
+	{
+		public NullExpression(MetaData metaData) : base(metaData)
+		{
+		}
+
+		public override IList<Declaration> GetDependencies() => new List<Declaration>();
+
+		public override Type GetExpressionType()=>
+	}
+
 	public class LiteralExpression : AtomicExpression
 	{
 		public readonly Type Type;

@@ -13,7 +13,7 @@ Please add feature request here.
 + [X] function type, which combines parameters' types and return type (#6)
 + [X] types with single type parameter (#7)
 + [ ] infer function's return type from the last return statement
-+ [ ] infer variable's type by the assignment expression
++ [X] infer variable's type by the assignment expression (#8)
 + [ ] an HM type system (extra)
 
 ## variables
@@ -24,6 +24,7 @@ Please add feature request here.
 ## functions
 
 + [ ] inline
++ [ ] check for parameter type
 
 ## if
 
@@ -35,3 +36,9 @@ Please add feature request here.
 + [ ] check for condition type
 + [ ] while
 + [ ] do while
+
+## errors
+
++ [X] when the declared/assignment type are mismatch (#9)
++ [X] display line number/file name (#10)
+

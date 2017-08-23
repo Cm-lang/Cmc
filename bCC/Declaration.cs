@@ -35,8 +35,10 @@ namespace bCC
 			Expression = expression;
 			Expression.Env = Env;
 			var exprType = expression.GetExpressionType();
+			// FEATURE #8
 			Type = type ?? exprType;
 			if (Type != exprType)
+				// FEATURE #9
 				Errors.Add(metaData.GetErrorHeader() + "type mismatch, expected: " + Type.Name + ", actual: " + exprType);
 			Mutability = isMutable;
 		}

@@ -2,12 +2,12 @@
 
 namespace bCC
 {
-	public abstract class Type
+	public abstract class Type : IAst
 	{
 		public Environment Env;
 		public readonly string Name;
 
-		protected Type(string name) => Name = name;
+		protected Type(MetaData metaData, string name) : base(metaData) => Name = name;
 		public override string ToString() => Name;
 	}
 
@@ -29,7 +29,8 @@ namespace bCC
 		public readonly Type Container;
 		public readonly Type Parameter;
 
-		public ThirdLevelType(Type container, Type parameter) : base(PrimaryTypeToString(container, parameter))
+		public ThirdLevelType(MetaData metaData, Type container, Type parameter) :
+			base(metaData, PrimaryTypeToString(container, parameter))
 		{
 			Container = container;
 			Parameter = parameter;
@@ -48,7 +49,8 @@ namespace bCC
 		public readonly IList<Type> ArgsList;
 		public readonly Type RetType;
 
-		public LambdaType(IList<Type> args, Type ret) : base(LambdaTypeToString(args, ret))
+		public LambdaType(MetaData metaData, IList<Type> args, Type ret) :
+			base(metaData, LambdaTypeToString(args, ret))
 		{
 			ArgsList = args;
 			RetType = ret;
