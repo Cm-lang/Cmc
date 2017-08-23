@@ -44,3 +44,6 @@ Please add feature request here.
 + [X] when the declared/assignment type are mismatch (#9)
 + [X] display line number/file name (#10)
 
+## debug
+
++ [X] display compilation information (#15)

@@ -13,6 +13,10 @@ namespace bCC
 
 		protected Ast(MetaData metaData) => MetaData = metaData;
 
+		/// <summary>
+		/// FEATURE #15
+		/// </summary>
+		/// <returns>compilation information</returns>
 		[NotNull]
 		public virtual IEnumerable<string> Dump() => new[] {ToString()};
 
