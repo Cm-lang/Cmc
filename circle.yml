@@ -8,6 +8,7 @@ dependencies:
         - mkdir -p packages
 
     override:
+        - export TERM=xterm-color
         # http://www.mono-project.com/docs/getting-started/install/linux/
         - sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
         - echo "deb http://download.mono-project.com/repo/debian wheezy main" | sudo tee /etc/apt/sources.list.d/mono-xamarin.list
@@ -20,7 +21,9 @@ dependencies:
 
         - cd packages; wget --no-check-certificate https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
         - mono packages/nuget.exe restore
+        - nuget install NUnit.Runners -Version 3.2.0 -OutputDirectory testrunner
 
 test:
     override:
         - xbuild /p:Configuration=Release bCC.sln
+        - mono ./testrunner/NUnit.ConsoleRunner.3.2.0/tools/nunit3-console.exe ./bCC-Test/bin/Release/bCC_Test.exe
