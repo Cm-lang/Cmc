@@ -96,8 +96,27 @@ namespace bCC
 		[Test]
 		public void StatementTest2()
 		{
-//			var stmt = new IfStatement(MetaData.DefaultMetaData, new AtomicExpression(MetaData.DefaultMetaData),);
-//			Console.WriteLine(stmt);
+			var stmt = new IfStatement(
+				MetaData.DefaultMetaData,
+				new BoolLiteralExpression(MetaData.DefaultMetaData, false),
+				new StatementList(MetaData.DefaultMetaData)
+			)
+			{
+				Env = new Environment()
+			};
+			Console.WriteLine(string.Join("", stmt.Dump()));
+			Assert.IsEmpty(Errors.ErrList);
+			var stmt2 = new IfStatement(
+				MetaData.DefaultMetaData,
+				new NullExpression(MetaData.DefaultMetaData),
+				new StatementList(MetaData.DefaultMetaData)
+			)
+			{
+				Env = new Environment()
+			};
+			Console.WriteLine("\n\n");
+			Assert.IsNotEmpty(Errors.ErrList);
+			Console.WriteLine(string.Join("", stmt2.Dump()));
 		}
 	}
 }

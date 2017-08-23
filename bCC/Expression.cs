@@ -52,8 +52,18 @@ namespace bCC
 			: base(metaData, new PrimaryType(metaData, (isSigned ? "i" : "u") + length)) => Value = value;
 
 		public override IEnumerable<string> Dump() =>
-			new[] {"literal expression [ " + Value + "]:\n"}
+			new[] {"literal expression [" + Value + "]:\n"}
 				.Concat(Type.Dump().Select(MapFunc));
+	}
+
+	public class BoolLiteralExpression : LiteralExpression
+	{
+		public readonly bool Value;
+
+		public BoolLiteralExpression(MetaData metaData, bool value) : base(metaData, new PrimaryType(metaData, "bool")) =>
+			Value = value;
+
+		public override IEnumerable<string> Dump() => new[] {"bool literal expression [" + Value + "]:\n"};
 	}
 
 	/// <summary>

@@ -141,6 +141,15 @@ namespace bCC
 			Condition = condition;
 			OkStatementList = okStatementList;
 		}
+
+		public override IEnumerable<string> Dump() => new[]
+			{
+				"while statement:\n",
+				"  condition:\n"
+			}
+			.Concat(Condition.Dump().Select(MapFunc).Select(MapFunc))
+			.Concat(new[] {"  body:\n"})
+			.Concat(OkStatementList.Dump().Select(MapFunc).Select(MapFunc));
 	}
 
 	public class IfStatement : WhileStatement
@@ -175,5 +184,16 @@ namespace bCC
 			// FEATURE #2
 			ElseStatementList = elseStatementList;
 		}
+
+		public override IEnumerable<string> Dump() => new[]
+			{
+				"if statement:\n",
+				"  condition:\n"
+			}
+			.Concat(Condition.Dump().Select(MapFunc).Select(MapFunc))
+			.Concat(new[] {"  true branch:\n"})
+			.Concat(OkStatementList.Dump().Select(MapFunc).Select(MapFunc))
+			.Concat(new[] {"  false branch:\n"})
+			.Concat(ElseStatementList?.Dump().Select(MapFunc).Select(MapFunc) ?? new[] {"    empty"});
 	}
 }
