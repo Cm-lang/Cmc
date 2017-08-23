@@ -49,6 +49,10 @@ namespace bCC
 			Assert.AreEqual("u8", (example.Statements.Last() as ExpressionStatement).Expression.GetExpressionType().ToString());
 		}
 
+		/// <summary>
+		/// var someVar = null;
+		/// someVar; // nulltype
+		/// </summary>
 		[Test]
 		public void TypeInferenceTest2()
 		{
@@ -63,6 +67,27 @@ namespace bCC
 			// ReSharper disable once PossibleNullReferenceException
 			Assert.AreEqual(NullExpression.NullType,
 				(example.Statements.Last() as ExpressionStatement).Expression.GetExpressionType().ToString());
+		}
+
+		/// <summary>
+		/// var otherVar: i8 = null;
+		/// otherVar; // i8
+		/// FEATURE #11
+		/// </summary>
+		[Test]
+		public void TypeInferenceTest3()
+		{
+			const string varName = "otherVar";
+			var example = new StatementList(MetaData.DefaultMetaData,
+				new VariableDeclaration(MetaData.DefaultMetaData, varName,
+					new NullExpression(MetaData.DefaultMetaData),
+					type: new SecondaryType(MetaData.DefaultMetaData, "i8")),
+				new ExpressionStatement(MetaData.DefaultMetaData, new VariableExpression(MetaData.DefaultMetaData, varName)))
+			{
+				Env = new Environment()
+			};
+			// ReSharper disable once PossibleNullReferenceException
+			Assert.AreEqual("i8", (example.Statements.Last() as ExpressionStatement).Expression.GetExpressionType().ToString());
 		}
 
 		[Test]
