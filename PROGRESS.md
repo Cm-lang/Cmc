@@ -21,6 +21,7 @@ Please add feature request here.
 
 + [X] initialize variable with null or given expression (#13)
 + [ ] check for mutability
++ [X] check for assignment type (#14)
 
 ## functions
 

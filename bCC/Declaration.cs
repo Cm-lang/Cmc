@@ -45,13 +45,14 @@ namespace bCC
 		public override bool Equals(object obj) => obj is Declaration declaration && declaration.Name == Name;
 	}
 
+	/// <summary>
+	/// Probably useless
+	/// </summary>
 	public class Macro : Declaration
 	{
 		[NotNull] public string Content;
 
-		public Macro(MetaData metaData, [NotNull] string name, [NotNull] string content) : base(metaData, name)
-		{
+		public Macro(MetaData metaData, [NotNull] string name, [NotNull] string content) : base(metaData, name) =>
 			Content = content;
-		}
 	}
 }

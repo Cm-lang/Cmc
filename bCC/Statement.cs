@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 using static System.StringComparison;
@@ -71,9 +72,26 @@ namespace bCC
 
 	public class AssignmentStatement : Statement
 	{
-		public override Environment Env { get; set; }
+		public override Environment Env
+		{
+			get => _env;
+			set
+			{
+				_env = value;
+				LhsExpression.Env = Env;
+				RhsExpression.Env = Env;
+				var lhs = LhsExpression.GetExpressionType();
+				var rhs = RhsExpression.GetExpressionType();
+				// FEATURE #14
+				if (!string.Equals(lhs.Name, rhs.Name, Ordinal))
+					Errors.Add(MetaData.GetErrorHeader() + "assigning a " + rhs + " to a " + lhs + " is invalid.");
+				// TODO check for mutability
+			}
+		}
+
 		[NotNull] public readonly Expression LhsExpression;
 		[NotNull] public readonly Expression RhsExpression;
+		private Environment _env;
 
 		public AssignmentStatement(MetaData metaData, [NotNull] Expression lhsExpression, [NotNull] Expression rhsExpression)
 			: base(metaData)
