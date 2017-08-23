@@ -46,7 +46,7 @@ namespace bCC
 		public override bool Equals(object obj) => obj is Declaration declaration && declaration.Name == Name;
 
 		public override IEnumerable<string> Dump() =>
-			new[] {"variable declaration " + Name + ":\n"}
+			new[] {"variable declaration [" + Name + "]:\n"}
 				.Concat(Type.Dump().Select(MapFunc))
 				.Concat(Expression.Dump().Select(MapFunc));
 	}

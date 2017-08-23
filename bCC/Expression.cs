@@ -52,13 +52,8 @@ namespace bCC
 			: base(metaData, new SecondaryType(metaData, (isSigned ? "i" : "u") + length)) => Value = value;
 
 		public override IEnumerable<string> Dump() =>
-			new[]
-					{"literal expression:\n"}
-				.Concat(Type.Dump().Select(MapFunc))
-				.Concat(new[]
-				{
-					"  value [" + Value + "]\n"
-				});
+			new[] {"literal expression [ " + Value + "]:\n"}
+				.Concat(Type.Dump().Select(MapFunc));
 	}
 
 	/// <summary>
@@ -115,8 +110,7 @@ namespace bCC
 
 		public override IEnumerable<string> Dump() => new[]
 			{
-				"variable expression:\n",
-				"  name: " + Name + "\n",
+				"variable expression [" + Name + "]:\n",
 				"  type:\n"
 			}
 			.Concat(_type.Dump().Select(MapFunc).Select(MapFunc));
