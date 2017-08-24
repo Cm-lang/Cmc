@@ -16,9 +16,9 @@ namespace bCC_Test
 		public void StatementTest1()
 		{
 			foreach (var stmt in
-				new StatementList(MetaData.DefaultMetaData,
-					new Statement(MetaData.DefaultMetaData),
-					new Statement(MetaData.DefaultMetaData)).Statements)
+				new StatementList(MetaData.Empty,
+					new Statement(MetaData.Empty),
+					new Statement(MetaData.Empty)).Statements)
 				stmt.PrintDumpInfo();
 		}
 
@@ -29,17 +29,17 @@ namespace bCC_Test
 		public void StatementTest2()
 		{
 			var stmt = new IfStatement(
-				MetaData.DefaultMetaData,
-				new BoolLiteralExpression(MetaData.DefaultMetaData, false),
-				new StatementList(MetaData.DefaultMetaData)
+				MetaData.Empty,
+				new BoolLiteralExpression(MetaData.Empty, false),
+				new StatementList(MetaData.Empty)
 			);
 			stmt.SurroundWith(new Environment());
 			stmt.PrintDumpInfo();
 			Assert.IsEmpty(Errors.ErrList);
 			var stmt2 = new IfStatement(
-				MetaData.DefaultMetaData,
-				new NullExpression(MetaData.DefaultMetaData),
-				new StatementList(MetaData.DefaultMetaData)
+				MetaData.Empty,
+				new NullExpression(MetaData.Empty),
+				new StatementList(MetaData.Empty)
 			);
 			stmt2.SurroundWith(new Environment());
 			Console.WriteLine("");
@@ -60,15 +60,15 @@ namespace bCC_Test
 		public void StatementTest3()
 		{
 			const string var1 = "variableOne";
-			var stmt = new StatementList(MetaData.DefaultMetaData,
-				new VariableDeclaration(MetaData.DefaultMetaData, var1,
-					new BoolLiteralExpression(MetaData.DefaultMetaData, true)),
-				new WhileStatement(MetaData.DefaultMetaData,
-					new VariableExpression(MetaData.DefaultMetaData, var1),
-					new StatementList(MetaData.DefaultMetaData,
-						new AssignmentStatement(MetaData.DefaultMetaData,
-							new VariableExpression(MetaData.DefaultMetaData, var1),
-							new BoolLiteralExpression(MetaData.DefaultMetaData, false)))));
+			var stmt = new StatementList(MetaData.Empty,
+				new VariableDeclaration(MetaData.Empty, var1,
+					new BoolLiteralExpression(MetaData.Empty, true)),
+				new WhileStatement(MetaData.Empty,
+					new VariableExpression(MetaData.Empty, var1),
+					new StatementList(MetaData.Empty,
+						new AssignmentStatement(MetaData.Empty,
+							new VariableExpression(MetaData.Empty, var1),
+							new BoolLiteralExpression(MetaData.Empty, false)))));
 			stmt.SurroundWith(new Environment());
 			stmt.PrintDumpInfo();
 			Assert.IsNotEmpty(Errors.ErrList);
@@ -82,15 +82,15 @@ namespace bCC_Test
 		public void StatementTest4()
 		{
 			const string var1 = "variableOne";
-			var stmt = new StatementList(MetaData.DefaultMetaData,
-				new VariableDeclaration(MetaData.DefaultMetaData, var1,
-					new BoolLiteralExpression(MetaData.DefaultMetaData, true), true),
-				new WhileStatement(MetaData.DefaultMetaData,
-					new VariableExpression(MetaData.DefaultMetaData, var1),
-					new StatementList(MetaData.DefaultMetaData,
-						new AssignmentStatement(MetaData.DefaultMetaData,
-							new VariableExpression(MetaData.DefaultMetaData, var1),
-							new BoolLiteralExpression(MetaData.DefaultMetaData, false)))));
+			var stmt = new StatementList(MetaData.Empty,
+				new VariableDeclaration(MetaData.Empty, var1,
+					new BoolLiteralExpression(MetaData.Empty, true), true),
+				new WhileStatement(MetaData.Empty,
+					new VariableExpression(MetaData.Empty, var1),
+					new StatementList(MetaData.Empty,
+						new AssignmentStatement(MetaData.Empty,
+							new VariableExpression(MetaData.Empty, var1),
+							new BoolLiteralExpression(MetaData.Empty, false)))));
 			stmt.SurroundWith(new Environment());
 			stmt.PrintDumpInfo();
 			Assert.IsEmpty(Errors.ErrList);
@@ -103,15 +103,15 @@ namespace bCC_Test
 		public void StatementTest5()
 		{
 			const string var1 = "variableOne";
-			var stmt = new StatementList(MetaData.DefaultMetaData,
-				new VariableDeclaration(MetaData.DefaultMetaData, var1,
-					new BoolLiteralExpression(MetaData.DefaultMetaData, true), true),
-				new WhileStatement(MetaData.DefaultMetaData,
-					new VariableExpression(MetaData.DefaultMetaData, var1),
-					new StatementList(MetaData.DefaultMetaData,
-						new AssignmentStatement(MetaData.DefaultMetaData,
-							new VariableExpression(MetaData.DefaultMetaData, var1),
-							new NullExpression(MetaData.DefaultMetaData)))));
+			var stmt = new StatementList(MetaData.Empty,
+				new VariableDeclaration(MetaData.Empty, var1,
+					new BoolLiteralExpression(MetaData.Empty, true), true),
+				new WhileStatement(MetaData.Empty,
+					new VariableExpression(MetaData.Empty, var1),
+					new StatementList(MetaData.Empty,
+						new AssignmentStatement(MetaData.Empty,
+							new VariableExpression(MetaData.Empty, var1),
+							new NullExpression(MetaData.Empty)))));
 			stmt.SurroundWith(new Environment());
 			stmt.PrintDumpInfo();
 			Assert.IsEmpty(Errors.ErrList);
@@ -124,15 +124,15 @@ namespace bCC_Test
 		public void StatementTest6()
 		{
 			const string var1 = "variableOne";
-			var stmt = new StatementList(MetaData.DefaultMetaData,
-				new VariableDeclaration(MetaData.DefaultMetaData, var1,
-					new BoolLiteralExpression(MetaData.DefaultMetaData, true), true),
-				new WhileStatement(MetaData.DefaultMetaData,
-					new VariableExpression(MetaData.DefaultMetaData, var1),
-					new StatementList(MetaData.DefaultMetaData,
-						new AssignmentStatement(MetaData.DefaultMetaData,
-							new VariableExpression(MetaData.DefaultMetaData, var1),
-							new IntLiteralExpression(MetaData.DefaultMetaData, "123", true)))));
+			var stmt = new StatementList(MetaData.Empty,
+				new VariableDeclaration(MetaData.Empty, var1,
+					new BoolLiteralExpression(MetaData.Empty, true), true),
+				new WhileStatement(MetaData.Empty,
+					new VariableExpression(MetaData.Empty, var1),
+					new StatementList(MetaData.Empty,
+						new AssignmentStatement(MetaData.Empty,
+							new VariableExpression(MetaData.Empty, var1),
+							new IntLiteralExpression(MetaData.Empty, "123", true)))));
 			stmt.SurroundWith(new Environment());
 			stmt.PrintDumpInfo();
 			Assert.IsNotEmpty(Errors.ErrList);

@@ -12,16 +12,16 @@ namespace bCC_Test
 		[Test]
 		public void TypeTest1()
 		{
-			var example = new IntLiteralExpression(MetaData.DefaultMetaData, "123456789", true, 64);
+			var example = new IntLiteralExpression(MetaData.Empty, "123456789", true, 64);
 			example.PrintDumpInfo();
 			Assert.AreEqual("i64", example.Type.ToString());
-			example = new IntLiteralExpression(MetaData.DefaultMetaData, "123456789", true);
+			example = new IntLiteralExpression(MetaData.Empty, "123456789", true);
 			example.PrintDumpInfo();
 			Assert.AreEqual("i32", example.Type.ToString());
-			example = new IntLiteralExpression(MetaData.DefaultMetaData, "123456789", false, 64);
+			example = new IntLiteralExpression(MetaData.Empty, "123456789", false, 64);
 			example.PrintDumpInfo();
 			Assert.AreEqual("u64", example.Type.ToString());
-			example = new IntLiteralExpression(MetaData.DefaultMetaData, "123456789", false, 64);
+			example = new IntLiteralExpression(MetaData.Empty, "123456789", false, 64);
 			example.PrintDumpInfo();
 			Assert.AreEqual("u64", example.Type.ToString());
 		}
@@ -34,10 +34,10 @@ namespace bCC_Test
 		public void TypeInferenceTest1()
 		{
 			const string varName = "someVar";
-			var example = new StatementList(MetaData.DefaultMetaData,
-				new VariableDeclaration(MetaData.DefaultMetaData, varName,
-					new IntLiteralExpression(MetaData.DefaultMetaData, "123", false, 8)),
-				new ExpressionStatement(MetaData.DefaultMetaData, new VariableExpression(MetaData.DefaultMetaData, varName)));
+			var example = new StatementList(MetaData.Empty,
+				new VariableDeclaration(MetaData.Empty, varName,
+					new IntLiteralExpression(MetaData.Empty, "123", false, 8)),
+				new ExpressionStatement(MetaData.Empty, new VariableExpression(MetaData.Empty, varName)));
 			example.SurroundWith(new Environment());
 			example.PrintDumpInfo();
 			// ReSharper disable once PossibleNullReferenceException
@@ -52,10 +52,10 @@ namespace bCC_Test
 		public void TypeInferenceTest2()
 		{
 			const string varName = "someOtherVar";
-			var example = new StatementList(MetaData.DefaultMetaData,
-				new VariableDeclaration(MetaData.DefaultMetaData, varName,
-					new NullExpression(MetaData.DefaultMetaData)),
-				new ExpressionStatement(MetaData.DefaultMetaData, new VariableExpression(MetaData.DefaultMetaData, varName)));
+			var example = new StatementList(MetaData.Empty,
+				new VariableDeclaration(MetaData.Empty, varName,
+					new NullExpression(MetaData.Empty)),
+				new ExpressionStatement(MetaData.Empty, new VariableExpression(MetaData.Empty, varName)));
 			example.SurroundWith(new Environment());
 			example.PrintDumpInfo();
 			// ReSharper disable once PossibleNullReferenceException
@@ -72,11 +72,11 @@ namespace bCC_Test
 		public void TypeInferenceTest3()
 		{
 			const string varName = "otherVar";
-			var example = new StatementList(MetaData.DefaultMetaData,
-				new VariableDeclaration(MetaData.DefaultMetaData, varName,
-					new NullExpression(MetaData.DefaultMetaData),
-					type: new PrimaryType(MetaData.DefaultMetaData, "i8")),
-				new ExpressionStatement(MetaData.DefaultMetaData, new VariableExpression(MetaData.DefaultMetaData, varName)));
+			var example = new StatementList(MetaData.Empty,
+				new VariableDeclaration(MetaData.Empty, varName,
+					new NullExpression(MetaData.Empty),
+					type: new PrimaryType(MetaData.Empty, "i8")),
+				new ExpressionStatement(MetaData.Empty, new VariableExpression(MetaData.Empty, varName)));
 			example.SurroundWith(new Environment());
 			Console.WriteLine(string.Join("", example.Dump()));
 			// ReSharper disable once PossibleNullReferenceException

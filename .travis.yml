@@ -8,4 +8,6 @@ install:
 script:
   - xbuild /p:Configuration=Release bCC.sln
   - mono ./testrunner/NUnit.ConsoleRunner.3.2.0/tools/nunit3-console.exe ./bCC-Test/bin/Release/bCC_Test.exe
+  # local:
+  # mono ./testrunner/NUnit.ConsoleRunner.3.7.0/tools/nunit3-console.exe ./bCC-Test/bin/Debug/bCC_Test.exe
 
