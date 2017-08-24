@@ -12,14 +12,14 @@ namespace bCC
 		[NotNull]
 		public abstract Type GetExpressionType();
 
-		protected Expression(MetaData metaData) : base(metaData)
-		{
-		}
+		public readonly bool IsValidLhs;
+
+		protected Expression(MetaData metaData, bool isValidLhs) : base(metaData) => IsValidLhs = isValidLhs;
 	}
 
 	public abstract class AtomicExpression : Expression
 	{
-		protected AtomicExpression(MetaData metaData) : base(metaData)
+		protected AtomicExpression(MetaData metaData, bool isValidLhs) : base(metaData, isValidLhs)
 		{
 		}
 	}
@@ -28,7 +28,7 @@ namespace bCC
 	{
 		public const string NullType = "nulltype";
 
-		public NullExpression(MetaData metaData) : base(metaData)
+		public NullExpression(MetaData metaData) : base(metaData, false)
 		{
 		}
 
@@ -40,7 +40,7 @@ namespace bCC
 	public class LiteralExpression : AtomicExpression
 	{
 		[NotNull] public readonly Type Type;
-		protected LiteralExpression(MetaData metaData, [NotNull] Type type) : base(metaData) => Type = type;
+		protected LiteralExpression(MetaData metaData, [NotNull] Type type) : base(metaData, false) => Type = type;
 		public override Type GetExpressionType() => Type;
 	}
 
@@ -88,7 +88,32 @@ namespace bCC
 
 		public override Type GetExpressionType() => _type;
 
-		public Lambda(MetaData metaData, [NotNull] StatementList body) : base(metaData) => Body = body;
+		public Lambda(MetaData metaData, [NotNull] StatementList body) : base(metaData, false) => Body = body;
+	}
+
+	public class MemberAccessExpression : AtomicExpression
+	{
+		[NotNull] public readonly Expression Owner;
+		[NotNull] public readonly Expression Member;
+
+		public override void SurroundWith(Environment environment)
+		{
+			base.SurroundWith(environment);
+			Owner.SurroundWith(Env);
+			Member.SurroundWith(Env);
+		}
+
+		public MemberAccessExpression(MetaData metaData, [NotNull] Expression owner, [NotNull] Expression member) :
+			base(metaData, true)
+		{
+			Owner = owner;
+			Member = member;
+		}
+
+		public override Type GetExpressionType()
+		{
+			throw new NotImplementedException();
+		}
 	}
 
 	public class VariableExpression : AtomicExpression
@@ -106,7 +131,7 @@ namespace bCC
 
 		public override Type GetExpressionType() => _type ?? throw new CompilerException();
 
-		public VariableExpression(MetaData metaData, [NotNull] string name) : base(metaData) => Name = name;
+		public VariableExpression(MetaData metaData, [NotNull] string name) : base(metaData, true) => Name = name;
 
 		public override IEnumerable<string> Dump() => new[]
 			{
@@ -136,7 +161,7 @@ namespace bCC
 
 		public FunctionCallExpression(MetaData metaData, [NotNull] Expression receiver,
 			[NotNull] IList<Expression> parameterList) :
-			base(metaData)
+			base(metaData, false)
 		{
 			ParameterList = parameterList;
 			Receiver = receiver;

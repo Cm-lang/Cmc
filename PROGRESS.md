@@ -1,6 +1,9 @@
 
 Please add feature request here.
 
+Codes related to some implemented feature can be found by searching their number.
+i.e. want to find codes related to lexical scoping? search "FEATURE \#18"
+
 ## scoping
 
 + [X] find variables in outer scopes (#3)
