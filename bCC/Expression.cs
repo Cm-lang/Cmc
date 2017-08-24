@@ -104,14 +104,17 @@ namespace bCC
 		[NotNull] public readonly StatementList Body;
 		[NotNull] public readonly IList<VariableDeclaration> ParameterList;
 		private Type _type;
+		[CanBeNull] private readonly Type _declaredType;
 
 		public LambdaExpression(
 			MetaData metaData,
 			[NotNull] StatementList body,
 			// FEATURE #22
-			[CanBeNull] IList<VariableDeclaration> parameterList = null) : base(metaData)
+			[CanBeNull] IList<VariableDeclaration> parameterList = null,
+			[CanBeNull] Type returnType = null) : base(metaData)
 		{
 			Body = body;
+			_declaredType = returnType;
 			ParameterList = parameterList ?? new List<VariableDeclaration>();
 		}
 
@@ -121,9 +124,10 @@ namespace bCC
 			Body.SurroundWith(Env);
 			var retTypes = Body.FindReturnStatements().Select(i => i.Expression.GetExpressionType()).ToList();
 			// FEATURE #24
-			if (retTypes.Any(i => !Equals(i, retTypes.First())))
+			if (retTypes.Any(i => !Equals(i, _declaredType ?? retTypes.First())))
 				Errors.Add(
 					$"{MetaData.GetErrorHeader()}ambiguous return types:\n" +
+					(_declaredType != null ? $"<{_declaredType}>" : "") +
 					$"[{string.Join(",", retTypes.Select(i => i.ToString()))}]");
 			// FEATURE #12
 			var retType = retTypes.Count != 0

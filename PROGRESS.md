@@ -19,16 +19,16 @@ and you see the result.
 + [X] primitive types with name (#0)
 + [X] function type, consisting of the parameters' types and the return type (#6)
 + [X] types with single type parameter (#7)
-+ [X] infer function's return type from the return statements (#12)
++ [X] infer function's return type from the return statements (#12) (tested)
 + [X] infer variable's type by the assignment expression (#8) (tested)
-+ [X] `nulltype` can be assigned to variables with any type (#11)
++ [X] `nulltype` can be assigned to variables with any type (#11) (tested)
 + [ ] an HM type system (extra)
 
 ## variables
 
 + [X] initialize variable with null or given expression (#13)
 + [X] check for mutability (#21)
-+ [X] check for assignment type (#14)
++ [X] check for assignment type (#14) (tested)
 + [X] validate lhs (#20)
 + [ ] check if member exist
 + [ ] inline
@@ -40,7 +40,8 @@ and you see the result.
 + [ ] check for parameter type
 + [ ] overloading
 + [X] the return type should be inferred, or `nulltype` (#19)
-+ [X] return statement exhaustiveness check (#24)
++ [X] return statements' types should be same (#24) (tested)
++ [ ] return statement exhaustiveness check
 + [X] defaultly no parameter (#22)
 
 ## if
