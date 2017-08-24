@@ -82,7 +82,8 @@ namespace bCC
 			// FEATURE #12
 			_type = Body.Statements.Last() is ReturnStatement ret
 				? ret.Expression.GetExpressionType()
-				: new PrimaryType(MetaData, "void");
+				// FEATURE #19
+				: new PrimaryType(MetaData, "nulltype");
 		}
 
 		public override Type GetExpressionType() => _type;

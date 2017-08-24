@@ -6,6 +6,7 @@ Please add feature request here.
 + [X] find variables in outer scopes (#3)
 + [X] when new variables defined, a new scope starts (#4)
 + [X] find all variables matches the name (#5)
++ [X] lexical scoping (#18)
 
 ## types
 
@@ -29,6 +30,7 @@ Please add feature request here.
 
 + [ ] inline
 + [ ] check for parameter type
++ [X] the return type should be inferred, or `nulltype` (#19)
 
 ## if
 

@@ -8,6 +8,7 @@ namespace bCC
 	public class Environment
 	{
 		[NotNull] public readonly IList<Declaration> Declarations = new List<Declaration>();
+		// FEATURE #18
 		[CanBeNull] public readonly Environment Outer;
 
 		public Environment(Environment outer = null) => Outer = outer;
