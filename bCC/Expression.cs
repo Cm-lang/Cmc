@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 
@@ -52,10 +51,10 @@ namespace bCC
 		[NotNull] public readonly string Value;
 
 		public IntLiteralExpression(MetaData metaData, [NotNull] string value, bool isSigned, int length = 32)
-			: base(metaData, new PrimaryType(metaData, (isSigned ? "i" : "u") + length)) => Value = value;
+			: base(metaData, new PrimaryType(metaData, $"{(isSigned ? "i" : "u")}{length}")) => Value = value;
 
 		public override IEnumerable<string> Dump() =>
-			new[] {"literal expression [" + Value + "]:\n"}
+			new[] {$"literal expression [{Value}]:\n"}
 				.Concat(Type.Dump().Select(MapFunc));
 	}
 
@@ -66,7 +65,7 @@ namespace bCC
 		public BoolLiteralExpression(MetaData metaData, bool value) : base(metaData, new PrimaryType(metaData, "bool")) =>
 			Value = value;
 
-		public override IEnumerable<string> Dump() => new[] {"bool literal expression [" + Value + "]:\n"};
+		public override IEnumerable<string> Dump() => new[] {$"bool literal expression [{Value}]:\n"};
 	}
 
 	/// <summary>
@@ -129,7 +128,7 @@ namespace bCC
 				Declaration = variableDeclaration;
 				_type = Declaration.Type;
 			}
-			else Errors.Add(MetaData.GetErrorHeader() + " [internal error] declaration is not a variable declaration");
+			else Errors.Add($"{MetaData.GetErrorHeader()} [internal error] declaration is not a variable declaration");
 		}
 
 		[NotNull] public readonly string Name;
@@ -142,7 +141,7 @@ namespace bCC
 
 		public override IEnumerable<string> Dump() => new[]
 			{
-				"variable expression [" + Name + "]:\n",
+				$"variable expression [{Name}]:\n",
 				"  type:\n"
 			}
 			.Concat(_type.Dump().Select(MapFunc2));
@@ -161,7 +160,7 @@ namespace bCC
 			var hisType = Receiver.GetExpressionType();
 			if (hisType is LambdaType lambdaType) _type = lambdaType.RetType;
 			else
-				Errors.Add(MetaData.GetErrorHeader() + "the function call receiver shoule be a function, not " + hisType + ".");
+				Errors.Add($"{MetaData.GetErrorHeader()}the function call receiver shoule be a function, not {hisType}.");
 		}
 
 		[NotNull] public readonly Expression Receiver;

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 using static System.StringComparison;
@@ -11,6 +10,8 @@ namespace bCC
 		public Statement(MetaData metaData) : base(metaData)
 		{
 		}
+
+		public override IEnumerable<string> Dump() => new[] {"empty statement"};
 	}
 
 	public class ExpressionStatement : Statement
@@ -79,15 +80,15 @@ namespace bCC
 			var rhs = RhsExpression.GetExpressionType();
 			// FEATURE #14
 			if (!string.Equals(lhs.Name, rhs.Name, Ordinal))
-				Errors.Add(MetaData.GetErrorHeader() + "assigning a " + rhs + " to a " + lhs + " is invalid.");
+				Errors.Add($"{MetaData.GetErrorHeader()}assigning a {rhs} to a {lhs} is invalid.");
 			// FEATURE #20
 			var validLhs = LhsExpression.GetLhsExpression();
 			if (null == validLhs)
-				Errors.Add(MetaData.GetErrorHeader() + "a " + lhs + " cannot be assigned.");
+				Errors.Add($"{MetaData.GetErrorHeader()}a {lhs} cannot be assigned.");
 			// DO something with validLhs
 			// FEATURE #21
 			else if (!validLhs.Declaration.Mutability)
-				Errors.Add(MetaData.GetErrorHeader() + "cannot assign to an immutable variable.");
+				Errors.Add($"{MetaData.GetErrorHeader()}cannot assign to an immutable variable.");
 		}
 
 		[NotNull] public readonly Expression LhsExpression;
@@ -113,8 +114,8 @@ namespace bCC
 			// FEATURE #16
 			var conditionType = Condition.GetExpressionType().Name;
 			if (!string.Equals(conditionType, "bool", Ordinal))
-				Errors.Add(MetaData.GetErrorHeader() + "expected a bool as the \"while\" statement's condition, found " +
-				           conditionType);
+				Errors.Add(
+					$"{MetaData.GetErrorHeader()}expected a bool as the \"while\" statement\'s condition, found {conditionType}");
 			OkStatementList.SurroundWith(new Environment(Env));
 		}
 
@@ -152,8 +153,8 @@ namespace bCC
 			// FEATURE #1
 			var conditionType = Condition.GetExpressionType().Name;
 			if (!string.Equals(conditionType, "bool", Ordinal))
-				Errors.Add(MetaData.GetErrorHeader() + "expected a bool as the \"if\" statement's condition, found " +
-				           conditionType);
+				Errors.Add(
+					$"{MetaData.GetErrorHeader()}expected a bool as the \"if\" statement\'s condition, found {conditionType}");
 			OkStatementList.SurroundWith(new Environment(Env));
 			ElseStatementList.SurroundWith(new Environment(Env));
 			// FEATURE #17
@@ -186,9 +187,9 @@ namespace bCC
 				"  condition:\n"
 			}
 			.Concat(Condition.Dump().Select(MapFunc2))
-			.Concat(new[] {"  true branch" + (Optimized == 2 ? " [optimized]" : "") + ":\n"})
+			.Concat(new[] {$"  true branch{(Optimized == 2 ? " [optimized]" : "")}:\n"})
 			.Concat(OkStatementList.Dump().Select(MapFunc2))
-			.Concat(new[] {"  false branch" + (Optimized == 1 ? " [optimized]" : "") + ":\n"})
+			.Concat(new[] {$"  false branch{(Optimized == 1 ? " [optimized]" : "")}:\n"})
 			.Concat(ElseStatementList.Dump().Select(MapFunc2));
 	}
 }

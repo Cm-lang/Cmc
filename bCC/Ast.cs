@@ -22,7 +22,7 @@ namespace bCC
 
 		public void PrintDumpInfo() => Console.WriteLine(string.Join("", Dump()));
 
-		public static Func<string, string> MapFunc = i => "  " + i;
-		public static Func<string, string> MapFunc2 = i => "    " + i;
+		public static Func<string, string> MapFunc = i => $"  {i}";
+		public static Func<string, string> MapFunc2 = i => $"    {i}";
 	}
 }

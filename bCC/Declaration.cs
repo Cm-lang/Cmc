@@ -33,7 +33,7 @@ namespace bCC
 			// FEATURE #11
 			if (!string.Equals(Type.Name, NullExpression.NullType, Ordinal) && Type != exprType)
 				// FEATURE #9
-				Errors.Add(MetaData.GetErrorHeader() + "type mismatch, expected: " + Type.Name + ", actual: " + exprType);
+				Errors.Add($"{MetaData.GetErrorHeader()}type mismatch, expected: {Type.Name}, actual: {exprType}");
 		}
 
 		public VariableDeclaration(
@@ -52,7 +52,7 @@ namespace bCC
 		public override bool Equals(object obj) => obj is Declaration declaration && declaration.Name == Name;
 
 		public override IEnumerable<string> Dump() =>
-			new[] {"variable declaration [" + Name + "]:\n"}
+			new[] {$"variable declaration [{Name}]:\n"}
 				.Concat(Type.Dump().Select(MapFunc))
 				.Concat(Expression.Dump().Select(MapFunc));
 	}

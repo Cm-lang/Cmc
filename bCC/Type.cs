@@ -21,7 +21,7 @@ namespace bCC
 		{
 		}
 
-		public override IEnumerable<string> Dump() => new[] {"primary type [" + Name + "]\n"};
+		public override IEnumerable<string> Dump() => new[] {$"primary type [{Name}]\n"};
 	}
 
 	/// <summary>
@@ -47,7 +47,7 @@ namespace bCC
 		}
 
 		[NotNull]
-		public static string SecondaryTypeToString([NotNull] Type args, [NotNull] Type ret) => args + "<" + ret + ">";
+		public static string SecondaryTypeToString([NotNull] Type args, [NotNull] Type ret) => $"{args}<{ret}>";
 
 		public override string ToString() => SecondaryTypeToString(Container, Parameter);
 
@@ -87,7 +87,7 @@ namespace bCC
 
 		[NotNull]
 		public static string LambdaTypeToString([NotNull] IList<Type> args, [NotNull] Type ret) =>
-			string.Join(",", args) + "->" + ret;
+			$"{string.Join(",", args)}->{ret}";
 
 		public override IEnumerable<string> Dump() => new[]
 			{
