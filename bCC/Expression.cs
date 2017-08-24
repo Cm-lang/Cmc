@@ -122,7 +122,11 @@ namespace bCC
 		{
 			base.SurroundWith(environment);
 			Body.SurroundWith(Env);
-			var retTypes = Body.FindReturnStatements().Select(i => i.Expression.GetExpressionType()).ToList();
+			var retTypes = Body.FindReturnStatements().Select(i =>
+			{
+				i.WhereToJump = this;
+				return i.Expression.GetExpressionType();
+			}).ToList();
 			// FEATURE #24
 			if (retTypes.Any(i => !Equals(i, _declaredType ?? retTypes.First())))
 				Errors.Add(
