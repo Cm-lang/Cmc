@@ -12,14 +12,17 @@ namespace bCC
 		[NotNull]
 		public abstract Type GetExpressionType();
 
-		public readonly bool IsValidLhs;
+		[CanBeNull]
+		public virtual VariableExpression GetLhsExpression() => null;
 
-		protected Expression(MetaData metaData, bool isValidLhs) : base(metaData) => IsValidLhs = isValidLhs;
+		protected Expression(MetaData metaData) : base(metaData)
+		{
+		}
 	}
 
 	public abstract class AtomicExpression : Expression
 	{
-		protected AtomicExpression(MetaData metaData, bool isValidLhs) : base(metaData, isValidLhs)
+		protected AtomicExpression(MetaData metaData) : base(metaData)
 		{
 		}
 	}
@@ -28,7 +31,7 @@ namespace bCC
 	{
 		public const string NullType = "nulltype";
 
-		public NullExpression(MetaData metaData) : base(metaData, false)
+		public NullExpression(MetaData metaData) : base(metaData)
 		{
 		}
 
@@ -40,7 +43,7 @@ namespace bCC
 	public class LiteralExpression : AtomicExpression
 	{
 		[NotNull] public readonly Type Type;
-		protected LiteralExpression(MetaData metaData, [NotNull] Type type) : base(metaData, false) => Type = type;
+		protected LiteralExpression(MetaData metaData, [NotNull] Type type) : base(metaData) => Type = type;
 		public override Type GetExpressionType() => Type;
 	}
 
@@ -88,7 +91,7 @@ namespace bCC
 
 		public override Type GetExpressionType() => _type;
 
-		public Lambda(MetaData metaData, [NotNull] StatementList body) : base(metaData, false) => Body = body;
+		public Lambda(MetaData metaData, [NotNull] StatementList body) : base(metaData) => Body = body;
 	}
 
 	public class MemberAccessExpression : AtomicExpression
@@ -105,13 +108,14 @@ namespace bCC
 		}
 
 		public MemberAccessExpression(MetaData metaData, [NotNull] Expression owner, [NotNull] Expression member) :
-			base(metaData, true)
+			base(metaData)
 		{
 			Owner = owner;
 			Member = member;
 		}
 
 		public override Type GetExpressionType() => Member.GetExpressionType();
+		public override VariableExpression GetLhsExpression() => Member.GetLhsExpression();
 	}
 
 	public class VariableExpression : AtomicExpression
@@ -120,16 +124,21 @@ namespace bCC
 		{
 			base.SurroundWith(environment);
 			var declaration = Env.FindDeclarationByName(Name);
-			if (declaration is VariableDeclaration variableDeclaration) _type = variableDeclaration.Type;
-			else Errors.Add(MetaData.GetErrorHeader() + "Wtf");
+			if (declaration is VariableDeclaration variableDeclaration)
+			{
+				Declaration = variableDeclaration;
+				_type = Declaration.Type;
+			}
+			else Errors.Add(MetaData.GetErrorHeader() + " [internal error] declaration is not a variable declaration");
 		}
 
 		[NotNull] public readonly string Name;
+		public VariableDeclaration Declaration;
 		private Type _type;
 
 		public override Type GetExpressionType() => _type ?? throw new CompilerException();
 
-		public VariableExpression(MetaData metaData, [NotNull] string name) : base(metaData, true) => Name = name;
+		public VariableExpression(MetaData metaData, [NotNull] string name) : base(metaData) => Name = name;
 
 		public override IEnumerable<string> Dump() => new[]
 			{
@@ -137,6 +146,8 @@ namespace bCC
 				"  type:\n"
 			}
 			.Concat(_type.Dump().Select(MapFunc2));
+
+		public override VariableExpression GetLhsExpression() => this;
 	}
 
 	public class FunctionCallExpression : AtomicExpression
@@ -159,7 +170,7 @@ namespace bCC
 
 		public FunctionCallExpression(MetaData metaData, [NotNull] Expression receiver,
 			[NotNull] IList<Expression> parameterList) :
-			base(metaData, false)
+			base(metaData)
 		{
 			ParameterList = parameterList;
 			Receiver = receiver;

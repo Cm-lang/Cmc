@@ -81,9 +81,13 @@ namespace bCC
 			if (!string.Equals(lhs.Name, rhs.Name, Ordinal))
 				Errors.Add(MetaData.GetErrorHeader() + "assigning a " + rhs + " to a " + lhs + " is invalid.");
 			// FEATURE #20
-			if (!LhsExpression.IsValidLhs)
+			var validLhs = LhsExpression.GetLhsExpression();
+			if (null == validLhs)
 				Errors.Add(MetaData.GetErrorHeader() + "a " + lhs + " cannot be assigned.");
-			// TODO check for mutability
+			// DO something with validLhs
+			// FEATURE #21
+			else if (!validLhs.Declaration.Mutability)
+				Errors.Add(MetaData.GetErrorHeader() + "cannot assign to an immutable variable.");
 		}
 
 		[NotNull] public readonly Expression LhsExpression;
