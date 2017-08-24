@@ -36,9 +36,11 @@ and you see the result.
 ## functions and lambdas
 
 + [ ] inline
++ [ ] inline lambda parameters
 + [ ] check for parameter type
 + [ ] overloading
 + [X] the return type should be inferred, or `nulltype` (#19)
++ [ ] return statement exhaustiveness check
 + [X] defaultly no parameter (#22)
 
 ## if
@@ -46,6 +48,7 @@ and you see the result.
 + [X] check for condition type (#1)
 + [X] optional else branch (#2)
 + [X] when condition is constant value, delete redundant branch (#17)
++ [ ] if as expression (extra)
 
 ## while
 
