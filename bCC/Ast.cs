@@ -6,23 +6,28 @@ namespace bCC
 {
 	public abstract class Ast
 	{
+		public static Func<string, string> MapFunc = i => $"  {i}";
+		public static Func<string, string> MapFunc2 = i => $"    {i}";
 		public Environment Env;
 		public MetaData MetaData;
 
-		public virtual void SurroundWith([NotNull] Environment environment) => Env = environment;
-
 		protected Ast(MetaData metaData) => MetaData = metaData;
 
+		public virtual void SurroundWith([NotNull] Environment environment)
+		{
+			Env = environment;
+		}
+
 		/// <summary>
-		/// FEATURE #15
+		///   FEATURE #15
 		/// </summary>
 		/// <returns>compilation information</returns>
 		[NotNull]
 		public virtual IEnumerable<string> Dump() => new[] {ToString()};
 
-		public void PrintDumpInfo() => Console.WriteLine(string.Join("", Dump()));
-
-		public static Func<string, string> MapFunc = i => $"  {i}";
-		public static Func<string, string> MapFunc2 = i => $"    {i}";
+		public void PrintDumpInfo()
+		{
+			Console.WriteLine(string.Join("", Dump()));
+		}
 	}
 }

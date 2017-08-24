@@ -9,36 +9,31 @@ namespace bCC
 		[NotNull] public readonly string Name;
 
 		protected Type(MetaData metaData, [NotNull] string name) : base(metaData) => Name = name;
+
 		public override string ToString() => Name;
 	}
 
 	/// <summary>
-	/// FEATURE #0
+	///   FEATURE #0
 	/// </summary>
 	public class PrimaryType : Type
 	{
+		public const string StringType = "string";
+		public const string NullType = "nulltype";
+		public const string BoolType = "bool";
+
 		public PrimaryType(MetaData metaData, [NotNull] string name) : base(metaData, name)
 		{
 		}
 
 		public override IEnumerable<string> Dump() => new[] {$"primary type [{Name}]\n"};
-		public static readonly string StringType = "string";
-		public static readonly string NullType = "nulltype";
-		public static readonly string BoolType = "bool";
 	}
 
 	/// <summary>
-	/// FEATURE #7
+	///   FEATURE #7
 	/// </summary>
 	public class SecondaryType : Type
 	{
-		public override void SurroundWith(Environment environment)
-		{
-			base.SurroundWith(environment);
-			Container.SurroundWith(Env);
-			Parameter.SurroundWith(Env);
-		}
-
 		[NotNull] public readonly Type Container;
 		[NotNull] public readonly Type Parameter;
 
@@ -47,6 +42,13 @@ namespace bCC
 		{
 			Container = container;
 			Parameter = parameter;
+		}
+
+		public override void SurroundWith(Environment environment)
+		{
+			base.SurroundWith(environment);
+			Container.SurroundWith(Env);
+			Parameter.SurroundWith(Env);
 		}
 
 		[NotNull]
@@ -65,17 +67,10 @@ namespace bCC
 	}
 
 	/// <summary>
-	/// FEATURE #6
+	///   FEATURE #6
 	/// </summary>
 	public class LambdaType : Type
 	{
-		public override void SurroundWith(Environment environment)
-		{
-			base.SurroundWith(environment);
-			foreach (var type in ArgsList) type.SurroundWith(Env);
-			RetType.SurroundWith(Env);
-		}
-
 		[NotNull] public readonly IList<Type> ArgsList;
 		[NotNull] public readonly Type RetType;
 
@@ -86,19 +81,29 @@ namespace bCC
 			RetType = ret;
 		}
 
+		public override void SurroundWith(Environment environment)
+		{
+			base.SurroundWith(environment);
+			foreach (var type in ArgsList) type.SurroundWith(Env);
+			RetType.SurroundWith(Env);
+		}
+
 		public override string ToString() => LambdaTypeToString(ArgsList, RetType);
 
 		[NotNull]
 		public static string LambdaTypeToString([NotNull] IList<Type> args, [NotNull] Type ret) =>
 			$"{string.Join(",", args)}->{ret}";
 
-		public override IEnumerable<string> Dump() => new[]
-			{
-				"lambda type:\n",
-				"  parameters' types:\n"
-			}
-			.Concat(ArgsList.SelectMany(i => i.Dump().Select(MapFunc).Select(MapFunc)))
-			.Concat(new[] {"  return type:\n"})
-			.Concat(RetType.Dump().Select(MapFunc).Select(MapFunc));
+		public override IEnumerable<string> Dump()
+		{
+			return new[]
+				{
+					"lambda type:\n",
+					"  parameters' types:\n"
+				}
+				.Concat(ArgsList.SelectMany(i => i.Dump().Select(MapFunc).Select(MapFunc)))
+				.Concat(new[] {"  return type:\n"})
+				.Concat(RetType.Dump().Select(MapFunc).Select(MapFunc));
+		}
 	}
 }

@@ -8,8 +8,14 @@ namespace bCC_Test
 	[TestFixture]
 	public class StatementTests
 	{
+		[SetUp]
+		public void Init()
+		{
+			Errors.ErrList.Clear();
+		}
+
 		/// <summary>
-		/// simplest test
+		///   simplest test
 		/// </summary>
 		[Test]
 		public void StatementTest1()
@@ -22,7 +28,7 @@ namespace bCC_Test
 		}
 
 		/// <summary>
-		/// check for condition type
+		///   check for condition type
 		/// </summary>
 		[Test]
 		public void StatementTest2()
@@ -49,11 +55,8 @@ namespace bCC_Test
 			stmt2.PrintDumpInfo();
 		}
 
-		[SetUp]
-		public void Init() => Errors.ErrList.Clear();
-
 		/// <summary>
-		/// check for mutability
+		///   check for mutability
 		/// </summary>
 		[Test]
 		public void StatementTest3()
@@ -75,7 +78,7 @@ namespace bCC_Test
 		}
 
 		/// <summary>
-		/// type check (when it's correct)
+		///   type check (when it's correct)
 		/// </summary>
 		[Test]
 		public void StatementTest4()
@@ -96,7 +99,7 @@ namespace bCC_Test
 		}
 
 		/// <summary>
-		/// type check (when it's nulltype)
+		///   type check (when it's nulltype)
 		/// </summary>
 		[Test]
 		public void StatementTest5()
@@ -117,7 +120,7 @@ namespace bCC_Test
 		}
 
 		/// <summary>
-		/// type check (when it's incorrect)
+		///   type check (when it's incorrect)
 		/// </summary>
 		[Test]
 		public void StatementTest6()

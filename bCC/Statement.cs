@@ -12,23 +12,25 @@ namespace bCC
 		{
 		}
 
+		public virtual IEnumerable<ReturnStatement> FindReturnStatements() => new List<ReturnStatement>();
+
 		public override IEnumerable<string> Dump() => new[] {"empty statement"};
 	}
 
 	public class ExpressionStatement : Statement
 	{
+		[NotNull] public readonly Expression Expression;
+
+		public ExpressionStatement(MetaData metaData, Expression expression) : base(metaData) => Expression = expression;
+
 		public override void SurroundWith(Environment environment)
 		{
 			base.SurroundWith(environment);
 			Expression.SurroundWith(Env);
 		}
 
-		[NotNull] public readonly Expression Expression;
-		public ExpressionStatement(MetaData metaData, Expression expression) : base(metaData) => Expression = expression;
-
-		public override IEnumerable<string> Dump() =>
-			new[] {"expression statement:\n"}
-				.Concat(Expression.Dump().Select(MapFunc));
+		public override IEnumerable<string> Dump() => new[] {"expression statement:\n"}
+			.Concat(Expression.Dump().Select(MapFunc));
 	}
 
 	public class ReturnStatement : ExpressionStatement
@@ -37,14 +39,15 @@ namespace bCC
 		{
 		}
 
-		public override IEnumerable<string> Dump() =>
-			new[] {"return statement:\n"}
-				.Concat(Expression.Dump().Select(MapFunc));
+		public override IEnumerable<string> Dump() => new[] {"return statement:\n"}
+			.Concat(Expression.Dump().Select(MapFunc));
 	}
 
 	public class StatementList : Statement
 	{
 		[NotNull] public IList<Statement> Statements;
+
+		public StatementList(MetaData metaData, params Statement[] statements) : base(metaData) => Statements = statements;
 
 		public override void SurroundWith(Environment environment)
 		{
@@ -53,7 +56,9 @@ namespace bCC
 			// FEATURE #4
 			foreach (var statement in Statements)
 				if (!(statement is Declaration declaration))
+				{
 					statement.SurroundWith(env);
+				}
 				else
 				{
 					statement.SurroundWith(env);
@@ -62,16 +67,30 @@ namespace bCC
 				}
 		}
 
-		public StatementList(MetaData metaData, params Statement[] statements) : base(metaData) => Statements = statements;
-
-		public override IEnumerable<string> Dump() => Statements.Count == 0
-			? new[] {"empty statement list\n"}
-			: new[] {"statement list:\n"}
-				.Concat(Statements.SelectMany(i => i.Dump().Select(MapFunc)));
+		public override IEnumerable<string> Dump()
+		{
+			return Statements.Count == 0
+				? new[] {"empty statement list\n"}
+				: new[] {"statement list:\n"}
+					.Concat(Statements.SelectMany(i => i.Dump().Select(MapFunc)));
+		}
 	}
 
 	public class AssignmentStatement : Statement
 	{
+		[NotNull] public readonly Expression LhsExpression;
+		[NotNull] public readonly Expression RhsExpression;
+
+		public AssignmentStatement(
+			MetaData metaData,
+			[NotNull] Expression lhsExpression,
+			[NotNull] Expression rhsExpression)
+			: base(metaData)
+		{
+			LhsExpression = lhsExpression;
+			RhsExpression = rhsExpression;
+		}
+
 		public override void SurroundWith(Environment environment)
 		{
 			base.SurroundWith(environment);
@@ -94,19 +113,6 @@ namespace bCC
 				Errors.Add($"{MetaData.GetErrorHeader()}cannot assign to an immutable variable.");
 		}
 
-		[NotNull] public readonly Expression LhsExpression;
-		[NotNull] public readonly Expression RhsExpression;
-
-		public AssignmentStatement(
-			MetaData metaData,
-			[NotNull] Expression lhsExpression,
-			[NotNull] Expression rhsExpression)
-			: base(metaData)
-		{
-			LhsExpression = lhsExpression;
-			RhsExpression = rhsExpression;
-		}
-
 		public override IEnumerable<string> Dump() => new[]
 			{
 				"assignment statemnt:\n",
@@ -122,6 +128,15 @@ namespace bCC
 		[NotNull] public readonly Expression Condition;
 		[NotNull] public StatementList OkStatementList;
 
+		public WhileStatement(
+			MetaData metaData,
+			[NotNull] Expression condition,
+			[NotNull] StatementList okStatementList) : base(metaData)
+		{
+			Condition = condition;
+			OkStatementList = okStatementList;
+		}
+
 		public override void SurroundWith(Environment environment)
 		{
 			base.SurroundWith(environment);
@@ -132,15 +147,6 @@ namespace bCC
 				Errors.Add(
 					$"{MetaData.GetErrorHeader()}expected a bool as the \"while\" statement\'s condition, found {conditionType}");
 			OkStatementList.SurroundWith(new Environment(Env));
-		}
-
-		public WhileStatement(
-			MetaData metaData,
-			[NotNull] Expression condition,
-			[NotNull] StatementList okStatementList) : base(metaData)
-		{
-			Condition = condition;
-			OkStatementList = okStatementList;
 		}
 
 		public override IEnumerable<string> Dump() => new[]
@@ -157,6 +163,13 @@ namespace bCC
 	{
 		[NotNull] public StatementList ElseStatementList;
 		public int Optimized;
+
+		public IfStatement(
+			MetaData metaData,
+			[NotNull] Expression condition,
+			[NotNull] StatementList ifStatementList,
+			[CanBeNull] StatementList elseStatementList = null) : base(metaData, condition, ifStatementList) =>
+			ElseStatementList = elseStatementList ?? new StatementList(MetaData);
 
 		public override void SurroundWith(Environment environment)
 		{
@@ -184,16 +197,6 @@ namespace bCC
 				OkStatementList.Statements = new List<Statement>();
 				Optimized = 2;
 			}
-		}
-
-		public IfStatement(
-			MetaData metaData,
-			[NotNull] Expression condition,
-			[NotNull] StatementList ifStatementList,
-			[CanBeNull] StatementList elseStatementList = null) : base(metaData, condition, ifStatementList)
-		{
-			// FEATURE #2
-			ElseStatementList = elseStatementList ?? new StatementList(MetaData);
 		}
 
 		public override IEnumerable<string> Dump() => new[]

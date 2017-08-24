@@ -9,15 +9,15 @@ namespace bCC
 {
 	public abstract class Expression : Ast
 	{
+		protected Expression(MetaData metaData) : base(metaData)
+		{
+		}
+
 		[NotNull]
 		public abstract Type GetExpressionType();
 
 		[CanBeNull]
 		public virtual VariableExpression GetLhsExpression() => null;
-
-		protected Expression(MetaData metaData) : base(metaData)
-		{
-		}
 	}
 
 	public abstract class AtomicExpression : Expression
@@ -41,7 +41,9 @@ namespace bCC
 	public class LiteralExpression : AtomicExpression
 	{
 		[NotNull] public readonly Type Type;
+
 		protected LiteralExpression(MetaData metaData, [NotNull] Type type) : base(metaData) => Type = type;
+
 		public override Type GetExpressionType() => Type;
 	}
 
@@ -52,9 +54,8 @@ namespace bCC
 		public IntLiteralExpression(MetaData metaData, [NotNull] string value, bool isSigned, int length = 32)
 			: base(metaData, new PrimaryType(metaData, $"{(isSigned ? "i" : "u")}{length}")) => Value = value;
 
-		public override IEnumerable<string> Dump() =>
-			new[] {$"literal expression [{Value}]:\n"}
-				.Concat(Type.Dump().Select(MapFunc));
+		public override IEnumerable<string> Dump() => new[] {$"literal expression [{Value}]:\n"}
+			.Concat(Type.Dump().Select(MapFunc));
 	}
 
 	public class BoolLiteralExpression : LiteralExpression
@@ -69,8 +70,8 @@ namespace bCC
 
 	public class StringLiteralExpression : LiteralExpression
 	{
-		public readonly string Value;
 		private readonly string _debugRepresentation;
+		public readonly string Value;
 
 		public StringLiteralExpression(MetaData metaData, string value) : base(metaData,
 			new PrimaryType(MetaData.Empty, StringType))
@@ -94,14 +95,24 @@ namespace bCC
 	}
 
 	/// <summary>
-	/// A function is a variable with the type of lambda
-	/// This is the class for anonymous lambda
+	///   A function is a variable with the type of lambda
+	///   This is the class for anonymous lambda
 	/// </summary>
 	public class LambdaExpression : AtomicExpression
 	{
-		[NotNull] public readonly IList<VariableDeclaration> ParameterList;
 		[NotNull] public readonly StatementList Body;
+		[NotNull] public readonly IList<VariableDeclaration> ParameterList;
 		private Type _type;
+
+		public LambdaExpression(
+			MetaData metaData,
+			[NotNull] StatementList body,
+			// FEATURE #22
+			[CanBeNull] IList<VariableDeclaration> parameterList = null) : base(metaData)
+		{
+			Body = body;
+			ParameterList = parameterList ?? new List<VariableDeclaration>();
+		}
 
 		public override void SurroundWith(Environment environment)
 		{
@@ -117,32 +128,32 @@ namespace bCC
 
 		public override Type GetExpressionType() => _type;
 
-		public LambdaExpression(
-			MetaData metaData,
-			[NotNull] StatementList body,
-			// FEATURE #22
-			[CanBeNull] IList<VariableDeclaration> parameterList = null) : base(metaData)
+		public override IEnumerable<string> Dump()
 		{
-			Body = body;
-			ParameterList = parameterList ?? new List<VariableDeclaration>();
+			return new[]
+				{
+					"lambda:\n",
+					"  type:\n"
+				}
+				.Concat(GetExpressionType().Dump().Select(MapFunc2))
+				.Concat(new[] {"  parameters:\n"})
+				.Concat(ParameterList.SelectMany(i => i.Dump().Select(MapFunc2)))
+				.Concat(new[] {"  body:\n"})
+				.Concat(Body.Dump().Select(MapFunc2));
 		}
-
-		public override IEnumerable<string> Dump() => new[]
-			{
-				"lambda:\n",
-				"  type:\n"
-			}
-			.Concat(GetExpressionType().Dump().Select(MapFunc2))
-			.Concat(new[] {"  parameters:\n"})
-			.Concat(ParameterList.SelectMany(i => i.Dump().Select(MapFunc2)))
-			.Concat(new[] {"  body:\n"})
-			.Concat(Body.Dump().Select(MapFunc2));
 	}
 
 	public class MemberAccessExpression : AtomicExpression
 	{
-		[NotNull] public readonly Expression Owner;
 		[NotNull] public readonly Expression Member;
+		[NotNull] public readonly Expression Owner;
+
+		public MemberAccessExpression(MetaData metaData, [NotNull] Expression owner, [NotNull] Expression member) :
+			base(metaData)
+		{
+			Owner = owner;
+			Member = member;
+		}
 
 		public override void SurroundWith(Environment environment)
 		{
@@ -152,19 +163,19 @@ namespace bCC
 			Member.SurroundWith(Env);
 		}
 
-		public MemberAccessExpression(MetaData metaData, [NotNull] Expression owner, [NotNull] Expression member) :
-			base(metaData)
-		{
-			Owner = owner;
-			Member = member;
-		}
-
 		public override Type GetExpressionType() => Member.GetExpressionType();
+
 		public override VariableExpression GetLhsExpression() => Member.GetLhsExpression();
 	}
 
 	public class VariableExpression : AtomicExpression
 	{
+		[NotNull] public readonly string Name;
+		private Type _type;
+		public VariableDeclaration Declaration;
+
+		public VariableExpression(MetaData metaData, [NotNull] string name) : base(metaData) => Name = name;
+
 		public override void SurroundWith(Environment environment)
 		{
 			base.SurroundWith(environment);
@@ -174,16 +185,13 @@ namespace bCC
 				Declaration = variableDeclaration;
 				_type = Declaration.Type;
 			}
-			else Errors.Add($"{MetaData.GetErrorHeader()} [internal error] declaration is not a variable declaration");
+			else
+			{
+				Errors.Add($"{MetaData.GetErrorHeader()} [internal error] declaration is not a variable declaration");
+			}
 		}
 
-		[NotNull] public readonly string Name;
-		public VariableDeclaration Declaration;
-		private Type _type;
-
 		public override Type GetExpressionType() => _type ?? throw new CompilerException();
-
-		public VariableExpression(MetaData metaData, [NotNull] string name) : base(metaData) => Name = name;
 
 		public override IEnumerable<string> Dump() => new[]
 			{
@@ -197,6 +205,19 @@ namespace bCC
 
 	public class FunctionCallExpression : AtomicExpression
 	{
+		[NotNull] public readonly IList<Expression> ParameterList;
+
+		[NotNull] public readonly Expression Receiver;
+		private Type _type;
+
+		public FunctionCallExpression(MetaData metaData, [NotNull] Expression receiver,
+			[NotNull] IList<Expression> parameterList) :
+			base(metaData)
+		{
+			ParameterList = parameterList;
+			Receiver = receiver;
+		}
+
 		public override void SurroundWith(Environment environment)
 		{
 			base.SurroundWith(environment);
@@ -209,29 +230,20 @@ namespace bCC
 				Errors.Add($"{MetaData.GetErrorHeader()}the function call receiver shoule be a function, not {hisType}.");
 		}
 
-		[NotNull] public readonly Expression Receiver;
-		[NotNull] public readonly IList<Expression> ParameterList;
-		private Type _type;
-
-		public FunctionCallExpression(MetaData metaData, [NotNull] Expression receiver,
-			[NotNull] IList<Expression> parameterList) :
-			base(metaData)
-		{
-			ParameterList = parameterList;
-			Receiver = receiver;
-		}
-
 		public override Type GetExpressionType() => _type ?? throw new CompilerException();
 
-		public override IEnumerable<string> Dump() => new[]
-			{
-				"function call expression:\n",
-				"  receiver:\n"
-			}
-			.Concat(Receiver.Dump().Select(MapFunc2))
-			.Concat(new[] {"  parameters:\n"})
-			.Concat(ParameterList.SelectMany(i => i.Dump().Select(MapFunc2)))
-			.Concat(new[] {"  type:\n"})
-			.Concat(_type.Dump().Select(MapFunc));
+		public override IEnumerable<string> Dump()
+		{
+			return new[]
+				{
+					"function call expression:\n",
+					"  receiver:\n"
+				}
+				.Concat(Receiver.Dump().Select(MapFunc2))
+				.Concat(new[] {"  parameters:\n"})
+				.Concat(ParameterList.SelectMany(i => i.Dump().Select(MapFunc2)))
+				.Concat(new[] {"  type:\n"})
+				.Concat(_type.Dump().Select(MapFunc));
+		}
 	}
 }

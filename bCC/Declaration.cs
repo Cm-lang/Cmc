@@ -11,30 +11,14 @@ namespace bCC
 	{
 		[NotNull] public readonly string Name;
 
-		public Declaration(MetaData metaData, [NotNull] string name) : base(metaData)
-		{
-			Name = name;
-		}
+		public Declaration(MetaData metaData, [NotNull] string name) : base(metaData) => Name = name;
 	}
 
 	public sealed class VariableDeclaration : Declaration
 	{
-		public readonly bool Mutability;
 		[NotNull] public readonly Expression Expression;
+		public readonly bool Mutability;
 		public Type Type;
-
-		public override void SurroundWith(Environment environment)
-		{
-			base.SurroundWith(environment);
-			Expression.SurroundWith(Env);
-			var exprType = Expression.GetExpressionType();
-			// FEATURE #8
-			Type = Type ?? exprType;
-			// FEATURE #11
-			if (!string.Equals(Type.Name, PrimaryType.NullType, Ordinal) && Type != exprType)
-				// FEATURE #9
-				Errors.Add($"{MetaData.GetErrorHeader()}type mismatch, expected: {Type.Name}, actual: {exprType}");
-		}
 
 		public VariableDeclaration(
 			MetaData metaData,
@@ -49,21 +33,33 @@ namespace bCC
 			Mutability = isMutable;
 		}
 
+		public override void SurroundWith(Environment environment)
+		{
+			base.SurroundWith(environment);
+			Expression.SurroundWith(Env);
+			var exprType = Expression.GetExpressionType();
+			// FEATURE #8
+			Type = Type ?? exprType;
+			// FEATURE #11
+			if (!string.Equals(Type.Name, PrimaryType.NullType, Ordinal) && Type != exprType)
+				// FEATURE #9
+				Errors.Add($"{MetaData.GetErrorHeader()}type mismatch, expected: {Type.Name}, actual: {exprType}");
+		}
+
 		public override bool Equals(object obj) => obj is Declaration declaration && declaration.Name == Name;
 
-		public override IEnumerable<string> Dump() =>
-			new[]
-				{
-					$"variable declaration [{Name}]:\n",
-					"  type:\n"
-				}
-				.Concat(Type.Dump().Select(MapFunc2))
-				.Concat(new[] {"  initialize expression:\n"})
-				.Concat(Expression.Dump().Select(MapFunc2));
+		public override IEnumerable<string> Dump() => new[]
+			{
+				$"variable declaration [{Name}]:\n",
+				"  type:\n"
+			}
+			.Concat(Type.Dump().Select(MapFunc2))
+			.Concat(new[] {"  initialize expression:\n"})
+			.Concat(Expression.Dump().Select(MapFunc2));
 	}
 
 	/// <summary>
-	/// Probably useless
+	///   Probably useless
 	/// </summary>
 	public class Macro : Declaration
 	{
