@@ -26,7 +26,8 @@ i.e. want to find codes related to lexical scoping? search "FEATURE \#18"
 + [X] initialize variable with null or given expression (#13)
 + [ ] check for mutability
 + [X] check for assignment type (#14)
-+ [ ] validate lhs
++ [X] validate lhs (#20)
++ [ ] check if member exist
 + [ ] inline
 
 ## functions

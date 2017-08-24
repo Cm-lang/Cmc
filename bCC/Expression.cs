@@ -100,6 +100,7 @@ namespace bCC
 		{
 			base.SurroundWith(environment);
 			Owner.SurroundWith(Env);
+			// TODO check if it's a valid member
 			Member.SurroundWith(Env);
 		}
 
@@ -110,10 +111,7 @@ namespace bCC
 			Member = member;
 		}
 
-		public override Type GetExpressionType()
-		{
-			throw new NotImplementedException();
-		}
+		public override Type GetExpressionType() => Member.GetExpressionType();
 	}
 
 	public class VariableExpression : AtomicExpression

@@ -80,6 +80,9 @@ namespace bCC
 			// FEATURE #14
 			if (!string.Equals(lhs.Name, rhs.Name, Ordinal))
 				Errors.Add(MetaData.GetErrorHeader() + "assigning a " + rhs + " to a " + lhs + " is invalid.");
+			// FEATURE #20
+			if (!LhsExpression.IsValidLhs)
+				Errors.Add(MetaData.GetErrorHeader() + "a " + lhs + " cannot be assigned.");
 			// TODO check for mutability
 		}
 
