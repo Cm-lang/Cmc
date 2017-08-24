@@ -186,9 +186,7 @@ namespace bCC
 				_type = Declaration.Type;
 			}
 			else
-			{
 				Errors.Add($"{MetaData.GetErrorHeader()} [internal error] declaration is not a variable declaration");
-			}
 		}
 
 		public override Type GetExpressionType() => _type ?? throw new CompilerException();

@@ -41,6 +41,8 @@ namespace bCC
 
 		public override IEnumerable<string> Dump() => new[] {"return statement:\n"}
 			.Concat(Expression.Dump().Select(MapFunc));
+
+		public override IEnumerable<ReturnStatement> FindReturnStatements() => new[] {this};
 	}
 
 	public class StatementList : Statement
@@ -56,9 +58,7 @@ namespace bCC
 			// FEATURE #4
 			foreach (var statement in Statements)
 				if (!(statement is Declaration declaration))
-				{
 					statement.SurroundWith(env);
-				}
 				else
 				{
 					statement.SurroundWith(env);
@@ -67,13 +67,10 @@ namespace bCC
 				}
 		}
 
-		public override IEnumerable<string> Dump()
-		{
-			return Statements.Count == 0
-				? new[] {"empty statement list\n"}
-				: new[] {"statement list:\n"}
-					.Concat(Statements.SelectMany(i => i.Dump().Select(MapFunc)));
-		}
+		public override IEnumerable<string> Dump() => Statements.Count == 0
+			? new[] {"empty statement list\n"}
+			: new[] {"statement list:\n"}
+				.Concat(Statements.SelectMany(i => i.Dump().Select(MapFunc)));
 	}
 
 	public class AssignmentStatement : Statement

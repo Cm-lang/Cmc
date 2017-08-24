@@ -21,9 +21,7 @@ namespace bCC
 			var env = this;
 			var list = new List<Declaration>();
 			do
-			{
-				list.AddRange(env.Declarations.Where(declaration => declaration.Name == name));
-			} while ((env = env.Outer) != null);
+				list.AddRange(env.Declarations.Where(declaration => declaration.Name == name)); while ((env = env.Outer) != null);
 			return list;
 		}
 
@@ -38,11 +36,9 @@ namespace bCC
 		{
 			var env = this;
 			do
-			{
 				foreach (var declaration in env.Declarations)
 					if (string.Equals(declaration.Name, name, Ordinal))
-						return declaration;
-			} while ((env = env.Outer) != null);
+						return declaration; while ((env = env.Outer) != null);
 			return null;
 		}
 	}
