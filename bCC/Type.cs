@@ -29,20 +29,15 @@ namespace bCC
 	/// </summary>
 	public class SecondaryType : Type
 	{
-		public override Environment Env
+		public override void SurroundWith(Environment environment)
 		{
-			[NotNull] get => _env;
-			set
-			{
-				_env = value;
-				Container.Env = Env;
-				Parameter.Env = Env;
-			}
+			base.SurroundWith(environment);
+			Container.SurroundWith(Env);
+			Parameter.SurroundWith(Env);
 		}
 
 		[NotNull] public readonly Type Container;
 		[NotNull] public readonly Type Parameter;
-		private Environment _env;
 
 		public SecondaryType(MetaData metaData, [NotNull] Type container, [NotNull] Type parameter) :
 			base(metaData, SecondaryTypeToString(container, parameter))
@@ -71,20 +66,15 @@ namespace bCC
 	/// </summary>
 	public class LambdaType : Type
 	{
-		public override Environment Env
+		public override void SurroundWith(Environment environment)
 		{
-			[NotNull] get => _env;
-			set
-			{
-				_env = value;
-				foreach (var type in ArgsList) type.Env = Env;
-				RetType.Env = Env;
-			}
+			base.SurroundWith(environment);
+			foreach (var type in ArgsList) type.SurroundWith(Env);
+			RetType.SurroundWith(Env);
 		}
 
 		[NotNull] public readonly IList<Type> ArgsList;
 		[NotNull] public readonly Type RetType;
-		private Environment _env;
 
 		public LambdaType(MetaData metaData, [NotNull] IList<Type> args, [NotNull] Type ret) :
 			base(metaData, LambdaTypeToString(args, ret))

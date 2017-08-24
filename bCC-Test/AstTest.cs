@@ -41,10 +41,8 @@ namespace bCC
 			var example = new StatementList(MetaData.DefaultMetaData,
 				new VariableDeclaration(MetaData.DefaultMetaData, varName,
 					new IntLiteralExpression(MetaData.DefaultMetaData, "123", false, 8)),
-				new ExpressionStatement(MetaData.DefaultMetaData, new VariableExpression(MetaData.DefaultMetaData, varName)))
-			{
-				Env = new Environment()
-			};
+				new ExpressionStatement(MetaData.DefaultMetaData, new VariableExpression(MetaData.DefaultMetaData, varName)));
+			example.SurroundWith(new Environment());
 			Console.WriteLine(string.Join("", example.Dump()));
 			// ReSharper disable once PossibleNullReferenceException
 			Assert.AreEqual("u8", (example.Statements.Last() as ExpressionStatement).Expression.GetExpressionType().ToString());
@@ -61,10 +59,8 @@ namespace bCC
 			var example = new StatementList(MetaData.DefaultMetaData,
 				new VariableDeclaration(MetaData.DefaultMetaData, varName,
 					new NullExpression(MetaData.DefaultMetaData)),
-				new ExpressionStatement(MetaData.DefaultMetaData, new VariableExpression(MetaData.DefaultMetaData, varName)))
-			{
-				Env = new Environment()
-			};
+				new ExpressionStatement(MetaData.DefaultMetaData, new VariableExpression(MetaData.DefaultMetaData, varName)));
+			example.SurroundWith(new Environment());
 			Console.WriteLine(string.Join("", example.Dump()));
 			// ReSharper disable once PossibleNullReferenceException
 			Assert.AreEqual(NullExpression.NullType,
@@ -84,10 +80,8 @@ namespace bCC
 				new VariableDeclaration(MetaData.DefaultMetaData, varName,
 					new NullExpression(MetaData.DefaultMetaData),
 					type: new PrimaryType(MetaData.DefaultMetaData, "i8")),
-				new ExpressionStatement(MetaData.DefaultMetaData, new VariableExpression(MetaData.DefaultMetaData, varName)))
-			{
-				Env = new Environment()
-			};
+				new ExpressionStatement(MetaData.DefaultMetaData, new VariableExpression(MetaData.DefaultMetaData, varName)));
+			example.SurroundWith(new Environment());
 			Console.WriteLine(string.Join("", example.Dump()));
 			// ReSharper disable once PossibleNullReferenceException
 			Assert.AreEqual("i8", (example.Statements.Last() as ExpressionStatement).Expression.GetExpressionType().ToString());
@@ -100,20 +94,16 @@ namespace bCC
 				MetaData.DefaultMetaData,
 				new BoolLiteralExpression(MetaData.DefaultMetaData, false),
 				new StatementList(MetaData.DefaultMetaData)
-			)
-			{
-				Env = new Environment()
-			};
+			);
+			stmt.SurroundWith(new Environment());
 			Console.WriteLine(string.Join("", stmt.Dump()));
 			Assert.IsEmpty(Errors.ErrList);
 			var stmt2 = new IfStatement(
 				MetaData.DefaultMetaData,
 				new NullExpression(MetaData.DefaultMetaData),
 				new StatementList(MetaData.DefaultMetaData)
-			)
-			{
-				Env = new Environment()
-			};
+			);
+			stmt2.SurroundWith(new Environment());
 			Console.WriteLine("");
 			Console.WriteLine("");
 			Assert.IsNotEmpty(Errors.ErrList);

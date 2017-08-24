@@ -74,21 +74,15 @@ namespace bCC
 	{
 		[NotNull] public readonly StatementList Body;
 		private Type _type;
-		private Environment _env;
 
-		public override Environment Env
+		public override void SurroundWith(Environment environment)
 		{
-			get => _env;
-			[NotNull]
-			set
-			{
-				_env = value;
-				Body.Env = Env;
-				// FEATURE #12
-				_type = Body.Statements.Last() is ReturnStatement ret
-					? ret.Expression.GetExpressionType()
-					: new PrimaryType(MetaData, "void");
-			}
+			base.SurroundWith(environment);
+			Body.Env = Env;
+			// FEATURE #12
+			_type = Body.Statements.Last() is ReturnStatement ret
+				? ret.Expression.GetExpressionType()
+				: new PrimaryType(MetaData, "void");
 		}
 
 		public override Type GetExpressionType() => _type;
@@ -98,21 +92,16 @@ namespace bCC
 
 	public class VariableExpression : AtomicExpression
 	{
-		public override Environment Env
+		public override void SurroundWith(Environment environment)
 		{
-			get => _env;
-			set
-			{
-				_env = value;
-				var declaration = Env.FindDeclarationByName(Name);
-				if (declaration is VariableDeclaration variableDeclaration) _type = variableDeclaration.Type;
-				else Errors.Add(MetaData.GetErrorHeader() + "Wtf");
-			}
+			base.SurroundWith(environment);
+			var declaration = Env.FindDeclarationByName(Name);
+			if (declaration is VariableDeclaration variableDeclaration) _type = variableDeclaration.Type;
+			else Errors.Add(MetaData.GetErrorHeader() + "Wtf");
 		}
 
 		[NotNull] public readonly string Name;
 		private Type _type;
-		private Environment _env;
 
 		public override Type GetExpressionType() => _type ?? throw new CompilerException();
 
@@ -128,27 +117,22 @@ namespace bCC
 
 	public class FunctionCallExpression : AtomicExpression
 	{
-		public override Environment Env
+		public override void SurroundWith(Environment environment)
 		{
-			[NotNull] get => _env;
-			set
-			{
-				_env = value;
-				Receiver.Env = Env;
-				foreach (var expression in ParameterList) expression.Env = Env;
-				// TODO check parameter type
-				var hisType = Receiver.GetExpressionType();
-				if (hisType is LambdaType lambdaType) _type = lambdaType.RetType;
-				else
-					Errors.Add(MetaData.GetErrorHeader() + "the function call receiver shoule be a function, not " + hisType + ".");
-				foreach (var expression in ParameterList) expression.Env = Env;
-			}
+			base.SurroundWith(environment);
+			Receiver.Env = Env;
+			foreach (var expression in ParameterList) expression.Env = Env;
+			// TODO check parameter type
+			var hisType = Receiver.GetExpressionType();
+			if (hisType is LambdaType lambdaType) _type = lambdaType.RetType;
+			else
+				Errors.Add(MetaData.GetErrorHeader() + "the function call receiver shoule be a function, not " + hisType + ".");
+			foreach (var expression in ParameterList) expression.Env = Env;
 		}
 
 		[NotNull] public readonly Expression Receiver;
 		[NotNull] public readonly IList<Expression> ParameterList;
 		private Type _type;
-		private Environment _env;
 
 		public FunctionCallExpression(MetaData metaData, [NotNull] Expression receiver,
 			[NotNull] IList<Expression> parameterList) :

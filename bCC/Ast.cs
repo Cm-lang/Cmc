@@ -6,10 +6,10 @@ namespace bCC
 {
 	public abstract class Ast
 	{
-		[NotNull]
-		public virtual Environment Env { [CanBeNull] get; [NotNull] set; }
-
+		public Environment Env;
 		public MetaData MetaData;
+
+		public virtual void SurroundWith([NotNull] Environment environment) => Env = environment;
 
 		protected Ast(MetaData metaData) => MetaData = metaData;
 
@@ -21,5 +21,6 @@ namespace bCC
 		public virtual IEnumerable<string> Dump() => new[] {ToString()};
 
 		public static Func<string, string> MapFunc = i => "  " + i;
+		public static Func<string, string> MapFunc2 = i => "    " + i;
 	}
 }

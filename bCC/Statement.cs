@@ -15,19 +15,13 @@ namespace bCC
 
 	public class ExpressionStatement : Statement
 	{
-		public override Environment Env
+		public override void SurroundWith(Environment environment)
 		{
-			[CanBeNull] get => _env;
-			[NotNull]
-			set
-			{
-				_env = value;
-				Expression.Env = Env;
-			}
+			base.SurroundWith(environment);
+			Expression.Env = Env;
 		}
 
 		[NotNull] public readonly Expression Expression;
-		private Environment _env;
 		public ExpressionStatement(MetaData metaData, Expression expression) : base(metaData) => Expression = expression;
 
 		public override IEnumerable<string> Dump() =>
@@ -49,27 +43,21 @@ namespace bCC
 	public class StatementList : Statement
 	{
 		[NotNull] public IList<Statement> Statements;
-		private Environment _env;
 
-		public sealed override Environment Env
+		public override void SurroundWith(Environment environment)
 		{
-			get => _env;
-			[NotNull]
-			set
-			{
-				_env = value;
-				var env = new Environment(Env);
-				// FEATURE #4
-				foreach (var statement in Statements)
-					if (!(statement is Declaration declaration))
-						statement.Env = env;
-					else
-					{
-						statement.Env = env;
-						env = new Environment(env);
-						env.Declarations.Add(declaration);
-					}
-			}
+			base.SurroundWith(environment);
+			var env = new Environment(Env);
+			// FEATURE #4
+			foreach (var statement in Statements)
+				if (!(statement is Declaration declaration))
+					statement.Env = env;
+				else
+				{
+					statement.Env = env;
+					env = new Environment(env);
+					env.Declarations.Add(declaration);
+				}
 		}
 
 		public StatementList(MetaData metaData, params Statement[] statements) : base(metaData) => Statements = statements;
@@ -82,26 +70,21 @@ namespace bCC
 
 	public class AssignmentStatement : Statement
 	{
-		public override Environment Env
+		public override void SurroundWith(Environment environment)
 		{
-			get => _env;
-			set
-			{
-				_env = value;
-				LhsExpression.Env = Env;
-				RhsExpression.Env = Env;
-				var lhs = LhsExpression.GetExpressionType();
-				var rhs = RhsExpression.GetExpressionType();
-				// FEATURE #14
-				if (!string.Equals(lhs.Name, rhs.Name, Ordinal))
-					Errors.Add(MetaData.GetErrorHeader() + "assigning a " + rhs + " to a " + lhs + " is invalid.");
-				// TODO check for mutability
-			}
+			base.SurroundWith(environment);
+			LhsExpression.Env = Env;
+			RhsExpression.Env = Env;
+			var lhs = LhsExpression.GetExpressionType();
+			var rhs = RhsExpression.GetExpressionType();
+			// FEATURE #14
+			if (!string.Equals(lhs.Name, rhs.Name, Ordinal))
+				Errors.Add(MetaData.GetErrorHeader() + "assigning a " + rhs + " to a " + lhs + " is invalid.");
+			// TODO check for mutability
 		}
 
 		[NotNull] public readonly Expression LhsExpression;
 		[NotNull] public readonly Expression RhsExpression;
-		private Environment _env;
 
 		public AssignmentStatement(MetaData metaData, [NotNull] Expression lhsExpression, [NotNull] Expression rhsExpression)
 			: base(metaData)
@@ -115,23 +98,17 @@ namespace bCC
 	{
 		[NotNull] public readonly Expression Condition;
 		[NotNull] public StatementList OkStatementList;
-		private Environment _env;
 
-		public override Environment Env
+		public override void SurroundWith(Environment environment)
 		{
-			get => _env;
-			[NotNull]
-			set
-			{
-				_env = value;
-				Condition.Env = Env;
-				// FEATURE #16
-				var conditionType = Condition.GetExpressionType().Name;
-				if (!string.Equals(conditionType, "bool", Ordinal))
-					Errors.Add(MetaData.GetErrorHeader() + "expected a bool as the \"while\" statement's condition, found " +
-					           conditionType);
-				OkStatementList.Env = new Environment(Env);
-			}
+			base.SurroundWith(environment);
+			Condition.Env = Env;
+			// FEATURE #16
+			var conditionType = Condition.GetExpressionType().Name;
+			if (!string.Equals(conditionType, "bool", Ordinal))
+				Errors.Add(MetaData.GetErrorHeader() + "expected a bool as the \"while\" statement's condition, found " +
+				           conditionType);
+			OkStatementList.Env = new Environment(Env);
 		}
 
 		public WhileStatement(
@@ -156,28 +133,22 @@ namespace bCC
 	public class IfStatement : WhileStatement
 	{
 		[NotNull] public StatementList ElseStatementList;
-		private Environment _env;
 
-		public override Environment Env
+		public override void SurroundWith(Environment environment)
 		{
-			get => _env;
-			[NotNull]
-			set
-			{
-				_env = value;
-				Condition.Env = Env;
-				// FEATURE #1
-				var conditionType = Condition.GetExpressionType().Name;
-				if (!string.Equals(conditionType, "bool", Ordinal))
-					Errors.Add(MetaData.GetErrorHeader() + "expected a bool as the \"if\" statement's condition, found " +
-					           conditionType);
-				OkStatementList.Env = new Environment(Env);
-				ElseStatementList.Env = new Environment(Env);
-				// FEATURE #17
-				if (Condition is BoolLiteralExpression boolean)
-					if (boolean.Value) ElseStatementList.Statements = new List<Statement>();
-					else OkStatementList.Statements = new List<Statement>();
-			}
+			base.SurroundWith(environment);
+			Condition.Env = Env;
+			// FEATURE #1
+			var conditionType = Condition.GetExpressionType().Name;
+			if (!string.Equals(conditionType, "bool", Ordinal))
+				Errors.Add(MetaData.GetErrorHeader() + "expected a bool as the \"if\" statement's condition, found " +
+				           conditionType);
+			OkStatementList.Env = new Environment(Env);
+			ElseStatementList.Env = new Environment(Env);
+			// FEATURE #17
+			if (!(Condition is BoolLiteralExpression boolean)) return;
+			if (boolean.Value) ElseStatementList.Statements = new List<Statement>();
+			else OkStatementList.Statements = new List<Statement>();
 		}
 
 		public IfStatement(
