@@ -9,6 +9,9 @@ namespace bCC_Test
 	[TestFixture]
 	public class StatementTests
 	{
+		/// <summary>
+		/// simplest test
+		/// </summary>
 		[Test]
 		public void StatementTest1()
 		{
@@ -19,7 +22,9 @@ namespace bCC_Test
 				stmt.PrintDumpInfo();
 		}
 
-
+		/// <summary>
+		/// check for condition type
+		/// </summary>
 		[Test]
 		public void StatementTest2()
 		{
@@ -48,10 +53,12 @@ namespace bCC_Test
 		[SetUp]
 		public void Init() => Errors.ErrList.Clear();
 
+		/// <summary>
+		/// check for mutability
+		/// </summary>
 		[Test]
 		public void StatementTest3()
 		{
-			Errors.ErrList.Clear();
 			const string var1 = "variableOne";
 			var stmt = new StatementList(MetaData.DefaultMetaData,
 				new VariableDeclaration(MetaData.DefaultMetaData, var1,
@@ -64,8 +71,71 @@ namespace bCC_Test
 							new BoolLiteralExpression(MetaData.DefaultMetaData, false)))));
 			stmt.SurroundWith(new Environment());
 			stmt.PrintDumpInfo();
-			Assert.AreEqual(1, Errors.ErrList.Count);
+			Assert.IsNotEmpty(Errors.ErrList);
 			foreach (var s in Errors.ErrList) Console.WriteLine(s);
+		}
+
+		/// <summary>
+		/// type check (when it's correct)
+		/// </summary>
+		[Test]
+		public void StatementTest4()
+		{
+			const string var1 = "variableOne";
+			var stmt = new StatementList(MetaData.DefaultMetaData,
+				new VariableDeclaration(MetaData.DefaultMetaData, var1,
+					new BoolLiteralExpression(MetaData.DefaultMetaData, true), true),
+				new WhileStatement(MetaData.DefaultMetaData,
+					new VariableExpression(MetaData.DefaultMetaData, var1),
+					new StatementList(MetaData.DefaultMetaData,
+						new AssignmentStatement(MetaData.DefaultMetaData,
+							new VariableExpression(MetaData.DefaultMetaData, var1),
+							new BoolLiteralExpression(MetaData.DefaultMetaData, false)))));
+			stmt.SurroundWith(new Environment());
+			stmt.PrintDumpInfo();
+			Assert.IsEmpty(Errors.ErrList);
+		}
+
+		/// <summary>
+		/// type check (when it's nulltype)
+		/// </summary>
+		[Test]
+		public void StatementTest5()
+		{
+			const string var1 = "variableOne";
+			var stmt = new StatementList(MetaData.DefaultMetaData,
+				new VariableDeclaration(MetaData.DefaultMetaData, var1,
+					new BoolLiteralExpression(MetaData.DefaultMetaData, true), true),
+				new WhileStatement(MetaData.DefaultMetaData,
+					new VariableExpression(MetaData.DefaultMetaData, var1),
+					new StatementList(MetaData.DefaultMetaData,
+						new AssignmentStatement(MetaData.DefaultMetaData,
+							new VariableExpression(MetaData.DefaultMetaData, var1),
+							new NullExpression(MetaData.DefaultMetaData)))));
+			stmt.SurroundWith(new Environment());
+			stmt.PrintDumpInfo();
+			Assert.IsEmpty(Errors.ErrList);
+		}
+
+		/// <summary>
+		/// type check (when it's incorrect)
+		/// </summary>
+		[Test]
+		public void StatementTest6()
+		{
+			const string var1 = "variableOne";
+			var stmt = new StatementList(MetaData.DefaultMetaData,
+				new VariableDeclaration(MetaData.DefaultMetaData, var1,
+					new BoolLiteralExpression(MetaData.DefaultMetaData, true), true),
+				new WhileStatement(MetaData.DefaultMetaData,
+					new VariableExpression(MetaData.DefaultMetaData, var1),
+					new StatementList(MetaData.DefaultMetaData,
+						new AssignmentStatement(MetaData.DefaultMetaData,
+							new VariableExpression(MetaData.DefaultMetaData, var1),
+							new IntLiteralExpression(MetaData.DefaultMetaData, "123", true)))));
+			stmt.SurroundWith(new Environment());
+			stmt.PrintDumpInfo();
+			Assert.IsNotEmpty(Errors.ErrList);
 		}
 	}
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 using static System.StringComparison;
@@ -79,7 +80,9 @@ namespace bCC
 			var lhs = LhsExpression.GetExpressionType();
 			var rhs = RhsExpression.GetExpressionType();
 			// FEATURE #14
-			if (!string.Equals(lhs.Name, rhs.Name, Ordinal))
+			// FEATURE #11
+			if (!string.Equals(rhs.Name, "nulltype", Ordinal) &&
+			    !string.Equals(lhs.Name, rhs.Name, Ordinal))
 				Errors.Add($"{MetaData.GetErrorHeader()}assigning a {rhs} to a {lhs} is invalid.");
 			// FEATURE #20
 			var validLhs = LhsExpression.GetLhsExpression();
@@ -94,7 +97,10 @@ namespace bCC
 		[NotNull] public readonly Expression LhsExpression;
 		[NotNull] public readonly Expression RhsExpression;
 
-		public AssignmentStatement(MetaData metaData, [NotNull] Expression lhsExpression, [NotNull] Expression rhsExpression)
+		public AssignmentStatement(
+			MetaData metaData,
+			[NotNull] Expression lhsExpression,
+			[NotNull] Expression rhsExpression)
 			: base(metaData)
 		{
 			LhsExpression = lhsExpression;
