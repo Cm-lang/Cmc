@@ -11,10 +11,7 @@ namespace bCC_Test
 	public class TypeTests
 	{
 		[SetUp]
-		public void Init()
-		{
-			Errors.ErrList.Clear();
-		}
+		public void Init() => Errors.ErrList.Clear();
 
 		/// <summary>
 		///   var someVar = 123u8;
