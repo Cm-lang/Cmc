@@ -1,6 +1,7 @@
 ﻿using System;
 using bCC;
 using NUnit.Framework;
+using NUnit.Framework.Internal.Commands;
 using Environment = bCC.Environment;
 
 namespace bCC_Test
@@ -42,6 +43,29 @@ namespace bCC_Test
 			foreach (var s in Errors.ErrList)
 				Console.WriteLine(s);
 			stmt2.PrintDumpInfo();
+		}
+
+		[SetUp]
+		public void Init() => Errors.ErrList.Clear();
+
+		[Test]
+		public void StatementTest3()
+		{
+			Errors.ErrList.Clear();
+			const string var1 = "variableOne";
+			var stmt = new StatementList(MetaData.DefaultMetaData,
+				new VariableDeclaration(MetaData.DefaultMetaData, var1,
+					new BoolLiteralExpression(MetaData.DefaultMetaData, true)),
+				new WhileStatement(MetaData.DefaultMetaData,
+					new VariableExpression(MetaData.DefaultMetaData, var1),
+					new StatementList(MetaData.DefaultMetaData,
+						new AssignmentStatement(MetaData.DefaultMetaData,
+							new VariableExpression(MetaData.DefaultMetaData, var1),
+							new BoolLiteralExpression(MetaData.DefaultMetaData, false)))));
+			stmt.SurroundWith(new Environment());
+			stmt.PrintDumpInfo();
+			Assert.AreEqual(1, Errors.ErrList.Count);
+			foreach (var s in Errors.ErrList) Console.WriteLine(s);
 		}
 	}
 }

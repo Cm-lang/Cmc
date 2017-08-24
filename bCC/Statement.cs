@@ -100,6 +100,15 @@ namespace bCC
 			LhsExpression = lhsExpression;
 			RhsExpression = rhsExpression;
 		}
+
+		public override IEnumerable<string> Dump() => new[]
+			{
+				"assignment statemnt:\n",
+				"  lhs:\n"
+			}
+			.Concat(LhsExpression.Dump().Select(MapFunc2))
+			.Concat(new[] {"  rhs:\n"})
+			.Concat(RhsExpression.Dump().Select(MapFunc2));
 	}
 
 	public class WhileStatement : Statement
