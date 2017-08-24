@@ -1,31 +1,35 @@
 ﻿using System;
 using System.Linq;
-using System.Linq.Expressions;
 using bCC;
 using NUnit.Framework;
 using Environment = bCC.Environment;
-using LambdaExpression = bCC.LambdaExpression;
 
 namespace bCC_Test
 {
 	[TestFixture]
 	public class TypeTests
 	{
+		[SetUp]
+		public void Init() => Errors.ErrList.Clear();
+
 		[Test]
 		public void TypeTest1()
 		{
-			var example = new IntLiteralExpression(MetaData.Empty, "123456789", true, 64);
+			LiteralExpression example = new IntLiteralExpression(MetaData.Empty, "123456789", true, 64);
 			example.PrintDumpInfo();
-			Assert.AreEqual("i64", example.Type.ToString());
+			Assert.AreEqual("i64", example.Type.Name);
 			example = new IntLiteralExpression(MetaData.Empty, "123456789", true);
 			example.PrintDumpInfo();
-			Assert.AreEqual("i32", example.Type.ToString());
+			Assert.AreEqual("i32", example.Type.Name);
 			example = new IntLiteralExpression(MetaData.Empty, "123456789", false, 64);
 			example.PrintDumpInfo();
-			Assert.AreEqual("u64", example.Type.ToString());
+			Assert.AreEqual("u64", example.Type.Name);
 			example = new IntLiteralExpression(MetaData.Empty, "123456789", false, 64);
 			example.PrintDumpInfo();
-			Assert.AreEqual("u64", example.Type.ToString());
+			Assert.AreEqual("u64", example.Type.Name);
+			example = new StringLiteralExpression(MetaData.Empty, "\"boy \\ next \\ door\n\t\"");
+			example.PrintDumpInfo();
+			Assert.AreEqual("string", example.Type.Name);
 		}
 
 		/// <summary>
@@ -85,6 +89,9 @@ namespace bCC_Test
 			Assert.AreEqual("i8", (example.Statements.Last() as ExpressionStatement).Expression.GetExpressionType().ToString());
 		}
 
+		/// <summary>
+		/// lambda type inference
+		/// </summary>
 		[Test]
 		public void TypeInferenceTest4()
 		{
@@ -95,6 +102,9 @@ namespace bCC_Test
 						new ReturnStatement(MetaData.Empty, new IntLiteralExpression(MetaData.Empty, "0", true)))));
 			example.SurroundWith(new Environment());
 			example.PrintDumpInfo();
+			var type = (LambdaType) example.Type;
+			Assert.AreEqual("i32", type.RetType.Name);
+			Assert.IsEmpty(type.ArgsList);
 		}
 	}
 }

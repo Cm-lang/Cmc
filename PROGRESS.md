@@ -33,14 +33,12 @@ and you see the result.
 + [ ] check if member exist
 + [ ] inline
 
-## functions
+## functions and lambdas
 
 + [ ] inline
 + [ ] check for parameter type
++ [ ] overloading
 + [X] the return type should be inferred, or `nulltype` (#19)
-
-## lambda
-
 + [X] defaultly no parameter (#22)
 
 ## if
@@ -62,3 +60,4 @@ and you see the result.
 ## debug
 
 + [X] display compilation information (#15)
++ [X] pretty print strings (#23)

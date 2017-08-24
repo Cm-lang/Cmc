@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 
@@ -66,6 +67,32 @@ namespace bCC
 			Value = value;
 
 		public override IEnumerable<string> Dump() => new[] {$"bool literal expression [{Value}]:\n"};
+	}
+
+	public class StringLiteralExpression : LiteralExpression
+	{
+		public readonly string Value;
+		private readonly string _debugRepresentation;
+
+		public StringLiteralExpression(MetaData metaData, string value) : base(metaData,
+			new PrimaryType(MetaData.Empty, "string"))
+		{
+			Value = value;
+			// FEATURE #23
+			_debugRepresentation = Value
+				.Replace("\\", "\\\\")
+				.Replace("\r", "\\r")
+				.Replace("\b", "\\b")
+				.Replace("\a", "\\a")
+				.Replace("\f", "\\f")
+				.Replace("\n", "\\n")
+				.Replace("\t", "\\t")
+				.Replace("\"", "\\\"");
+		}
+
+		public override IEnumerable<string> Dump() => new[]
+				{$"string literal expression [{_debugRepresentation}]:\n"}
+			.Concat(Type.Dump().Select(MapFunc));
 	}
 
 	/// <summary>
