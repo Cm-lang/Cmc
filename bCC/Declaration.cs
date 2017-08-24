@@ -41,9 +41,9 @@ namespace bCC
 			// FEATURE #8
 			Type = Type ?? exprType;
 			// FEATURE #11
-			if (!string.Equals(Type.Name, PrimaryType.NullType, Ordinal) && Type != exprType)
+			if (!string.Equals(Type.ToString(), PrimaryType.NullType, Ordinal) && Type != exprType)
 				// FEATURE #9
-				Errors.Add($"{MetaData.GetErrorHeader()}type mismatch, expected: {Type.Name}, actual: {exprType}");
+				Errors.Add($"{MetaData.GetErrorHeader()}type mismatch, expected: {Type}, actual: {exprType}");
 		}
 
 		public override bool Equals(object obj) => obj is Declaration declaration && declaration.Name == Name;

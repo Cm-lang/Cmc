@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 using static bCC.PrimaryType;
@@ -118,9 +119,15 @@ namespace bCC
 		{
 			base.SurroundWith(environment);
 			Body.SurroundWith(Env);
+			var retTypes = Body.FindReturnStatements().Select(i => i.Expression.GetExpressionType()).ToList();
+			if (retTypes.Any(i => !Equals(i, retTypes.First())))
+			{
+				Errors.Add(
+					$"{MetaData.GetErrorHeader()}ambiguous return type:\n[{string.Join(",", retTypes.Select(i => i.ToString()))}]");
+			}
 			// FEATURE #12
-			var retType = Body.Statements.Last() is ReturnStatement ret
-				? ret.Expression.GetExpressionType()
+			var retType = retTypes.Count != 0
+				? retTypes.First()
 				// FEATURE #19
 				: new PrimaryType(MetaData, NullType);
 			_type = new LambdaType(MetaData, ParameterList.Select(i => i.Type).ToList(), retType);

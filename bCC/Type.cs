@@ -1,16 +1,20 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
+using static System.StringComparison;
+
+#pragma warning disable 659
 
 namespace bCC
 {
 	public abstract class Type : Ast
 	{
-		[NotNull] public readonly string Name;
+		protected Type(MetaData metaData) : base(metaData)
+		{
+		}
 
-		protected Type(MetaData metaData, [NotNull] string name) : base(metaData) => Name = name;
-
-		public override string ToString() => Name;
+		public abstract override string ToString();
+		public abstract override bool Equals(object obj);
 	}
 
 	/// <summary>
@@ -21,12 +25,14 @@ namespace bCC
 		public const string StringType = "string";
 		public const string NullType = "nulltype";
 		public const string BoolType = "bool";
+		[NotNull] public readonly string Name;
 
-		public PrimaryType(MetaData metaData, [NotNull] string name) : base(metaData, name)
-		{
-		}
+		public PrimaryType(MetaData metaData, [NotNull] string name) : base(metaData) => Name = name;
 
 		public override IEnumerable<string> Dump() => new[] {$"primary type [{Name}]\n"};
+		public override string ToString() => Name;
+
+		public override bool Equals(object obj) => obj is PrimaryType type && string.Equals(type.Name, Name, Ordinal);
 	}
 
 	/// <summary>
@@ -38,7 +44,7 @@ namespace bCC
 		[NotNull] public readonly Type Parameter;
 
 		public SecondaryType(MetaData metaData, [NotNull] Type container, [NotNull] Type parameter) :
-			base(metaData, SecondaryTypeToString(container, parameter))
+			base(metaData)
 		{
 			Container = container;
 			Parameter = parameter;
@@ -55,6 +61,9 @@ namespace bCC
 		public static string SecondaryTypeToString([NotNull] Type args, [NotNull] Type ret) => $"{args}<{ret}>";
 
 		public override string ToString() => SecondaryTypeToString(Container, Parameter);
+
+		public override bool Equals(object obj) =>
+			obj is SecondaryType type && Equals(type.Container, Container) && Equals(type.Parameter, Parameter);
 
 		public override IEnumerable<string> Dump() => new[]
 			{
@@ -75,7 +84,7 @@ namespace bCC
 		[NotNull] public readonly Type RetType;
 
 		public LambdaType(MetaData metaData, [NotNull] IList<Type> args, [NotNull] Type ret) :
-			base(metaData, LambdaTypeToString(args, ret))
+			base(metaData)
 		{
 			ArgsList = args;
 			RetType = ret;
@@ -89,6 +98,14 @@ namespace bCC
 		}
 
 		public override string ToString() => LambdaTypeToString(ArgsList, RetType);
+
+		public override bool Equals(object obj)
+		{
+			var ok = obj is LambdaType type && Equals(type.RetType, RetType) && Equals(type.ArgsList.Count, ArgsList.Count);
+			if (!ok) return false;
+			var lambdaType = (LambdaType) obj;
+			return !ArgsList.Where((t, i) => !Equals(lambdaType.ArgsList[i], t)).Any();
+		}
 
 		[NotNull]
 		public static string LambdaTypeToString([NotNull] IList<Type> args, [NotNull] Type ret) =>

@@ -35,6 +35,8 @@ namespace bCC
 
 	public class ReturnStatement : ExpressionStatement
 	{
+		public LambdaExpression WhereToJump;
+
 		public ReturnStatement(MetaData metaData, Expression expression) : base(metaData, expression)
 		{
 		}
@@ -67,6 +69,9 @@ namespace bCC
 				}
 		}
 
+		public override IEnumerable<ReturnStatement> FindReturnStatements() =>
+			Statements.SelectMany(i => i.FindReturnStatements());
+
 		public override IEnumerable<string> Dump() => Statements.Count == 0
 			? new[] {"empty statement list\n"}
 			: new[] {"statement list:\n"}
@@ -97,8 +102,8 @@ namespace bCC
 			var rhs = RhsExpression.GetExpressionType();
 			// FEATURE #14
 			// FEATURE #11
-			if (!string.Equals(rhs.Name, NullType, Ordinal) &&
-			    !string.Equals(lhs.Name, rhs.Name, Ordinal))
+			if (!string.Equals(rhs.ToString(), NullType, Ordinal) &&
+			    !string.Equals(lhs.ToString(), rhs.ToString(), Ordinal))
 				Errors.Add($"{MetaData.GetErrorHeader()}assigning a {rhs} to a {lhs} is invalid.");
 			// FEATURE #20
 			var validLhs = LhsExpression.GetLhsExpression();
@@ -145,6 +150,9 @@ namespace bCC
 					$"{MetaData.GetErrorHeader()}expected a bool as the \"while\" statement\'s condition, found {conditionType}");
 			OkStatementList.SurroundWith(new Environment(Env));
 		}
+
+		public override IEnumerable<ReturnStatement> FindReturnStatements() =>
+			OkStatementList.FindReturnStatements();
 
 		public override IEnumerable<string> Dump() => new[]
 			{
@@ -195,6 +203,9 @@ namespace bCC
 				Optimized = 2;
 			}
 		}
+
+		public override IEnumerable<ReturnStatement> FindReturnStatements() =>
+			OkStatementList.FindReturnStatements().Concat(ElseStatementList.FindReturnStatements());
 
 		public override IEnumerable<string> Dump() => new[]
 			{
