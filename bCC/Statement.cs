@@ -144,8 +144,8 @@ namespace bCC
 			base.SurroundWith(environment);
 			Condition.SurroundWith(Env);
 			// FEATURE #16
-			var conditionType = Condition.GetExpressionType().Name;
-			if (!string.Equals(conditionType, "bool", Ordinal))
+			var conditionType = Condition.GetExpressionType().ToString();
+			if (!string.Equals(conditionType, BoolType, Ordinal))
 				Errors.Add(
 					$"{MetaData.GetErrorHeader()}expected a bool as the \"while\" statement\'s condition, found {conditionType}");
 			OkStatementList.SurroundWith(new Environment(Env));
@@ -184,8 +184,8 @@ namespace bCC
 			Env = environment;
 			Condition.SurroundWith(Env);
 			// FEATURE #1
-			var conditionType = Condition.GetExpressionType().Name;
-			if (!string.Equals(conditionType, "bool", Ordinal))
+			var conditionType = Condition.GetExpressionType().ToString();
+			if (!string.Equals(conditionType, BoolType, Ordinal))
 				Errors.Add(
 					$"{MetaData.GetErrorHeader()}expected a bool as the \"if\" statement\'s condition, found {conditionType}");
 			OkStatementList.SurroundWith(new Environment(Env));

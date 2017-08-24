@@ -85,7 +85,7 @@ namespace bCC_Test
 			example.SurroundWith(new Environment());
 			example.PrintDumpInfo();
 			var type = (LambdaType) example.Type;
-			Assert.AreEqual("i32", type.RetType.Name);
+			Assert.AreEqual("i32", type.RetType.ToString());
 			Assert.IsEmpty(type.ArgsList);
 		}
 
@@ -94,19 +94,19 @@ namespace bCC_Test
 		{
 			LiteralExpression example = new IntLiteralExpression(MetaData.Empty, "123456789", true, 64);
 			example.PrintDumpInfo();
-			Assert.AreEqual("i64", example.Type.Name);
+			Assert.AreEqual("i64", example.Type.ToString());
 			example = new IntLiteralExpression(MetaData.Empty, "123456789", true);
 			example.PrintDumpInfo();
-			Assert.AreEqual("i32", example.Type.Name);
+			Assert.AreEqual("i32", example.Type.ToString());
 			example = new IntLiteralExpression(MetaData.Empty, "123456789", false, 64);
 			example.PrintDumpInfo();
-			Assert.AreEqual("u64", example.Type.Name);
+			Assert.AreEqual("u64", example.Type.ToString());
 			example = new IntLiteralExpression(MetaData.Empty, "123456789", false, 64);
 			example.PrintDumpInfo();
-			Assert.AreEqual("u64", example.Type.Name);
+			Assert.AreEqual("u64", example.Type.ToString());
 			example = new StringLiteralExpression(MetaData.Empty, "\"boy \\ next \\ door\n\t\"");
 			example.PrintDumpInfo();
-			Assert.AreEqual(StringType, example.Type.Name);
+			Assert.AreEqual(StringType, example.Type.ToString());
 		}
 	}
 }

@@ -120,11 +120,11 @@ namespace bCC
 			base.SurroundWith(environment);
 			Body.SurroundWith(Env);
 			var retTypes = Body.FindReturnStatements().Select(i => i.Expression.GetExpressionType()).ToList();
+			// FEATURE #24
 			if (retTypes.Any(i => !Equals(i, retTypes.First())))
-			{
 				Errors.Add(
-					$"{MetaData.GetErrorHeader()}ambiguous return type:\n[{string.Join(",", retTypes.Select(i => i.ToString()))}]");
-			}
+					$"{MetaData.GetErrorHeader()}ambiguous return types:\n" +
+					$"[{string.Join(",", retTypes.Select(i => i.ToString()))}]");
 			// FEATURE #12
 			var retType = retTypes.Count != 0
 				? retTypes.First()
