@@ -133,10 +133,14 @@ namespace bCC
 	public class IfStatement : WhileStatement
 	{
 		[NotNull] public StatementList ElseStatementList;
+		public int Optimized;
 
 		public override void SurroundWith(Environment environment)
 		{
-			base.SurroundWith(environment);
+			// base.SurroundWith(environment);
+			// don't call base, because it will raise error
+			// as a while expression
+			Env = environment;
 			Condition.SurroundWith(Env);
 			// FEATURE #1
 			var conditionType = Condition.GetExpressionType().Name;
@@ -147,8 +151,16 @@ namespace bCC
 			ElseStatementList.SurroundWith(new Environment(Env));
 			// FEATURE #17
 			if (!(Condition is BoolLiteralExpression boolean)) return;
-			if (boolean.Value) ElseStatementList.Statements = new List<Statement>();
-			else OkStatementList.Statements = new List<Statement>();
+			if (boolean.Value)
+			{
+				ElseStatementList.Statements = new List<Statement>();
+				Optimized = 1;
+			}
+			else
+			{
+				OkStatementList.Statements = new List<Statement>();
+				Optimized = 2;
+			}
 		}
 
 		public IfStatement(
@@ -167,9 +179,9 @@ namespace bCC
 				"  condition:\n"
 			}
 			.Concat(Condition.Dump().Select(MapFunc2))
-			.Concat(new[] {"  true branch:\n"})
+			.Concat(new[] {"  true branch" + (Optimized == 2 ? " [optimized]" : "") + ":\n"})
 			.Concat(OkStatementList.Dump().Select(MapFunc2))
-			.Concat(new[] {"  false branch:\n"})
+			.Concat(new[] {"  false branch" + (Optimized == 1 ? " [optimized]" : "") + ":\n"})
 			.Concat(ElseStatementList.Dump().Select(MapFunc2));
 	}
 }

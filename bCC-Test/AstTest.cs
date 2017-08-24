@@ -16,19 +16,23 @@ namespace bCC_Test
 				new StatementList(MetaData.DefaultMetaData,
 					new Statement(MetaData.DefaultMetaData),
 					new Statement(MetaData.DefaultMetaData)).Statements)
-				Console.WriteLine(stmt);
+				stmt.PrintDumpInfo();
 		}
 
 		[Test]
 		public void TypeTest1()
 		{
 			var example = new IntLiteralExpression(MetaData.DefaultMetaData, "123456789", true, 64);
+			example.PrintDumpInfo();
 			Assert.AreEqual("i64", example.Type.ToString());
 			example = new IntLiteralExpression(MetaData.DefaultMetaData, "123456789", true);
+			example.PrintDumpInfo();
 			Assert.AreEqual("i32", example.Type.ToString());
 			example = new IntLiteralExpression(MetaData.DefaultMetaData, "123456789", false, 64);
+			example.PrintDumpInfo();
 			Assert.AreEqual("u64", example.Type.ToString());
 			example = new IntLiteralExpression(MetaData.DefaultMetaData, "123456789", false, 64);
+			example.PrintDumpInfo();
 			Assert.AreEqual("u64", example.Type.ToString());
 		}
 
@@ -45,7 +49,7 @@ namespace bCC_Test
 					new IntLiteralExpression(MetaData.DefaultMetaData, "123", false, 8)),
 				new ExpressionStatement(MetaData.DefaultMetaData, new VariableExpression(MetaData.DefaultMetaData, varName)));
 			example.SurroundWith(new Environment());
-			Console.WriteLine(string.Join("", example.Dump()));
+			example.PrintDumpInfo();
 			// ReSharper disable once PossibleNullReferenceException
 			Assert.AreEqual("u8", (example.Statements.Last() as ExpressionStatement).Expression.GetExpressionType().ToString());
 		}
@@ -63,7 +67,7 @@ namespace bCC_Test
 					new NullExpression(MetaData.DefaultMetaData)),
 				new ExpressionStatement(MetaData.DefaultMetaData, new VariableExpression(MetaData.DefaultMetaData, varName)));
 			example.SurroundWith(new Environment());
-			Console.WriteLine(string.Join("", example.Dump()));
+			example.PrintDumpInfo();
 			// ReSharper disable once PossibleNullReferenceException
 			Assert.AreEqual(NullExpression.NullType,
 				(example.Statements.Last() as ExpressionStatement).Expression.GetExpressionType().ToString());
@@ -98,7 +102,7 @@ namespace bCC_Test
 				new StatementList(MetaData.DefaultMetaData)
 			);
 			stmt.SurroundWith(new Environment());
-			Console.WriteLine(string.Join("", stmt.Dump()));
+			stmt.PrintDumpInfo();
 			Assert.IsEmpty(Errors.ErrList);
 			var stmt2 = new IfStatement(
 				MetaData.DefaultMetaData,
@@ -109,7 +113,9 @@ namespace bCC_Test
 			Console.WriteLine("");
 			Console.WriteLine("");
 			Assert.IsNotEmpty(Errors.ErrList);
-			Console.WriteLine(string.Join("", stmt2.Dump()));
+			foreach (var s in Errors.ErrList)
+				Console.WriteLine(s);
+			stmt2.PrintDumpInfo();
 		}
 	}
 }
