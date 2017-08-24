@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Linq;
+using System.Linq.Expressions;
 using bCC;
 using NUnit.Framework;
 using Environment = bCC.Environment;
+using LambdaExpression = bCC.LambdaExpression;
 
 namespace bCC_Test
 {
@@ -81,6 +83,18 @@ namespace bCC_Test
 			Console.WriteLine(string.Join("", example.Dump()));
 			// ReSharper disable once PossibleNullReferenceException
 			Assert.AreEqual("i8", (example.Statements.Last() as ExpressionStatement).Expression.GetExpressionType().ToString());
+		}
+
+		[Test]
+		public void TypeInferenceTest4()
+		{
+			const string variable = "variable";
+			var example = new VariableDeclaration(MetaData.Empty, variable,
+				new LambdaExpression(MetaData.Empty,
+					new StatementList(MetaData.Empty,
+						new ReturnStatement(MetaData.Empty, new IntLiteralExpression(MetaData.Empty, "0", true)))));
+			example.SurroundWith(new Environment());
+			example.PrintDumpInfo();
 		}
 	}
 }

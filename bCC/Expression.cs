@@ -72,8 +72,9 @@ namespace bCC
 	/// A function is a variable with the type of lambda
 	/// This is the class for anonymous lambda
 	/// </summary>
-	public class Lambda : AtomicExpression
+	public class LambdaExpression : AtomicExpression
 	{
+		[NotNull] public readonly IList<VariableDeclaration> ParameterList;
 		[NotNull] public readonly StatementList Body;
 		private Type _type;
 
@@ -82,15 +83,35 @@ namespace bCC
 			base.SurroundWith(environment);
 			Body.SurroundWith(Env);
 			// FEATURE #12
-			_type = Body.Statements.Last() is ReturnStatement ret
+			var retType = Body.Statements.Last() is ReturnStatement ret
 				? ret.Expression.GetExpressionType()
 				// FEATURE #19
 				: new PrimaryType(MetaData, "nulltype");
+			_type = new LambdaType(MetaData, ParameterList.Select(i => i.Type).ToList(), retType);
 		}
 
 		public override Type GetExpressionType() => _type;
 
-		public Lambda(MetaData metaData, [NotNull] StatementList body) : base(metaData) => Body = body;
+		public LambdaExpression(
+			MetaData metaData,
+			[NotNull] StatementList body,
+			// FEATURE #22
+			[CanBeNull] IList<VariableDeclaration> parameterList = null) : base(metaData)
+		{
+			Body = body;
+			ParameterList = parameterList ?? new List<VariableDeclaration>();
+		}
+
+		public override IEnumerable<string> Dump() => new[]
+			{
+				"lambda:\n",
+				"  type:\n"
+			}
+			.Concat(GetExpressionType().Dump().Select(MapFunc2))
+			.Concat(new[] {"  parameters:\n"})
+			.Concat(ParameterList.SelectMany(i => i.Dump().Select(MapFunc2)))
+			.Concat(new[] {"  body:\n"})
+			.Concat(Body.Dump().Select(MapFunc2));
 	}
 
 	public class MemberAccessExpression : AtomicExpression

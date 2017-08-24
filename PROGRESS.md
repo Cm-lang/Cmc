@@ -2,7 +2,10 @@
 Please add feature request here.
 
 Codes related to some implemented feature can be found by searching their number.
-i.e. want to find codes related to lexical scoping? search "FEATURE \#18"
+
+I.E. Want to find codes related to `lexical scoping` (the 4th one in the `scoping` section)?
+[search "FEATURE \#18"](https://github.com/bC-Programming-Language-StandardCouncil/bC-Compiler/search?utf8=%E2%9C%93&q=%22FEATURE+%2318%22&type=),
+and you see the result.
 
 ## scoping
 
@@ -35,6 +38,10 @@ i.e. want to find codes related to lexical scoping? search "FEATURE \#18"
 + [ ] inline
 + [ ] check for parameter type
 + [X] the return type should be inferred, or `nulltype` (#19)
+
+## lambda
+
++ [X] defaultly no parameter (#22)
 
 ## if
 
