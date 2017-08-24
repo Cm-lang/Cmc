@@ -130,10 +130,10 @@ namespace bCC
 					(_declaredType != null ? $"<{_declaredType}>" : "") +
 					$"[{string.Join(",", retTypes.Select(i => i.ToString()))}]");
 			// FEATURE #12
-			var retType = retTypes.Count != 0
-				? retTypes.First()
-				// FEATURE #19
-				: new PrimaryType(MetaData, NullType);
+			var retType = _declaredType ?? (retTypes.Count != 0
+				              ? retTypes.First()
+				              // FEATURE #19
+				              : new PrimaryType(MetaData, NullType));
 			_type = new LambdaType(MetaData, ParameterList.Select(i => i.Type).ToList(), retType);
 		}
 
