@@ -7,18 +7,8 @@ using Environment = bCC.Environment;
 namespace bCC_Test
 {
 	[TestFixture]
-	public class AstTest
+	public class TypeTests
 	{
-		[Test]
-		public void StatementTest1()
-		{
-			foreach (var stmt in
-				new StatementList(MetaData.DefaultMetaData,
-					new Statement(MetaData.DefaultMetaData),
-					new Statement(MetaData.DefaultMetaData)).Statements)
-				stmt.PrintDumpInfo();
-		}
-
 		[Test]
 		public void TypeTest1()
 		{
@@ -92,6 +82,21 @@ namespace bCC_Test
 			// ReSharper disable once PossibleNullReferenceException
 			Assert.AreEqual("i8", (example.Statements.Last() as ExpressionStatement).Expression.GetExpressionType().ToString());
 		}
+	}
+
+	[TestFixture]
+	public class StatementTests
+	{
+		[Test]
+		public void StatementTest1()
+		{
+			foreach (var stmt in
+				new StatementList(MetaData.DefaultMetaData,
+					new Statement(MetaData.DefaultMetaData),
+					new Statement(MetaData.DefaultMetaData)).Statements)
+				stmt.PrintDumpInfo();
+		}
+
 
 		[Test]
 		public void StatementTest2()

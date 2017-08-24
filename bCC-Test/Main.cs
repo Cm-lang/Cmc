@@ -2,6 +2,6 @@
 {
 	internal class Program
 	{
-		public static void Main(string[] args) => new AstTest().TypeInferenceTest3();
+		public static void Main(string[] args) => new StatementTests().TypeInferenceTest3();
 	}
 }
