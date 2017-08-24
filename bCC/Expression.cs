@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
+using static bCC.PrimaryType;
 
 #pragma warning disable 659
 
@@ -29,8 +29,6 @@ namespace bCC
 
 	public sealed class NullExpression : Expression
 	{
-		public const string NullType = "nulltype";
-
 		public NullExpression(MetaData metaData) : base(metaData)
 		{
 		}
@@ -63,7 +61,7 @@ namespace bCC
 	{
 		public readonly bool Value;
 
-		public BoolLiteralExpression(MetaData metaData, bool value) : base(metaData, new PrimaryType(metaData, "bool")) =>
+		public BoolLiteralExpression(MetaData metaData, bool value) : base(metaData, new PrimaryType(metaData, BoolType)) =>
 			Value = value;
 
 		public override IEnumerable<string> Dump() => new[] {$"bool literal expression [{Value}]:\n"};
@@ -75,7 +73,7 @@ namespace bCC
 		private readonly string _debugRepresentation;
 
 		public StringLiteralExpression(MetaData metaData, string value) : base(metaData,
-			new PrimaryType(MetaData.Empty, "string"))
+			new PrimaryType(MetaData.Empty, StringType))
 		{
 			Value = value;
 			// FEATURE #23
@@ -113,7 +111,7 @@ namespace bCC
 			var retType = Body.Statements.Last() is ReturnStatement ret
 				? ret.Expression.GetExpressionType()
 				// FEATURE #19
-				: new PrimaryType(MetaData, "nulltype");
+				: new PrimaryType(MetaData, NullType);
 			_type = new LambdaType(MetaData, ParameterList.Select(i => i.Type).ToList(), retType);
 		}
 

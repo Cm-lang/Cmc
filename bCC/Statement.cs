@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 using static System.StringComparison;
+using static bCC.PrimaryType;
 
 namespace bCC
 {
@@ -81,7 +81,7 @@ namespace bCC
 			var rhs = RhsExpression.GetExpressionType();
 			// FEATURE #14
 			// FEATURE #11
-			if (!string.Equals(rhs.Name, "nulltype", Ordinal) &&
+			if (!string.Equals(rhs.Name, NullType, Ordinal) &&
 			    !string.Equals(lhs.Name, rhs.Name, Ordinal))
 				Errors.Add($"{MetaData.GetErrorHeader()}assigning a {rhs} to a {lhs} is invalid.");
 			// FEATURE #20

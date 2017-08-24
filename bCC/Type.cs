@@ -22,6 +22,9 @@ namespace bCC
 		}
 
 		public override IEnumerable<string> Dump() => new[] {$"primary type [{Name}]\n"};
+		public static readonly string StringType = "string";
+		public static readonly string NullType = "nulltype";
+		public static readonly string BoolType = "bool";
 	}
 
 	/// <summary>

@@ -1,7 +1,6 @@
 ﻿using System;
 using bCC;
 using NUnit.Framework;
-using NUnit.Framework.Internal.Commands;
 using Environment = bCC.Environment;
 
 namespace bCC_Test

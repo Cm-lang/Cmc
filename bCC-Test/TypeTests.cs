@@ -2,6 +2,7 @@
 using System.Linq;
 using bCC;
 using NUnit.Framework;
+using static bCC.PrimaryType;
 using Environment = bCC.Environment;
 
 namespace bCC_Test
@@ -29,7 +30,7 @@ namespace bCC_Test
 			Assert.AreEqual("u64", example.Type.Name);
 			example = new StringLiteralExpression(MetaData.Empty, "\"boy \\ next \\ door\n\t\"");
 			example.PrintDumpInfo();
-			Assert.AreEqual("string", example.Type.Name);
+			Assert.AreEqual(StringType, example.Type.Name);
 		}
 
 		/// <summary>
@@ -65,7 +66,7 @@ namespace bCC_Test
 			example.SurroundWith(new Environment());
 			example.PrintDumpInfo();
 			// ReSharper disable once PossibleNullReferenceException
-			Assert.AreEqual(NullExpression.NullType,
+			Assert.AreEqual(NullType,
 				(example.Statements.Last() as ExpressionStatement).Expression.GetExpressionType().ToString());
 		}
 
