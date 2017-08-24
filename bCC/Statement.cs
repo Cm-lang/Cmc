@@ -18,7 +18,7 @@ namespace bCC
 		public override void SurroundWith(Environment environment)
 		{
 			base.SurroundWith(environment);
-			Expression.Env = Env;
+			Expression.SurroundWith(Env);
 		}
 
 		[NotNull] public readonly Expression Expression;
@@ -26,7 +26,7 @@ namespace bCC
 
 		public override IEnumerable<string> Dump() =>
 			new[] {"expression statement:\n"}
-				.Concat(Expression.Dump().Select(i => "  " + i));
+				.Concat(Expression.Dump().Select(MapFunc));
 	}
 
 	public class ReturnStatement : ExpressionStatement
@@ -37,7 +37,7 @@ namespace bCC
 
 		public override IEnumerable<string> Dump() =>
 			new[] {"return statement:\n"}
-				.Concat(Expression.Dump().Select(i => "  " + i));
+				.Concat(Expression.Dump().Select(MapFunc));
 	}
 
 	public class StatementList : Statement
@@ -51,10 +51,10 @@ namespace bCC
 			// FEATURE #4
 			foreach (var statement in Statements)
 				if (!(statement is Declaration declaration))
-					statement.Env = env;
+					statement.SurroundWith(env);
 				else
 				{
-					statement.Env = env;
+					statement.SurroundWith(env);
 					env = new Environment(env);
 					env.Declarations.Add(declaration);
 				}
@@ -73,8 +73,8 @@ namespace bCC
 		public override void SurroundWith(Environment environment)
 		{
 			base.SurroundWith(environment);
-			LhsExpression.Env = Env;
-			RhsExpression.Env = Env;
+			LhsExpression.SurroundWith(Env);
+			RhsExpression.SurroundWith(Env);
 			var lhs = LhsExpression.GetExpressionType();
 			var rhs = RhsExpression.GetExpressionType();
 			// FEATURE #14
@@ -102,13 +102,13 @@ namespace bCC
 		public override void SurroundWith(Environment environment)
 		{
 			base.SurroundWith(environment);
-			Condition.Env = Env;
+			Condition.SurroundWith(Env);
 			// FEATURE #16
 			var conditionType = Condition.GetExpressionType().Name;
 			if (!string.Equals(conditionType, "bool", Ordinal))
 				Errors.Add(MetaData.GetErrorHeader() + "expected a bool as the \"while\" statement's condition, found " +
 				           conditionType);
-			OkStatementList.Env = new Environment(Env);
+			OkStatementList.SurroundWith(new Environment(Env));
 		}
 
 		public WhileStatement(
@@ -125,9 +125,9 @@ namespace bCC
 				"while statement:\n",
 				"  condition:\n"
 			}
-			.Concat(Condition.Dump().Select(MapFunc).Select(MapFunc))
+			.Concat(Condition.Dump().Select(MapFunc2))
 			.Concat(new[] {"  body:\n"})
-			.Concat(OkStatementList.Dump().Select(MapFunc).Select(MapFunc));
+			.Concat(OkStatementList.Dump().Select(MapFunc2));
 	}
 
 	public class IfStatement : WhileStatement
@@ -137,14 +137,14 @@ namespace bCC
 		public override void SurroundWith(Environment environment)
 		{
 			base.SurroundWith(environment);
-			Condition.Env = Env;
+			Condition.SurroundWith(Env);
 			// FEATURE #1
 			var conditionType = Condition.GetExpressionType().Name;
 			if (!string.Equals(conditionType, "bool", Ordinal))
 				Errors.Add(MetaData.GetErrorHeader() + "expected a bool as the \"if\" statement's condition, found " +
 				           conditionType);
-			OkStatementList.Env = new Environment(Env);
-			ElseStatementList.Env = new Environment(Env);
+			OkStatementList.SurroundWith(new Environment(Env));
+			ElseStatementList.SurroundWith(new Environment(Env));
 			// FEATURE #17
 			if (!(Condition is BoolLiteralExpression boolean)) return;
 			if (boolean.Value) ElseStatementList.Statements = new List<Statement>();
@@ -166,10 +166,10 @@ namespace bCC
 				"if statement:\n",
 				"  condition:\n"
 			}
-			.Concat(Condition.Dump().Select(MapFunc).Select(MapFunc))
+			.Concat(Condition.Dump().Select(MapFunc2))
 			.Concat(new[] {"  true branch:\n"})
-			.Concat(OkStatementList.Dump().Select(MapFunc).Select(MapFunc))
+			.Concat(OkStatementList.Dump().Select(MapFunc2))
 			.Concat(new[] {"  false branch:\n"})
-			.Concat(ElseStatementList.Dump().Select(MapFunc).Select(MapFunc));
+			.Concat(ElseStatementList.Dump().Select(MapFunc2));
 	}
 }

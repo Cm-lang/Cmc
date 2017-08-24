@@ -78,7 +78,7 @@ namespace bCC
 		public override void SurroundWith(Environment environment)
 		{
 			base.SurroundWith(environment);
-			Body.Env = Env;
+			Body.SurroundWith(Env);
 			// FEATURE #12
 			_type = Body.Statements.Last() is ReturnStatement ret
 				? ret.Expression.GetExpressionType()
@@ -112,7 +112,7 @@ namespace bCC
 				"variable expression [" + Name + "]:\n",
 				"  type:\n"
 			}
-			.Concat(_type.Dump().Select(MapFunc).Select(MapFunc));
+			.Concat(_type.Dump().Select(MapFunc2));
 	}
 
 	public class FunctionCallExpression : AtomicExpression
@@ -120,14 +120,13 @@ namespace bCC
 		public override void SurroundWith(Environment environment)
 		{
 			base.SurroundWith(environment);
-			Receiver.Env = Env;
-			foreach (var expression in ParameterList) expression.Env = Env;
+			Receiver.SurroundWith(Env);
+			foreach (var expression in ParameterList) expression.SurroundWith(Env);
 			// TODO check parameter type
 			var hisType = Receiver.GetExpressionType();
 			if (hisType is LambdaType lambdaType) _type = lambdaType.RetType;
 			else
 				Errors.Add(MetaData.GetErrorHeader() + "the function call receiver shoule be a function, not " + hisType + ".");
-			foreach (var expression in ParameterList) expression.Env = Env;
 		}
 
 		[NotNull] public readonly Expression Receiver;
@@ -149,9 +148,9 @@ namespace bCC
 				"function call expression:\n",
 				"  receiver:\n"
 			}
-			.Concat(Receiver.Dump().Select(MapFunc).Select(MapFunc))
+			.Concat(Receiver.Dump().Select(MapFunc2))
 			.Concat(new[] {"  parameters:\n"})
-			.Concat(ParameterList.SelectMany(i => i.Dump().Select(MapFunc).Select(MapFunc)))
+			.Concat(ParameterList.SelectMany(i => i.Dump().Select(MapFunc2)))
 			.Concat(new[] {"  type:\n"})
 			.Concat(_type.Dump().Select(MapFunc));
 	}

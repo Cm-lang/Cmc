@@ -1,6 +1,4 @@
-﻿using bCC;
-
-namespace bCC_Test
+﻿namespace bCC_Test
 {
 	internal class Program
 	{

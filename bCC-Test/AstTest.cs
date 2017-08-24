@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Linq;
+using bCC;
 using NUnit.Framework;
+using Environment = bCC.Environment;
 
-namespace bCC
+namespace bCC_Test
 {
 	[TestFixture]
 	public class AstTest

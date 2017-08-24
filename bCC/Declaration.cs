@@ -21,7 +21,20 @@ namespace bCC
 	{
 		public readonly bool Mutability;
 		[NotNull] public readonly Expression Expression;
-		[NotNull] public readonly Type Type;
+		public Type Type;
+
+		public override void SurroundWith(Environment environment)
+		{
+			base.SurroundWith(environment);
+			Expression.SurroundWith(Env);
+			var exprType = Expression.GetExpressionType();
+			// FEATURE #8
+			Type = Type ?? exprType;
+			// FEATURE #11
+			if (!string.Equals(Type.Name, NullExpression.NullType, Ordinal) && Type != exprType)
+				// FEATURE #9
+				Errors.Add(MetaData.GetErrorHeader() + "type mismatch, expected: " + Type.Name + ", actual: " + exprType);
+		}
 
 		public VariableDeclaration(
 			MetaData metaData,
@@ -32,14 +45,7 @@ namespace bCC
 			base(metaData, name)
 		{
 			Expression = expression ?? new NullExpression(MetaData);
-			Expression.Env = Env;
-			var exprType = Expression.GetExpressionType();
-			// FEATURE #8
-			Type = type ?? exprType;
-			// FEATURE #11
-			if (!string.Equals(Type.Name, NullExpression.NullType, Ordinal) && Type != exprType)
-				// FEATURE #9
-				Errors.Add(metaData.GetErrorHeader() + "type mismatch, expected: " + Type.Name + ", actual: " + exprType);
+			Type = type;
 			Mutability = isMutable;
 		}
 
