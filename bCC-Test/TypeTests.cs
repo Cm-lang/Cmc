@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using bCC;
 using NUnit.Framework;
 using static bCC.PrimaryType;
 using Environment = bCC.Environment;
+using Type = bCC.Type;
 
 namespace bCC_Test
 {
@@ -104,6 +106,13 @@ namespace bCC_Test
 			example = new StringLiteralExpression(MetaData.Empty, "\"boy \\ next \\ door\n\t\"");
 			example.PrintDumpInfo();
 			Assert.AreEqual(StringType, example.Type.ToString());
+			var type = new SecondaryType(MetaData.Empty, "vec", new List<Type>(new[]
+			{
+				new PrimaryType(MetaData.Empty, "i8"),
+				example.Type
+			}));
+			type.SurroundWith(new Environment());
+			type.PrintDumpInfo();
 		}
 	}
 }

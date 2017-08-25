@@ -18,7 +18,7 @@ and you see the result.
 
 + [X] primitive types with name (#0)
 + [X] function type, consisting of the parameters' types and the return type (#6)
-+ [X] types with single type parameter (#7)
++ [X] types with multiple type parameter (#7)
 + [X] infer function's return type from the return statements (#12) (tested)
 + [X] infer variable's type by the assignment expression (#8) (tested)
 + [X] `nulltype` can be assigned to variables with any type (#11) (tested)
@@ -51,6 +51,10 @@ and you see the result.
 + [X] when condition is constant value, delete redundant branch (#17)
 + [ ] if as expression (extra)
 
+## int
+
++ [X] only 8, 16, 32, 64 are valid length (#26)
+
 ## while
 
 + [X] check for condition type (#16)
@@ -66,3 +70,11 @@ and you see the result.
 
 + [X] display compilation information (#15)
 + [X] pretty print strings (#23)
+
+<br/><br/><br/><br/><br/>
+
+### Features given up
+
+Those features will never be available.
+
++ types with single type parameter

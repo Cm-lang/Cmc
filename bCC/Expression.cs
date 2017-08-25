@@ -50,10 +50,18 @@ namespace bCC
 
 	public class IntLiteralExpression : LiteralExpression
 	{
+		public static readonly int[] AcceptableLength = {8, 16, 32, 64};
+
 		[NotNull] public readonly string Value;
 
 		public IntLiteralExpression(MetaData metaData, [NotNull] string value, bool isSigned, int length = 32)
-			: base(metaData, new PrimaryType(metaData, $"{(isSigned ? "i" : "u")}{length}")) => Value = value;
+			: base(metaData, new PrimaryType(metaData, $"{(isSigned ? "i" : "u")}{length}"))
+		{
+			Value = value;
+			// FEATURE #26
+			if (!AcceptableLength.Contains(length))
+				Errors.Add($"{MetaData.GetErrorHeader()}integer length of {length} is not supported");
+		}
 
 		public override IEnumerable<string> Dump() => new[] {$"literal expression [{Value}]:\n"}
 			.Concat(Type.Dump().Select(MapFunc));

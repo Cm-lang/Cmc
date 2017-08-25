@@ -40,10 +40,10 @@ namespace bCC
 	/// </summary>
 	public class SecondaryType : Type
 	{
-		[NotNull] public readonly Type Container;
-		[NotNull] public readonly Type Parameter;
+		[NotNull] public readonly string Container;
+		[NotNull] public readonly IList<Type> Parameter;
 
-		public SecondaryType(MetaData metaData, [NotNull] Type container, [NotNull] Type parameter) :
+		public SecondaryType(MetaData metaData, [NotNull] string container, [NotNull] IList<Type> parameter) :
 			base(metaData)
 		{
 			Container = container;
@@ -53,26 +53,25 @@ namespace bCC
 		public override void SurroundWith(Environment environment)
 		{
 			base.SurroundWith(environment);
-			Container.SurroundWith(Env);
-			Parameter.SurroundWith(Env);
+			foreach (var type in Parameter) type.SurroundWith(Env);
 		}
 
 		[NotNull]
-		public static string SecondaryTypeToString([NotNull] Type args, [NotNull] Type ret) => $"{args}<{ret}>";
+		public static string SecondaryTypeToString([NotNull] string args, [NotNull] IList<Type> ret) =>
+			$"{args}<{string.Join(", ", ret)}>";
 
 		public override string ToString() => SecondaryTypeToString(Container, Parameter);
 
 		public override bool Equals(object obj) =>
-			obj is SecondaryType type && Equals(type.Container, Container) && Equals(type.Parameter, Parameter);
+			obj is SecondaryType type && string.Equals(type.Container, Container, Ordinal) && Equals(type.Parameter, Parameter);
 
 		public override IEnumerable<string> Dump() => new[]
 			{
 				"secondary type:\n",
-				"  container type:\n"
+				$"  container type [{Container}]\n"
 			}
-			.Concat(Container.Dump().Select(MapFunc).Select(MapFunc))
-			.Concat(new[] {"  parameter type:\n"})
-			.Concat(Parameter.Dump().Select(MapFunc).Select(MapFunc));
+			.Concat(new[] {"  parameter type list:\n"})
+			.Concat(Parameter.SelectMany(i => i.Dump().Select(MapFunc2)));
 	}
 
 	/// <summary>
