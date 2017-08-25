@@ -106,11 +106,7 @@ namespace bCC_Test
 			example = new StringLiteralExpression(MetaData.Empty, "\"boy \\ next \\ door\n\t\"");
 			example.PrintDumpInfo();
 			Assert.AreEqual(StringType, example.Type.ToString());
-			var type = new SecondaryType(MetaData.Empty, "vec", new List<Type>(new[]
-			{
-				new PrimaryType(MetaData.Empty, "i8"),
-				example.Type
-			}));
+			var type = new SecondaryType(MetaData.Empty, "vec", new PrimaryType(MetaData.Empty, "i8"), example.Type);
 			type.SurroundWith(new Environment());
 			type.PrintDumpInfo();
 		}

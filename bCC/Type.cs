@@ -43,7 +43,10 @@ namespace bCC
 		[NotNull] public readonly string Container;
 		[NotNull] public readonly IList<Type> Parameter;
 
-		public SecondaryType(MetaData metaData, [NotNull] string container, [NotNull] IList<Type> parameter) :
+		public SecondaryType(
+			MetaData metaData,
+			[NotNull] string container,
+			[NotNull] params Type[] parameter) :
 			base(metaData)
 		{
 			Container = container;

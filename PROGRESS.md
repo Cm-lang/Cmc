@@ -54,6 +54,8 @@ and you see the result.
 ## int
 
 + [X] only 8, 16, 32, 64 are valid length (#26)
++ [X] signed and unsigned (#27)
++ [ ] check value is valid
 
 ## while
 

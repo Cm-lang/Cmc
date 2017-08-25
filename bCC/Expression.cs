@@ -54,7 +54,12 @@ namespace bCC
 
 		[NotNull] public readonly string Value;
 
-		public IntLiteralExpression(MetaData metaData, [NotNull] string value, bool isSigned, int length = 32)
+		public IntLiteralExpression(
+			MetaData metaData,
+			[NotNull] string value,
+			// FEATURE #27
+			bool isSigned,
+			int length = 32)
 			: base(metaData, new PrimaryType(metaData, $"{(isSigned ? "i" : "u")}{length}"))
 		{
 			Value = value;
