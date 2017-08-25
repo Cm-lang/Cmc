@@ -12,3 +12,8 @@ Travis CI|
 [![license](https://img.shields.io/github/license/bC-Programming-Language-StandardCouncil/bC-Compiler.svg)](https://github.com/bC-Programming-Language-StandardCouncil/bC-Compiler)
 
 The compiler for bC-language.
+
+bC is a statically typed native language.
+It doesn't have subtyping, it organize data with structs and methods.
+
+Maybe there will be an optional H-M type system, and hole-oriented programming (like Idris).
