@@ -13,6 +13,7 @@ namespace bCC
 		}
 
 		public virtual IEnumerable<ReturnStatement> FindReturnStatements() => new List<ReturnStatement>();
+		public virtual IEnumerable<JumpStatement> FindJumpStatements() => new List<JumpStatement>();
 
 		public override IEnumerable<string> Dump() => new[] {"empty statement"};
 	}
@@ -37,7 +38,10 @@ namespace bCC
 	{
 		public LambdaExpression WhereToJump;
 
-		public ReturnStatement(MetaData metaData, Expression expression) : base(metaData, expression)
+		public ReturnStatement(
+			MetaData metaData,
+			[CanBeNull] Expression expression = null)
+			: base(metaData, expression ?? new NullExpression(metaData))
 		{
 		}
 
@@ -45,6 +49,23 @@ namespace bCC
 			.Concat(Expression.Dump().Select(MapFunc));
 
 		public override IEnumerable<ReturnStatement> FindReturnStatements() => new[] {this};
+	}
+
+	/// <summary>
+	/// FEATURE #25
+	/// </summary>
+	public class JumpStatement : Statement
+	{
+		public enum Jump
+		{
+			Break,
+			Continue
+		}
+
+		public readonly Jump JumpKind;
+
+		public JumpStatement(MetaData metaData, Jump jumpKind) : base(metaData) => JumpKind = jumpKind;
+		public override IEnumerable<JumpStatement> FindJumpStatements() => new[] {this};
 	}
 
 	public class StatementList : Statement
@@ -71,6 +92,9 @@ namespace bCC
 
 		public override IEnumerable<ReturnStatement> FindReturnStatements() =>
 			Statements.SelectMany(i => i.FindReturnStatements());
+
+		public override IEnumerable<JumpStatement> FindJumpStatements() =>
+			Statements.SelectMany(i => i.FindJumpStatements());
 
 		public override IEnumerable<string> Dump() => Statements.Count == 0
 			? new[] {"empty statement list\n"}
@@ -154,6 +178,9 @@ namespace bCC
 		public override IEnumerable<ReturnStatement> FindReturnStatements() =>
 			OkStatementList.FindReturnStatements();
 
+		public override IEnumerable<JumpStatement> FindJumpStatements() =>
+			OkStatementList.FindJumpStatements();
+
 		public override IEnumerable<string> Dump() => new[]
 			{
 				"while statement:\n",
@@ -206,6 +233,9 @@ namespace bCC
 
 		public override IEnumerable<ReturnStatement> FindReturnStatements() =>
 			OkStatementList.FindReturnStatements().Concat(ElseStatementList.FindReturnStatements());
+
+		public override IEnumerable<JumpStatement> FindJumpStatements() =>
+			OkStatementList.FindJumpStatements().Concat(ElseStatementList.FindJumpStatements());
 
 		public override IEnumerable<string> Dump() => new[]
 			{

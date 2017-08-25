@@ -41,7 +41,7 @@ and you see the result.
 + [ ] overloading
 + [X] the return type should be inferred, or `nulltype` (#19)
 + [X] return statements' types should be same (#24) (tested)
-+ [ ] return statement exhaustiveness check
++ [ ] return statement exhaustiveness check (extra)
 + [X] defaultly no parameter (#22)
 
 ## if
@@ -55,6 +55,7 @@ and you see the result.
 
 + [X] check for condition type (#16)
 + [ ] do while
++ [X] jump statements (#25)
 
 ## errors
 
