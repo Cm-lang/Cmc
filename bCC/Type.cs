@@ -7,7 +7,6 @@ using static System.StringComparison;
 
 namespace bCC
 {
-
 	public abstract class Type : Ast
 	{
 		protected Type(MetaData metaData) : base(metaData)
@@ -45,40 +44,24 @@ namespace bCC
 	public class SecondaryType : Type
 	{
 		[NotNull] public readonly string Container;
-		[NotNull] public readonly IList<Type> Parameter;
+		[NotNull] public readonly StructDeclaration Struct;
 
 		public SecondaryType(
 			MetaData metaData,
 			[NotNull] string container,
-			[NotNull] params Type[] parameter) :
+			[NotNull] StructDeclaration @struct) :
 			base(metaData)
 		{
 			Container = container;
-			Parameter = parameter;
+			Struct = @struct;
 		}
 
-		public override void SurroundWith(Environment environment)
-		{
-			base.SurroundWith(environment);
-			foreach (var type in Parameter) type.SurroundWith(Env);
-		}
-
-		[NotNull]
-		public static string SecondaryTypeToString([NotNull] string args, [NotNull] IList<Type> ret) =>
-			$"{args}<{string.Join(", ", ret)}>";
-
-		public override string ToString() => SecondaryTypeToString(Container, Parameter);
+		public override string ToString() => Container;
 
 		public override bool Equals(object obj) =>
-			obj is SecondaryType type && string.Equals(type.Container, Container, Ordinal) && Equals(type.Parameter, Parameter);
+			obj is SecondaryType type && string.Equals(type.Container, Container, Ordinal);
 
-		public override IEnumerable<string> Dump() => new[]
-			{
-				"secondary type:\n",
-				$"  container type [{Container}]\n"
-			}
-			.Concat(new[] {"  parameter type list:\n"})
-			.Concat(Parameter.SelectMany(i => i.Dump().Select(MapFunc2)));
+		public override IEnumerable<string> Dump() => new[] {"secondary type[{Container}]:\n"};
 	}
 
 	/// <summary>

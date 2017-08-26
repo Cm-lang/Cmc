@@ -73,7 +73,7 @@ namespace bCC
 			: base(metaData, name) => Type = type;
 	}
 
-	public class SctructDeclaration : Declaration
+	public class StructDeclaration : Declaration
 	{
 		public readonly IList<VariableDeclaration> FieldList;
 		public readonly Type Type;
@@ -90,14 +90,14 @@ namespace bCC
 			}
 		}
 
-		public SctructDeclaration(
+		public StructDeclaration(
 			MetaData metaData,
 			[NotNull] string name,
 			[NotNull] IList<VariableDeclaration> fieldList) :
 			base(metaData, name)
 		{
 			FieldList = fieldList;
-			Type = new PrimaryType();
+			Type = new SecondaryType(metaData, name, this);
 		}
 	}
 
