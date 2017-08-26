@@ -9,7 +9,7 @@ namespace bCC
 {
 	public class Environment
 	{
-		public static readonly Environment TopEnvironment = new Func<Environment>(() =>
+		public static readonly Environment Earth = new Func<Environment>(() =>
 		{
 			var ret = new Environment();
 			// Do something

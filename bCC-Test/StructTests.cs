@@ -19,7 +19,7 @@ namespace bCC_Test
 				})),
 				new VariableDeclaration(MetaData.Empty, "var", type:
 					new UnknownType(MetaData.Empty, "Person")));
-			@struct.SurroundWith(Environment.TopEnvironment);
+			@struct.SurroundWith(Environment.Earth);
 			@struct.PrintDumpInfo();
 			var a = (VariableDeclaration) @struct.Statements.Last();
 			Assert.AreEqual("Person", a.Type.ToString());
