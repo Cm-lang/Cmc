@@ -20,18 +20,19 @@ and you see the result.
 
 ## types
 
-+ [X] primitive types with name (#0)
++ [X] primitive types with name (#0) (tested)
 + [X] function type, consisting of the parameters' types and the return type (#6)
 + [X] types with multiple type parameter (#7)
 + [X] infer function's return type from the return statements (#12) (tested)
 + [X] infer variable's type by the assignment expression (#8) (tested)
-+ [X] resolve types defined in the context (unknown types) (#30)
++ [X] resolve types defined in the context (unknown types) (#30) (tested)
 + [X] `nulltype` can be assigned to variables with any type (#11) (tested)
 + [ ] an HM type system (extra)
 
-## contracting
+## contracting (extra)
 
-+ [ ] traits
++ [ ] traits or interfaces
++ [ ] generic with boundaries
 
 ## variables
 
@@ -47,7 +48,7 @@ and you see the result.
 + [ ] inline
 + [ ] inline lambda parameters
 + [X] check for parameter type (#32)
-+ [X] the return type should be inferred, or `nulltype` (#19)
++ [X] the return type should be inferred, or `nulltype` (#19) (tested)
 + [X] return statements' types should be same (#24) (tested)
 + [ ] return statement exhaustiveness check (extra)
 + [X] defaultly no parameter (#22)

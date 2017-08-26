@@ -26,7 +26,10 @@ namespace bCC_Test
 							new VariableDeclaration(MetaData.Empty, "a", type:
 								new UnknownType(MetaData.Empty, "i8"))
 						}))),
-				new ExpressionStatement(MetaData.Empty,
+				new VariableDeclaration(MetaData.Empty, "gg", type:
+					new UnknownType(MetaData.Empty, "i8")),
+				new AssignmentStatement(MetaData.Empty,
+					new VariableExpression(MetaData.Empty, "gg"),
 					new FunctionCallExpression(MetaData.Empty,
 						new VariableExpression(MetaData.Empty, "id"),
 						new List<Expression>(new[] {new IntLiteralExpression(MetaData.Empty, "1", true)}))));
@@ -50,7 +53,10 @@ namespace bCC_Test
 							new VariableDeclaration(MetaData.Empty, "a", type:
 								new UnknownType(MetaData.Empty, "i8"))
 						}))),
-				new ExpressionStatement(MetaData.Empty,
+				new VariableDeclaration(MetaData.Empty, "gg", isMutable: true, type:
+					new UnknownType(MetaData.Empty, "i8")),
+				new AssignmentStatement(MetaData.Empty,
+					new VariableExpression(MetaData.Empty, "gg"),
 					new FunctionCallExpression(MetaData.Empty,
 						new VariableExpression(MetaData.Empty, "id"),
 						new List<Expression>(new[] {new IntLiteralExpression(MetaData.Empty, "233", true, 8)}))));

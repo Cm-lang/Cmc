@@ -12,7 +12,7 @@ namespace bCC
 		public static readonly Environment Earth = new Func<Environment>(() =>
 		{
 			var ret = new Environment();
-			// Do something
+			// FEATURE #0
 			foreach (var typeDeclaration in new[]
 					{"i8", "i16", "i32", "i64", "u8", "u16", "u32", "u64", StringType, NullType, BoolType}
 				.Select(i => new TypeDeclaration(MetaData.BuiltIn, i, new PrimaryType(MetaData.BuiltIn, i))))
