@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 namespace bCC
 {
 	/// <summary>
-	///  errors
+	///   errors
 	/// </summary>
 	public static class Errors
 	{
@@ -15,7 +15,7 @@ namespace bCC
 	}
 
 	/// <summary>
-	///  warnings
+	///   warnings
 	/// </summary>
 	public static class Warnings
 	{

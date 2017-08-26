@@ -9,8 +9,6 @@ namespace bCC
 {
 	public class Environment
 	{
-		[NotNull] public readonly IList<Declaration> Declarations = new List<Declaration>();
-
 		public static readonly Environment TopEnvironment = new Func<Environment>(() =>
 		{
 			var ret = new Environment();
@@ -21,6 +19,8 @@ namespace bCC
 				ret.Declarations.Add(typeDeclaration);
 			return ret;
 		})();
+
+		[NotNull] public readonly IList<Declaration> Declarations = new List<Declaration>();
 
 		// FEATURE #18
 		[CanBeNull] public readonly Environment Outer;

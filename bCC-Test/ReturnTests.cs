@@ -29,6 +29,7 @@ namespace bCC_Test
 			block.PrintDumpInfo();
 			Assert.IsNotEmpty(Errors.ErrList);
 		}
+
 		[Test]
 		public void ReturnTest2()
 		{

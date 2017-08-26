@@ -26,7 +26,7 @@ namespace bCC
 		public UnknownType(MetaData metaData, [NotNull] string name) : base(metaData) => Name = name;
 
 		/// <summary>
-		/// FEATURE #30
+		///   FEATURE #30
 		/// </summary>
 		/// <returns>resolved type</returns>
 		/// <exception cref="CompilerException">if unresolved</exception>
@@ -114,7 +114,7 @@ namespace bCC
 	public class LambdaType : Type
 	{
 		[NotNull] public readonly IList<Type> ArgsList;
-		[NotNull] public readonly Type RetType;
+		[NotNull] public Type RetType;
 
 		public LambdaType(MetaData metaData, [NotNull] IList<Type> args, [NotNull] Type ret) :
 			base(metaData)
@@ -126,8 +126,14 @@ namespace bCC
 		public override void SurroundWith(Environment environment)
 		{
 			base.SurroundWith(environment);
-			foreach (var type in ArgsList) type.SurroundWith(Env);
+			for (var i = 0; i < ArgsList.Count; i++)
+			{
+				var type = ArgsList[i];
+				type.SurroundWith(Env);
+				if (type is UnknownType unknownType) ArgsList[i] = unknownType.Resolve();
+			}
 			RetType.SurroundWith(Env);
+			if (RetType is UnknownType wtf) RetType = wtf.Resolve();
 		}
 
 		public override string ToString() => LambdaTypeToString(ArgsList, RetType);

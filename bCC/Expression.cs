@@ -113,10 +113,10 @@ namespace bCC
 	/// </summary>
 	public class LambdaExpression : AtomicExpression
 	{
+		[CanBeNull] private readonly Type _declaredType;
 		[NotNull] public readonly StatementList Body;
 		[NotNull] public readonly IList<VariableDeclaration> ParameterList;
 		private Type _type;
-		[CanBeNull] private readonly Type _declaredType;
 
 		public LambdaExpression(
 			MetaData metaData,

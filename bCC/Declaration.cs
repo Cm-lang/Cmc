@@ -62,8 +62,8 @@ namespace bCC
 	}
 
 	/// <summary>
-	///  type aliases
-	///  TODO
+	///   type aliases
+	///   TODO
 	/// </summary>
 	public class TypeDeclaration : Declaration
 	{
@@ -81,6 +81,16 @@ namespace bCC
 		public readonly IList<VariableDeclaration> FieldList;
 		public readonly Type Type;
 
+		public StructDeclaration(
+			MetaData metaData,
+			[NotNull] string name,
+			[NotNull] IList<VariableDeclaration> fieldList) :
+			base(metaData, name)
+		{
+			FieldList = fieldList;
+			Type = new SecondaryType(metaData, name, this);
+		}
+
 		public override void SurroundWith(Environment environment)
 		{
 			base.SurroundWith(environment);
@@ -91,16 +101,6 @@ namespace bCC
 					Errors.Add(MetaData.GetErrorHeader() + "type recursive!");
 				variableDeclaration.SurroundWith(internalEnv);
 			}
-		}
-
-		public StructDeclaration(
-			MetaData metaData,
-			[NotNull] string name,
-			[NotNull] IList<VariableDeclaration> fieldList) :
-			base(metaData, name)
-		{
-			FieldList = fieldList;
-			Type = new SecondaryType(metaData, name, this);
 		}
 	}
 
