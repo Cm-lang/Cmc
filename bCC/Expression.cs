@@ -134,6 +134,8 @@ namespace bCC
 		public override void SurroundWith(Environment environment)
 		{
 			base.SurroundWith(environment);
+			foreach (var variableDeclaration in ParameterList)
+				variableDeclaration.SurroundWith(Env);
 			var bodyEnv = new Environment(Env);
 			foreach (var variableDeclaration in ParameterList)
 				bodyEnv.Declarations.Add(variableDeclaration);
