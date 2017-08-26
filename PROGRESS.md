@@ -25,6 +25,7 @@ and you see the result.
 + [X] types with multiple type parameter (#7)
 + [X] infer function's return type from the return statements (#12) (tested)
 + [X] infer variable's type by the assignment expression (#8) (tested)
++ [X] resolve types defined in the context (unknown types) (#30)
 + [X] `nulltype` can be assigned to variables with any type (#11) (tested)
 + [ ] an HM type system (extra)
 

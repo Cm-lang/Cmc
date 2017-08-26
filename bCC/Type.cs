@@ -25,12 +25,17 @@ namespace bCC
 		[NotNull] public readonly string Name;
 		public UnknownType(MetaData metaData, [NotNull] string name) : base(metaData) => Name = name;
 
+		/// <summary>
+		/// FEATURE #30
+		/// </summary>
+		/// <returns>resolved type</returns>
+		/// <exception cref="CompilerException">if unresolved</exception>
 		public Type Resolve()
 		{
 			var declaration = Env.FindDeclarationByName(Name);
 			if (null == declaration) Gg();
-			var ret = declaration as TypeDeclaration;
-			if (null != ret) return ret.Type;
+			if (declaration is TypeDeclaration typeDeclaration) return typeDeclaration.Type;
+			if (declaration is StructDeclaration structDeclaration) return structDeclaration.Type;
 			Errors.Add(MetaData.GetErrorHeader() + Name + " is not a type");
 			throw new CompilerException();
 		}

@@ -18,7 +18,8 @@ namespace bCC_Test
 					new VariableDeclaration(MetaData.Empty, "gender", new IntLiteralExpression(MetaData.Empty, "123", false))
 				})),
 				new VariableDeclaration(MetaData.Empty, "var", type:
-					new SecondaryType(MetaData.Empty, "Person")));
+					new UnknownType(MetaData.Empty, "Person")));
+			@struct.SurroundWith(Environment.TopEnvironment);
 			@struct.PrintDumpInfo();
 			var a = (VariableDeclaration) @struct.Statements.Last();
 			Assert.AreEqual("Person", a.Type.ToString());

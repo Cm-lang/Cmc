@@ -40,6 +40,9 @@ namespace bCC
 			var exprType = Expression.GetExpressionType();
 			// FEATURE #8
 			Type = Type ?? exprType;
+			// FEATURE #30
+			Type.SurroundWith(Env);
+			if (Type is UnknownType unknownType) Type = unknownType.Resolve();
 			// FEATURE #11
 			if (!string.Equals(Type.ToString(), PrimaryType.NullType, Ordinal) && !Equals(Type, exprType))
 				// FEATURE #9

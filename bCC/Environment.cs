@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 using static System.StringComparison;
+using static bCC.PrimaryType;
 
 namespace bCC
 {
@@ -14,6 +15,10 @@ namespace bCC
 		{
 			var ret = new Environment();
 			// Do something
+			foreach (var typeDeclaration in new[]
+					{"i8", "i16", "i32", "i64", "u8", "u16", "u32", "u64", StringType, NullType, BoolType}
+				.Select(i => new TypeDeclaration(MetaData.BuiltIn, i, new PrimaryType(MetaData.BuiltIn, i))))
+				ret.Declarations.Add(typeDeclaration);
 			return ret;
 		})();
 

@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using bCC;
 using NUnit.Framework;
 using static bCC.PrimaryType;
 using Environment = bCC.Environment;
-using Type = bCC.Type;
 
 namespace bCC_Test
 {
@@ -27,7 +25,7 @@ namespace bCC_Test
 				new VariableDeclaration(MetaData.Empty, varName,
 					new IntLiteralExpression(MetaData.Empty, "123", false, 8)),
 				new ExpressionStatement(MetaData.Empty, new VariableExpression(MetaData.Empty, varName)));
-			example.SurroundWith(new Environment());
+			example.SurroundWith(Environment.TopEnvironment);
 			example.PrintDumpInfo();
 			// ReSharper disable once PossibleNullReferenceException
 			Assert.AreEqual("u8", (example.Statements.Last() as ExpressionStatement).Expression.GetExpressionType().ToString());
@@ -45,7 +43,7 @@ namespace bCC_Test
 				new VariableDeclaration(MetaData.Empty, varName,
 					new NullExpression(MetaData.Empty)),
 				new ExpressionStatement(MetaData.Empty, new VariableExpression(MetaData.Empty, varName)));
-			example.SurroundWith(new Environment());
+			example.SurroundWith(Environment.TopEnvironment);
 			example.PrintDumpInfo();
 			Assert.AreEqual(NullType,
 				((ExpressionStatement) example.Statements.Last()).Expression.GetExpressionType().ToString());
@@ -63,9 +61,9 @@ namespace bCC_Test
 			var example = new StatementList(MetaData.Empty,
 				new VariableDeclaration(MetaData.Empty, varName,
 					new NullExpression(MetaData.Empty),
-					type: new PrimaryType(MetaData.Empty, "i8")),
+					type: new UnknownType(MetaData.Empty, "i8")),
 				new ExpressionStatement(MetaData.Empty, new VariableExpression(MetaData.Empty, varName)));
-			example.SurroundWith(new Environment());
+			example.SurroundWith(Environment.TopEnvironment);
 			Console.WriteLine(string.Join("", example.Dump()));
 			Assert.AreEqual("i8", ((ExpressionStatement) example.Statements.Last()).Expression.GetExpressionType().ToString());
 		}
@@ -81,7 +79,7 @@ namespace bCC_Test
 				new LambdaExpression(MetaData.Empty,
 					new StatementList(MetaData.Empty,
 						new ReturnStatement(MetaData.Empty, new IntLiteralExpression(MetaData.Empty, "0", true)))));
-			example.SurroundWith(new Environment());
+			example.SurroundWith(Environment.TopEnvironment);
 			example.PrintDumpInfo();
 			var type = (LambdaType) example.Type;
 			Assert.AreEqual("i32", type.RetType.ToString());
@@ -107,7 +105,7 @@ namespace bCC_Test
 			example.PrintDumpInfo();
 			Assert.AreEqual(StringType, example.Type.ToString());
 			// var type = new SecondaryType(MetaData.Empty, "vec", new PrimaryType(MetaData.Empty, "i8"), example.Type);
-			// type.SurroundWith(new Environment());
+			// type.SurroundWith(Environment.TopEnvironment);
 			// type.PrintDumpInfo();
 		}
 	}
