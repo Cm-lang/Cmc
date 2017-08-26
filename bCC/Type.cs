@@ -44,16 +44,22 @@ namespace bCC
 	public class SecondaryType : Type
 	{
 		[NotNull] public readonly string Container;
-		[NotNull] public readonly StructDeclaration Struct;
+		public StructDeclaration Struct;
 
 		public SecondaryType(
 			MetaData metaData,
 			[NotNull] string container,
-			[NotNull] StructDeclaration @struct) :
+			StructDeclaration @struct) :
 			base(metaData)
 		{
 			Container = container;
 			Struct = @struct;
+		}
+
+		public override void SurroundWith(Environment environment)
+		{
+			base.SurroundWith(environment);
+			if (Struct == null) Struct = Env.FindDeclarationByName(Container) as StructDeclaration;
 		}
 
 		public override string ToString() => Container;

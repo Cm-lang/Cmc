@@ -9,7 +9,7 @@ and you see the result.
 
 ## basic language features
 
-+ [X] type aliases (#28)
++ [ ] type aliases
 
 ## scoping
 

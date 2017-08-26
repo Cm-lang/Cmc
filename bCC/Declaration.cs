@@ -60,13 +60,13 @@ namespace bCC
 
 	/// <summary>
 	///  type aliases
-	///  FEATURE #28
+	///  TODO
 	/// </summary>
 	public class TypeDeclaration : Declaration
 	{
 		public readonly Type Type;
 
-		protected TypeDeclaration(
+		public TypeDeclaration(
 			MetaData metaData,
 			[NotNull] string name,
 			[NotNull] Type type)

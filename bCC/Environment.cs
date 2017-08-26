@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 using static System.StringComparison;
@@ -8,6 +9,13 @@ namespace bCC
 	public class Environment
 	{
 		[NotNull] public readonly IList<Declaration> Declarations = new List<Declaration>();
+
+		public static readonly Environment TopEnvironment = new Func<Environment>(() =>
+		{
+			var ret = new Environment();
+			// Do something
+			return ret;
+		})();
 
 		// FEATURE #18
 		[CanBeNull] public readonly Environment Outer;
