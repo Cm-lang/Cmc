@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using bCC.Expression;
 using JetBrains.Annotations;
 using static System.StringComparison;
 using static bCC.PrimaryType;
@@ -20,9 +21,9 @@ namespace bCC
 
 	public class ExpressionStatement : Statement
 	{
-		[NotNull] public readonly Expression Expression;
+		[NotNull] public readonly Expression.Expression Expression;
 
-		public ExpressionStatement(MetaData metaData, Expression expression) : base(metaData) => Expression = expression;
+		public ExpressionStatement(MetaData metaData, Expression.Expression expression) : base(metaData) => Expression = expression;
 
 		public override void SurroundWith(Environment environment)
 		{
@@ -40,7 +41,7 @@ namespace bCC
 
 		public ReturnStatement(
 			MetaData metaData,
-			[CanBeNull] Expression expression = null) :
+			[CanBeNull] Expression.Expression expression = null) :
 			base(metaData, expression ?? new NullExpression(metaData))
 		{
 		}
@@ -104,13 +105,13 @@ namespace bCC
 
 	public class AssignmentStatement : Statement
 	{
-		[NotNull] public readonly Expression LhsExpression;
-		[NotNull] public readonly Expression RhsExpression;
+		[NotNull] public readonly Expression.Expression LhsExpression;
+		[NotNull] public readonly Expression.Expression RhsExpression;
 
 		public AssignmentStatement(
 			MetaData metaData,
-			[NotNull] Expression lhsExpression,
-			[NotNull] Expression rhsExpression) :
+			[NotNull] Expression.Expression lhsExpression,
+			[NotNull] Expression.Expression rhsExpression) :
 			base(metaData)
 		{
 			LhsExpression = lhsExpression;
@@ -151,12 +152,12 @@ namespace bCC
 
 	public class WhileStatement : Statement
 	{
-		[NotNull] public readonly Expression Condition;
+		[NotNull] public readonly Expression.Expression Condition;
 		[NotNull] public StatementList OkStatementList;
 
 		public WhileStatement(
 			MetaData metaData,
-			[NotNull] Expression condition,
+			[NotNull] Expression.Expression condition,
 			[NotNull] StatementList okStatementList) : base(metaData)
 		{
 			Condition = condition;
@@ -198,7 +199,7 @@ namespace bCC
 
 		public IfStatement(
 			MetaData metaData,
-			[NotNull] Expression condition,
+			[NotNull] Expression.Expression condition,
 			[NotNull] StatementList ifStatementList,
 			[CanBeNull] StatementList elseStatementList = null) : base(metaData, condition, ifStatementList) =>
 			ElseStatementList = elseStatementList ?? new StatementList(MetaData);

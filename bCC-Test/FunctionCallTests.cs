@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using bCC;
+using bCC.Expression;
 using NUnit.Framework;
 using Environment = bCC.Environment;
 

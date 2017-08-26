@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using bCC;
+using bCC.Expression;
 using NUnit.Framework;
 
 namespace bCC_Test

@@ -37,7 +37,9 @@
     <Compile Include="Declaration.cs" />
     <Compile Include="Environment.cs" />
     <Compile Include="Errors.cs" />
-    <Compile Include="Expression.cs" />
+    <Compile Include="Expression\Expression.cs" />
+    <Compile Include="Expression\FunctionCallExpression.cs" />
+    <Compile Include="Expression\LambdaExpression.cs" />
     <Compile Include="MetaData.cs" />
     <Compile Include="Statement.cs" />
     <Compile Include="Template.cs" />

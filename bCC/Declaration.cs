@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using bCC.Expression;
 using JetBrains.Annotations;
 using static System.StringComparison;
 
@@ -16,14 +17,14 @@ namespace bCC
 
 	public sealed class VariableDeclaration : Declaration
 	{
-		[NotNull] public readonly Expression Expression;
+		[NotNull] public readonly Expression.Expression Expression;
 		public readonly bool Mutability;
 		public Type Type;
 
 		public VariableDeclaration(
 			MetaData metaData,
 			[NotNull] string name,
-			[CanBeNull] Expression expression = null,
+			[CanBeNull] Expression.Expression expression = null,
 			bool isMutable = false,
 			[CanBeNull] Type type = null) :
 			base(metaData, name)
