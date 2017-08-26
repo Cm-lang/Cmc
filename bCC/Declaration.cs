@@ -58,6 +58,47 @@ namespace bCC
 			.Concat(Expression.Dump().Select(MapFunc2));
 	}
 
+	public abstract class TypeDeclaration : Declaration
+	{
+		protected TypeDeclaration(
+			MetaData metaData,
+			[NotNull] string name)
+			: base(metaData, name)
+		{
+		}
+
+		public abstract Type ToType();
+	}
+
+	public class SctructDeclaration : Declaration
+	{
+		public readonly IList<VariableDeclaration> FieldList;
+		public readonly IList<TypeDeclaration> TypeParameters;
+
+		public override void SurroundWith(Environment environment)
+		{
+			base.SurroundWith(environment);
+			var internalEnv = new Environment(Env);
+			foreach (var typeDeclaration in TypeParameters) internalEnv.Declarations.Add(typeDeclaration);
+			foreach (var variableDeclaration in FieldList)
+			{
+				variableDeclaration.SurroundWith(Env);
+//				if (variableDeclaration.Type)
+			}
+		}
+
+		public SctructDeclaration(
+			MetaData metaData,
+			[NotNull] string name,
+			[NotNull] IList<VariableDeclaration> fieldList,
+			[NotNull] IList<TypeDeclaration> typeParameters) :
+			base(metaData, name)
+		{
+			TypeParameters = typeParameters;
+			FieldList = fieldList;
+		}
+	}
+
 	/// <summary>
 	///   Probably useless
 	/// </summary>

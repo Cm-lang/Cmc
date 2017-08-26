@@ -7,20 +7,6 @@ using static System.StringComparison;
 
 namespace bCC
 {
-	/// <summary>
-	/// TODO add trait
-	/// </summary>
-	public class Trait : Ast
-	{
-		public readonly string Name;
-		public readonly IList<LambdaType> Methods;
-
-		public Trait(MetaData metaData, string name, params LambdaType[] methods) : base(metaData)
-		{
-			Name = name;
-			Methods = methods;
-		}
-	}
 
 	public abstract class Type : Ast
 	{
