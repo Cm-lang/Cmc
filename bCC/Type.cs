@@ -45,13 +45,13 @@ namespace bCC
 		public override string ToString()
 		{
 			Gg();
-			throw new CompilerException();
+			throw new CompilerException("unknown type");
 		}
 
 		public override bool Equals(object obj)
 		{
 			Gg();
-			throw new CompilerException();
+			throw new CompilerException("unknown type");
 		}
 	}
 

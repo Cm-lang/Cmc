@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 using static bCC.PrimaryType;
@@ -133,7 +134,10 @@ namespace bCC
 		public override void SurroundWith(Environment environment)
 		{
 			base.SurroundWith(environment);
-			Body.SurroundWith(Env);
+			var bodyEnv = new Environment(Env);
+			foreach (var variableDeclaration in ParameterList)
+				bodyEnv.Declarations.Add(variableDeclaration);
+			Body.SurroundWith(bodyEnv);
 			var retTypes = Body.FindReturnStatements().Select(i =>
 			{
 				i.WhereToJump = this;

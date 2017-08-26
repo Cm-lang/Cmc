@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using bCC;
 using NUnit.Framework;
+using Environment = bCC.Environment;
 
 namespace bCC_Test
 {
@@ -27,6 +29,7 @@ namespace bCC_Test
 						new List<Expression>(new[] {new IntLiteralExpression(MetaData.Empty, "1", true)}))));
 			example.SurroundWith(Environment.Earth);
 			example.PrintDumpInfo();
+			Console.WriteLine(string.Join("\n", Errors.ErrList));
 		}
 	}
 }
