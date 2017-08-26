@@ -20,6 +20,36 @@ namespace bCC
 			list1.Where(list2.Contains).ToList();
 	}
 
+	public class UnknownType : Type
+	{
+		[NotNull] public readonly string Name;
+		public UnknownType(MetaData metaData, [NotNull] string name) : base(metaData) => Name = name;
+
+		public Type Resolve()
+		{
+			var declaration = Env.FindDeclarationByName(Name);
+			if (null == declaration) Gg();
+			var ret = declaration as TypeDeclaration;
+			if (null != ret) return ret.Type;
+			Errors.Add(MetaData.GetErrorHeader() + Name + " is not a type");
+			throw new CompilerException();
+		}
+
+		public void Gg() => Errors.Add($"{MetaData.GetErrorHeader()}unresolved type: {MetaData}");
+
+		public override string ToString()
+		{
+			Gg();
+			throw new CompilerException();
+		}
+
+		public override bool Equals(object obj)
+		{
+			Gg();
+			throw new CompilerException();
+		}
+	}
+
 	/// <summary>
 	///   FEATURE #0
 	/// </summary>
@@ -49,7 +79,7 @@ namespace bCC
 		public SecondaryType(
 			MetaData metaData,
 			[NotNull] string container,
-			StructDeclaration @struct) :
+			[CanBeNull] StructDeclaration @struct = null) :
 			base(metaData)
 		{
 			Container = container;
@@ -59,7 +89,10 @@ namespace bCC
 		public override void SurroundWith(Environment environment)
 		{
 			base.SurroundWith(environment);
-			if (Struct == null) Struct = Env.FindDeclarationByName(Container) as StructDeclaration;
+			if (null == Struct) Struct = Env.FindDeclarationByName(Container) as StructDeclaration;
+			if (null != Struct) return;
+			Errors.Add($"{MetaData.GetErrorHeader()}cannot resolve type {Container}");
+			throw new CompilerException();
 		}
 
 		public override string ToString() => Container;

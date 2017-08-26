@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using bCC;
 using NUnit.Framework;
 
@@ -18,6 +19,10 @@ namespace bCC_Test
 				})),
 				new VariableDeclaration(MetaData.Empty, "var", type:
 					new SecondaryType(MetaData.Empty, "Person")));
+			@struct.PrintDumpInfo();
+			var a = (VariableDeclaration) @struct.Statements.Last();
+			Assert.AreEqual("Person", a.Type.ToString());
+			Assert.IsTrue(a.Type is SecondaryType);
 		}
 	}
 }
