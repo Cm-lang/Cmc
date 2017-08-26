@@ -63,7 +63,7 @@ namespace bCC
 
 	/// <summary>
 	///   type aliases
-	///   TODO
+	///   FEATURE #31
 	/// </summary>
 	public class TypeDeclaration : Declaration
 	{

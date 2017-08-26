@@ -9,7 +9,7 @@ and you see the result.
 
 ## basic language features
 
-+ [ ] type aliases
++ [X] type aliases (#31)
 
 ## scoping
 
@@ -46,8 +46,7 @@ and you see the result.
 
 + [ ] inline
 + [ ] inline lambda parameters
-+ [ ] check for parameter type
-+ [ ] overloading
++ [X] check for parameter type (#32)
 + [X] the return type should be inferred, or `nulltype` (#19)
 + [X] return statements' types should be same (#24) (tested)
 + [ ] return statement exhaustiveness check (extra)
@@ -89,3 +88,4 @@ and you see the result.
 Those features will never be available.
 
 + types with single type parameter
++ overloading

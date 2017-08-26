@@ -253,11 +253,20 @@ namespace bCC
 			base.SurroundWith(environment);
 			Receiver.SurroundWith(Env);
 			foreach (var expression in ParameterList) expression.SurroundWith(Env);
-			// TODO check parameter type
-			var hisType = Receiver.GetExpressionType();
-			if (hisType is LambdaType lambdaType) _type = lambdaType.RetType;
+			var hisType = Receiver.GetExpressionType() as LambdaType;
+			if (null != hisType)
+			{
+				_type = hisType.RetType;
+				// FEATURE 
+				for (var i = 0; i < ParameterList.Count; i++)
+					if (!Equals(ParameterList[i].GetExpressionType(), hisType.ArgsList[i]))
+						Errors.Add($"{MetaData.GetErrorHeader()}type mismatch: expected {hisType.ArgsList[i]}, " +
+						           $"found {ParameterList[i].GetExpressionType()}");
+			}
 			else
-				Errors.Add($"{MetaData.GetErrorHeader()}the function call receiver shoule be a function, not {hisType}.");
+				Errors.Add(
+					$"{MetaData.GetErrorHeader()}the function call receiver shoule be a function," +
+					$" not {Receiver.GetExpressionType()}.");
 		}
 
 		public override Type GetExpressionType() => _type ?? throw new CompilerException();
