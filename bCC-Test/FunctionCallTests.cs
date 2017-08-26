@@ -9,6 +9,9 @@ namespace bCC_Test
 	[TestFixture]
 	public class FunctionCallTests
 	{
+		[SetUp]
+		public void Init() => Errors.ErrList.Clear();
+
 		[Test]
 		public void FuncCallTest1()
 		{
@@ -54,7 +57,7 @@ namespace bCC_Test
 			example.SurroundWith(Environment.Earth);
 			example.PrintDumpInfo();
 			Console.WriteLine(string.Join("\n", Errors.ErrList));
-			Assert.IsNotEmpty(Errors.ErrList);
+			Assert.IsEmpty(Errors.ErrList);
 		}
 	}
 }
