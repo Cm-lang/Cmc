@@ -221,7 +221,7 @@ namespace bCC
 				Errors.Add($"{MetaData.GetErrorHeader()}{declaration} isn't a variable");
 		}
 
-		public override Type GetExpressionType() => _type ?? throw new CompilerException();
+		public override Type GetExpressionType() => _type ?? throw new CompilerException("unknown type");
 
 		public override IEnumerable<string> Dump() => new[]
 			{
