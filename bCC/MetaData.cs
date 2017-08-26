@@ -17,7 +17,8 @@ namespace bCC
 		[NotNull]
 		public string GetErrorHeader() => $"Error in file {FileName} at line {LineNumber}: ";
 
-		public static readonly MetaData Empty = new MetaData(-1, "Unknown");
+		private static int _count;
+		public static readonly MetaData Empty = new MetaData(_count++, "Unknown");
 		public static readonly MetaData BuiltIn = new MetaData(-1, "[built-in]");
 	}
 }

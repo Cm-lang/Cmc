@@ -44,7 +44,7 @@ namespace bCC
 			Type.SurroundWith(Env);
 			if (Type is UnknownType unknownType) Type = unknownType.Resolve();
 			// FEATURE #11
-			if (!string.Equals(Type.ToString(), PrimaryType.NullType, Ordinal) && !Equals(Type, exprType))
+			if (!string.Equals(exprType.ToString(), PrimaryType.NullType, Ordinal) && !Equals(Type, exprType))
 				// FEATURE #9
 				Errors.Add($"{MetaData.GetErrorHeader()}type mismatch, expected: {Type}, actual: {exprType}");
 		}

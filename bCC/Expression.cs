@@ -288,7 +288,7 @@ namespace bCC
 				.Concat(new[] {"  parameters:\n"})
 				.Concat(ParameterList.SelectMany(i => i.Dump().Select(MapFunc2)))
 				.Concat(new[] {"  type:\n"})
-				.Concat(_type.Dump().Select(MapFunc));
+				.Concat(_type.Dump().Select(MapFunc2));
 		}
 	}
 }

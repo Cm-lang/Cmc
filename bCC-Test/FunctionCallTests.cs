@@ -30,6 +30,31 @@ namespace bCC_Test
 			example.SurroundWith(Environment.Earth);
 			example.PrintDumpInfo();
 			Console.WriteLine(string.Join("\n", Errors.ErrList));
+			Assert.IsNotEmpty(Errors.ErrList);
+		}
+
+		[Test]
+		public void FuncCallTest2()
+		{
+			var example = new StatementList(MetaData.Empty,
+				new VariableDeclaration(MetaData.Empty, "id",
+					new LambdaExpression(MetaData.Empty,
+						new StatementList(MetaData.Empty,
+							new ReturnStatement(MetaData.Empty,
+								new VariableExpression(MetaData.Empty, "a"))),
+						new List<VariableDeclaration>(new[]
+						{
+							new VariableDeclaration(MetaData.Empty, "a", type:
+								new UnknownType(MetaData.Empty, "i8"))
+						}))),
+				new ExpressionStatement(MetaData.Empty,
+					new FunctionCallExpression(MetaData.Empty,
+						new VariableExpression(MetaData.Empty, "id"),
+						new List<Expression>(new[] {new IntLiteralExpression(MetaData.Empty, "233", true, 8)}))));
+			example.SurroundWith(Environment.Earth);
+			example.PrintDumpInfo();
+			Console.WriteLine(string.Join("\n", Errors.ErrList));
+			Assert.IsNotEmpty(Errors.ErrList);
 		}
 	}
 }
