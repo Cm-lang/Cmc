@@ -7,6 +7,21 @@ using static System.StringComparison;
 
 namespace bCC
 {
+	/// <summary>
+	/// TODO add trait
+	/// </summary>
+	public class Trait : Ast
+	{
+		public readonly string Name;
+		public readonly IList<LambdaType> Methods;
+
+		public Trait(MetaData metaData, string name, params LambdaType[] methods) : base(metaData)
+		{
+			Name = name;
+			Methods = methods;
+		}
+	}
+
 	public abstract class Type : Ast
 	{
 		protected Type(MetaData metaData) : base(metaData)
@@ -15,6 +30,9 @@ namespace bCC
 
 		public abstract override string ToString();
 		public abstract override bool Equals(object obj);
+
+		public static IEnumerable<Type> FindCommon(IEnumerable<Type> list1, IEnumerable<Type> list2) =>
+			list1.Where(list2.Contains).ToList();
 	}
 
 	/// <summary>

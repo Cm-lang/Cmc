@@ -24,6 +24,10 @@ and you see the result.
 + [X] `nulltype` can be assigned to variables with any type (#11) (tested)
 + [ ] an HM type system (extra)
 
+## contracting
+
++ [ ] traits
+
 ## variables
 
 + [X] initialize variable with null or given expression (#13)

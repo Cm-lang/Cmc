@@ -41,7 +41,7 @@ namespace bCC
 			// FEATURE #8
 			Type = Type ?? exprType;
 			// FEATURE #11
-			if (!string.Equals(Type.ToString(), PrimaryType.NullType, Ordinal) && Type != exprType)
+			if (!string.Equals(Type.ToString(), PrimaryType.NullType, Ordinal) && !Equals(Type, exprType))
 				// FEATURE #9
 				Errors.Add($"{MetaData.GetErrorHeader()}type mismatch, expected: {Type}, actual: {exprType}");
 		}
