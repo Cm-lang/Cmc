@@ -40,6 +40,7 @@
     <Compile Include="Expression.cs" />
     <Compile Include="MetaData.cs" />
     <Compile Include="Statement.cs" />
+    <Compile Include="Template.cs" />
     <Compile Include="Type.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -38,7 +38,7 @@ and you see the result.
 + [X] check for mutability (#21)
 + [X] check for assignment type (#14) (tested)
 + [X] validate lhs (#20)
-+ [ ] check if member exist
++ [X] check if member exist (#29)
 + [ ] inline
 
 ## functions and lambdas

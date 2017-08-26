@@ -40,8 +40,8 @@ namespace bCC
 
 		public ReturnStatement(
 			MetaData metaData,
-			[CanBeNull] Expression expression = null)
-			: base(metaData, expression ?? new NullExpression(metaData))
+			[CanBeNull] Expression expression = null) :
+			base(metaData, expression ?? new NullExpression(metaData))
 		{
 		}
 
@@ -110,8 +110,8 @@ namespace bCC
 		public AssignmentStatement(
 			MetaData metaData,
 			[NotNull] Expression lhsExpression,
-			[NotNull] Expression rhsExpression)
-			: base(metaData)
+			[NotNull] Expression rhsExpression) :
+			base(metaData)
 		{
 			LhsExpression = lhsExpression;
 			RhsExpression = rhsExpression;

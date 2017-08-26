@@ -173,10 +173,13 @@ namespace bCC
 
 	public class MemberAccessExpression : AtomicExpression
 	{
-		[NotNull] public readonly Expression Member;
+		[NotNull] public readonly VariableExpression Member;
 		[NotNull] public readonly Expression Owner;
 
-		public MemberAccessExpression(MetaData metaData, [NotNull] Expression owner, [NotNull] Expression member) :
+		public MemberAccessExpression(
+			MetaData metaData,
+			[NotNull] Expression owner,
+			[NotNull] VariableExpression member) :
 			base(metaData)
 		{
 			Owner = owner;
@@ -187,8 +190,10 @@ namespace bCC
 		{
 			base.SurroundWith(environment);
 			Owner.SurroundWith(Env);
-			// TODO check if it's a valid member
 			Member.SurroundWith(Env);
+			// FEATURE #29
+			if (!(Owner.GetExpressionType() is SecondaryType type) || !type.Struct.FieldList.Contains(Member.Declaration))
+				Errors.Add(MetaData.GetErrorHeader() + "invalid member access expression");
 		}
 
 		public override Type GetExpressionType() => Member.GetExpressionType();
