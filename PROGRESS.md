@@ -7,6 +7,10 @@ I.E. Want to find codes related to `lexical scoping` (the 4th one in the `scopin
 [search "FEATURE \#18"](https://github.com/bC-Programming-Language-StandardCouncil/bC-Compiler/search?utf8=%E2%9C%93&q=%22FEATURE+%2318%22&type=),
 and you see the result.
 
+## basic language features
+
++ [X] type aliases (#28)
+
 ## scoping
 
 + [X] find variables in outer scopes (#3)

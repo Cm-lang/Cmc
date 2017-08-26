@@ -58,44 +58,46 @@ namespace bCC
 			.Concat(Expression.Dump().Select(MapFunc2));
 	}
 
-	public abstract class TypeDeclaration : Declaration
+	/// <summary>
+	///  type aliases
+	///  FEATURE #28
+	/// </summary>
+	public class TypeDeclaration : Declaration
 	{
+		public readonly Type Type;
+
 		protected TypeDeclaration(
 			MetaData metaData,
-			[NotNull] string name)
-			: base(metaData, name)
-		{
-		}
-
-		public abstract Type ToType();
+			[NotNull] string name,
+			[NotNull] Type type)
+			: base(metaData, name) => Type = type;
 	}
 
 	public class SctructDeclaration : Declaration
 	{
 		public readonly IList<VariableDeclaration> FieldList;
-		public readonly IList<TypeDeclaration> TypeParameters;
+		public readonly Type Type;
 
 		public override void SurroundWith(Environment environment)
 		{
 			base.SurroundWith(environment);
 			var internalEnv = new Environment(Env);
-			foreach (var typeDeclaration in TypeParameters) internalEnv.Declarations.Add(typeDeclaration);
 			foreach (var variableDeclaration in FieldList)
 			{
-				variableDeclaration.SurroundWith(Env);
-//				if (variableDeclaration.Type)
+				if (Equals(variableDeclaration.Type, Type))
+					Errors.Add(MetaData.GetErrorHeader() + "type recursive!");
+				variableDeclaration.SurroundWith(internalEnv);
 			}
 		}
 
 		public SctructDeclaration(
 			MetaData metaData,
 			[NotNull] string name,
-			[NotNull] IList<VariableDeclaration> fieldList,
-			[NotNull] IList<TypeDeclaration> typeParameters) :
+			[NotNull] IList<VariableDeclaration> fieldList) :
 			base(metaData, name)
 		{
-			TypeParameters = typeParameters;
 			FieldList = fieldList;
+			Type = new PrimaryType();
 		}
 	}
 

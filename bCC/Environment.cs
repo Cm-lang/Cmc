@@ -36,9 +36,8 @@ namespace bCC
 		{
 			var env = this;
 			do
-				foreach (var declaration in env.Declarations)
-					if (string.Equals(declaration.Name, name, Ordinal))
-						return declaration; while ((env = env.Outer) != null);
+				foreach (var declaration in env.Declarations.Where(declaration => string.Equals(declaration.Name, name, Ordinal)))
+					return declaration; while ((env = env.Outer) != null);
 			return null;
 		}
 	}
