@@ -6,6 +6,8 @@
 	/// </summary>
 	public class Core
 	{
-		
+		public void Compile()
+		{
+		}
 	}
 }

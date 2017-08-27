@@ -42,6 +42,7 @@ and you see the result.
 + [X] validate lhs (#20)
 + [X] check if member exist (#29)
 + [ ] inline
++ [X] overloading (#33)
 
 ## functions and lambdas
 
@@ -89,4 +90,4 @@ and you see the result.
 Those features will never be available.
 
 + types with single type parameter
-+ overloading
+

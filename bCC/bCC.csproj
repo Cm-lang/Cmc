@@ -37,6 +37,7 @@
     <Compile Include="Core\Core.cs" />
     <Compile Include="Core\Environment.cs" />
     <Compile Include="Core\MetaData.cs" />
+    <Compile Include="Core\Pragma.cs" />
     <Compile Include="Declaration.cs" />
     <Compile Include="Errors.cs" />
     <Compile Include="Expression\Expression.cs" />

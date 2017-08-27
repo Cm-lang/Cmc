@@ -2,6 +2,7 @@
 using System.Linq;
 using bCC.Core;
 using JetBrains.Annotations;
+using NUnit.Framework;
 
 namespace bCC.Expression
 {
@@ -23,17 +24,35 @@ namespace bCC.Expression
 		public override void SurroundWith(Environment environment)
 		{
 			base.SurroundWith(environment);
-			Receiver.SurroundWith(Env);
 			foreach (var expression in ParameterList) expression.SurroundWith(Env);
+			Receiver.SurroundWith(Env);
+			// FEATURE #33
+			if (Receiver is VariableExpression receiver)
+			{
+				var receiverDeclaration = Env.FindDeclarationSatisfies(declaration =>
+					declaration is VariableDeclaration variableDeclaration &&
+					variableDeclaration.Type is LambdaType lambdaType &&
+					lambdaType.ArgsList.SequenceEqual(ParameterList.Select(i => i.GetExpressionType())));
+				if (null == receiverDeclaration)
+				{
+					Errors.Add($"{MetaData.GetErrorHeader()}cannot resolve {receiver.Name}");
+					throw new CompilerException("cannot resolve symbol");
+				}
+				// receiverDeclaration is obviously a variable declaraion
+				// because it's one of the filter condition
+				receiver.Declaration = (VariableDeclaration) receiverDeclaration;
+				return;
+			}
 			var hisType = Receiver.GetExpressionType() as LambdaType;
 			if (null != hisType)
 			{
 				_type = hisType.RetType;
-				// FEATURE 
+				// FEATURE #32
 				for (var i = 0; i < ParameterList.Count; i++)
 					if (!Equals(ParameterList[i].GetExpressionType(), hisType.ArgsList[i]))
-						Errors.Add($"{MetaData.GetErrorHeader()}type mismatch: expected {hisType.ArgsList[i]}, " +
-						           $"found {ParameterList[i].GetExpressionType()}");
+						Errors.Add(
+							$"{MetaData.GetErrorHeader()}type mismatch: expected {hisType.ArgsList[i]}, " +
+							$"found {ParameterList[i].GetExpressionType()}");
 			}
 			else
 				Errors.Add(
