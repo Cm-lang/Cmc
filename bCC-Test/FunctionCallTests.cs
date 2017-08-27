@@ -36,7 +36,7 @@ namespace bCC_Test
 					new FunctionCallExpression(MetaData.Empty,
 						new VariableExpression(MetaData.Empty, "id"),
 						new List<Expression>(new[] {new IntLiteralExpression(MetaData.Empty, "1", true)}))));
-			example.SurroundWith(Environment.Earth);
+			example.SurroundWith(Environment.SolarSystem);
 			example.PrintDumpInfo();
 			Console.WriteLine(string.Join("\n", Errors.ErrList));
 			Assert.IsNotEmpty(Errors.ErrList);
@@ -63,7 +63,7 @@ namespace bCC_Test
 					new FunctionCallExpression(MetaData.Empty,
 						new VariableExpression(MetaData.Empty, "id"),
 						new List<Expression>(new[] {new IntLiteralExpression(MetaData.Empty, "233", true, 8)}))));
-			example.SurroundWith(Environment.Earth);
+			example.SurroundWith(Environment.SolarSystem);
 			example.PrintDumpInfo();
 			Console.WriteLine(string.Join("\n", Errors.ErrList));
 			Assert.IsEmpty(Errors.ErrList);

@@ -7,9 +7,12 @@ namespace bCC.Core
 {
 	public class Environment
 	{
-		public static readonly Environment Earth = new Func<Environment>(() =>
+		public static readonly Environment SolarSystem;
+
+		static Environment()
 		{
-			var ret = new Environment();
+			SolarSystem = new Environment();
+
 			// FEATURE #0
 			foreach (var typeDeclaration in new[]
 				{
@@ -17,9 +20,8 @@ namespace bCC.Core
 					PrimaryType.BoolType
 				}
 				.Select(i => new TypeDeclaration(MetaData.BuiltIn, i, new PrimaryType(MetaData.BuiltIn, i))))
-				ret.Declarations.Add(typeDeclaration);
-			return ret;
-		})();
+				SolarSystem.Declarations.Add(typeDeclaration);
+		}
 
 		[NotNull] public readonly IList<Declaration> Declarations = new List<Declaration>();
 

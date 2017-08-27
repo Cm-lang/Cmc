@@ -41,7 +41,7 @@ namespace bCC_Test
 				new BoolLiteralExpression(MetaData.Empty, false),
 				new StatementList(MetaData.Empty)
 			);
-			stmt.SurroundWith(Environment.Earth);
+			stmt.SurroundWith(Environment.SolarSystem);
 			stmt.PrintDumpInfo();
 			Assert.IsEmpty(Errors.ErrList);
 			var stmt2 = new IfStatement(
@@ -49,7 +49,7 @@ namespace bCC_Test
 				new NullExpression(MetaData.Empty),
 				new StatementList(MetaData.Empty)
 			);
-			stmt2.SurroundWith(Environment.Earth);
+			stmt2.SurroundWith(Environment.SolarSystem);
 			Console.WriteLine("");
 			Console.WriteLine("");
 			Assert.IsNotEmpty(Errors.ErrList);
@@ -74,7 +74,7 @@ namespace bCC_Test
 						new AssignmentStatement(MetaData.Empty,
 							new VariableExpression(MetaData.Empty, var1),
 							new BoolLiteralExpression(MetaData.Empty, false)))));
-			stmt.SurroundWith(Environment.Earth);
+			stmt.SurroundWith(Environment.SolarSystem);
 			stmt.PrintDumpInfo();
 			Assert.IsNotEmpty(Errors.ErrList);
 			Errors.PrintErrorInfo();
@@ -96,7 +96,7 @@ namespace bCC_Test
 						new AssignmentStatement(MetaData.Empty,
 							new VariableExpression(MetaData.Empty, var1),
 							new BoolLiteralExpression(MetaData.Empty, false)))));
-			stmt.SurroundWith(Environment.Earth);
+			stmt.SurroundWith(Environment.SolarSystem);
 			stmt.PrintDumpInfo();
 			Assert.IsEmpty(Errors.ErrList);
 		}
@@ -117,7 +117,7 @@ namespace bCC_Test
 						new AssignmentStatement(MetaData.Empty,
 							new VariableExpression(MetaData.Empty, var1),
 							new NullExpression(MetaData.Empty)))));
-			stmt.SurroundWith(Environment.Earth);
+			stmt.SurroundWith(Environment.SolarSystem);
 			stmt.PrintDumpInfo();
 			Assert.IsEmpty(Errors.ErrList);
 		}
@@ -138,7 +138,7 @@ namespace bCC_Test
 						new AssignmentStatement(MetaData.Empty,
 							new VariableExpression(MetaData.Empty, var1),
 							new IntLiteralExpression(MetaData.Empty, "123", true)))));
-			stmt.SurroundWith(Environment.Earth);
+			stmt.SurroundWith(Environment.SolarSystem);
 			stmt.PrintDumpInfo();
 			Assert.IsNotEmpty(Errors.ErrList);
 			Errors.PrintErrorInfo();

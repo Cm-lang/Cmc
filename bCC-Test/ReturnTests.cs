@@ -28,7 +28,7 @@ namespace bCC_Test
 						new StatementList(MetaData.Empty,
 							new ReturnStatement(MetaData.Empty,
 								new IntLiteralExpression(MetaData.Empty, "1", true, 8))))));
-			block.SurroundWith(Environment.Earth);
+			block.SurroundWith(Environment.SolarSystem);
 			block.PrintDumpInfo();
 			Errors.PrintErrorInfo();
 			Assert.IsNotEmpty(Errors.ErrList);
@@ -50,7 +50,7 @@ namespace bCC_Test
 						new StatementList(MetaData.Empty,
 							new ReturnStatement(MetaData.Empty,
 								new IntLiteralExpression(MetaData.Empty, "45", false, 8))))));
-			block.SurroundWith(Environment.Earth);
+			block.SurroundWith(Environment.SolarSystem);
 			block.PrintDumpInfo();
 			Assert.IsEmpty(Errors.ErrList);
 		}

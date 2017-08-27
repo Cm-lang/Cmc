@@ -1,4 +1,6 @@
-﻿namespace bCC.Core
+﻿using static bCC.Core.Environment;
+
+namespace bCC.Core
 {
 	/// <summary>
 	///   The core of this compiler
@@ -6,8 +8,13 @@
 	/// </summary>
 	public class Core
 	{
-		public void Compile()
+		public void Compile(params Declaration[] declarations)
 		{
+			var planet = new Environment(SolarSystem);
+			foreach (var declaration in declarations)
+			{
+				declaration.SurroundWith(planet);
+			}
 		}
 	}
 }

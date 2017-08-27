@@ -29,7 +29,7 @@ namespace bCC_Test
 					new IntLiteralExpression(MetaData.Empty, "123", false, 8)),
 				new ExpressionStatement(MetaData.Empty,
 					new VariableExpression(MetaData.Empty, varName)));
-			example.SurroundWith(Environment.Earth);
+			example.SurroundWith(Environment.SolarSystem);
 			example.PrintDumpInfo();
 			// ReSharper disable once PossibleNullReferenceException
 			Assert.AreEqual("u8", ((ExpressionStatement) example.Statements.Last())
@@ -49,7 +49,7 @@ namespace bCC_Test
 					new NullExpression(MetaData.Empty)),
 				new ExpressionStatement(MetaData.Empty,
 					new VariableExpression(MetaData.Empty, varName)));
-			example.SurroundWith(Environment.Earth);
+			example.SurroundWith(Environment.SolarSystem);
 			example.PrintDumpInfo();
 			Assert.AreEqual(NullType,
 				((ExpressionStatement) example.Statements.Last())
@@ -71,7 +71,7 @@ namespace bCC_Test
 					type: new UnknownType(MetaData.Empty, "i8")),
 				new ExpressionStatement(MetaData.Empty,
 					new VariableExpression(MetaData.Empty, varName)));
-			example.SurroundWith(Environment.Earth);
+			example.SurroundWith(Environment.SolarSystem);
 			Console.WriteLine(string.Join("", example.Dump()));
 			Assert.AreEqual("i8", ((ExpressionStatement) example.Statements.Last())
 				.Expression.GetExpressionType().ToString());
@@ -89,7 +89,7 @@ namespace bCC_Test
 					new StatementList(MetaData.Empty,
 						new ReturnStatement(MetaData.Empty,
 							new IntLiteralExpression(MetaData.Empty, "0", true)))));
-			example.SurroundWith(Environment.Earth);
+			example.SurroundWith(Environment.SolarSystem);
 			example.PrintDumpInfo();
 			var type = (LambdaType) example.Type;
 			Assert.AreEqual("i32", type.RetType.ToString());
