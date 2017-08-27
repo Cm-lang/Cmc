@@ -27,9 +27,8 @@ namespace bCC.Core
 			var planet = new Environment(SolarSystem);
 			foreach (var declaration in declarations)
 				planet.Declarations.Add(declaration);
-			foreach (var declaration in declarations)
-				declaration.SurroundWith(planet);
 			CheckMutualRec(declarations);
+			// TODO topo sort
 		}
 
 		/// <summary>
