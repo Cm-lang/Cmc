@@ -60,7 +60,10 @@ namespace bCC.Core
 			foreach (var chain in structs
 				.Select(CheckMutualRecRec)
 				.Where(chain => null != chain))
+			{
 				Errors.Add($"mutual recursion in structure definition is detected: [{chain}]");
+				break;
+			}
 		}
 
 		/// <summary>

@@ -78,7 +78,11 @@ namespace bCC_Test
 					new List<VariableDeclaration>(new[]
 					{
 						new VariableDeclaration(MetaData.Empty, "var5", type:
-							new UnknownType(MetaData.Empty, "C"))
+							new UnknownType(MetaData.Empty, "C")),
+						new VariableDeclaration(MetaData.Empty, "var5", type:
+							new UnknownType(MetaData.Empty, "string")),
+						new VariableDeclaration(MetaData.Empty, "var5", type:
+							new UnknownType(MetaData.Empty, "nulltype"))
 					})),
 				new StructDeclaration(MetaData.Empty, "C",
 					new List<VariableDeclaration>(new[]
