@@ -4,6 +4,7 @@ using System.Linq;
 using bCC.Core;
 using bCC.Expression;
 using JetBrains.Annotations;
+using Environment = bCC.Core.Environment;
 
 namespace bCC.Statement
 {

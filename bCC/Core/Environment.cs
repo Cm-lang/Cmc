@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using bCC.Core;
 using JetBrains.Annotations;
-using static System.StringComparison;
-using static bCC.PrimaryType;
 
-namespace bCC
+namespace bCC.Core
 {
 	public class Environment
 	{
@@ -15,7 +12,7 @@ namespace bCC
 			var ret = new Environment();
 			// FEATURE #0
 			foreach (var typeDeclaration in new[]
-					{"i8", "i16", "i32", "i64", "u8", "u16", "u32", "u64", StringType, NullType, BoolType}
+					{"i8", "i16", "i32", "i64", "u8", "u16", "u32", "u64", PrimaryType.StringType, PrimaryType.NullType, PrimaryType.BoolType}
 				.Select(i => new TypeDeclaration(MetaData.BuiltIn, i, new PrimaryType(MetaData.BuiltIn, i))))
 				ret.Declarations.Add(typeDeclaration);
 			return ret;
@@ -35,7 +32,8 @@ namespace bCC
 			var env = this;
 			var list = new List<Declaration>();
 			do
-				list.AddRange(env.Declarations.Where(declaration => declaration.Name == name)); while ((env = env.Outer) != null);
+				list.AddRange(env.Declarations
+					.Where(declaration => declaration.Name == name)); while ((env = env.Outer) != null);
 			return list;
 		}
 
@@ -50,7 +48,8 @@ namespace bCC
 		{
 			var env = this;
 			do
-				foreach (var declaration in env.Declarations.Where(declaration => string.Equals(declaration.Name, name, Ordinal)))
+				foreach (var declaration in env.Declarations
+					.Where(declaration => string.Equals(declaration.Name, name, StringComparison.Ordinal)))
 					return declaration; while ((env = env.Outer) != null);
 			return null;
 		}
@@ -65,7 +64,8 @@ namespace bCC
 		{
 			var env = this;
 			do
-				foreach (var declaration in env.Declarations.Where(declaration => predicate(declaration)))
+				foreach (var declaration in env.Declarations
+					.Where(declaration => predicate(declaration)))
 					return declaration; while ((env = env.Outer) != null);
 			return null;
 		}

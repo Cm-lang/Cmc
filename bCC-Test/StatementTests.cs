@@ -4,7 +4,7 @@ using bCC.Core;
 using bCC.Expression;
 using bCC.Statement;
 using NUnit.Framework;
-using Environment = bCC.Environment;
+using Environment = bCC.Core.Environment;
 
 namespace bCC_Test
 {
