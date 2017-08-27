@@ -2,7 +2,6 @@
 using System.Linq;
 using bCC.Core;
 using JetBrains.Annotations;
-using NUnit.Framework;
 
 namespace bCC.Expression
 {

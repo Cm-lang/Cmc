@@ -12,7 +12,10 @@ namespace bCC.Core
 			var ret = new Environment();
 			// FEATURE #0
 			foreach (var typeDeclaration in new[]
-					{"i8", "i16", "i32", "i64", "u8", "u16", "u32", "u64", PrimaryType.StringType, PrimaryType.NullType, PrimaryType.BoolType}
+				{
+					"i8", "i16", "i32", "i64", "u8", "u16", "u32", "u64", PrimaryType.StringType, PrimaryType.NullType,
+					PrimaryType.BoolType
+				}
 				.Select(i => new TypeDeclaration(MetaData.BuiltIn, i, new PrimaryType(MetaData.BuiltIn, i))))
 				ret.Declarations.Add(typeDeclaration);
 			return ret;
@@ -55,7 +58,7 @@ namespace bCC.Core
 		}
 
 		/// <summary>
-		/// Find a declaration satisfying one constraint
+		///   Find a declaration satisfying one constraint
 		/// </summary>
 		/// <param name="predicate">the constraint</param>
 		/// <returns>the declaration</returns>
