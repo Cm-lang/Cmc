@@ -24,7 +24,10 @@ namespace bCC.Statement
 	{
 		[NotNull] public readonly Expression.Expression Expression;
 
-		public ExpressionStatement(MetaData metaData, Expression.Expression expression) : base(metaData) =>
+		public ExpressionStatement(
+			MetaData metaData,
+			[NotNull] Expression.Expression expression) :
+			base(metaData) =>
 			Expression = expression;
 
 		public override void SurroundWith(Environment environment)
@@ -67,7 +70,11 @@ namespace bCC.Statement
 
 		public readonly Jump JumpKind;
 
-		public JumpStatement(MetaData metaData, Jump jumpKind) : base(metaData) => JumpKind = jumpKind;
+		public JumpStatement(
+			MetaData metaData,
+			Jump jumpKind) :
+			base(metaData) => JumpKind = jumpKind;
+
 		public override IEnumerable<JumpStatement> FindJumpStatements() => new[] {this};
 	}
 
@@ -153,47 +160,5 @@ namespace bCC.Statement
 			.Concat(LhsExpression.Dump().Select(MapFunc2))
 			.Concat(new[] {"  rhs:\n"})
 			.Concat(RhsExpression.Dump().Select(MapFunc2));
-	}
-
-	public class WhileStatement : Statement
-	{
-		[NotNull] public readonly Expression.Expression Condition;
-		[NotNull] public StatementList OkStatementList;
-
-		public WhileStatement(
-			MetaData metaData,
-			[NotNull] Expression.Expression condition,
-			[NotNull] StatementList okStatementList) : base(metaData)
-		{
-			Condition = condition;
-			OkStatementList = okStatementList;
-		}
-
-		public override void SurroundWith(Environment environment)
-		{
-			base.SurroundWith(environment);
-			Condition.SurroundWith(Env);
-			// FEATURE #16
-			var conditionType = Condition.GetExpressionType().ToString();
-			if (!string.Equals(conditionType, PrimaryType.BoolType, StringComparison.Ordinal))
-				Errors.Add(
-					$"{MetaData.GetErrorHeader()}expected a bool as the \"while\" statement\'s condition, found {conditionType}");
-			OkStatementList.SurroundWith(new Environment(Env));
-		}
-
-		public override IEnumerable<ReturnStatement> FindReturnStatements() =>
-			OkStatementList.FindReturnStatements();
-
-		public override IEnumerable<JumpStatement> FindJumpStatements() =>
-			OkStatementList.FindJumpStatements();
-
-		public override IEnumerable<string> Dump() => new[]
-			{
-				"while statement:\n",
-				"  condition:\n"
-			}
-			.Concat(Condition.Dump().Select(MapFunc2))
-			.Concat(new[] {"  body:\n"})
-			.Concat(OkStatementList.Dump().Select(MapFunc2));
 	}
 }

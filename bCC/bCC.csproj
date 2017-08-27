@@ -46,6 +46,7 @@
     <Compile Include="Duplicate.cs" />
     <Compile Include="Statement\IfStatement.cs" />
     <Compile Include="Statement\Statement.cs" />
+    <Compile Include="Statement\WhileStatement.cs" />
     <Compile Include="Type.cs" />
   </ItemGroup>
   <ItemGroup>

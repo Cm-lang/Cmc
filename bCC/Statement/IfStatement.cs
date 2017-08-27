@@ -11,7 +11,6 @@ namespace bCC.Statement
 	public class IfStatement : WhileStatement
 	{
 		[NotNull] public StatementList ElseStatementList;
-		public int Optimized;
 
 		public IfStatement(
 			MetaData metaData,
@@ -35,7 +34,7 @@ namespace bCC.Statement
 			OkStatementList.SurroundWith(new Environment(Env));
 			ElseStatementList.SurroundWith(new Environment(Env));
 			// FEATURE #17
-			if (!(Condition is BoolLiteralExpression boolean)) return;
+			if (Pragma.KeepAll || !(Condition is BoolLiteralExpression boolean)) return;
 			if (boolean.Value)
 			{
 				ElseStatementList.Statements = new List<Statement>();
