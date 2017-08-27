@@ -10,9 +10,8 @@ namespace bCC
 {
 	public abstract class Type : Ast
 	{
-		protected Type(MetaData metaData, [NotNull] string name) : base(metaData) => Name = name;
-
 		[NotNull] public readonly string Name;
+		protected Type(MetaData metaData, [NotNull] string name) : base(metaData) => Name = name;
 
 		public abstract override string ToString();
 		public abstract override bool Equals(object obj);

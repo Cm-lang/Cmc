@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
@@ -13,22 +12,9 @@ namespace bCC.Core
 	/// </summary>
 	public class Core
 	{
-		public void Compile(params Declaration[] declarations)
-		{
-			var planet = new Environment(SolarSystem);
-			foreach (var declaration in declarations)
-			{
-				planet.Declarations.Add(declaration);
-			}
-			foreach (var declaration in declarations)
-			{
-				declaration.SurroundWith(planet);
-			}
-		}
+		private readonly IDictionary<string, IEnumerable<string>> _mutualRecList;
 
 		private readonly IDictionary<string, bool> _mutualRecMark;
-
-		private readonly IDictionary<string, IEnumerable<string>> _mutualRecList;
 
 		public Core()
 		{
@@ -36,10 +22,19 @@ namespace bCC.Core
 			_mutualRecList = new ConcurrentDictionary<string, IEnumerable<string>>();
 		}
 
+		public void Compile(params Declaration[] declarations)
+		{
+			var planet = new Environment(SolarSystem);
+			foreach (var declaration in declarations)
+				planet.Declarations.Add(declaration);
+			foreach (var declaration in declarations)
+				declaration.SurroundWith(planet);
+		}
+
 		/// <summary>
-		///  to check if there's mutual recursion definitions
-		///  in the structs.
-		///  FEATURE #34
+		///   to check if there's mutual recursion definitions
+		///   in the structs.
+		///   FEATURE #34
 		/// </summary>
 		/// <param name="declarations"></param>
 		public void CheckMutualRec(IEnumerable<Declaration> declarations)
@@ -69,7 +64,7 @@ namespace bCC.Core
 		}
 
 		/// <summary>
-		///  dfs
+		///   dfs
 		/// </summary>
 		/// <param name="declaration">current delaration</param>
 		/// <returns>if not null, return the dependency chain</returns>

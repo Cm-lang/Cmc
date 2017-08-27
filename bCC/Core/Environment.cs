@@ -9,6 +9,11 @@ namespace bCC.Core
 	{
 		public static readonly Environment SolarSystem;
 
+		[NotNull] public readonly IList<Declaration> Declarations = new List<Declaration>();
+
+		// FEATURE #18
+		[CanBeNull] public readonly Environment Outer;
+
 		static Environment()
 		{
 			SolarSystem = new Environment();
@@ -22,11 +27,6 @@ namespace bCC.Core
 				.Select(i => new TypeDeclaration(MetaData.BuiltIn, i, new PrimaryType(MetaData.BuiltIn, i))))
 				SolarSystem.Declarations.Add(typeDeclaration);
 		}
-
-		[NotNull] public readonly IList<Declaration> Declarations = new List<Declaration>();
-
-		// FEATURE #18
-		[CanBeNull] public readonly Environment Outer;
 
 		public Environment(Environment outer = null) => Outer = outer;
 
