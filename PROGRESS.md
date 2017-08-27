@@ -54,6 +54,10 @@ and you see the result.
 + [ ] return statement exhaustiveness check (extra)
 + [X] defaultly no parameter (#22)
 
+## structs
+
++ [X] mutual recursion detection (#34)
+
 ## if
 
 + [X] check for condition type (#1)

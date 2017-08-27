@@ -98,11 +98,7 @@ namespace bCC
 			base.SurroundWith(environment);
 			var internalEnv = new Environment(Env);
 			foreach (var variableDeclaration in FieldList)
-			{
-				if (Equals(variableDeclaration.Type, Type))
-					Errors.Add(MetaData.GetErrorHeader() + "type recursive!");
 				variableDeclaration.SurroundWith(internalEnv);
-			}
 		}
 	}
 

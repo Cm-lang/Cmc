@@ -26,15 +26,20 @@ namespace bCC.Core
 			}
 		}
 
-		public IDictionary<string, bool> MutualRecMark =
-			new ConcurrentDictionary<string, bool>();
+		private readonly IDictionary<string, bool> _mutualRecMark;
 
-		public IDictionary<string, IEnumerable<string>> MutualRecList =
-			new ConcurrentDictionary<string, IEnumerable<string>>();
+		private readonly IDictionary<string, IEnumerable<string>> _mutualRecList;
+
+		public Core()
+		{
+			_mutualRecMark = new ConcurrentDictionary<string, bool>();
+			_mutualRecList = new ConcurrentDictionary<string, IEnumerable<string>>();
+		}
 
 		/// <summary>
 		///  to check if there's mutual recursion definitions
 		///  in the structs.
+		///  FEATURE #34
 		/// </summary>
 		/// <param name="declarations"></param>
 		public void CheckMutualRec(IEnumerable<Declaration> declarations)
@@ -54,8 +59,8 @@ namespace bCC.Core
 						.Select(j => j.Type.Name))))
 			{
 				structs.Add(keyValuePair.Key);
-				MutualRecList.Add(keyValuePair);
-				MutualRecMark[keyValuePair.Key] = false;
+				_mutualRecList.Add(keyValuePair);
+				_mutualRecMark[keyValuePair.Key] = false;
 			}
 			foreach (var chain in structs
 				.Select(CheckMutualRecRec)
@@ -69,15 +74,15 @@ namespace bCC.Core
 		/// <param name="declaration">current delaration</param>
 		/// <returns>if not null, return the dependency chain</returns>
 		[CanBeNull]
-		public string CheckMutualRecRec(string declaration)
+		private string CheckMutualRecRec(string declaration)
 		{
-			if (MutualRecMark[declaration]) return declaration;
-			MutualRecMark[declaration] = true;
-			foreach (var ret in MutualRecList[declaration]
+			if (_mutualRecMark[declaration]) return declaration;
+			_mutualRecMark[declaration] = true;
+			foreach (var ret in _mutualRecList[declaration]
 				.Select(CheckMutualRecRec)
 				.Where(ret => null != ret))
 				return $"{declaration}]-[{ret}";
-			MutualRecMark[declaration] = false;
+			_mutualRecMark[declaration] = false;
 			return null;
 		}
 	}

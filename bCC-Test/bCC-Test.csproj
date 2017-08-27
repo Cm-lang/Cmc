@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FunctionCallTests.cs" />
+    <Compile Include="MutualRecTests.cs" />
     <Compile Include="ReturnTests.cs" />
     <Compile Include="StatementTests.cs" />
     <Compile Include="Main.cs" />
