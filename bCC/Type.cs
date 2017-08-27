@@ -10,9 +10,9 @@ namespace bCC
 {
 	public abstract class Type : Ast
 	{
-		protected Type(MetaData metaData) : base(metaData)
-		{
-		}
+		protected Type(MetaData metaData, [NotNull] string name) : base(metaData) => Name = name;
+
+		[NotNull] public readonly string Name;
 
 		public abstract override string ToString();
 		public abstract override bool Equals(object obj);
@@ -23,8 +23,9 @@ namespace bCC
 
 	public class UnknownType : Type
 	{
-		[NotNull] public readonly string Name;
-		public UnknownType(MetaData metaData, [NotNull] string name) : base(metaData) => Name = name;
+		public UnknownType(MetaData metaData, [NotNull] string name) : base(metaData, name)
+		{
+		}
 
 		/// <summary>
 		///   FEATURE #30
@@ -43,11 +44,7 @@ namespace bCC
 
 		public void Gg() => Errors.Add($"{MetaData.GetErrorHeader()}unresolved type: {MetaData}");
 
-		public override string ToString()
-		{
-			Gg();
-			throw new CompilerException("unknown type");
-		}
+		public override string ToString() => Name;
 
 		public override bool Equals(object obj)
 		{
@@ -64,9 +61,10 @@ namespace bCC
 		public const string StringType = "string";
 		public const string NullType = "nulltype";
 		public const string BoolType = "bool";
-		[NotNull] public readonly string Name;
 
-		public PrimaryType(MetaData metaData, [NotNull] string name) : base(metaData) => Name = name;
+		public PrimaryType(MetaData metaData, [NotNull] string name) : base(metaData, name)
+		{
+		}
 
 		public override IEnumerable<string> Dump() => new[] {$"primary type [{Name}]\n"};
 		public override string ToString() => Name;
@@ -79,32 +77,27 @@ namespace bCC
 	/// </summary>
 	public class SecondaryType : Type
 	{
-		[NotNull] public readonly string Container;
 		public StructDeclaration Struct;
 
 		public SecondaryType(
 			MetaData metaData,
-			[NotNull] string container,
+			[NotNull] string name,
 			[CanBeNull] StructDeclaration @struct = null) :
-			base(metaData)
-		{
-			Container = container;
-			Struct = @struct;
-		}
+			base(metaData, name) => Struct = @struct;
 
 		public override void SurroundWith(Environment environment)
 		{
 			base.SurroundWith(environment);
-			if (null == Struct) Struct = Env.FindDeclarationByName(Container) as StructDeclaration;
+			if (null == Struct) Struct = Env.FindDeclarationByName(Name) as StructDeclaration;
 			if (null != Struct) return;
-			Errors.Add($"{MetaData.GetErrorHeader()}cannot resolve type {Container}");
+			Errors.Add($"{MetaData.GetErrorHeader()}cannot resolve type {Name}");
 			throw new CompilerException();
 		}
 
-		public override string ToString() => Container;
+		public override string ToString() => Name;
 
 		public override bool Equals(object obj) =>
-			obj is SecondaryType type && string.Equals(type.Container, Container, Ordinal);
+			obj is SecondaryType type && string.Equals(type.Name, Name, Ordinal);
 
 		public override IEnumerable<string> Dump() => new[] {"secondary type[{Container}]:\n"};
 	}
@@ -118,7 +111,7 @@ namespace bCC
 		[NotNull] public Type RetType;
 
 		public LambdaType(MetaData metaData, [NotNull] IList<Type> args, [NotNull] Type ret) :
-			base(metaData)
+			base(metaData, LambdaTypeToString(args, ret))
 		{
 			ArgsList = args;
 			RetType = ret;
@@ -149,18 +142,15 @@ namespace bCC
 
 		[NotNull]
 		public static string LambdaTypeToString([NotNull] IList<Type> args, [NotNull] Type ret) =>
-			$"{string.Join(",", args)}->{ret}";
+			$"({string.Join(",", args)})->{ret}";
 
-		public override IEnumerable<string> Dump()
-		{
-			return new[]
-				{
-					"lambda type:\n",
-					"  parameters' types:\n"
-				}
-				.Concat(ArgsList.SelectMany(i => i.Dump().Select(MapFunc).Select(MapFunc)))
-				.Concat(new[] {"  return type:\n"})
-				.Concat(RetType.Dump().Select(MapFunc).Select(MapFunc));
-		}
+		public override IEnumerable<string> Dump() => new[]
+			{
+				"lambda type:\n",
+				"  parameters' types:\n"
+			}
+			.Concat(ArgsList.SelectMany(i => i.Dump().Select(MapFunc).Select(MapFunc)))
+			.Concat(new[] {"  return type:\n"})
+			.Concat(RetType.Dump().Select(MapFunc).Select(MapFunc));
 	}
 }
