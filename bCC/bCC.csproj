@@ -42,7 +42,7 @@
     <Compile Include="Expression\LambdaExpression.cs" />
     <Compile Include="MetaData.cs" />
     <Compile Include="Statement.cs" />
-    <Compile Include="Template.cs" />
+    <Compile Include="Duplicate.cs" />
     <Compile Include="Type.cs" />
   </ItemGroup>
   <ItemGroup>
