@@ -13,7 +13,7 @@ Travis CI|
 
 The compiler for bC-language.
 
-bC is a statically typed native language.
-It doesn't have subtyping, it organize data with structs and methods.
+bC is a statically typed native language (targeting LLVM and GLSL).
+It doesn't have subtyping, it organize data with structs and extension methods.
 
 Maybe there will be an optional H-M type system, and hole-oriented programming (like Idris).
