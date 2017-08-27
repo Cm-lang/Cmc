@@ -41,8 +41,9 @@
     <Compile Include="Expression\FunctionCallExpression.cs" />
     <Compile Include="Expression\LambdaExpression.cs" />
     <Compile Include="MetaData.cs" />
-    <Compile Include="Statement.cs" />
     <Compile Include="Duplicate.cs" />
+    <Compile Include="Statement\IfStatement.cs" />
+    <Compile Include="Statement\Statement.cs" />
     <Compile Include="Type.cs" />
   </ItemGroup>
   <ItemGroup>

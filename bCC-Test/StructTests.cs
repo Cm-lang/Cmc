@@ -2,6 +2,7 @@
 using System.Linq;
 using bCC;
 using bCC.Expression;
+using bCC.Statement;
 using NUnit.Framework;
 
 namespace bCC_Test

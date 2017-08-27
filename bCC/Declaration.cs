@@ -8,7 +8,7 @@ using static System.StringComparison;
 
 namespace bCC
 {
-	public class Declaration : Statement
+	public class Declaration : Statement.Statement
 	{
 		[NotNull] public readonly string Name;
 

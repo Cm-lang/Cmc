@@ -1,11 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using bCC.Expression;
 using JetBrains.Annotations;
-using static System.StringComparison;
-using static bCC.PrimaryType;
 
-namespace bCC
+namespace bCC.Statement
 {
 	public class Statement : Ast
 	{
@@ -127,8 +126,8 @@ namespace bCC
 			var rhs = RhsExpression.GetExpressionType();
 			// FEATURE #14
 			// FEATURE #11
-			if (!string.Equals(rhs.ToString(), NullType, Ordinal) &&
-			    !string.Equals(lhs.ToString(), rhs.ToString(), Ordinal))
+			if (!string.Equals(rhs.ToString(), PrimaryType.NullType, StringComparison.Ordinal) &&
+			    !string.Equals(lhs.ToString(), rhs.ToString(), StringComparison.Ordinal))
 				Errors.Add($"{MetaData.GetErrorHeader()}assigning a {rhs} to a {lhs} is invalid.");
 			// FEATURE #20
 			var validLhs = LhsExpression.GetLhsExpression();
@@ -170,7 +169,7 @@ namespace bCC
 			Condition.SurroundWith(Env);
 			// FEATURE #16
 			var conditionType = Condition.GetExpressionType().ToString();
-			if (!string.Equals(conditionType, BoolType, Ordinal))
+			if (!string.Equals(conditionType, PrimaryType.BoolType, StringComparison.Ordinal))
 				Errors.Add(
 					$"{MetaData.GetErrorHeader()}expected a bool as the \"while\" statement\'s condition, found {conditionType}");
 			OkStatementList.SurroundWith(new Environment(Env));
@@ -190,63 +189,5 @@ namespace bCC
 			.Concat(Condition.Dump().Select(MapFunc2))
 			.Concat(new[] {"  body:\n"})
 			.Concat(OkStatementList.Dump().Select(MapFunc2));
-	}
-
-	public class IfStatement : WhileStatement
-	{
-		[NotNull] public StatementList ElseStatementList;
-		public int Optimized;
-
-		public IfStatement(
-			MetaData metaData,
-			[NotNull] Expression.Expression condition,
-			[NotNull] StatementList ifStatementList,
-			[CanBeNull] StatementList elseStatementList = null) : base(metaData, condition, ifStatementList) =>
-			ElseStatementList = elseStatementList ?? new StatementList(MetaData);
-
-		public override void SurroundWith(Environment environment)
-		{
-			// base.SurroundWith(environment);
-			// don't call base, because it will raise error
-			// as a while expression
-			Env = environment;
-			Condition.SurroundWith(Env);
-			// FEATURE #1
-			var conditionType = Condition.GetExpressionType().ToString();
-			if (!string.Equals(conditionType, BoolType, Ordinal))
-				Errors.Add(
-					$"{MetaData.GetErrorHeader()}expected a bool as the \"if\" statement\'s condition, found {conditionType}");
-			OkStatementList.SurroundWith(new Environment(Env));
-			ElseStatementList.SurroundWith(new Environment(Env));
-			// FEATURE #17
-			if (!(Condition is BoolLiteralExpression boolean)) return;
-			if (boolean.Value)
-			{
-				ElseStatementList.Statements = new List<Statement>();
-				Optimized = 1;
-			}
-			else
-			{
-				OkStatementList.Statements = new List<Statement>();
-				Optimized = 2;
-			}
-		}
-
-		public override IEnumerable<ReturnStatement> FindReturnStatements() =>
-			OkStatementList.FindReturnStatements().Concat(ElseStatementList.FindReturnStatements());
-
-		public override IEnumerable<JumpStatement> FindJumpStatements() =>
-			OkStatementList.FindJumpStatements().Concat(ElseStatementList.FindJumpStatements());
-
-		public override IEnumerable<string> Dump() => new[]
-			{
-				"if statement:\n",
-				"  condition:\n"
-			}
-			.Concat(Condition.Dump().Select(MapFunc2))
-			.Concat(new[] {$"  true branch{(Optimized == 2 ? " [optimized]" : "")}:\n"})
-			.Concat(OkStatementList.Dump().Select(MapFunc2))
-			.Concat(new[] {$"  false branch{(Optimized == 1 ? " [optimized]" : "")}:\n"})
-			.Concat(ElseStatementList.Dump().Select(MapFunc2));
 	}
 }

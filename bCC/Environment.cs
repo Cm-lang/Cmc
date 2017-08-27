@@ -43,13 +43,28 @@ namespace bCC
 		///   FEATURE #5
 		/// </summary>
 		/// <param name="name">the name of the required declaration</param>
-		/// <returns></returns>
+		/// <returns>the declaration</returns>
 		[CanBeNull]
 		public Declaration FindDeclarationByName([NotNull] string name)
 		{
 			var env = this;
 			do
 				foreach (var declaration in env.Declarations.Where(declaration => string.Equals(declaration.Name, name, Ordinal)))
+					return declaration; while ((env = env.Outer) != null);
+			return null;
+		}
+
+		/// <summary>
+		/// Find a declaration satisfying one constraint
+		/// </summary>
+		/// <param name="predicate">the constraint</param>
+		/// <returns>the declaration</returns>
+		[CanBeNull]
+		public Declaration FindDeclarationSatisfies([NotNull] Predicate<Declaration> predicate)
+		{
+			var env = this;
+			do
+				foreach (var declaration in env.Declarations.Where(declaration => predicate(declaration)))
 					return declaration; while ((env = env.Outer) != null);
 			return null;
 		}
