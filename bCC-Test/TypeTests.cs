@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using bCC;
+using bCC.Core;
 using bCC.Expression;
 using bCC.Statement;
 using NUnit.Framework;

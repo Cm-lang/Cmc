@@ -33,14 +33,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Ast.cs" />
+    <Compile Include="Core\Ast.cs" />
+    <Compile Include="Core\Environment.cs" />
+    <Compile Include="Core\MetaData.cs" />
     <Compile Include="Declaration.cs" />
-    <Compile Include="Environment.cs" />
     <Compile Include="Errors.cs" />
     <Compile Include="Expression\Expression.cs" />
     <Compile Include="Expression\FunctionCallExpression.cs" />
     <Compile Include="Expression\LambdaExpression.cs" />
-    <Compile Include="MetaData.cs" />
     <Compile Include="Duplicate.cs" />
     <Compile Include="Statement\IfStatement.cs" />
     <Compile Include="Statement\Statement.cs" />

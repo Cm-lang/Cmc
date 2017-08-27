@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using bCC.Core;
 using bCC.Expression;
 using JetBrains.Annotations;
 
@@ -22,7 +23,8 @@ namespace bCC.Statement
 	{
 		[NotNull] public readonly Expression.Expression Expression;
 
-		public ExpressionStatement(MetaData metaData, Expression.Expression expression) : base(metaData) => Expression = expression;
+		public ExpressionStatement(MetaData metaData, Expression.Expression expression) : base(metaData) =>
+			Expression = expression;
 
 		public override void SurroundWith(Environment environment)
 		{
@@ -72,7 +74,10 @@ namespace bCC.Statement
 	{
 		[NotNull] public IList<Statement> Statements;
 
-		public StatementList(MetaData metaData, params Statement[] statements) : base(metaData) => Statements = statements;
+		public StatementList(
+			MetaData metaData,
+			params Statement[] statements) :
+			base(metaData) => Statements = statements;
 
 		public override void SurroundWith(Environment environment)
 		{

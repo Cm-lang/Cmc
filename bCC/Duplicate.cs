@@ -1,4 +1,6 @@
-﻿namespace bCC
+﻿using bCC.Core;
+
+namespace bCC
 {
 	public class Duplicate : Ast
 	{
