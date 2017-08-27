@@ -64,6 +64,7 @@ and you see the result.
 + [X] optional else branch (#2)
 + [X] when condition is constant value, delete redundant branch (#17)
 + [ ] if as expression (extra)
++ [ ] tenary operator
 
 ## int
 

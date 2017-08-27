@@ -12,10 +12,7 @@ namespace bCC_Test
 	public class StatementTests
 	{
 		[SetUp]
-		public void Init()
-		{
-			Errors.ErrList.Clear();
-		}
+		public void Init() => Errors.ErrList.Clear();
 
 		/// <summary>
 		///   simplest test
