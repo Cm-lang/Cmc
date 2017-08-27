@@ -12,8 +12,16 @@ namespace bCC
 	public class Declaration : Statement.Statement
 	{
 		[NotNull] public readonly string Name;
+		public readonly Modifier Modifier;
 
-		public Declaration(MetaData metaData, [NotNull] string name) : base(metaData) => Name = name;
+		public Declaration(
+			MetaData metaData,
+			[NotNull] string name,
+			Modifier modifier) : base(metaData)
+		{
+			Name = name;
+			Modifier = modifier;
+		}
 	}
 
 	public sealed class VariableDeclaration : Declaration
@@ -25,10 +33,11 @@ namespace bCC
 		public VariableDeclaration(
 			MetaData metaData,
 			[NotNull] string name,
+			Modifier modifier,
 			[CanBeNull] Expression.Expression expression = null,
 			bool isMutable = false,
 			[CanBeNull] Type type = null) :
-			base(metaData, name)
+			base(metaData, name, modifier)
 		{
 			Expression = expression ?? new NullExpression(MetaData);
 			Type = type;
@@ -74,8 +83,9 @@ namespace bCC
 		public TypeDeclaration(
 			MetaData metaData,
 			[NotNull] string name,
+			Modifier modifier,
 			[NotNull] Type type)
-			: base(metaData, name) => Type = type;
+			: base(metaData, name, modifier) => Type = type;
 	}
 
 	public class StructDeclaration : Declaration
@@ -86,8 +96,9 @@ namespace bCC
 		public StructDeclaration(
 			MetaData metaData,
 			[NotNull] string name,
+			Modifier modifier,
 			[NotNull] IList<VariableDeclaration> fieldList) :
-			base(metaData, name)
+			base(metaData, name, modifier)
 		{
 			FieldList = fieldList;
 			Type = new SecondaryType(metaData, name, this);
@@ -109,7 +120,12 @@ namespace bCC
 	{
 		[NotNull] public string Content;
 
-		public Macro(MetaData metaData, [NotNull] string name, [NotNull] string content) : base(metaData, name) =>
+		public Macro(
+			MetaData metaData,
+			[NotNull] string name,
+			Modifier modifier,
+			[NotNull] string content) :
+			base(metaData, name, modifier) =>
 			Content = content;
 
 		public override IEnumerable<string> Dump() => new[] {"macro(this shouldn't appear)\n"};

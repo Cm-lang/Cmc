@@ -44,6 +44,7 @@
     <Compile Include="Expression\FunctionCallExpression.cs" />
     <Compile Include="Expression\LambdaExpression.cs" />
     <Compile Include="Duplicate.cs" />
+    <Compile Include="Modifier.cs" />
     <Compile Include="Statement\IfStatement.cs" />
     <Compile Include="Statement\Statement.cs" />
     <Compile Include="Statement\WhileStatement.cs" />
