@@ -12,6 +12,8 @@ namespace bCC
 		[NotNull] public static IList<string> ErrList = new List<string>();
 		[NotNull] public static Action<string> Add = ErrList.Add;
 		[NotNull] public static Predicate<string> Remove = ErrList.Remove;
+
+		public static void PrintErrorInfo() => Console.WriteLine(string.Join("\n", ErrList));
 	}
 
 	/// <summary>
@@ -22,6 +24,8 @@ namespace bCC
 		[NotNull] public static IList<string> WarnList = new List<string>();
 		[NotNull] public static Action<string> Add = WarnList.Add;
 		[NotNull] public static Predicate<string> Remove = WarnList.Remove;
+
+		public static void PrintErrorInfo() => Console.WriteLine(string.Join("\n", WarnList));
 	}
 
 	public class CompilerException : Exception

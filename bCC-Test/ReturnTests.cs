@@ -30,6 +30,7 @@ namespace bCC_Test
 								new IntLiteralExpression(MetaData.Empty, "1", true, 8))))));
 			block.SurroundWith(Environment.Earth);
 			block.PrintDumpInfo();
+			Errors.PrintErrorInfo();
 			Assert.IsNotEmpty(Errors.ErrList);
 		}
 

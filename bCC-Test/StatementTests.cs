@@ -77,7 +77,7 @@ namespace bCC_Test
 			stmt.SurroundWith(Environment.Earth);
 			stmt.PrintDumpInfo();
 			Assert.IsNotEmpty(Errors.ErrList);
-			foreach (var s in Errors.ErrList) Console.WriteLine(s);
+			Errors.PrintErrorInfo();
 		}
 
 		/// <summary>
@@ -141,6 +141,7 @@ namespace bCC_Test
 			stmt.SurroundWith(Environment.Earth);
 			stmt.PrintDumpInfo();
 			Assert.IsNotEmpty(Errors.ErrList);
+			Errors.PrintErrorInfo();
 		}
 	}
 }
