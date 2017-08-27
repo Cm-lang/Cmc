@@ -56,7 +56,7 @@ and you see the result.
 
 ## structs
 
-+ [X] mutual recursion detection (#34)
++ [X] mutual recursion detection (#34) (tested)
 
 ## if
 
