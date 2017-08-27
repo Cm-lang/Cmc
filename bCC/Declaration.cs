@@ -33,10 +33,10 @@ namespace bCC
 		public VariableDeclaration(
 			MetaData metaData,
 			[NotNull] string name,
-			Modifier modifier,
 			[CanBeNull] Expression.Expression expression = null,
 			bool isMutable = false,
-			[CanBeNull] Type type = null) :
+			[CanBeNull] Type type = null,
+			Modifier modifier = Modifier.Pri) :
 			base(metaData, name, modifier)
 		{
 			Expression = expression ?? new NullExpression(MetaData);
@@ -83,8 +83,8 @@ namespace bCC
 		public TypeDeclaration(
 			MetaData metaData,
 			[NotNull] string name,
-			Modifier modifier,
-			[NotNull] Type type)
+			[NotNull] Type type,
+			Modifier modifier = Modifier.Pri)
 			: base(metaData, name, modifier) => Type = type;
 	}
 
@@ -96,8 +96,8 @@ namespace bCC
 		public StructDeclaration(
 			MetaData metaData,
 			[NotNull] string name,
-			Modifier modifier,
-			[NotNull] IList<VariableDeclaration> fieldList) :
+			[NotNull] IList<VariableDeclaration> fieldList,
+			Modifier modifier = Modifier.Pri) :
 			base(metaData, name, modifier)
 		{
 			FieldList = fieldList;
@@ -123,8 +123,8 @@ namespace bCC
 		public Macro(
 			MetaData metaData,
 			[NotNull] string name,
-			Modifier modifier,
-			[NotNull] string content) :
+			[NotNull] string content,
+			Modifier modifier = Modifier.Pri) :
 			base(metaData, name, modifier) =>
 			Content = content;
 

@@ -24,7 +24,10 @@ namespace bCC.Core
 					"i8", "i16", "i32", "i64", "u8", "u16", "u32", "u64", PrimaryType.StringType, PrimaryType.NullType,
 					PrimaryType.BoolType
 				}
-				.Select(i => new TypeDeclaration(MetaData.BuiltIn, i, new PrimaryType(MetaData.BuiltIn, i))))
+				.Select(i => new TypeDeclaration(
+					MetaData.BuiltIn,
+					i,
+					new PrimaryType(MetaData.BuiltIn, i))))
 				SolarSystem.Declarations.Add(typeDeclaration);
 		}
 
