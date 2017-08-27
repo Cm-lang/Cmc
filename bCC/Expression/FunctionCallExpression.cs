@@ -32,15 +32,10 @@ namespace bCC.Expression
 					declaration is VariableDeclaration variableDeclaration &&
 					variableDeclaration.Type is LambdaType lambdaType &&
 					lambdaType.ArgsList.SequenceEqual(ParameterList.Select(i => i.GetExpressionType())));
-				if (null == receiverDeclaration)
-				{
-					Errors.Add($"{MetaData.GetErrorHeader()}cannot resolve {receiver.Name}");
-					throw new CompilerException("cannot resolve symbol");
-				}
-				// receiverDeclaration is obviously a variable declaraion
-				// because it's one of the filter condition
-				receiver.Declaration = (VariableDeclaration) receiverDeclaration;
-				return;
+				if (null != receiverDeclaration)
+					// receiverDeclaration is obviously a variable declaraion
+					// because it's one of the filter condition
+					receiver.Declaration = (VariableDeclaration) receiverDeclaration;
 			}
 			var hisType = Receiver.GetExpressionType() as LambdaType;
 			if (null != hisType)
@@ -59,7 +54,7 @@ namespace bCC.Expression
 					$" not {Receiver.GetExpressionType()}.");
 		}
 
-		public override Type GetExpressionType() => _type ?? throw new CompilerException();
+		public override Type GetExpressionType() => _type ?? throw new CompilerException("type cannot be inferred");
 
 		public override IEnumerable<string> Dump()
 		{
