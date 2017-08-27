@@ -29,6 +29,7 @@ namespace bCC.Core
 				planet.Declarations.Add(declaration);
 			foreach (var declaration in declarations)
 				declaration.SurroundWith(planet);
+			CheckMutualRec(declarations);
 		}
 
 		/// <summary>

@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FuncMutualRecTests.cs" />
     <Compile Include="FunctionCallTests.cs" />
     <Compile Include="MutualRecTests.cs" />
     <Compile Include="ReturnTests.cs" />

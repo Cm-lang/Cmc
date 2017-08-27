@@ -23,8 +23,6 @@ namespace bCC_Test
 				}));
 			var env = new Environment(Environment.SolarSystem);
 			env.Declarations.Add(def);
-			def.SurroundWith(env);
-			def.PrintDumpInfo();
 			core.CheckMutualRec(new[] {def});
 			Assert.IsNotEmpty(Errors.ErrList);
 			Errors.PrintErrorInfo();
@@ -51,10 +49,6 @@ namespace bCC_Test
 			var env = new Environment(Environment.SolarSystem);
 			env.Declarations.Add(def);
 			env.Declarations.Add(def2);
-			def.SurroundWith(env);
-			def2.SurroundWith(env);
-			def.PrintDumpInfo();
-			def2.PrintDumpInfo();
 			core.CheckMutualRec(new[] {def, def2});
 			Assert.IsNotEmpty(Errors.ErrList);
 			Errors.PrintErrorInfo();
@@ -100,10 +94,10 @@ namespace bCC_Test
 			var env = new Environment(Environment.SolarSystem);
 			foreach (var structDeclaration in defs)
 				env.Declarations.Add(structDeclaration);
-			foreach (var structDeclaration in defs)
-				structDeclaration.SurroundWith(env);
-			foreach (var structDeclaration in defs)
-				structDeclaration.PrintDumpInfo();
+//			foreach (var structDeclaration in defs)
+//				structDeclaration.SurroundWith(env);
+//			foreach (var structDeclaration in defs)
+//				structDeclaration.PrintDumpInfo();
 			core.CheckMutualRec(defs);
 			Assert.IsNotEmpty(Errors.ErrList);
 			Errors.PrintErrorInfo();
