@@ -2,7 +2,10 @@
 {
 	public enum Modifier
 	{
-		Pri,
-		Pub
+		Private,
+		Public,
+		Operator,
+		GcPointer, // pointer with garbage collection
+		Inline // under discussion
 	}
 }

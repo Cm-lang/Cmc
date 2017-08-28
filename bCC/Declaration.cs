@@ -4,6 +4,7 @@ using bCC.Core;
 using bCC.Expression;
 using JetBrains.Annotations;
 using static System.StringComparison;
+using static bCC.PrimaryType;
 
 #pragma warning disable 659
 
@@ -36,7 +37,7 @@ namespace bCC
 			[CanBeNull] Expression.Expression expression = null,
 			bool isMutable = false,
 			[CanBeNull] Type type = null,
-			Modifier modifier = Modifier.Pri) :
+			Modifier modifier = Modifier.Private) :
 			base(metaData, name, modifier)
 		{
 			Expression = expression ?? new NullExpression(MetaData);
@@ -55,7 +56,8 @@ namespace bCC
 			Type.SurroundWith(Env);
 			if (Type is UnknownType unknownType) Type = unknownType.Resolve();
 			// FEATURE #11
-			if (!string.Equals(exprType.ToString(), PrimaryType.NullType, Ordinal) && !Equals(Type, exprType))
+			if (!string.Equals(exprType.ToString(), NullType, Ordinal) &&
+			    !Equals(Type, exprType))
 				// FEATURE #9
 				Errors.Add($"{MetaData.GetErrorHeader()}type mismatch, expected: {Type}, actual: {exprType}");
 		}
@@ -84,7 +86,7 @@ namespace bCC
 			MetaData metaData,
 			[NotNull] string name,
 			[NotNull] Type type,
-			Modifier modifier = Modifier.Pri)
+			Modifier modifier = Modifier.Private)
 			: base(metaData, name, modifier) => Type = type;
 	}
 
@@ -97,7 +99,7 @@ namespace bCC
 			MetaData metaData,
 			[NotNull] string name,
 			[NotNull] IList<VariableDeclaration> fieldList,
-			Modifier modifier = Modifier.Pri) :
+			Modifier modifier = Modifier.Private) :
 			base(metaData, name, modifier)
 		{
 			FieldList = fieldList;
@@ -124,7 +126,7 @@ namespace bCC
 			MetaData metaData,
 			[NotNull] string name,
 			[NotNull] string content,
-			Modifier modifier = Modifier.Pri) :
+			Modifier modifier = Modifier.Private) :
 			base(metaData, name, modifier) =>
 			Content = content;
 
