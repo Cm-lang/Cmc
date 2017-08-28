@@ -1,7 +1,7 @@
-﻿using System.Diagnostics;
-using System.IO;
+﻿using System.IO;
 using bCC;
 using bCC.Core;
+using Tools;
 
 namespace LLVM
 {
@@ -15,6 +15,7 @@ namespace LLVM
 			var analyzedDeclarations = core.Analyze(declarations);
 			// TODO run code gen
 			File.WriteAllText(outputFile, "");
+			CommandLine.RunCommand($"llc-4.0 {outputFile}");
 		}
 	}
 }

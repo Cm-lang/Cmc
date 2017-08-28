@@ -47,6 +47,10 @@
       <Project>{17e0de41-2426-4616-8424-ba6c0f97f7c0}</Project>
       <Name>bCC</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Tools\Tools.csproj">
+      <Project>{1c8f8315-d5f0-4248-8dff-2ba9574b14f1}</Project>
+      <Name>Tools</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

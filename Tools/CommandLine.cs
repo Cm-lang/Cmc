@@ -5,6 +5,9 @@ namespace Tools
 {
 	public static class CommandLine
 	{
+		/// <summary>
+		///   Will select os automatically
+		/// </summary>
 		public static void RunCommand(string command)
 		{
 			var cmd = new Process
