@@ -5,9 +5,9 @@ using Tools;
 
 namespace LLVM
 {
-	public class Gen
+	public static class Gen
 	{
-		public void Generate(
+		public static void Generate(
 			string outputFile,
 			params Declaration[] declarations)
 		{
@@ -15,7 +15,15 @@ namespace LLVM
 			var analyzedDeclarations = core.Analyze(declarations);
 			// TODO run code gen
 			File.WriteAllText(outputFile, "");
-			CommandLine.RunCommand($"llc-4.0 {outputFile}");
+			CommandLine.RunCommand($"llc-4.0 {outputFile}.ll -filetype=obj");
+			CommandLine.RunCommand($"gcc {outputFile}.ll -o {outputFile}");
+		}
+
+		public static void Main(string[] args)
+		{
+			Generate(
+				"out"
+			);
 		}
 	}
 }
