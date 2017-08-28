@@ -39,7 +39,7 @@
     <Compile Include="Core\MetaData.cs" />
     <Compile Include="Core\Pragma.cs" />
     <Compile Include="Declaration.cs" />
-    <Compile Include="Errors.cs" />
+    <Compile Include="Error.cs" />
     <Compile Include="Expression\Expression.cs" />
     <Compile Include="Expression\FunctionCallExpression.cs" />
     <Compile Include="Expression\LambdaExpression.cs" />
