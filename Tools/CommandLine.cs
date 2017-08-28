@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 
 namespace Tools
 {
@@ -10,13 +11,33 @@ namespace Tools
 			{
 				StartInfo =
 				{
-					FileName = "cmd.exe",
 					RedirectStandardInput = true,
 					RedirectStandardOutput = true,
 					CreateNoWindow = true,
 					UseShellExecute = false
 				}
 			};
+			var platform = Environment.OSVersion.Platform;
+			switch (platform)
+			{
+				case PlatformID.Xbox:
+					Console.WriteLine("bC doesn't support XBox!");
+					break;
+				case PlatformID.Win32Windows:
+				case PlatformID.Win32NT:
+				case PlatformID.Win32S:
+				case PlatformID.WinCE:
+					Console.WriteLine($"Operating System: {platform}");
+					cmd.StartInfo.FileName = "cmd.exe";
+					break;
+				case PlatformID.MacOSX:
+				case PlatformID.Unix:
+					Console.WriteLine($"Operating System: {platform}");
+					cmd.StartInfo.FileName = "sh";
+					break;
+				default:
+					throw new ArgumentOutOfRangeException(platform.ToString(), "unknown os!");
+			}
 			cmd.Start();
 
 			cmd.StandardInput.WriteLine(command);
