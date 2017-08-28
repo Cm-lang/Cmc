@@ -3,6 +3,7 @@ using System.Text;
 using bCC;
 using bCC.Core;
 using bCC.Expression;
+using bCC.Statement;
 using Tools;
 
 namespace LLVM
@@ -47,13 +48,24 @@ namespace LLVM
 				builder.AppendLine($"; type alias: <{typeDeclaration.Name}> -> <{typeDeclaration.Type}>");
 			else if (element is VariableDeclaration variable)
 			{
+				var varName = $"{DetermineDeclarationPrefix(isGlobal)}{GlobalVarCount++}";
 				var expr = variable.Expression;
 				if (expr is StringLiteralExpression str)
 				{
 					builder.AppendLine(
-						$"{DetermineDeclarationPrefix(isGlobal)}{GlobalVarCount++} =" +
-						$" unnamed_addr constant [{str.Value.Length} x i8] c\"{str.Value}\"");
+						$"{varName}=unnamed_addr constant [{str.Value.Length} x i8] c\"{str.Value}\"");
 				}
+				else if (expr is IntLiteralExpression integer)
+				{
+//					builder.AppendLine(
+//						$"{varName}={}");
+				}
+			}
+			else if(element is ReturnStatement returnStatement)
+			{
+				var expr = returnStatement.Expression;
+				GenAst(builder, expr);
+				// TODO assign the value
 			}
 		}
 
