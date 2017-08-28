@@ -42,6 +42,12 @@
     <Compile Include="Gen.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\bCC\bCC.csproj">
+      <Project>{17e0de41-2426-4616-8424-ba6c0f97f7c0}</Project>
+      <Name>bCC</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

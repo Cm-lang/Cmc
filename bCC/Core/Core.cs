@@ -22,13 +22,21 @@ namespace bCC.Core
 			_mutualRecList = new ConcurrentDictionary<string, IEnumerable<string>>();
 		}
 
-		public void Compile(params Declaration[] declarations)
+		/// <summary>
+		///  Do all static analyze jobs
+		/// </summary>
+		/// <param name="declarations">
+		///  Parsed top-level declarations
+		/// </param>
+		/// <returns>the analyzed declarations (errors are given during this process)</returns>
+		public Declaration[] Analyze(params Declaration[] declarations)
 		{
 			var planet = new Environment(SolarSystem);
 			foreach (var declaration in declarations)
 				planet.Declarations.Add(declaration);
 			CheckMutualRec(declarations);
-			// TODO topo sort
+			// TODO topo sort, dependency analyze
+			return declarations;
 		}
 
 		/// <summary>
