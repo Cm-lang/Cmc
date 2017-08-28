@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Diagnostics;
+using System.IO;
 using bCC;
 using bCC.Core;
 
@@ -14,6 +15,24 @@ namespace LLVM
 			var analyzedDeclarations = core.Analyze(declarations);
 			// TODO run code gen
 			File.WriteAllText(outputFile, "");
+			var cmd = new Process
+			{
+				StartInfo =
+				{
+					FileName = "cmd.exe",
+					RedirectStandardInput = true,
+					RedirectStandardOutput = true,
+					CreateNoWindow = true,
+					UseShellExecute = false
+				}
+			};
+			cmd.Start();
+
+			cmd.StandardInput.WriteLine($"llc-4.0 {outputFile}");
+			cmd.StandardInput.Flush();
+			cmd.StandardInput.Close();
+			cmd.WaitForExit();
+//			Console.WriteLine(cmd.StandardOutput.ReadToEnd());
 		}
 	}
 }
