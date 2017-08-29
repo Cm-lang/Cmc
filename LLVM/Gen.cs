@@ -53,38 +53,46 @@ namespace LLVM
 		/// </summary>
 		/// <param name="builder">the string builder used to append ir</param>
 		/// <param name="element">the ast element waiting to be generated</param>
-		/// <param name="isGlobal">is it a global declaration?</param>
-		[CanBeNull]
-		public static string GenAst(
+		/// <param name="varName"></param>
+		public static void GenAst(
 			StringBuilder builder,
 			Ast element,
-			bool isGlobal = false)
+			[CanBeNull] ulong? varName = null)
 		{
 			if (element is LiteralExpression expression)
 			{
-				var varName = $"{DetermineDeclarationPrefix(isGlobal)}{GlobalVarCount++}";
 				if (expression is StringLiteralExpression str)
 					builder.AppendLine(
-						$"");
+						$"{varName}=alloca i8*, align 8");
 				else if (expression is IntLiteralExpression integer)
 					builder.AppendLine(
-						$"{varName}=alloca {integer.Type}, align {Math.Ceiling(integer.Length / 8.0)}");
-				return varName;
+						$"store {varName}=alloca {integer.Type}, align {Math.Ceiling(integer.Length / 8.0)}");
 			}
 			if (element is TypeDeclaration typeDeclaration)
 				builder.AppendLine($"; type alias: <{typeDeclaration.Name}> -> <{typeDeclaration.Type}>");
 			else if (element is VariableDeclaration variable)
 			{
-				var exprVarName = GenAst(builder, variable.Expression);
-				// use this var name
+				GenAst(builder, variable.Expression);
 			}
 			else if (element is ReturnStatement returnStatement)
 			{
 				var expr = returnStatement.Expression;
-				var varName = GenAst(builder, expr);
+				GenAst(builder, expr);
 				// TODO assign the value
 			}
-			return null;
+			else if (element is StatementList statements)
+			{
+				ulong localVarCount = 0;
+				// TODO deal with other types
+				foreach (var statement in statements.Statements)
+					if (statement is VariableDeclaration declaration)
+					{
+						var rawType = declaration.Type.ToString();
+						builder.AppendLine($"%{localVarCount++} = alloca {rawType}, ");
+					}
+				foreach (var statement in statements.Statements)
+					GenAst(builder, statement, localVarCount++);
+			}
 		}
 
 		public static void Main(string[] args)

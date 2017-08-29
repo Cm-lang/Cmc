@@ -94,10 +94,11 @@ namespace bCC.Expression
 		public StringLiteralExpression(MetaData metaData, string value) : base(metaData,
 			new PrimaryType(MetaData.Empty, PrimaryType.StringType))
 		{
-			Value = string.Concat(value
-				        .Select(i => char.IsLetterOrDigit(i)
+			Value = string.Concat(
+				        from i in value
+				        select char.IsLetterOrDigit(i)
 					        ? i.ToString()
-					        : $"\\{Convert.ToString((byte) i, 16)}")) + "\\00";
+					        : $"\\{Convert.ToString((byte) i, 16)}") + "\\00";
 			ConstantPoolIndex = Constants.AllocateStringConstant(Value);
 		}
 
