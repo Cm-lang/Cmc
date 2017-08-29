@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using bCC.Core;
 using JetBrains.Annotations;
+using Environment = bCC.Core.Environment;
 
 #pragma warning disable 659
 
@@ -86,27 +88,19 @@ namespace bCC.Expression
 
 	public class StringLiteralExpression : LiteralExpression
 	{
-		private readonly string _debugRepresentation;
 		public readonly string Value;
 
 		public StringLiteralExpression(MetaData metaData, string value) : base(metaData,
 			new PrimaryType(MetaData.Empty, PrimaryType.StringType))
 		{
-			Value = value;
+			Value = string.Concat(value.Select(i => char.IsLetterOrDigit(i)
+				? i.ToString()
+				: ((int) i).ToString()));
 			// FEATURE #23
-			_debugRepresentation = Value
-				.Replace("\\", "\\\\")
-				.Replace("\r", "\\r")
-				.Replace("\b", "\\b")
-				.Replace("\a", "\\a")
-				.Replace("\f", "\\f")
-				.Replace("\n", "\\n")
-				.Replace("\t", "\\t")
-				.Replace("\"", "\\\"");
 		}
 
 		public override IEnumerable<string> Dump() => new[]
-				{$"string literal expression [{_debugRepresentation}]:\n"}
+				{$"string literal expression [{Value}]:\n"}
 			.Concat(Type.Dump().Select(MapFunc));
 	}
 
