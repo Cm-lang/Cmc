@@ -42,14 +42,6 @@ namespace LLVM
 		}
 
 		/// <summary>
-		///  C# cannot have a tenary operator in the string templete
-		///  So I made this
-		/// </summary>
-		/// <param name="isGlobal">is it a global declaration</param>
-		/// <returns>the prefix of the declaration</returns>
-		public static char DetermineDeclarationPrefix(bool isGlobal) => isGlobal ? '@' : '%';
-
-		/// <summary>
 		///  generate llvm ir by the given ast
 		/// </summary>
 		/// <param name="builder">the string builder used to append ir</param>

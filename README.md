@@ -11,10 +11,16 @@ Travis CI|
 [![Gitter](https://badges.gitter.im/bC-Programming-Language-StandardCouncil/bC-Compiler.svg)](https://gitter.im/bC-Programming-Language-StandardCouncil/bC-Compiler?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 [![license](https://img.shields.io/github/license/bC-Programming-Language-StandardCouncil/bC-Compiler.svg)](https://github.com/bC-Programming-Language-StandardCouncil/bC-Compiler)
 
-The compiler for bC-language.
+The compiler for bC-language (the name will be changed in the future).
 
-bC is a statically typed native language (targeting LLVM and GLSL).
-It doesn't have subtyping, it organize data with structs and extension methods.
+bC is a statically typed native language (targeting LLVM and GLSL),
+with first-class lambdas and powerful type inference.
+
+There are no `function`s in this language, it treats them as lambda variables.
+With compile-time inlining, functional style codes can run as fast as imperative style ones.
+
+This language doesn't have subtyping,
+it organize data with structs and extension methods.
 
 Maybe there will be an optional H-M type system, and hole-oriented programming (like Idris).
 
