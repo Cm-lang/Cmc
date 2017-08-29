@@ -32,6 +32,7 @@ namespace bCC
 		public bool IsGlobal = false;
 		[CanBeNull] public Type Type;
 		public int Align = 8;
+		public ulong Address;
 
 		public VariableDeclaration(
 			MetaData metaData,

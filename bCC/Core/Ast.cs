@@ -8,7 +8,7 @@ namespace bCC.Core
 	{
 		[NotNull] public static Func<string, string> MapFunc = i => $"  {i}";
 		[NotNull] public static Func<string, string> MapFunc2 = i => $"    {i}";
-		[NotNull] public Environment Env;
+		public Environment Env;
 		public MetaData MetaData;
 
 		protected Ast(MetaData metaData) => MetaData = metaData;

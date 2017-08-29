@@ -24,8 +24,8 @@ namespace LLVM
 			{
 				var str = Constants.StringConstants[i];
 				var len = Constants.StringConstantLengths[i];
-				builder.Append(
-					$"@.str{i}=private unnamed_addr constant [{len} x i8] c\"{str}\", align 1\n");
+				builder.AppendLine(
+					$"@.str{i}=private unnamed_addr constant [{len} x i8] c\"{str}\", align 1");
 			}
 			foreach (var analyzedDeclaration in analyzedDeclarations)
 			{
@@ -70,8 +70,17 @@ namespace LLVM
 				builder.AppendLine($"; type alias: <{typeDeclaration.Name}> -> <{typeDeclaration.Type}>");
 			else if (element is VariableDeclaration variable)
 			{
-				builder.AppendLine($"%{varName} = alloca {variable.Type}, align {variable.Align}");
-				GenAst(builder, variable.Expression, ref varName);
+				if (variable.IsGlobal)
+				{
+					builder.AppendLine()
+				}
+				else
+				{
+					builder.AppendLine($"%{varName} = alloca {variable.Type}, align {variable.Align}");
+					variable.Address = varName;
+					GenAst(builder, variable.Expression, ref varName);
+					varName++;
+				}
 			}
 			else if (element is ReturnStatement returnStatement)
 			{

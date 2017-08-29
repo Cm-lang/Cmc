@@ -86,7 +86,7 @@ namespace bCC
 		{
 		}
 
-		public override IEnumerable<string> Dump() => new[] {$"primary type [{Name}]\n"};
+		public override IEnumerable<string> Dump() => new[] {$"- primary type [{Name}]\n"};
 		public override string ToString() => Name;
 
 		public override bool Equals(object obj) => obj is PrimaryType type && string.Equals(type.Name, Name, Ordinal);
