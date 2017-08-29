@@ -101,7 +101,7 @@ namespace bCC.Expression
 				        select char.IsLetterOrDigit(i)
 					        ? i.ToString()
 					        : $"\\{Convert.ToString((byte) i, 16)}") + "\\00";
-			ConstantPoolIndex = Constants.AllocateStringConstant(Value);
+			ConstantPoolIndex = Constants.AllocateStringConstant(Value, Length);
 		}
 
 		/// <summary>

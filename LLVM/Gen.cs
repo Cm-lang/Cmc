@@ -25,8 +25,9 @@ namespace LLVM
 			for (var i = 0; i < Constants.StringConstants.Count; i++)
 			{
 				var str = Constants.StringConstants[i];
+				var len = Constants.StringConstantLengths[i];
 				builder.Append(
-					$"@.str{i}=unnamed_addr constant [{str.Length - str.Count(c => c == '\\')} x i8] c\"{str}\"\n");
+					$"@.str{i}=private unnamed_addr constant [{len} x i8] c\"{str}\", align 1\n");
 			}
 			foreach (var analyzedDeclaration in analyzedDeclarations)
 			{
