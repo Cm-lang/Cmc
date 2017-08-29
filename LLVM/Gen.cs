@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using System.Text;
 using bCC;
 using bCC.Core;
@@ -9,7 +7,6 @@ using bCC.Statement;
 using JetBrains.Annotations;
 using Tools;
 using static LLVM.TypeConverter;
-using Type = bCC.Type;
 
 namespace LLVM
 {
