@@ -83,6 +83,8 @@ namespace bCC.Expression
 			new PrimaryType(metaData, PrimaryType.BoolType, 1)) =>
 			Value = value;
 
+		public int ValueToInt() => Value ? 1 : 0;
+
 		public override IEnumerable<string> Dump() => new[] {$"bool literal expression [{Value}]:\n"};
 	}
 

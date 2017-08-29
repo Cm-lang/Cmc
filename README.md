@@ -26,3 +26,6 @@ it organize data with structs and extension methods.
 
 Maybe there will be an optional H-M type system, and hole-oriented programming (like Idris).
 
+## Document
+
+[AST Design](../bCC/bC_AST_Design.yml)

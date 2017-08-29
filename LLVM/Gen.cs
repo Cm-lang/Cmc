@@ -27,10 +27,11 @@ namespace LLVM
 				builder.AppendLine(
 					$"@.str{i}=private unnamed_addr constant [{len} x i8] c\"{str}\", align 1");
 			}
+			ulong varName = 0;
 			foreach (var analyzedDeclaration in analyzedDeclarations)
 			{
-				ulong varName = 0;
 				GenAst(builder, analyzedDeclaration, ref varName);
+				varName++;
 			}
 			return builder.ToString();
 		}
@@ -72,11 +73,21 @@ namespace LLVM
 			{
 				if (variable.IsGlobal)
 				{
-					builder.AppendLine()
+					if (variable.Expression is IntLiteralExpression integer)
+						builder.AppendLine(
+							$"@{varName} = global {ConvertType(variable.Type)} {integer.Value}, align {variable.Align}");
+					else if (variable.Expression is BoolLiteralExpression boolean)
+						builder.AppendLine(
+							$"#{varName} = global {ConvertType(variable.Type)} {boolean.ValueToInt()}, align {variable.Align}");
+					// TODO deal with other types
+					variable.Address = varName;
+					// TODO for complex initialization, generate a function to do this job
+					varName++;
 				}
 				else
 				{
-					builder.AppendLine($"%{varName} = alloca {variable.Type}, align {variable.Align}");
+					builder.AppendLine(
+						$"%{varName} = alloca {ConvertType(variable.Type)}, align {variable.Align}");
 					variable.Address = varName;
 					GenAst(builder, variable.Expression, ref varName);
 					varName++;
