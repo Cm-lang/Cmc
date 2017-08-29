@@ -90,10 +90,12 @@ namespace bCC.Expression
 	{
 		public readonly string Value;
 		public readonly int ConstantPoolIndex;
+		public readonly int Length;
 
 		public StringLiteralExpression(MetaData metaData, string value) : base(metaData,
 			new PrimaryType(MetaData.Empty, PrimaryType.StringType))
 		{
+			Length = value.Length + 1;
 			Value = string.Concat(
 				        from i in value
 				        select char.IsLetterOrDigit(i)

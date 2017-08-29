@@ -27,7 +27,7 @@ namespace LLVM
 					$"@.str{i}=unnamed_addr constant [{str.Length - str.Count(c => c == '\\')} x i8] c\"{str}\"");
 			}
 			foreach (var analyzedDeclaration in analyzedDeclarations)
-				GenAst(builder, analyzedDeclaration, true);
+				GenAst(builder, analyzedDeclaration);
 			return builder.ToString();
 		}
 
@@ -63,7 +63,8 @@ namespace LLVM
 			{
 				if (expression is StringLiteralExpression str)
 					builder.AppendLine(
-						$"{varName}=alloca i8*, align {str.Type.Align}");
+						$"store i8* getelementptr inbounds ([{str.Length} x i8], [{str.Length} x i8]* @.str, i32 0, i32 0)," +
+						$"i8** %{varName}, align 8");
 				else if (expression is IntLiteralExpression integer)
 					builder.AppendLine(
 						$"store {varName}=alloca {integer.Type}, align {Math.Ceiling(integer.Length / 8.0)}");
