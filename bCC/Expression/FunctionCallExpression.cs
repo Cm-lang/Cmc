@@ -56,18 +56,15 @@ namespace bCC.Expression
 
 		public override Type GetExpressionType() => _type ?? throw new CompilerException("type cannot be inferred");
 
-		public override IEnumerable<string> Dump()
-		{
-			return new[]
-				{
-					"function call expression:\n",
-					"  receiver:\n"
-				}
-				.Concat(Receiver.Dump().Select(MapFunc2))
-				.Concat(new[] {"  parameters:\n"})
-				.Concat(ParameterList.SelectMany(i => i.Dump().Select(MapFunc2)))
-				.Concat(new[] {"  type:\n"})
-				.Concat(_type.Dump().Select(MapFunc2));
-		}
+		public override IEnumerable<string> Dump() => new[]
+			{
+				"function call expression:\n",
+				"  receiver:\n"
+			}
+			.Concat(Receiver.Dump().Select(MapFunc2))
+			.Concat(new[] {"  parameters:\n"})
+			.Concat(ParameterList.SelectMany(i => i.Dump().Select(MapFunc2)))
+			.Concat(new[] {"  type:\n"})
+			.Concat(_type.Dump().Select(MapFunc2));
 	}
 }

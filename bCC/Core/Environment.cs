@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
+using static System.StringComparison;
 
 namespace bCC.Core
 {
@@ -19,15 +20,15 @@ namespace bCC.Core
 			SolarSystem = new Environment();
 
 			// FEATURE #0
-			foreach (var typeDeclaration in new[]
+			foreach (var typeDeclaration in from builtinType in new[]
 				{
 					"i8", "i16", "i32", "i64", "u8", "u16", "u32", "u64", PrimaryType.StringType, PrimaryType.NullType,
 					PrimaryType.BoolType
 				}
-				.Select(i => new TypeDeclaration(
+				select new TypeDeclaration(
 					MetaData.BuiltIn,
-					i,
-					new PrimaryType(MetaData.BuiltIn, i))))
+					builtinType,
+					new PrimaryType(MetaData.BuiltIn, builtinType)))
 				SolarSystem.Declarations.Add(typeDeclaration);
 		}
 
@@ -40,8 +41,10 @@ namespace bCC.Core
 			var env = this;
 			var list = new List<Declaration>();
 			do
-				list.AddRange(env.Declarations
-					.Where(declaration => declaration.Name == name)); while ((env = env.Outer) != null);
+				list.AddRange(
+					from declaration in env.Declarations
+					where string.Equals(declaration.Name, name, Ordinal)
+					select declaration); while ((env = env.Outer) != null);
 			return list;
 		}
 
@@ -56,8 +59,10 @@ namespace bCC.Core
 		{
 			var env = this;
 			do
-				foreach (var declaration in env.Declarations
-					.Where(declaration => string.Equals(declaration.Name, name, StringComparison.Ordinal)))
+				foreach (var declaration in
+					from declaration in env.Declarations
+					where string.Equals(declaration.Name, name, Ordinal)
+					select declaration)
 					return declaration; while ((env = env.Outer) != null);
 			return null;
 		}
@@ -72,8 +77,10 @@ namespace bCC.Core
 		{
 			var env = this;
 			do
-				foreach (var declaration in env.Declarations
-					.Where(declaration => predicate(declaration)))
+				foreach (var declaration in
+					from declaration in env.Declarations
+					where predicate(declaration)
+					select declaration)
 					return declaration; while ((env = env.Outer) != null);
 			return null;
 		}
