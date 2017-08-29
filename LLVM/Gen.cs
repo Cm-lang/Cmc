@@ -4,6 +4,7 @@ using bCC;
 using bCC.Core;
 using bCC.Expression;
 using bCC.Statement;
+using JetBrains.Annotations;
 using Tools;
 
 namespace LLVM
@@ -39,7 +40,8 @@ namespace LLVM
 		/// <param name="builder">the string builder used to append ir</param>
 		/// <param name="element">the ast element waiting to be generated</param>
 		/// <param name="isGlobal">is it a global declaration?</param>
-		public static void GenAst(
+		[CanBeNull]
+		public static string GenAst(
 			StringBuilder builder,
 			Ast element,
 			bool isGlobal = false)
@@ -57,8 +59,8 @@ namespace LLVM
 				}
 				else if (expr is IntLiteralExpression integer)
 				{
-//					builder.AppendLine(
-//						$"{varName}={}");
+					builder.AppendLine(
+						$"{varName}={}");
 				}
 			}
 			else if(element is ReturnStatement returnStatement)
