@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text;
 using bCC;
 using bCC.Core;
@@ -27,7 +26,7 @@ namespace LLVM
 			{
 				var str = Constants.StringConstants[i];
 				builder.Append(
-					$"@.str{i}=unnamed_addr constant [{str.Length - str.Count(c => c == '\\')} x i8] c\"{str}\"");
+					$"@.str{i}=unnamed_addr constant [{str.Length - str.Count(c => c == '\\')} x i8] c\"{str}\"\n");
 			}
 			foreach (var analyzedDeclaration in analyzedDeclarations)
 			{
@@ -57,8 +56,16 @@ namespace LLVM
 					default:
 						return primaryType.ToString();
 				}
+			if (type is LambdaType lambdaType)
+			{
+				// TODO
+			}
 			if (type is SecondaryType secondaryType)
-				return $"{{{string.Join(",", secondaryType.Struct.FieldList.Select(i => ConvertType(i.Type)))}}}";
+			{
+				if (secondaryType.Struct != null)
+					return $"{{{string.Join(",", secondaryType.Struct.FieldList.Select(i => ConvertType(i.Type)))}}}";
+				throw new CompilerException($"cannot resolve {type}");
+			}
 			throw new CompilerException($"unknown type {type}");
 		}
 
@@ -114,7 +121,9 @@ namespace LLVM
 		{
 			Console.WriteLine(Generate(
 				new VariableDeclaration(MetaData.Empty,
-					"i", new IntLiteralExpression(MetaData.Empty, "1", true))
+					"i", new IntLiteralExpression(MetaData.Empty, "1", true)),
+				new VariableDeclaration(MetaData.Empty,
+					"j", new StringLiteralExpression(MetaData.Empty, "boy next door"))
 			));
 		}
 	}
