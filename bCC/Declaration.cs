@@ -31,6 +31,7 @@ namespace bCC
 		public readonly bool Mutability;
 		public bool IsGlobal = false;
 		public Type Type;
+		public int Align = 8;
 
 		public VariableDeclaration(
 			MetaData metaData,

@@ -88,7 +88,8 @@ namespace LLVM
 					if (statement is VariableDeclaration declaration)
 					{
 						var rawType = declaration.Type.ToString();
-						builder.AppendLine($"%{localVarCount++} = alloca {rawType}, ");
+						var align = declaration.Align;
+						builder.AppendLine($"%{localVarCount++} = alloca {rawType}, align {align}");
 					}
 				foreach (var statement in statements.Statements)
 					GenAst(builder, statement, localVarCount++);
