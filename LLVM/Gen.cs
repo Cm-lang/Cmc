@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using bCC;
 using bCC.Core;
@@ -8,6 +9,7 @@ using bCC.Expression;
 using bCC.Statement;
 using JetBrains.Annotations;
 using Tools;
+using Type = bCC.Type;
 
 namespace LLVM
 {
@@ -44,6 +46,22 @@ namespace LLVM
 			CommandLine.RunCommand($"gcc {outputFile}.ll -o {outputFile}");
 		}
 
+		public static string ConvertType([CanBeNull] Type type)
+		{
+			if (type is PrimaryType primaryType)
+				switch (primaryType.ToString())
+				{
+					case "nulltype":
+					case "bool": return "i8";
+					case "string": return "i8*";
+					default:
+						return primaryType.ToString();
+				}
+			if (type is SecondaryType secondaryType)
+				return $"{{{string.Join(",", secondaryType.Struct.FieldList.Select(i => ConvertType(i.Type)))}}}";
+			throw new CompilerException($"unknown type {type}");
+		}
+
 		/// <summary>
 		///  generate llvm ir by the given ast
 		/// </summary>
@@ -59,7 +77,8 @@ namespace LLVM
 			{
 				if (expression is StringLiteralExpression str)
 					builder.AppendLine(
-						$"store i8* getelementptr inbounds ([{str.Length} x i8], [{str.Length} x i8]* @.str, i32 0, i32 0)," +
+						$"store i8* getelementptr inbounds ([{str.Length} x i8]," +
+						$"[{str.Length} x i8]* @.str{str.ConstantPoolIndex}, i32 0, i32 0)," +
 						$"i8** %{varName}, align 8");
 				else if (expression is IntLiteralExpression integer)
 					builder.AppendLine(
@@ -77,8 +96,8 @@ namespace LLVM
 				var expr = returnStatement.Expression;
 				GenAst(builder, expr, ref varName);
 				builder.AppendLine(
-					$"ret {expr.GetExpressionType()} %{varName}");
-				// TODO assign the value
+					$"ret {ConvertType(expr.GetExpressionType())} %{varName}");
+				varName++;
 			}
 			else if (element is StatementList statements)
 			{
