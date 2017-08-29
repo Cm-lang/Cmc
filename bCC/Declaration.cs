@@ -57,6 +57,7 @@ namespace bCC
 			// FEATURE #30
 			Type.SurroundWith(Env);
 			if (Type is UnknownType unknownType) Type = unknownType.Resolve();
+			if (Type is PrimaryType primaryType) Align = primaryType.
 			// FEATURE #11
 			if (!string.Equals(exprType.ToString(), NullType, Ordinal) &&
 			    !Equals(Type, exprType))

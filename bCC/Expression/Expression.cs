@@ -62,7 +62,7 @@ namespace bCC.Expression
 			// FEATURE #27
 			bool isSigned,
 			int length = 32)
-			: base(metaData, new PrimaryType(metaData, $"{(isSigned ? "i" : "u")}{length}"))
+			: base(metaData, new PrimaryType(metaData, $"{(isSigned ? "i" : "u")}{length}", length / 8))
 		{
 			Value = value;
 			Length = length;
@@ -80,7 +80,7 @@ namespace bCC.Expression
 		public readonly bool Value;
 
 		public BoolLiteralExpression(MetaData metaData, bool value) : base(metaData,
-			new PrimaryType(metaData, PrimaryType.BoolType)) =>
+			new PrimaryType(metaData, PrimaryType.BoolType, 1)) =>
 			Value = value;
 
 		public override IEnumerable<string> Dump() => new[] {$"bool literal expression [{Value}]:\n"};

@@ -11,7 +11,16 @@ namespace bCC
 	public abstract class Type : Ast
 	{
 		[NotNull] public readonly string Name;
-		protected Type(MetaData metaData, [NotNull] string name) : base(metaData) => Name = name;
+		public int Align;
+
+		protected Type(
+			MetaData metaData,
+			[NotNull] string name,
+			int align = 8) : base(metaData)
+		{
+			Name = name;
+			Align = align;
+		}
 
 		public abstract override string ToString();
 		public abstract override bool Equals(object obj);
@@ -61,7 +70,18 @@ namespace bCC
 		public const string NullType = "nulltype";
 		public const string BoolType = "bool";
 
-		public PrimaryType(MetaData metaData, [NotNull] string name) : base(metaData, name)
+		public PrimaryType(
+			MetaData metaData,
+			[NotNull] string name) :
+			base(metaData, name)
+		{
+		}
+
+		public PrimaryType(
+			MetaData metaData,
+			[NotNull] string name,
+			int align = 8) :
+			base(metaData, name, align)
 		{
 		}
 
@@ -82,7 +102,7 @@ namespace bCC
 			MetaData metaData,
 			[NotNull] string name,
 			[CanBeNull] StructDeclaration @struct = null) :
-			base(metaData, name) => Struct = @struct;
+			base(metaData, name, 4) => Struct = @struct;
 
 		public override void SurroundWith(Environment environment)
 		{
