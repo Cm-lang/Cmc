@@ -8,6 +8,7 @@ using bCC.Expression;
 using bCC.Statement;
 using JetBrains.Annotations;
 using Tools;
+using static LLVM.TypeConverter;
 using Type = bCC.Type;
 
 namespace LLVM
@@ -44,30 +45,6 @@ namespace LLVM
 			File.WriteAllText(outputFile, Generate(declarations));
 			CommandLine.RunCommand($"llc-4.0 {outputFile}.ll -filetype=obj");
 			CommandLine.RunCommand($"gcc {outputFile}.ll -o {outputFile}");
-		}
-
-		public static string ConvertType([CanBeNull] Type type)
-		{
-			if (type is PrimaryType primaryType)
-				switch (primaryType.ToString())
-				{
-					case "nulltype":
-					case "bool": return "i8";
-					case "string": return "i8*";
-					default:
-						return primaryType.ToString();
-				}
-			if (type is LambdaType lambdaType)
-			{
-				// TODO
-			}
-			if (type is SecondaryType secondaryType)
-			{
-				if (secondaryType.Struct != null)
-					return $"{{{string.Join(",", secondaryType.Struct.FieldList.Select(i => ConvertType(i.Type)))}}}";
-				throw new CompilerException($"cannot resolve {type}");
-			}
-			throw new CompilerException($"unknown type {type}");
 		}
 
 		/// <summary>
@@ -116,16 +93,6 @@ namespace LLVM
 					localVarCount++;
 				}
 			}
-		}
-
-		public static void Main([NotNull] string[] args)
-		{
-			Console.WriteLine(Generate(
-				new VariableDeclaration(MetaData.Empty,
-					"i", new IntLiteralExpression(MetaData.Empty, "1", true)),
-				new VariableDeclaration(MetaData.Empty,
-					"j", new StringLiteralExpression(MetaData.Empty, "boy next door"))
-			));
 		}
 	}
 }
