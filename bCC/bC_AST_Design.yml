@@ -1,0 +1,27 @@
+Ast:
+  Statement:
+    AssignmentStatement
+    ReturnStatement
+    ExpressionStatement
+    JumpStatement
+    StatementList
+    WhileStatement:
+      IfStatement
+    Declaration:
+      VariableDeclaration
+      StructDeclaration
+      TypeDeclaration
+  Expression:
+    VariableExpression
+    FunctionCallExpression
+    MemberAccessExpression
+    NullExpression
+    LiteralExpression:
+      IntLiteralExpression
+      BoolLiteralExpression
+      StringLiteralExpression
+      LambdaExpression
+  Type:
+    PrimaryType
+    SecondaryType
+    LambdaType
