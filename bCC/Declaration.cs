@@ -29,6 +29,7 @@ namespace bCC
 	{
 		[NotNull] public readonly Expression.Expression Expression;
 		public readonly bool Mutability;
+		public bool IsGlobal = false;
 		public Type Type;
 
 		public VariableDeclaration(

@@ -33,7 +33,11 @@ namespace bCC.Core
 		{
 			var planet = new Environment(SolarSystem);
 			foreach (var declaration in declarations)
+			{
 				planet.Declarations.Add(declaration);
+				if (declaration is VariableDeclaration variableDeclaration)
+					variableDeclaration.IsGlobal = true;
+			}
 			CheckMutualRec(declarations);
 			// TODO topo sort, dependency analyze
 			return declarations;

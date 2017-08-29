@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Text;
 using bCC;
 using bCC.Core;
@@ -18,7 +19,14 @@ namespace LLVM
 		{
 			var core = new Core();
 			var builder = new StringBuilder();
-			foreach (var analyzedDeclaration in core.Analyze(declarations))
+			var analyzedDeclarations = core.Analyze(declarations);
+			for (var i = 0; i < Constants.StringConstants.Count; i++)
+			{
+				var str = Constants.StringConstants[i];
+				builder.Append(
+					$"@.str{i}=unnamed_addr constant [{str.Length - str.Count(c => c == '\\')} x i8] c\"{str}\"");
+			}
+			foreach (var analyzedDeclaration in analyzedDeclarations)
 				GenAst(builder, analyzedDeclaration, true);
 			return builder.ToString();
 		}
@@ -57,7 +65,7 @@ namespace LLVM
 				var varName = $"{DetermineDeclarationPrefix(isGlobal)}{GlobalVarCount++}";
 				if (expression is StringLiteralExpression str)
 					builder.AppendLine(
-						$"{varName}=unnamed_addr constant [{str.Value.Length} x i8] c\"{str.Value}\"");
+						$"");
 				else if (expression is IntLiteralExpression integer)
 					builder.AppendLine(
 						$"{varName}=alloca {integer.Type}, align {Math.Ceiling(integer.Length / 8.0)}");
@@ -73,7 +81,7 @@ namespace LLVM
 			else if (element is ReturnStatement returnStatement)
 			{
 				var expr = returnStatement.Expression;
-				GenAst(builder, expr);
+				var varName = GenAst(builder, expr);
 				// TODO assign the value
 			}
 			return null;
