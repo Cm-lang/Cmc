@@ -30,7 +30,7 @@ namespace bCC
 		[NotNull] public readonly Expression.Expression Expression;
 		public readonly bool Mutability;
 		public bool IsGlobal = false;
-		public Type Type;
+		[CanBeNull] public Type Type;
 		public int Align = 8;
 
 		public VariableDeclaration(
@@ -72,7 +72,7 @@ namespace bCC
 				$"variable declaration [{Name}]:\n",
 				"  type:\n"
 			}
-			.Concat(Type.Dump().Select(MapFunc2))
+			.Concat(Type?.Dump().Select(MapFunc2) ?? new[] {"    cannot infer!\n"})
 			.Concat(new[] {"  initialize expression:\n"})
 			.Concat(Expression.Dump().Select(MapFunc2));
 	}
@@ -83,7 +83,7 @@ namespace bCC
 	/// </summary>
 	public class TypeDeclaration : Declaration
 	{
-		public readonly Type Type;
+		[NotNull] public readonly Type Type;
 
 		public TypeDeclaration(
 			MetaData metaData,
@@ -95,8 +95,8 @@ namespace bCC
 
 	public class StructDeclaration : Declaration
 	{
-		public readonly IList<VariableDeclaration> FieldList;
-		public readonly Type Type;
+		[NotNull] public readonly IList<VariableDeclaration> FieldList;
+		[NotNull] public readonly Type Type;
 
 		public StructDeclaration(
 			MetaData metaData,

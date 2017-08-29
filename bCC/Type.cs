@@ -40,6 +40,7 @@ namespace bCC
 		/// </summary>
 		/// <returns>resolved type</returns>
 		/// <exception cref="CompilerException">if unresolved</exception>
+		[NotNull]
 		public Type Resolve()
 		{
 			var declaration = Env.FindDeclarationByName(Name);
@@ -47,7 +48,7 @@ namespace bCC
 			if (declaration is TypeDeclaration typeDeclaration) return typeDeclaration.Type;
 			if (declaration is StructDeclaration structDeclaration) return structDeclaration.Type;
 			Errors.Add(MetaData.GetErrorHeader() + Name + " is not a type");
-			throw new CompilerException();
+			throw new CompilerException($"cannot resolve {Name}");
 		}
 
 		public void Gg() => Errors.Add($"{MetaData.GetErrorHeader()}unresolved type: {MetaData}");
@@ -66,9 +67,9 @@ namespace bCC
 	/// </summary>
 	public class PrimaryType : Type
 	{
-		public const string StringType = "string";
-		public const string NullType = "nulltype";
-		public const string BoolType = "bool";
+		[NotNull] public const string StringType = "string";
+		[NotNull] public const string NullType = "nulltype";
+		[NotNull] public const string BoolType = "bool";
 
 		public PrimaryType(
 			MetaData metaData,
@@ -96,7 +97,7 @@ namespace bCC
 	/// </summary>
 	public class SecondaryType : Type
 	{
-		public StructDeclaration Struct;
+		[CanBeNull] public StructDeclaration Struct;
 
 		public SecondaryType(
 			MetaData metaData,

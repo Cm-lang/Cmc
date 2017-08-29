@@ -12,9 +12,9 @@ namespace bCC.Core
 	/// </summary>
 	public class Core
 	{
-		private readonly IDictionary<string, IEnumerable<string>> _mutualRecList;
+		[NotNull] private readonly IDictionary<string, IEnumerable<string>> _mutualRecList;
 
-		private readonly IDictionary<string, bool> _mutualRecMark;
+		[NotNull] private readonly IDictionary<string, bool> _mutualRecMark;
 
 		public Core()
 		{
@@ -29,6 +29,7 @@ namespace bCC.Core
 		///  Parsed top-level declarations
 		/// </param>
 		/// <returns>the analyzed declarations (errors are given during this process)</returns>
+		[NotNull]
 		public Declaration[] Analyze(params Declaration[] declarations)
 		{
 			var planet = new Environment(SolarSystem);
@@ -51,29 +52,31 @@ namespace bCC.Core
 		///   FEATURE #34
 		/// </summary>
 		/// <param name="declarations"></param>
-		public void CheckMutualRec(IEnumerable<Declaration> declarations)
+		public void CheckMutualRec([NotNull] IEnumerable<Declaration> declarations)
 		{
 			var structs = new List<string>();
-			foreach (var keyValuePair in declarations
-				.Where(i => i is StructDeclaration)
-				.Select(i =>
+			foreach (var keyValuePair in
+				from i in declarations
+				where i is StructDeclaration
+				select
 					new KeyValuePair<string, IEnumerable<string>>(
 						i.Name,
-						((StructDeclaration) i)
-						.FieldList
-						.Where(q => !SolarSystem
+						from q in ((StructDeclaration) i)
+							.FieldList
+						where !SolarSystem
 							.Declarations
 							.Select(qq => qq.Name)
-							.Contains(q.Type.ToString()))
-						.Select(j => j.Type.Name))))
+							.Contains(q.Type.ToString())
+						select q.Type.Name))
 			{
 				structs.Add(keyValuePair.Key);
 				_mutualRecList.Add(keyValuePair);
 				_mutualRecMark[keyValuePair.Key] = false;
 			}
-			foreach (var chain in structs
-				.Select(CheckMutualRecRec)
-				.Where(chain => null != chain))
+			foreach (var chain in
+				from chain in structs.Select(CheckMutualRecRec)
+				where null != chain
+				select chain)
 			{
 				Errors.Add($"mutual recursion in structure definition is detected: [{chain}]");
 				break;
@@ -90,9 +93,10 @@ namespace bCC.Core
 		{
 			if (_mutualRecMark[declaration]) return declaration;
 			_mutualRecMark[declaration] = true;
-			foreach (var ret in _mutualRecList[declaration]
-				.Select(CheckMutualRecRec)
-				.Where(ret => null != ret))
+			foreach (var ret in
+				from ret in _mutualRecList[declaration].Select(CheckMutualRecRec)
+				where null != ret
+				select ret)
 				return $"{declaration}]-[{ret}";
 			_mutualRecMark[declaration] = false;
 			return null;
