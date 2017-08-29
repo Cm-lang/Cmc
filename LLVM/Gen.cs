@@ -27,7 +27,7 @@ namespace LLVM
 					$"@.str{i}=unnamed_addr constant [{str.Length - str.Count(c => c == '\\')} x i8] c\"{str}\"");
 			}
 			foreach (var analyzedDeclaration in analyzedDeclarations)
-				GenAst(builder, analyzedDeclaration);
+				GenAst(builder, analyzedDeclaration, 0);
 			return builder.ToString();
 		}
 
@@ -57,7 +57,7 @@ namespace LLVM
 		public static void GenAst(
 			StringBuilder builder,
 			Ast element,
-			[CanBeNull] ulong? varName = null)
+			ulong varName)
 		{
 			if (element is LiteralExpression expression)
 			{
@@ -67,18 +67,19 @@ namespace LLVM
 						$"i8** %{varName}, align 8");
 				else if (expression is IntLiteralExpression integer)
 					builder.AppendLine(
-						$"store {varName}=alloca {integer.Type}, align {Math.Ceiling(integer.Length / 8.0)}");
+						$"store {integer.Type} {integer.Value}, {integer.Type}* %{varName}, align {integer.Type.Align}");
 			}
 			if (element is TypeDeclaration typeDeclaration)
 				builder.AppendLine($"; type alias: <{typeDeclaration.Name}> -> <{typeDeclaration.Type}>");
 			else if (element is VariableDeclaration variable)
 			{
-				GenAst(builder, variable.Expression);
+				builder.AppendLine($"%{varName} = alloca {variable.Type}, align {variable.Align}");
+				GenAst(builder, variable.Expression, varName);
 			}
 			else if (element is ReturnStatement returnStatement)
 			{
 				var expr = returnStatement.Expression;
-				GenAst(builder, expr);
+				GenAst(builder, expr, 0);
 				// TODO assign the value
 			}
 			else if (element is StatementList statements)
@@ -86,15 +87,7 @@ namespace LLVM
 				ulong localVarCount = 0;
 				// TODO deal with other types
 				foreach (var statement in statements.Statements)
-				{
-					if (statement is VariableDeclaration declaration)
-					{
-						var rawType = declaration.Type.ToString();
-						var align = declaration.Align;
-						builder.AppendLine($"%{localVarCount++} = alloca {rawType}, align {align}");
-					}
 					GenAst(builder, statement, localVarCount++);
-				}
 			}
 		}
 

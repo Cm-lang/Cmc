@@ -40,6 +40,8 @@ namespace bCC.Core
 			}
 			CheckMutualRec(declarations);
 			// TODO topo sort, dependency analyze
+			foreach (var declaration in declarations)
+				declaration.SurroundWith(planet);
 			return declarations;
 		}
 
