@@ -45,8 +45,16 @@ namespace bCC
 		{
 			var declaration = Env.FindDeclarationByName(Name);
 			if (null == declaration) Gg();
-			if (declaration is TypeDeclaration typeDeclaration) return typeDeclaration.Type;
-			if (declaration is StructDeclaration structDeclaration) return structDeclaration.Type;
+			if (declaration is TypeDeclaration typeDeclaration)
+			{
+				typeDeclaration.Used = true;
+				return typeDeclaration.Type;
+			}
+			if (declaration is StructDeclaration structDeclaration)
+			{
+				structDeclaration.Used = true;
+				return structDeclaration.Type;
+			}
 			Errors.Add(MetaData.GetErrorHeader() + Name + " is not a type");
 			throw new CompilerException($"cannot resolve {Name}");
 		}
@@ -109,7 +117,11 @@ namespace bCC
 		{
 			base.SurroundWith(environment);
 			if (null == Struct) Struct = Env.FindDeclarationByName(Name) as StructDeclaration;
-			if (null != Struct) return;
+			if (null != Struct)
+			{
+				Struct.Used = true;
+				return;
+			}
 			Errors.Add($"{MetaData.GetErrorHeader()}cannot resolve type {Name}");
 			throw new CompilerException();
 		}

@@ -151,7 +151,10 @@ namespace bCC.Expression
 		[CanBeNull] private Type _type;
 		[CanBeNull] public VariableDeclaration Declaration;
 
-		public VariableExpression(MetaData metaData, [NotNull] string name) : base(metaData) => Name = name;
+		public VariableExpression(
+			MetaData metaData,
+			[NotNull] string name) :
+			base(metaData) => Name = name;
 
 		public override void SurroundWith(Environment environment)
 		{
@@ -160,6 +163,7 @@ namespace bCC.Expression
 			if (declaration is VariableDeclaration variableDeclaration)
 			{
 				Declaration = variableDeclaration;
+				Declaration.Used = true;
 				_type = Declaration.Type;
 			}
 			else

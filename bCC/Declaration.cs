@@ -14,6 +14,7 @@ namespace bCC
 	{
 		[NotNull] public readonly string Name;
 		public readonly Modifier Modifier;
+		public bool Used = false;
 
 		public Declaration(
 			MetaData metaData,

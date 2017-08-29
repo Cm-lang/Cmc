@@ -33,9 +33,12 @@ namespace bCC.Expression
 					variableDeclaration.Type is LambdaType lambdaType &&
 					lambdaType.ArgsList.SequenceEqual(ParameterList.Select(i => i.GetExpressionType())));
 				if (null != receiverDeclaration)
+				{
 					// receiverDeclaration is obviously a variable declaraion
 					// because it's one of the filter condition
 					receiver.Declaration = (VariableDeclaration) receiverDeclaration;
+					receiverDeclaration.Used = true;
+				}
 			}
 			var hisType = Receiver.GetExpressionType() as LambdaType;
 			if (null != hisType)
