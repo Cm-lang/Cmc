@@ -28,4 +28,4 @@ Maybe there will be an optional H-M type system, and hole-oriented programming (
 
 ## Document
 
-[AST Design](../bCC/bC_AST_Design.yml)
+[AST Design](./bCC/bC_AST_Design.yml)
