@@ -1,5 +1,7 @@
 # bC-Compiler
 
+![](https://avatars1.githubusercontent.com/u/31237156)
+
 <!-- CI|Status
 :---:|:---:
 Travis CI|

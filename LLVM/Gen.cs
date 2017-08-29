@@ -28,7 +28,10 @@ namespace LLVM
 					$"@.str{i}=unnamed_addr constant [{str.Length - str.Count(c => c == '\\')} x i8] c\"{str}\"");
 			}
 			foreach (var analyzedDeclaration in analyzedDeclarations)
-				GenAst(builder, analyzedDeclaration, 0);
+			{
+				ulong varName = 0;
+				GenAst(builder, analyzedDeclaration, ref varName);
+			}
 			return builder.ToString();
 		}
 
@@ -50,7 +53,7 @@ namespace LLVM
 		public static void GenAst(
 			[NotNull] StringBuilder builder,
 			[NotNull] Ast element,
-			ulong varName)
+			ref ulong varName)
 		{
 			if (element is LiteralExpression expression)
 			{
@@ -67,19 +70,24 @@ namespace LLVM
 			else if (element is VariableDeclaration variable)
 			{
 				builder.AppendLine($"%{varName} = alloca {variable.Type}, align {variable.Align}");
-				GenAst(builder, variable.Expression, varName);
+				GenAst(builder, variable.Expression, ref varName);
 			}
 			else if (element is ReturnStatement returnStatement)
 			{
 				var expr = returnStatement.Expression;
-				GenAst(builder, expr, 0);
+				GenAst(builder, expr, ref varName);
+				builder.AppendLine(
+					$"ret {expr.GetExpressionType()} %{varName}");
 				// TODO assign the value
 			}
 			else if (element is StatementList statements)
 			{
 				ulong localVarCount = 0;
 				foreach (var statement in statements.Statements)
-					GenAst(builder, statement, localVarCount++);
+				{
+					GenAst(builder, statement, ref localVarCount);
+					localVarCount++;
+				}
 			}
 		}
 
