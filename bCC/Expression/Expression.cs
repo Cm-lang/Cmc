@@ -89,18 +89,24 @@ namespace bCC.Expression
 	public class StringLiteralExpression : LiteralExpression
 	{
 		public readonly string Value;
+		public readonly int ConstantPoolIndex;
 
 		public StringLiteralExpression(MetaData metaData, string value) : base(metaData,
 			new PrimaryType(MetaData.Empty, PrimaryType.StringType))
 		{
-			Value = string.Concat(value.Select(i => char.IsLetterOrDigit(i)
-				? i.ToString()
-				: ((int) i).ToString()));
-			// FEATURE #23
+			Value = string.Concat(value
+				        .Select(i => char.IsLetterOrDigit(i)
+					        ? i.ToString()
+					        : $"\\{Convert.ToString((byte) i, 16)}")) + "\\00";
+			ConstantPoolIndex = Constants.AllocateStringConstant(Value);
 		}
 
+		/// <summary>
+		/// FEATURE #23
+		/// </summary>
+		/// <returns>dump msg</returns>
 		public override IEnumerable<string> Dump() => new[]
-				{$"string literal expression [{Value}]:\n"}
+				{$"string literal expression <{ConstantPoolIndex}>[{Value}]:\n"}
 			.Concat(Type.Dump().Select(MapFunc));
 	}
 
