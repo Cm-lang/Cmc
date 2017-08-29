@@ -63,7 +63,7 @@ namespace LLVM
 			{
 				if (expression is StringLiteralExpression str)
 					builder.AppendLine(
-						$"{varName}=alloca i8*, align 8");
+						$"{varName}=alloca i8*, align {str.Type.Align}");
 				else if (expression is IntLiteralExpression integer)
 					builder.AppendLine(
 						$"store {varName}=alloca {integer.Type}, align {Math.Ceiling(integer.Length / 8.0)}");
@@ -85,14 +85,15 @@ namespace LLVM
 				ulong localVarCount = 0;
 				// TODO deal with other types
 				foreach (var statement in statements.Statements)
+				{
 					if (statement is VariableDeclaration declaration)
 					{
 						var rawType = declaration.Type.ToString();
 						var align = declaration.Align;
 						builder.AppendLine($"%{localVarCount++} = alloca {rawType}, align {align}");
 					}
-				foreach (var statement in statements.Statements)
 					GenAst(builder, statement, localVarCount++);
+				}
 			}
 		}
 
