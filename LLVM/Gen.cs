@@ -52,22 +52,23 @@ namespace LLVM
 			Ast element,
 			bool isGlobal = false)
 		{
+			if (element is LiteralExpression expression)
+			{
+				var varName = $"{DetermineDeclarationPrefix(isGlobal)}{GlobalVarCount++}";
+				if (expression is StringLiteralExpression str)
+					builder.AppendLine(
+						$"{varName}=unnamed_addr constant [{str.Value.Length} x i8] c\"{str.Value}\"");
+				else if (expression is IntLiteralExpression integer)
+					builder.AppendLine(
+						$"{varName}=alloca {integer.Type}, align {Math.Ceiling(integer.Length / 8.0)}");
+				return varName;
+			}
 			if (element is TypeDeclaration typeDeclaration)
 				builder.AppendLine($"; type alias: <{typeDeclaration.Name}> -> <{typeDeclaration.Type}>");
 			else if (element is VariableDeclaration variable)
 			{
-				var varName = $"{DetermineDeclarationPrefix(isGlobal)}{GlobalVarCount++}";
-				var expr = variable.Expression;
-				if (expr is StringLiteralExpression str)
-				{
-					builder.AppendLine(
-						$"{varName}=unnamed_addr constant [{str.Value.Length} x i8] c\"{str.Value}\"");
-				}
-				else if (expr is IntLiteralExpression integer)
-				{
-					builder.AppendLine(
-						$"{varName}=alloca {integer.Type}, align {Math.Ceiling(integer.Length / 8.0)}");
-				}
+				var exprVarName = GenAst(builder, variable.Expression);
+				// use this var name
 			}
 			else if (element is ReturnStatement returnStatement)
 			{
@@ -75,6 +76,7 @@ namespace LLVM
 				GenAst(builder, expr);
 				// TODO assign the value
 			}
+			return null;
 		}
 
 		public static void Main(string[] args)
