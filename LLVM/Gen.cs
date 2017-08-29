@@ -15,7 +15,8 @@ namespace LLVM
 	{
 		public static ulong GlobalVarCount;
 
-		public static string Generate(params Declaration[] declarations)
+		public static string Generate(
+			[NotNull] params Declaration[] declarations)
 		{
 			var core = new Core();
 			var builder = new StringBuilder();
@@ -32,8 +33,8 @@ namespace LLVM
 		}
 
 		public static void RunLlvm(
-			string outputFile,
-			params Declaration[] declarations)
+			[NotNull] string outputFile,
+			[NotNull] params Declaration[] declarations)
 		{
 			File.WriteAllText(outputFile, Generate(declarations));
 			CommandLine.RunCommand($"llc-4.0 {outputFile}.ll -filetype=obj");
@@ -55,8 +56,8 @@ namespace LLVM
 		/// <param name="element">the ast element waiting to be generated</param>
 		/// <param name="varName"></param>
 		public static void GenAst(
-			StringBuilder builder,
-			Ast element,
+			[NotNull] StringBuilder builder,
+			[NotNull] Ast element,
 			ulong varName)
 		{
 			if (element is LiteralExpression expression)
@@ -85,13 +86,12 @@ namespace LLVM
 			else if (element is StatementList statements)
 			{
 				ulong localVarCount = 0;
-				// TODO deal with other types
 				foreach (var statement in statements.Statements)
 					GenAst(builder, statement, localVarCount++);
 			}
 		}
 
-		public static void Main(string[] args)
+		public static void Main([NotNull] string[] args)
 		{
 			Console.WriteLine(Generate(
 				new VariableDeclaration(MetaData.Empty,

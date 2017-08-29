@@ -6,9 +6,9 @@ namespace bCC.Core
 {
 	public abstract class Ast
 	{
-		public static Func<string, string> MapFunc = i => $"  {i}";
-		public static Func<string, string> MapFunc2 = i => $"    {i}";
-		public Environment Env;
+		[NotNull] public static Func<string, string> MapFunc = i => $"  {i}";
+		[NotNull] public static Func<string, string> MapFunc2 = i => $"    {i}";
+		[NotNull] public Environment Env;
 		public MetaData MetaData;
 
 		protected Ast(MetaData metaData) => MetaData = metaData;

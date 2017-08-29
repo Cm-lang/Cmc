@@ -146,8 +146,8 @@ namespace bCC.Expression
 	public class VariableExpression : AtomicExpression
 	{
 		[NotNull] public readonly string Name;
-		private Type _type;
-		public VariableDeclaration Declaration;
+		[CanBeNull] private Type _type;
+		[CanBeNull] public VariableDeclaration Declaration;
 
 		public VariableExpression(MetaData metaData, [NotNull] string name) : base(metaData) => Name = name;
 
@@ -171,7 +171,7 @@ namespace bCC.Expression
 				$"variable expression [{Name}]:\n",
 				"  type:\n"
 			}
-			.Concat(_type.Dump().Select(MapFunc2));
+			.Concat(_type?.Dump().Select(MapFunc2) ?? new[] {"    cannot infer!\n"});
 
 		public override VariableExpression GetLhsExpression() => this;
 	}
