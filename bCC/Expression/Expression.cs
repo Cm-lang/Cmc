@@ -52,6 +52,7 @@ namespace bCC.Expression
 		public static readonly int[] AcceptableLength = {8, 16, 32, 64};
 
 		[NotNull] public readonly string Value;
+		public readonly int Length;
 
 		public IntLiteralExpression(
 			MetaData metaData,
@@ -62,6 +63,7 @@ namespace bCC.Expression
 			: base(metaData, new PrimaryType(metaData, $"{(isSigned ? "i" : "u")}{length}"))
 		{
 			Value = value;
+			Length = length;
 			// FEATURE #26
 			if (!AcceptableLength.Contains(length))
 				Errors.Add($"{MetaData.GetErrorHeader()}integer length of {length} is not supported");

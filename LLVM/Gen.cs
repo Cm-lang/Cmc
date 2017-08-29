@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text;
 using bCC;
 using bCC.Core;
@@ -11,17 +12,22 @@ namespace LLVM
 {
 	public static class Gen
 	{
-		public static ulong GlobalVarCount = 0;
+		public static ulong GlobalVarCount;
 
-		public static void Generate(
-			string outputFile,
-			params Declaration[] declarations)
+		public static string Generate(params Declaration[] declarations)
 		{
 			var core = new Core();
 			var builder = new StringBuilder();
 			foreach (var analyzedDeclaration in core.Analyze(declarations))
 				GenAst(builder, analyzedDeclaration, true);
-			File.WriteAllText(outputFile, builder.ToString());
+			return builder.ToString();
+		}
+
+		public static void RunLlvm(
+			string outputFile,
+			params Declaration[] declarations)
+		{
+			File.WriteAllText(outputFile, Generate(declarations));
 			CommandLine.RunCommand($"llc-4.0 {outputFile}.ll -filetype=obj");
 			CommandLine.RunCommand($"gcc {outputFile}.ll -o {outputFile}");
 		}
@@ -60,10 +66,10 @@ namespace LLVM
 				else if (expr is IntLiteralExpression integer)
 				{
 					builder.AppendLine(
-						$"{varName}={}");
+						$"{varName}=alloca {integer.Type}, align {Math.Ceiling(integer.Length / 8.0)}");
 				}
 			}
-			else if(element is ReturnStatement returnStatement)
+			else if (element is ReturnStatement returnStatement)
 			{
 				var expr = returnStatement.Expression;
 				GenAst(builder, expr);
@@ -73,9 +79,10 @@ namespace LLVM
 
 		public static void Main(string[] args)
 		{
-			Generate(
-				"out"
-			);
+			Console.WriteLine(Generate(
+				new VariableDeclaration(MetaData.Empty,
+					"i", new IntLiteralExpression(MetaData.Empty, "1", true))
+			));
 		}
 	}
 }
