@@ -4,13 +4,14 @@ using bCC.Core;
 using bCC.Expression;
 using bCC.Statement;
 using JetBrains.Annotations;
+using static System.StringComparison;
 using static LLVM.TypeConverter;
 
 namespace LLVM
 {
 	public static class GenAstHolder
 	{
-				/// <summary>
+		/// <summary>
 		///  generate llvm ir by the given ast
 		/// </summary>
 		/// <param name="builder">the string builder used to append ir</param>
@@ -49,6 +50,22 @@ namespace LLVM
 						builder.Append(
 							$"i8* getelementptr inbounds ([{str.Length} x i8], [{str.Length} x i8]* " +
 							$"@.str{str.ConstantPoolIndex}, i32 0, i32 0),");
+					else if (variable.Expression is LambdaExpression lambdaExpression)
+					{
+						if (string.Equals(variable.Name, "main", Ordinal))
+						{
+							// TODO check for main function type
+							Attr.MainFunctionIndex = Attr.GlobalFunctionCount;
+							builder.Append(
+								$"define i32 @main() #{Attr.GlobalFunctionCount++} {{");
+							
+							builder.AppendLine("}");
+						}
+						else
+						{
+							// TODO create an anonymous function
+						}
+					}
 					builder.AppendLine($", align {variable.Align}");
 					// TODO deal with other types
 					variable.Address = varName;

@@ -9,6 +9,12 @@ using static LLVM.GenAstHolder;
 
 namespace LLVM
 {
+	public static class Attr
+	{
+		public static ulong GlobalFunctionCount;
+		public static ulong MainFunctionIndex;
+	}
+
 	public static class Gen
 	{
 		public static ulong GlobalVarCount;
@@ -31,6 +37,32 @@ namespace LLVM
 			{
 				GenAst(builder, analyzedDeclaration, ref varName);
 				varName++;
+			}
+			for (var i = 0ul; i < Attr.GlobalFunctionCount; i++)
+			{
+				if (i == Attr.MainFunctionIndex)
+					builder.AppendLine(
+						$"attributes #{i} = " +
+						"{ noinline norecurse uwtable " +
+						"\"correctly-rounded-divide-sqrt-fp-math\"=\"false\" " +
+						"\"disable-tail-calls\"=\"false\" " +
+						"\"less-precise-fpmad\"=\"false\" " +
+						"\"no-frame-pointer-elim\"=\"true\" " +
+						"\"no-frame-pointer-elim-non-leaf\" " +
+						"\"no-infs-fp-math\"=\"false\" " +
+						"\"no-jump-tables\"=\"false\" " +
+						"\"no-nans-fp-math\"=\"false\" " +
+						"\"no-signed-zeros-fp-math\"=\"false\" " +
+						"\"no-trapping-math\"=\"false\" " +
+						"\"stack-protector-buffer-size\"=\"8\" " +
+						"\"target-cpu\"=\"x86-64\" " +
+						"\"target-features\"=\"+fxsr,+mmx,+sse,+sse2,+x87\" " +
+						"\"unsafe-fp-math\"=\"false\" " +
+						"\"use-soft-float\"=\"false\" }");
+				else
+					// TODO add attributes
+					builder.AppendLine(
+						$"attributes #{i} = ");
 			}
 			return builder.ToString();
 		}
