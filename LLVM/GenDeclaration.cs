@@ -18,8 +18,9 @@ namespace LLVM
 			[NotNull] Declaration element,
 			ref ulong varName)
 		{
-			// ReSharper disable once InvertIf
-			if (element is VariableDeclaration variable)
+			if (element is TypeDeclaration typeDeclaration)
+				builder.AppendLine($"; type alias: <{typeDeclaration.Name}> -> <{typeDeclaration.Type}>");
+			else if (element is VariableDeclaration variable)
 			{
 				if (variable.IsGlobal)
 				{
