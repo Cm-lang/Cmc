@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -51,10 +51,6 @@
     <ProjectReference Include="..\bCC\bCC.csproj">
       <Project>{17e0de41-2426-4616-8424-ba6c0f97f7c0}</Project>
       <Name>bCC</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Tools\Tools.csproj">
-      <Project>{1c8f8315-d5f0-4248-8dff-2ba9574b14f1}</Project>
-      <Name>Tools</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

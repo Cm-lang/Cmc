@@ -58,7 +58,7 @@ namespace LLVM
 							Attr.MainFunctionIndex = Attr.GlobalFunctionCount;
 							builder.Append(
 								$"define i32 @main() #{Attr.GlobalFunctionCount++} {{");
-							
+							GenAst(builder, lambdaExpression.Body, ref varName);
 							builder.AppendLine("}");
 						}
 						else
