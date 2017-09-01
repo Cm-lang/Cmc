@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Text;
 using Cmc;
 using Cmc.Core;
@@ -47,7 +48,16 @@ namespace LLVM
 					{
 						if (string.Equals(variable.Name, "main", Ordinal))
 						{
-							// TODO check for main function type
+							var retTypeName = lambdaExpression.GetExpressionType().Name;
+							if (!string.Equals(retTypeName, "i32", Ordinal))
+								if (string.Equals(retTypeName, "nulltype", Ordinal))
+									lambdaExpression.Body.Statements.Add(new ReturnStatement(lambdaExpression.MetaData,
+										new IntLiteralExpression(lambdaExpression.MetaData, "0", true)));
+								else
+								{
+									Errors.Add("the main function must return i32 or null");
+									throw new CompilerException("");
+								}
 							Attr.MainFunctionIndex = Attr.GlobalFunctionCount;
 							builder.AppendLine(
 								$"define i32 @main() #{Attr.GlobalFunctionCount++} {{");
