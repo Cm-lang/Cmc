@@ -48,9 +48,9 @@
     <Compile Include="TypeConverter.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\bCC\bCC.csproj">
+    <ProjectReference Include="..\Cmc\Cmc.csproj">
       <Project>{17e0de41-2426-4616-8424-ba6c0f97f7c0}</Project>
-      <Name>bCC</Name>
+      <Name>Cmc</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

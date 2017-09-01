@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -46,9 +46,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\bCC\bCC.csproj">
+    <ProjectReference Include="..\Cmc\Cmc.csproj">
       <Project>{17e0de41-2426-4616-8424-ba6c0f97f7c0}</Project>
-      <Name>bCC</Name>
+      <Name>Cmc</Name>
     </ProjectReference>
     <ProjectReference Include="..\LLVM\LLVM.csproj">
       <Project>{f0f0ac0c-7ddb-4555-ad24-4724b14dbab5}</Project>
