@@ -32,7 +32,7 @@ namespace LLVM
 				builder.AppendLine(
 					$"@.str{i}=private unnamed_addr constant [{len} x i8] c\"{str}\", align 1");
 			}
-			ulong varName = 0;
+			var varName = 0ul;
 			foreach (var analyzedDeclaration in analyzedDeclarations)
 			{
 				GenAst(builder, analyzedDeclaration, ref varName);

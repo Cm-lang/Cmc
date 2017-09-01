@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Linq;
+using System.Text;
 using bCC;
 using bCC.Core;
 using bCC.Expression;
@@ -48,6 +49,8 @@ namespace LLVM
 							builder.AppendLine(
 								$"define i32 @main() #{Attr.GlobalFunctionCount++} {{");
 							GenAst(builder, lambdaExpression.Body, ref varName);
+							if (!(lambdaExpression.Body.Statements.Last() is ReturnStatement))
+								builder.AppendLine("ret i32 0");
 							builder.AppendLine("}");
 						}
 						else
@@ -66,8 +69,8 @@ namespace LLVM
 								$"{boolean.ValueToInt()}");
 						else if (variable.Expression is StringLiteralExpression str)
 							builder.Append(
-								$"i8* getelementptr inbounds ([{str.Length} x i8], [{str.Length} x i8]* " +
-								$"@.str{str.ConstantPoolIndex}, i32 0, i32 0),");
+								$"getelementptr inbounds ([{str.Length} x i8], [{str.Length} x i8]* " +
+								$"@.str{str.ConstantPoolIndex}, i32 0, i32 0)");
 						builder.AppendLine($", align {variable.Align}");
 					}
 					// TODO deal with other types
@@ -93,7 +96,7 @@ namespace LLVM
 			}
 			else if (element is StatementList statements)
 			{
-				ulong localVarCount = 0;
+				ulong localVarCount = 1;
 				foreach (var statement in statements.Statements)
 				{
 					GenAst(builder, statement, ref localVarCount);
