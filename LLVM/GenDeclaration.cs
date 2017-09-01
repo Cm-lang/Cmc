@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Text;
 using Cmc;
 using Cmc.Expression;
@@ -31,14 +32,17 @@ namespace LLVM
 							var retTypeName = lambdaExpression.GetExpressionType().Name;
 							// FEATURE #35
 							if (!string.Equals(retTypeName, "i32", Ordinal))
+							{
 								if (string.Equals(retTypeName, "nulltype", Ordinal))
 									lambdaExpression.Body.Statements.Add(new ReturnStatement(lambdaExpression.MetaData,
 										new IntLiteralExpression(lambdaExpression.MetaData, "0", true)));
-								else
-								{
-									Errors.Add("the main function must return i32 or null");
-									throw new CompilerException();
-								}
+							}
+							else
+							{
+								Errors.Add(
+									$"the main function must return i32 or null, but it's {retTypeName}");
+								throw new CompilerException();
+							}
 							Attr.MainFunctionIndex = Attr.GlobalFunctionCount;
 							builder.AppendLine(
 								$"define i32 @main() #{Attr.GlobalFunctionCount++} {{");
