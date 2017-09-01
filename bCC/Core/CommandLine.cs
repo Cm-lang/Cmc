@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 
-namespace Tools
+namespace Cmc.Core
 {
 	public static class CommandLine
 	{
@@ -20,7 +20,7 @@ namespace Tools
 					UseShellExecute = false
 				}
 			};
-			var platform = Environment.OSVersion.Platform;
+			var platform = System.Environment.OSVersion.Platform;
 			switch (platform)
 			{
 				case PlatformID.Xbox:

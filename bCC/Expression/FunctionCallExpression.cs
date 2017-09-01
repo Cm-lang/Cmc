@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using bCC.Core;
+using Cmc.Core;
 using JetBrains.Annotations;
 
-namespace bCC.Expression
+namespace Cmc.Expression
 {
 	public class FunctionCallExpression : AtomicExpression
 	{

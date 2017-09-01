@@ -1,12 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using bCC.Core;
+using Cmc.Core;
 using JetBrains.Annotations;
-using static System.StringComparison;
+using Environment = Cmc.Core.Environment;
 
 #pragma warning disable 659
 
-namespace bCC
+namespace Cmc
 {
 	public abstract class Type : Ast
 	{
@@ -97,7 +98,7 @@ namespace bCC
 		public override IEnumerable<string> Dump() => new[] {$"- primary type [{Name}]\n"};
 		public override string ToString() => Name;
 
-		public override bool Equals(object obj) => obj is PrimaryType type && string.Equals(type.Name, Name, Ordinal);
+		public override bool Equals(object obj) => obj is PrimaryType type && string.Equals(type.Name, Name, StringComparison.Ordinal);
 	}
 
 	/// <summary>
@@ -129,7 +130,7 @@ namespace bCC
 		public override string ToString() => Name;
 
 		public override bool Equals(object obj) =>
-			obj is SecondaryType type && string.Equals(type.Name, Name, Ordinal);
+			obj is SecondaryType type && string.Equals(type.Name, Name, StringComparison.Ordinal);
 
 		public override IEnumerable<string> Dump() => new[] {"secondary type[{Container}]:\n"};
 	}

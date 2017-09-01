@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using bCC.Core;
+using Cmc.Core;
 using JetBrains.Annotations;
-using Environment = bCC.Core.Environment;
+using Environment = Cmc.Core.Environment;
 
 #pragma warning disable 659
 
-namespace bCC.Expression
+namespace Cmc.Expression
 {
 	public abstract class Expression : Ast
 	{

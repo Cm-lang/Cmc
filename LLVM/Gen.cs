@@ -1,10 +1,9 @@
 ﻿using System.IO;
 using System.Text;
-using bCC;
-using bCC.Core;
-using bCC.Expression;
+using Cmc;
+using Cmc.Core;
+using Cmc.Expression;
 using JetBrains.Annotations;
-using Tools;
 using static LLVM.GenAstHolder;
 
 namespace LLVM

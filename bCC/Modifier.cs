@@ -1,4 +1,4 @@
-﻿namespace bCC
+﻿namespace Cmc
 {
 	public enum Modifier
 	{

@@ -1,14 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using bCC.Core;
-using bCC.Expression;
+using Cmc.Core;
+using Cmc.Expression;
 using JetBrains.Annotations;
-using static System.StringComparison;
-using static bCC.PrimaryType;
+using Environment = Cmc.Core.Environment;
 
 #pragma warning disable 659
 
-namespace bCC
+namespace Cmc
 {
 	public class Declaration : Statement.Statement
 	{
@@ -61,7 +61,7 @@ namespace bCC
 			if (Type is UnknownType unknownType) Type = unknownType.Resolve();
 			if (Type is PrimaryType primaryType) Align = primaryType.Align;
 			// FEATURE #11
-			if (!string.Equals(exprType.ToString(), NullType, Ordinal) &&
+			if (!string.Equals(exprType.ToString(), PrimaryType.NullType, StringComparison.Ordinal) &&
 			    !Equals(Type, exprType))
 				// FEATURE #9
 				Errors.Add($"{MetaData.GetErrorHeader()}type mismatch, expected: {Type}, actual: {exprType}");

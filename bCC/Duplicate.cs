@@ -1,6 +1,6 @@
-﻿using bCC.Core;
+﻿using Cmc.Core;
 
-namespace bCC
+namespace Cmc
 {
 	public class Duplicate : Ast
 	{

@@ -1,7 +1,7 @@
-﻿using bCC;
+﻿using Cmc;
 using NUnit.Framework;
 
-namespace bCC_Test
+namespace Cmc_Test
 {
 	[TestFixture]
 	public class FuncMutualRecTests

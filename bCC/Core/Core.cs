@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
-using static bCC.Core.Environment;
 
-namespace bCC.Core
+namespace Cmc.Core
 {
 	/// <summary>
 	///   The core of this compiler
@@ -32,7 +31,7 @@ namespace bCC.Core
 		[NotNull]
 		public Declaration[] Analyze(params Declaration[] declarations)
 		{
-			var planet = new Environment(SolarSystem);
+			var planet = new Environment(Environment.SolarSystem);
 			foreach (var declaration in declarations)
 			{
 				planet.Declarations.Add(declaration);
@@ -63,7 +62,7 @@ namespace bCC.Core
 						i.Name,
 						from q in ((StructDeclaration) i)
 							.FieldList
-						where !SolarSystem
+						where !Environment.SolarSystem
 							.Declarations
 							.Select(qq => qq.Name)
 							.Contains(q.Type.ToString())

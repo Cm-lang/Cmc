@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using bCC.Core;
-using bCC.Expression;
+using Cmc.Core;
+using Cmc.Expression;
 using JetBrains.Annotations;
-using Environment = bCC.Core.Environment;
+using Environment = Cmc.Core.Environment;
 
-namespace bCC.Statement
+namespace Cmc.Statement
 {
 	public class IfStatement : WhileStatement
 	{

@@ -1,8 +1,8 @@
 ﻿using System;
-using bCC;
-using bCC.Core;
-using bCC.Expression;
-using bCC.Statement;
+using Cmc;
+using Cmc.Core;
+using Cmc.Expression;
+using Cmc.Statement;
 using LLVM;
 using NUnit.Framework;
 

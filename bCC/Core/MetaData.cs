@@ -1,6 +1,6 @@
 ﻿using JetBrains.Annotations;
 
-namespace bCC.Core
+namespace Cmc.Core
 {
 	public struct MetaData
 	{

@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using bCC;
-using bCC.Core;
-using bCC.Expression;
-using bCC.Statement;
+using Cmc;
+using Cmc.Core;
+using Cmc.Expression;
+using Cmc.Statement;
 using NUnit.Framework;
-using static bCC.PrimaryType;
-using Environment = bCC.Core.Environment;
+using Environment = Cmc.Core.Environment;
 
-namespace bCC_Test
+namespace Cmc_Test
 {
 	[TestFixture]
 	public class TypeTests
@@ -52,7 +50,7 @@ namespace bCC_Test
 					new VariableExpression(MetaData.Empty, varName)));
 			example.SurroundWith(Environment.SolarSystem);
 			example.PrintDumpInfo();
-			Assert.AreEqual(NullType,
+			Assert.AreEqual(PrimaryType.NullType,
 				((ExpressionStatement) example.Statements.Last())
 				.Expression.GetExpressionType().ToString());
 		}
@@ -114,7 +112,7 @@ namespace bCC_Test
 			Assert.AreEqual("u64", example.Type.ToString());
 			example = new StringLiteralExpression(MetaData.Empty, "\"boy \\ next \\ door\n\t\"");
 			example.PrintDumpInfo();
-			Assert.AreEqual(StringType, example.Type.ToString());
+			Assert.AreEqual(PrimaryType.StringType, example.Type.ToString());
 			// var type = new SecondaryType(MetaData.Empty, "vec", new PrimaryType(MetaData.Empty, "i8"), example.Type);
 			// type.SurroundWith(Environment.TopEnvironment);
 			// type.PrintDumpInfo();

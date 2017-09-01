@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using JetBrains.Annotations;
 
-namespace bCC
+namespace Cmc
 {
 	/// <summary>
 	///   errors

@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
-using static System.StringComparison;
 
-namespace bCC.Core
+namespace Cmc.Core
 {
 	public class Environment
 	{
@@ -43,7 +42,7 @@ namespace bCC.Core
 			do
 				list.AddRange(
 					from declaration in env.Declarations
-					where string.Equals(declaration.Name, name, Ordinal)
+					where string.Equals(declaration.Name, name, StringComparison.Ordinal)
 					select declaration); while ((env = env.Outer) != null);
 			return list;
 		}
@@ -61,7 +60,7 @@ namespace bCC.Core
 			do
 				foreach (var declaration in
 					from declaration in env.Declarations
-					where string.Equals(declaration.Name, name, Ordinal)
+					where string.Equals(declaration.Name, name, StringComparison.Ordinal)
 					select declaration)
 					return declaration; while ((env = env.Outer) != null);
 			return null;

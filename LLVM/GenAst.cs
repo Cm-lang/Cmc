@@ -1,9 +1,9 @@
 ﻿using System.Linq;
 using System.Text;
-using bCC;
-using bCC.Core;
-using bCC.Expression;
-using bCC.Statement;
+using Cmc;
+using Cmc.Core;
+using Cmc.Expression;
+using Cmc.Statement;
 using JetBrains.Annotations;
 using static System.StringComparison;
 using static LLVM.TypeConverter;

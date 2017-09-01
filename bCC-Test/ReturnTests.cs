@@ -1,10 +1,10 @@
-﻿using bCC;
-using bCC.Core;
-using bCC.Expression;
-using bCC.Statement;
+﻿using Cmc;
+using Cmc.Core;
+using Cmc.Expression;
+using Cmc.Statement;
 using NUnit.Framework;
 
-namespace bCC_Test
+namespace Cmc_Test
 {
 	[TestFixture]
 	public class ReturnTests

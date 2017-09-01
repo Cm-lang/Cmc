@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using bCC;
-using bCC.Core;
+using Cmc;
+using Cmc.Core;
 using NUnit.Framework;
 
-namespace bCC_Test
+namespace Cmc_Test
 {
 	[TestFixture]
 	public class MutualRecTests

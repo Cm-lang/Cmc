@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using bCC;
+using Cmc;
 using JetBrains.Annotations;
 
 namespace LLVM
