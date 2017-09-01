@@ -27,6 +27,9 @@ namespace Cmc.Core
 		[NotNull]
 		public virtual IEnumerable<string> Dump() => new[] {ToString()};
 
-		public void PrintDumpInfo() => Console.WriteLine(string.Join("", Dump()));
+		public void PrintDumpInfo()
+		{
+			Console.WriteLine(string.Join("", Dump()));
+		}
 	}
 }
