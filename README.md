@@ -8,7 +8,8 @@ Travis CI|
 -->
 
 [![Build Status](https://travis-ci.org/Cm-lang/Cmc.svg?branch=master)](https://travis-ci.org/Cm-lang/Cmc)
-[![](https://img.shields.io/badge/request-new%20features-ff68b4.svg)](https://github.com/Cm-lang/Cmc/blob/master/PROGRESS.md)
+[![](https://img.shields.io/badge/Cm--lang-Compiler-ff69b4.svg)](https://github.com/Cm-lang/Cmc)
+[![](https://img.shields.io/badge/request-new%20features-blue.svg)](https://github.com/Cm-lang/Cmc/blob/master/PROGRESS.md)
 [![](https://img.shields.io/badge/backend-LLVM-ab51ba.svg)](http://llvm.org/)<br/>
 [![license](https://img.shields.io/github/license/Cm-lang/Cmc.svg)](https://github.com/Cm-lang/Cmc)
 
