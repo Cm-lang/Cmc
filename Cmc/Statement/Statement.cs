@@ -156,10 +156,12 @@ namespace Cmc.Statement
 			var validLhs = LhsExpression.GetLhsExpression();
 			if (null == validLhs)
 				Errors.Add($"{MetaData.GetErrorHeader()}a {lhs} cannot be assigned.");
-			// DO something with validLhs
+			else if (null == validLhs.Declaration)
+				Errors.Add($"{MetaData.GetErrorHeader()}can't find declaration of {validLhs.Name}");
 			// FEATURE #21
 			else if (!validLhs.Declaration.Mutability)
 				Errors.Add($"{MetaData.GetErrorHeader()}cannot assign to an immutable variable.");
+			else validLhs.Declaration.Used = true;
 		}
 
 		public override IEnumerable<string> Dump() => new[]
