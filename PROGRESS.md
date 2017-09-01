@@ -4,7 +4,7 @@ Please add feature request here.
 Codes related to some implemented feature can be found by searching their number.
 
 I.E. Want to find codes related to `lexical scoping` (the 4th one in the `scoping` section)?
-[search "FEATURE \#18"](https://github.com/bC-Programming-Language-StandardCouncil/bC-Compiler/search?utf8=%E2%9C%93&q=%22FEATURE+%2318%22&type=),
+[search "FEATURE \#18"](https://github.com/Cm-lang/Cmc/search?utf8=%E2%9C%93&q=%22FEATURE+%2318%22&type=),
 and you see the result.
 
 ## basic language features
@@ -43,6 +43,7 @@ and you see the result.
 + [X] check if member exist (#29)
 + [ ] inline
 + [X] overloading (#33)
++ [X] remove unused local variables but keep the expression (#36)
 
 ## functions and lambdas
 
@@ -53,6 +54,10 @@ and you see the result.
 + [X] return statements' types should be same (#24) (tested)
 + [ ] return statement exhaustiveness check (extra)
 + [X] defaultly no parameter (#22)
+
+## main function
+
++ [X] only `nulltype` and `i32` returning are allowed (#35)
 
 ## structs
 

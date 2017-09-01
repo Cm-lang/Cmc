@@ -30,7 +30,8 @@ namespace Cmc
 
 	public class CompilerException : Exception
 	{
-		public CompilerException([NotNull] string message = "") : base(message)
+		public CompilerException(
+			[NotNull] string message = "compilation aborted due to fatal errors.") : base(message)
 		{
 		}
 	}
