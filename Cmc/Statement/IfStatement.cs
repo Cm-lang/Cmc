@@ -37,12 +37,12 @@ namespace Cmc.Statement
 			if (Pragma.KeepAll || !(Condition is BoolLiteralExpression boolean)) return;
 			if (boolean.Value)
 			{
-				OptimizedStatementList = OkStatementList;
+				ElseStatementList.Statements = new List<Statement>();
 				Optimized = 1;
 			}
 			else
 			{
-				OptimizedStatementList = ElseStatementList;
+				OkStatementList.Statements = new List<Statement>();
 				Optimized = 2;
 			}
 		}
