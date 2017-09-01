@@ -35,10 +35,8 @@ namespace Cmc.Statement
 					$"found {conditionType}");
 			OkStatementList.SurroundWith(new Environment(Env));
 			// FEATURE #17
-			if (Pragma.KeepAll ||
-			    !(Condition is BoolLiteralExpression boolean) ||
-			    boolean.Value) return;
-			OkStatementList.Statements = new List<Statement>();
+			if (Pragma.KeepAll || !(Condition is BoolLiteralExpression boolean) || boolean.Value) return;
+			OptimizedStatementList = new EmptyStatement(MetaData);
 			Optimized = 1;
 		}
 

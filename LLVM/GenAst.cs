@@ -23,6 +23,9 @@ namespace LLVM
 			[NotNull] Ast element,
 			ref ulong varName)
 		{
+			if (element is EmptyStatement) return;
+			// optimization
+			if (element.OptimizedStatementList != null) element = element.OptimizedStatementList;
 			if (element is LiteralExpression expression)
 			{
 				if (expression is StringLiteralExpression str)

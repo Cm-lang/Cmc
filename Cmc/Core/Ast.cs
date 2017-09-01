@@ -11,6 +11,8 @@ namespace Cmc.Core
 		public Environment Env;
 		public MetaData MetaData;
 
+		[CanBeNull] public Statement.Statement OptimizedStatementList = null;
+
 		protected Ast(MetaData metaData) => MetaData = metaData;
 
 		public virtual void SurroundWith([NotNull] Environment environment)
@@ -25,9 +27,6 @@ namespace Cmc.Core
 		[NotNull]
 		public virtual IEnumerable<string> Dump() => new[] {ToString()};
 
-		public void PrintDumpInfo()
-		{
-			Console.WriteLine(string.Join("", Dump()));
-		}
+		public void PrintDumpInfo() => Console.WriteLine(string.Join("", Dump()));
 	}
 }
