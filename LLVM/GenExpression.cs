@@ -16,12 +16,12 @@ namespace LLVM
 			{
 				if (expression is StringLiteralExpression str)
 					builder.AppendLine(
-						$"store i8* getelementptr inbounds ([{str.Length} x i8]," +
+						$"  store i8* getelementptr inbounds ([{str.Length} x i8]," +
 						$"[{str.Length} x i8]* @.str{str.ConstantPoolIndex}, i32 0, i32 0)," +
 						$"i8** %{varName}, align 8");
 				else if (expression is IntLiteralExpression integer)
 					builder.AppendLine(
-						$"store {integer.Type} {integer.Value}, {integer.Type}* %{varName}, align {integer.Type.Align}");
+						$"  store {integer.Type} {integer.Value}, {integer.Type}* %{varName}, align {integer.Type.Align}");
 			}
 		}
 	}

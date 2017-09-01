@@ -11,6 +11,7 @@ cache:
 script:
   - xbuild /p:Configuration=Release Cmc.sln
   - mono ./testrunner/NUnit.ConsoleRunner.3.2.0/tools/nunit3-console.exe ./Cmc-Test/bin/Release/Cmc_Test.dll
+  - mono ./testrunner/NUnit.ConsoleRunner.3.2.0/tools/nunit3-console.exe ./LLVM-Test/bin/Release/LLVM_Test.dll
   # local:
   # mono ./testrunner/NUnit.ConsoleRunner.3.7.0/tools/nunit3-console.exe ./Cmc-Test/bin/Debug/Cmc_Test.dll
-
+  # mono ./testrunner/NUnit.ConsoleRunner.3.7.0/tools/nunit3-console.exe ./LLVM-Test/bin/Debug/LLVM_Test.dll

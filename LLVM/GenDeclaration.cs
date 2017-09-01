@@ -20,7 +20,7 @@ namespace LLVM
 			ref ulong varName)
 		{
 			if (element is TypeDeclaration typeDeclaration)
-				builder.AppendLine($"; type alias: <{typeDeclaration.Name}> -> <{typeDeclaration.Type}>");
+				builder.AppendLine($"  ; type alias: <{typeDeclaration.Name}> -> <{typeDeclaration.Type}>");
 			else if (element is VariableDeclaration variable)
 			{
 				if (variable.IsGlobal)
@@ -48,7 +48,7 @@ namespace LLVM
 								$"define i32 @main() #{Attr.GlobalFunctionCount++} {{");
 							GenAst(builder, lambdaExpression.Body, ref varName);
 							if (!(lambdaExpression.Body.Statements.Last() is ReturnStatement))
-								builder.AppendLine("ret i32 0");
+								builder.AppendLine("  ret i32 0");
 							builder.AppendLine("}");
 						}
 						else
@@ -80,12 +80,12 @@ namespace LLVM
 				{
 					if (!variable.Used)
 					{
-						builder.AppendLine($"; unused declaration {variable.Name}, removed");
+						builder.AppendLine($"  ; unused declaration {variable.Name}, removed");
 						GenAstExpression(builder, variable.Expression, ref varName);
 						return;
 					}
 					builder.AppendLine(
-						$"%{varName} = alloca {ConvertType(variable.Type)}, align {variable.Align}");
+						$"  %{varName} = alloca {ConvertType(variable.Type)}, align {variable.Align}");
 					variable.Address = varName;
 					GenAstExpression(builder, variable.Expression, ref varName);
 					varName++;
