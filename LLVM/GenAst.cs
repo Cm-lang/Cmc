@@ -39,24 +39,13 @@ namespace LLVM
 			{
 				if (variable.IsGlobal)
 				{
-					builder.Append($"@{varName}=global {ConvertType(variable.Type)} ");
-					if (variable.Expression is IntLiteralExpression integer)
-						builder.Append(
-							$"{integer.Value}");
-					else if (variable.Expression is BoolLiteralExpression boolean)
-						builder.Append(
-							$"{boolean.ValueToInt()}");
-					else if (variable.Expression is StringLiteralExpression str)
-						builder.Append(
-							$"i8* getelementptr inbounds ([{str.Length} x i8], [{str.Length} x i8]* " +
-							$"@.str{str.ConstantPoolIndex}, i32 0, i32 0),");
-					else if (variable.Expression is LambdaExpression lambdaExpression)
+					if (variable.Expression is LambdaExpression lambdaExpression)
 					{
 						if (string.Equals(variable.Name, "main", Ordinal))
 						{
 							// TODO check for main function type
 							Attr.MainFunctionIndex = Attr.GlobalFunctionCount;
-							builder.Append(
+							builder.AppendLine(
 								$"define i32 @main() #{Attr.GlobalFunctionCount++} {{");
 							GenAst(builder, lambdaExpression.Body, ref varName);
 							builder.AppendLine("}");
@@ -66,7 +55,21 @@ namespace LLVM
 							// TODO create an anonymous function
 						}
 					}
-					builder.AppendLine($", align {variable.Align}");
+					else
+					{
+						builder.Append($"@{varName}=global {ConvertType(variable.Type)} ");
+						if (variable.Expression is IntLiteralExpression integer)
+							builder.Append(
+								$"{integer.Value}");
+						else if (variable.Expression is BoolLiteralExpression boolean)
+							builder.Append(
+								$"{boolean.ValueToInt()}");
+						else if (variable.Expression is StringLiteralExpression str)
+							builder.Append(
+								$"i8* getelementptr inbounds ([{str.Length} x i8], [{str.Length} x i8]* " +
+								$"@.str{str.ConstantPoolIndex}, i32 0, i32 0),");
+						builder.AppendLine($", align {variable.Align}");
+					}
 					// TODO deal with other types
 					variable.Address = varName;
 					// TODO for complex initialization, generate a function to do this job
