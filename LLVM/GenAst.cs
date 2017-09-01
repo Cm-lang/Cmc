@@ -14,7 +14,7 @@ namespace LLVM
 		/// </summary>
 		/// <param name="builder">the string builder used to append ir</param>
 		/// <param name="element">the ast element waiting to be generated</param>
-		/// <param name="varName"></param>
+		/// <param name="varName">local variable counter</param>
 		public static void GenAst(
 			[NotNull] StringBuilder builder,
 			[NotNull] Ast element,

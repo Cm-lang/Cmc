@@ -43,7 +43,7 @@ and you see the result.
 + [X] check if member exist (#29)
 + [ ] inline
 + [X] overloading (#33)
-+ [X] remove unused local variables but keep the expression (#36)
++ [ ] remove unused local variables but keep the expression (#36)
 
 ## functions and lambdas
 
