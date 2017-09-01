@@ -148,24 +148,17 @@ namespace Cmc
 			throw new CompilerException();
 		}
 
-		public override string ToString()
-		{
-			return Name;
-		}
+		public override string ToString() => Name;
 
-		public override bool Equals(object obj)
-		{
-			return obj is SecondaryType type && string.Equals(type.Name, Name, StringComparison.Ordinal);
-		}
+		public override bool Equals(object obj) =>
+			obj is SecondaryType type && string.Equals(type.Name, Name, StringComparison.Ordinal);
 
-		public override IEnumerable<string> Dump()
-		{
-			return new[] {"secondary type[{Container}]:\n"};
-		}
+		public override IEnumerable<string> Dump() =>
+			new[] {"secondary type[{Container}]:\n"};
 	}
 
 	/// <summary>
-	///     FEATURE #6
+	///  FEATURE #6
 	/// </summary>
 	public class LambdaType : Type
 	{
