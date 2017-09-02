@@ -4,36 +4,32 @@ using JetBrains.Annotations;
 
 namespace Cmc.Core
 {
-    public abstract class Ast
-    {
-        [NotNull] public static Func<string, string> MapFunc = i => $"  {i}";
-        [NotNull] public static Func<string, string> MapFunc2 = i => $"    {i}";
-        public Environment Env;
-        public MetaData MetaData;
+	public abstract class Ast
+	{
+		[NotNull] public static Func<string, string> MapFunc = i => $"  {i}";
+		[NotNull] public static Func<string, string> MapFunc2 = i => $"    {i}";
+		public Environment Env;
+		public MetaData MetaData;
 
-        protected Ast(MetaData metaData)
-        {
-            MetaData = metaData;
-        }
+		[CanBeNull] public Statement.Statement OptimizedStatementList = null;
 
-        public virtual void SurroundWith([NotNull] Environment environment)
-        {
-            Env = environment;
-        }
+		protected Ast(MetaData metaData) => MetaData = metaData;
 
-        /// <summary>
-        ///     FEATURE #15
-        /// </summary>
-        /// <returns>compilation information</returns>
-        [NotNull]
-        public virtual IEnumerable<string> Dump()
-        {
-            return new[] {ToString()};
-        }
+		public virtual void SurroundWith([NotNull] Environment environment)
+		{
+			Env = environment;
+		}
 
-        public void PrintDumpInfo()
-        {
-            Console.WriteLine(string.Join("", Dump()));
-        }
-    }
+		/// <summary>
+		///   FEATURE #15
+		/// </summary>
+		/// <returns>compilation information</returns>
+		[NotNull]
+		public virtual IEnumerable<string> Dump() => new[] {ToString()};
+
+		public void PrintDumpInfo()
+		{
+			Console.WriteLine(string.Join("", Dump()));
+		}
+	}
 }
