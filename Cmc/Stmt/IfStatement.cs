@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using Cmc.Core;
-using Cmc.Expression;
+using Cmc.Expr;
 using JetBrains.Annotations;
 using Environment = Cmc.Core.Environment;
 
-namespace Cmc.Statement
+namespace Cmc.Stmt
 {
 	public class IfStatement : WhileStatement
 	{
@@ -14,7 +14,7 @@ namespace Cmc.Statement
 
 		public IfStatement(
 			MetaData metaData,
-			[NotNull] Expression.Expression condition,
+			[NotNull] Expression condition,
 			[NotNull] StatementList ifStatementList,
 			[CanBeNull] StatementList elseStatementList = null) : base(metaData, condition, ifStatementList) =>
 			ElseStatementList = elseStatementList ?? new StatementList(MetaData);

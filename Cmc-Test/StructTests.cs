@@ -2,8 +2,8 @@
 using System.Linq;
 using Cmc;
 using Cmc.Core;
-using Cmc.Expression;
-using Cmc.Statement;
+using Cmc.Expr;
+using Cmc.Stmt;
 using NUnit.Framework;
 
 namespace Cmc_Test

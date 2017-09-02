@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Cmc.Core;
-using Cmc.Statement;
+using Cmc.Stmt;
 using JetBrains.Annotations;
 
-namespace Cmc.Expression
+namespace Cmc.Expr
 {
 	/// <summary>
 	///     A function is a variable with the type of lambda

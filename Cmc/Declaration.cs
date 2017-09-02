@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Cmc.Core;
-using Cmc.Expression;
+using Cmc.Expr;
+using Cmc.Stmt;
 using JetBrains.Annotations;
 using Environment = Cmc.Core.Environment;
 
@@ -10,7 +11,7 @@ using Environment = Cmc.Core.Environment;
 
 namespace Cmc
 {
-	public class Declaration : Statement.Statement
+	public class Declaration : Statement
 	{
 		public readonly Modifier Modifier;
 		[NotNull] public readonly string Name;
@@ -28,7 +29,7 @@ namespace Cmc
 
 	public sealed class VariableDeclaration : Declaration
 	{
-		[NotNull] public readonly Expression.Expression Expression;
+		[NotNull] public readonly Expression Expression;
 		public readonly bool Mutability;
 		public ulong Address;
 		public int Align = 8;
@@ -38,7 +39,7 @@ namespace Cmc
 		public VariableDeclaration(
 			MetaData metaData,
 			[NotNull] string name,
-			[CanBeNull] Expression.Expression expression = null,
+			[CanBeNull] Expression expression = null,
 			bool isMutable = false,
 			[CanBeNull] Type type = null,
 			Modifier modifier = Modifier.Private) :

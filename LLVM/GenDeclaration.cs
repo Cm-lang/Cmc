@@ -2,8 +2,8 @@
 using System.Linq;
 using System.Text;
 using Cmc;
-using Cmc.Expression;
-using Cmc.Statement;
+using Cmc.Expr;
+using Cmc.Stmt;
 using JetBrains.Annotations;
 using static System.StringComparison;
 using static LLVM.GenAstHolder;

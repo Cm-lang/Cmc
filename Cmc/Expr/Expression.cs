@@ -7,7 +7,7 @@ using Environment = Cmc.Core.Environment;
 
 #pragma warning disable 659
 
-namespace Cmc.Expression
+namespace Cmc.Expr
 {
 	public abstract class Expression : Ast
 	{

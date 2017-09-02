@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Cmc.Stmt;
 using JetBrains.Annotations;
 
 namespace Cmc.Core
@@ -11,7 +12,8 @@ namespace Cmc.Core
 		public Environment Env;
 		public MetaData MetaData;
 
-		[CanBeNull] public Statement.Statement OptimizedStatementList = null;
+		[CanBeNull] public Statement OptimizedStatementList = null;
+		[CanBeNull] public Statement ConvertedStatementList = null;
 
 		protected Ast(MetaData metaData) => MetaData = metaData;
 

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using Cmc;
 using Cmc.Core;
-using Cmc.Expression;
-using Cmc.Statement;
+using Cmc.Expr;
+using Cmc.Stmt;
 using LLVM;
 using NUnit.Framework;
 

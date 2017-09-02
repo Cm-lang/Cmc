@@ -1,7 +1,6 @@
 ﻿using System.Text;
 using Cmc;
-using Cmc.Expression;
-using Cmc.Statement;
+using Cmc.Stmt;
 using JetBrains.Annotations;
 using static LLVM.GenDeclaration;
 using static LLVM.GenExpression;

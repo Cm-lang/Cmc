@@ -3,7 +3,7 @@ using System.Linq;
 using Cmc.Core;
 using JetBrains.Annotations;
 
-namespace Cmc.Expression
+namespace Cmc.Expr
 {
 	public class FunctionCallExpression : AtomicExpression
 	{

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Cmc.Expression;
-using Cmc.Statement;
+using Cmc.Expr;
+using Cmc.Stmt;
 using JetBrains.Annotations;
 
 namespace Cmc.Core

@@ -1,8 +1,8 @@
 ﻿using System.Text;
 using Cmc;
 using Cmc.Core;
-using Cmc.Expression;
-using Cmc.Statement;
+using Cmc.Expr;
+using Cmc.Stmt;
 using JetBrains.Annotations;
 
 namespace LLVM

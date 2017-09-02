@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Cmc.Expression
+namespace Cmc.Expr
 {
 	public static class Constants
 	{

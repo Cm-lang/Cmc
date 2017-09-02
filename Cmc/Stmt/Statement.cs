@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using Cmc.Core;
-using Cmc.Expression;
+using Cmc.Expr;
 using JetBrains.Annotations;
 using Environment = Cmc.Core.Environment;
 
-namespace Cmc.Statement
+namespace Cmc.Stmt
 {
 	public class Statement : Ast
 	{
@@ -32,11 +32,11 @@ namespace Cmc.Statement
 
 	public class ExpressionStatement : Statement
 	{
-		[NotNull] public readonly Expression.Expression Expression;
+		[NotNull] public readonly Expression Expression;
 
 		public ExpressionStatement(
 			MetaData metaData,
-			[NotNull] Expression.Expression expression) :
+			[NotNull] Expression expression) :
 			base(metaData) =>
 			Expression = expression;
 
@@ -56,7 +56,7 @@ namespace Cmc.Statement
 
 		public ReturnStatement(
 			MetaData metaData,
-			[CanBeNull] Expression.Expression expression = null) :
+			[CanBeNull] Expression expression = null) :
 			base(metaData, expression ?? new NullExpression(metaData))
 		{
 		}
@@ -127,13 +127,13 @@ namespace Cmc.Statement
 
 	public class AssignmentStatement : Statement
 	{
-		[NotNull] public readonly Expression.Expression LhsExpression;
-		[NotNull] public readonly Expression.Expression RhsExpression;
+		[NotNull] public readonly Expression LhsExpression;
+		[NotNull] public readonly Expression RhsExpression;
 
 		public AssignmentStatement(
 			MetaData metaData,
-			[NotNull] Expression.Expression lhsExpression,
-			[NotNull] Expression.Expression rhsExpression) :
+			[NotNull] Expression lhsExpression,
+			[NotNull] Expression rhsExpression) :
 			base(metaData)
 		{
 			LhsExpression = lhsExpression;
