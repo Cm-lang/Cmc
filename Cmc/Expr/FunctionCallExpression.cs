@@ -78,4 +78,32 @@ namespace Cmc.Expr
 				.Concat(_type.Dump().Select(MapFunc2));
 		}
 	}
+
+	public class RecurCallExpression : Expression
+	{
+		[NotNull] public readonly IList<Expression> ParameterList;
+		[CanBeNull] public LambdaExpression Outside = null;
+
+		public RecurCallExpression(
+			MetaData metaData,
+			[NotNull] IList<Expression> parameterList) :
+			base(metaData)
+		{
+			ParameterList = parameterList;
+		}
+
+		public override void SurroundWith(Environment environment)
+		{
+			base.SurroundWith(environment);
+			foreach (var expression in ParameterList)
+				expression.SurroundWith(environment);
+			var declaration = (VariableDeclaration) Env.FindDeclarationSatisfies(
+				de => de is VariableDeclaration variable && variable.Type is LambdaType);
+			// TODO type check
+		}
+
+		public override Type GetExpressionType() =>
+			Outside?.GetExpressionType() ??
+			throw new CompilerException("cannot find a lambda outside a recur");
+	}
 }

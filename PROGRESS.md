@@ -10,6 +10,7 @@ and you see the result.
 ## basic language features
 
 + [X] type aliases (#31)
++ [X] no functions (see [README](./README.md))
 
 ## scoping
 
@@ -54,6 +55,7 @@ and you see the result.
 + [X] return statements' types should be same (#24) (tested)
 + [ ] return statement exhaustiveness check (extra)
 + [X] defaultly no parameter (#22)
++ [ ] y-combinator-like recur
 
 ## main function
 

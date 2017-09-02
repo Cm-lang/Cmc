@@ -12,15 +12,22 @@ namespace Cmc.Core
 		public Environment Env;
 		public MetaData MetaData;
 
+		/// <summary>
+		///  inline/constant folding/etc.
+		/// </summary>
 		[CanBeNull] public Statement OptimizedStatementList = null;
+
+		/// <summary>
+		///  sometimes you need to convert those complex expressions
+		///  or statements into a statement list.
+		///
+		///  in order to express them as a list of simple expressions
+		/// </summary>
 		[CanBeNull] public Statement ConvertedStatementList = null;
 
 		protected Ast(MetaData metaData) => MetaData = metaData;
 
-		public virtual void SurroundWith([NotNull] Environment environment)
-		{
-			Env = environment;
-		}
+		public virtual void SurroundWith([NotNull] Environment environment) => Env = environment;
 
 		/// <summary>
 		///   FEATURE #15
@@ -29,9 +36,6 @@ namespace Cmc.Core
 		[NotNull]
 		public virtual IEnumerable<string> Dump() => new[] {ToString()};
 
-		public void PrintDumpInfo()
-		{
-			Console.WriteLine(string.Join("", Dump()));
-		}
+		public void PrintDumpInfo() => Console.WriteLine(string.Join("", Dump()));
 	}
 }
