@@ -11,6 +11,8 @@
     <AssemblyName>LLVM_Test</AssemblyName>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <FileAlignment>512</FileAlignment>
+    <ApplicationIcon />
+    <StartupObject />
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Cmc\Cmc.csproj">

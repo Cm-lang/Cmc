@@ -16,6 +16,8 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>2.0</OldToolsVersion>
+    <ApplicationIcon />
+    <StartupObject />
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Cmc\Cmc.csproj">
