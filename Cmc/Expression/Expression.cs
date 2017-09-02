@@ -206,30 +206,20 @@ namespace Cmc.Expression
 				_type = Declaration.Type;
 			}
 			else
-			{
 				Errors.Add($"{MetaData.GetErrorHeader()}{declaration} isn't a variable");
+		}
+
+		public override Type GetExpressionType() =>
+			_type ?? throw new CompilerException("unknown type");
+
+		public override IEnumerable<string> Dump() => new[]
+			{
+				$"variable expression [{Name}]:\n",
+				"  type:\n"
 			}
-		}
+			.Concat(_type?.Dump().Select(MapFunc2) ?? new[] {"    cannot infer!\n"});
 
-		public override Type GetExpressionType()
-		{
-			return _type ?? throw new CompilerException("unknown type");
-		}
-
-		public override IEnumerable<string> Dump()
-		{
-			return new[]
-				{
-					$"variable expression [{Name}]:\n",
-					"  type:\n"
-				}
-				.Concat(_type?.Dump().Select(MapFunc2) ?? new[] {"    cannot infer!\n"});
-		}
-
-		public override VariableExpression GetLhsExpression()
-		{
-			return this;
-		}
+		public override VariableExpression GetLhsExpression() => this;
 	}
 
 	public class HoleExpression : Expression

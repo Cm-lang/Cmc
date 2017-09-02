@@ -23,6 +23,9 @@ namespace LLVM
 					builder.AppendLine(
 						$"  store {integer.Type} {integer.Value}, {integer.Type}* %{varName}, align {integer.Type.Align}");
 			}
+			else if (element is FunctionCallExpression functionCall)
+			{
+			}
 		}
 	}
 }

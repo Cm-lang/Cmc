@@ -10,6 +10,7 @@ namespace Cmc.Core
 		/// </summary>
 		public static void RunCommand(string command)
 		{
+			Console.WriteLine(command);
 			var cmd = new Process
 			{
 				StartInfo =
@@ -24,18 +25,15 @@ namespace Cmc.Core
 			switch (platform)
 			{
 				case PlatformID.Xbox:
-					Console.WriteLine("Cm doesn't support XBox!");
 					break;
 				case PlatformID.Win32Windows:
 				case PlatformID.Win32NT:
 				case PlatformID.Win32S:
 				case PlatformID.WinCE:
-					Console.WriteLine($"Operating System: {platform}");
 					cmd.StartInfo.FileName = "cmd.exe";
 					break;
 				case PlatformID.MacOSX:
 				case PlatformID.Unix:
-					Console.WriteLine($"Operating System: {platform}");
 					cmd.StartInfo.FileName = "sh";
 					break;
 				default:

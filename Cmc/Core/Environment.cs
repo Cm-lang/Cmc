@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Cmc.Expression;
+using Cmc.Statement;
 using JetBrains.Annotations;
 
 namespace Cmc.Core
 {
 	public class Environment
 	{
+		public static readonly Environment Galaxy;
 		public static readonly Environment SolarSystem;
 
 		[NotNull] public readonly IList<Declaration> Declarations = new List<Declaration>();
@@ -16,7 +19,8 @@ namespace Cmc.Core
 
 		static Environment()
 		{
-			SolarSystem = new Environment();
+			Galaxy = new Environment();
+			SolarSystem = new Environment(Galaxy);
 
 			// FEATURE #0
 			foreach (var typeDeclaration in from builtinType in new[]
@@ -28,7 +32,17 @@ namespace Cmc.Core
 					MetaData.BuiltIn,
 					builtinType,
 					new PrimaryType(MetaData.BuiltIn, builtinType)))
-				SolarSystem.Declarations.Add(typeDeclaration);
+				Galaxy.Declarations.Add(typeDeclaration);
+			var puts = new VariableDeclaration(MetaData.BuiltIn, "puts",
+				new LambdaExpression(MetaData.BuiltIn,
+					new StatementList(MetaData.BuiltIn),
+					new List<VariableDeclaration>(new[]
+					{
+						new VariableDeclaration(MetaData.BuiltIn, "s", type:
+							new PrimaryType(MetaData.BuiltIn, PrimaryType.StringType))
+					})));
+			puts.SurroundWith(Galaxy);
+			SolarSystem.Declarations.Add(puts);
 		}
 
 		public Environment(Environment outer = null)
