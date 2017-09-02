@@ -1,7 +1,9 @@
 ﻿using System.Text;
 using Cmc;
+using Cmc.Expression;
 using Cmc.Statement;
 using JetBrains.Annotations;
+using static LLVM.GenDeclaration;
 using static LLVM.GenExpression;
 using static LLVM.TypeConverter;
 
@@ -26,14 +28,11 @@ namespace LLVM
 			{
 				ulong localVarCount = 1;
 				foreach (var statement in statements.Statements)
-				{
 					GenAstStatement(builder, statement, ref localVarCount);
-					localVarCount++;
-				}
 			}
 			// this should rarely happen
 			else if (element is Declaration declaration)
-				GenDeclaration.GenAstDeclaration(builder, declaration, ref varName);
+				GenAstDeclaration(builder, declaration, ref varName);
 		}
 	}
 }

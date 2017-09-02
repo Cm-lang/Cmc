@@ -103,20 +103,12 @@ namespace Cmc
 		{
 		}
 
-		public override IEnumerable<string> Dump()
-		{
-			return new[] {$"- primary type [{Name}]\n"};
-		}
+		public override IEnumerable<string> Dump() => new[] {$"- primary type [{Name}]\n"};
 
-		public override string ToString()
-		{
-			return Name;
-		}
+		public override string ToString() => Name;
 
-		public override bool Equals(object obj)
-		{
-			return obj is PrimaryType type && string.Equals(type.Name, Name, StringComparison.Ordinal);
-		}
+		public override bool Equals(object obj) =>
+			obj is PrimaryType type && string.Equals(type.Name, Name, StringComparison.Ordinal);
 	}
 
 	/// <summary>

@@ -25,6 +25,11 @@ namespace LLVM
 			}
 			else if (element is FunctionCallExpression functionCall)
 			{
+				// TODO localize paramters
+				// TODO localize function name
+				builder.AppendLine(
+					$"  %{varName} = call i32 @puts(i8* %6)");
+				varName++;
 			}
 		}
 	}

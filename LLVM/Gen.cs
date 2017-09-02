@@ -69,9 +69,9 @@ namespace LLVM
 			[NotNull] string outputFile,
 			[NotNull] params Declaration[] declarations)
 		{
-			File.WriteAllText(outputFile, Generate(declarations));
+			File.WriteAllText($"{outputFile}.ll", Generate(declarations));
 			CommandLine.RunCommand($"llc-4.0 {outputFile}.ll -filetype=obj");
-			CommandLine.RunCommand($"gcc {outputFile}.ll -o {outputFile}");
+			CommandLine.RunCommand($"gcc {outputFile}.o -o {outputFile}");
 		}
 	}
 }

@@ -29,8 +29,8 @@ namespace LLVM_Test
 									new List<Expression>(new[]
 									{
 										new VariableExpression(MetaData.Empty, "j")
-									}))), new ReturnStatement(MetaData.Empty,
-								new IntLiteralExpression(MetaData.Empty, "0", true)))))
+									})))
+						)))
 			);
 		}
 	}
