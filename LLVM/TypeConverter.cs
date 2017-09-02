@@ -19,8 +19,9 @@ namespace LLVM
 				}
 			if (type is LambdaType lambdaType)
 			{
-				// TODO
+				// TODO select a class
 			}
+			// ReSharper disable once InvertIf
 			if (type is SecondaryType secondaryType)
 			{
 				if (secondaryType.Struct != null)

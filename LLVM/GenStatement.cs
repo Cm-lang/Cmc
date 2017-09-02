@@ -2,6 +2,7 @@
 using Cmc;
 using Cmc.Stmt;
 using JetBrains.Annotations;
+using static LLVM.GenAstHolder;
 using static LLVM.GenDeclaration;
 using static LLVM.GenExpression;
 using static LLVM.TypeConverter;
@@ -18,7 +19,7 @@ namespace LLVM
 			if (element is ReturnStatement returnStatement)
 			{
 				var expr = returnStatement.Expression;
-				GenAstExpression(builder, expr, ref varName);
+				GenAst(builder, expr, ref varName);
 				builder.AppendLine(
 					$"  ret {ConvertType(expr.GetExpressionType())} %{varName}");
 				varName++;
@@ -27,11 +28,11 @@ namespace LLVM
 			{
 				ulong localVarCount = 1;
 				foreach (var statement in statements.Statements)
-					GenAstStatement(builder, statement, ref localVarCount);
+					GenAst(builder, statement, ref localVarCount);
 			}
 			// this should rarely happen
 			else if (element is Declaration declaration)
-				GenAstDeclaration(builder, declaration, ref varName);
+				GenAst(builder, declaration, ref varName);
 		}
 	}
 }
