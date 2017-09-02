@@ -6,7 +6,7 @@ namespace Cmc.Core
 	public static class CommandLine
 	{
 		/// <summary>
-		///     Will select os automatically
+		///  Will select os automatically
 		/// </summary>
 		public static void RunCommand(string command)
 		{
@@ -24,7 +24,7 @@ namespace Cmc.Core
 			switch (platform)
 			{
 				case PlatformID.Xbox:
-					Console.WriteLine("bC doesn't support XBox!");
+					Console.WriteLine("Cm doesn't support XBox!");
 					break;
 				case PlatformID.Win32Windows:
 				case PlatformID.Win32NT:
@@ -47,7 +47,7 @@ namespace Cmc.Core
 			cmd.StandardInput.Flush();
 			cmd.StandardInput.Close();
 			cmd.WaitForExit();
-//			Console.WriteLine(cmd.StandardOutput.ReadToEnd());
+			Console.WriteLine(cmd.StandardOutput.ReadToEnd());
 		}
 	}
 }

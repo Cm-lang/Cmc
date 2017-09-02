@@ -29,5 +29,8 @@ namespace LLVM_Test
 			);
 			Console.WriteLine(res);
 		}
+
+		[SetUp]
+		public void Init() => Errors.ErrList.Clear();
 	}
 }

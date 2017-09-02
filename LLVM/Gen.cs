@@ -24,6 +24,7 @@ namespace LLVM
 			var core = new Core();
 			var builder = new StringBuilder();
 			var analyzedDeclarations = core.Analyze(declarations);
+			builder.AppendLine("declare i32 @puts(i8*) #1");
 			for (var i = 0; i < Constants.StringConstants.Count; i++)
 			{
 				var str = Constants.StringConstants[i];
