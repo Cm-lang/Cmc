@@ -37,7 +37,7 @@ namespace Cmc.Expr
 			var bodyEnv = new Environment(Env);
 			foreach (var variableDeclaration in ParameterList)
 				bodyEnv.Declarations.Add(variableDeclaration);
-			// FEATURE #
+			// FEATURE #37
 			var recur = new VariableDeclaration(MetaData, "recur", this);
 			recur.SurroundWith(Env);
 			bodyEnv.Declarations.Add(recur);

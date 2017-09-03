@@ -27,7 +27,7 @@ namespace Cmc.Core
 
 		protected Ast(MetaData metaData) => MetaData = metaData;
 
-		public virtual void SurroundWith([NotNull] Environment environment) => Env = environment;
+		public virtual void SurroundWith([NotNull] Environment environment) => Env = Env ?? environment;
 
 		/// <summary>
 		///   FEATURE #15
