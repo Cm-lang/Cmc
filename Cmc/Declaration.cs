@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Cmc.Core;
 using Cmc.Expr;
 using Cmc.Stmt;
 using JetBrains.Annotations;
 using static System.StringComparison;
+using Environment = Cmc.Core.Environment;
 
 #pragma warning disable 659
 
@@ -53,7 +56,13 @@ namespace Cmc
 		{
 			base.SurroundWith(environment);
 			// https://github.com/Cm-lang/Cm-Document/issues/12
-			if (string.Equals(Name, "recur", Ordinal)) return;
+			if (string.Equals(Name, "recur", Ordinal))
+			{
+				Debug.Assert(null != Expression);
+				Debug.Assert(null != Expression.Env);
+				Type = Expression.GetExpressionType();
+				return;
+			}
 			Expression.SurroundWith(Env);
 			var exprType = Expression.GetExpressionType();
 			// FEATURE #8

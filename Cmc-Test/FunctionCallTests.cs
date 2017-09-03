@@ -94,7 +94,7 @@ namespace Cmc_Test
 				new AssignmentStatement(MetaData.Empty,
 					new VariableExpression(MetaData.Empty, "gg"),
 					new FunctionCallExpression(MetaData.Empty,
-						new VariableExpression(MetaData.Empty, "id"),
+						new VariableExpression(MetaData.Empty, "recurFunc"),
 						new List<Expression>(new[] {new IntLiteralExpression(MetaData.Empty, "233", true, 8)}))));
 			Assert.Throws<CompilerException>(() => { example.SurroundWith(Environment.SolarSystem); });
 		}
@@ -115,7 +115,7 @@ namespace Cmc_Test
 				{
 					new VariableDeclaration(MetaData.Empty, "a", type:
 						new UnknownType(MetaData.Empty, "i8"))
-				}), new PrimaryType(MetaData.Empty, "i8"));
+				}), new UnknownType(MetaData.Empty, "i8"));
 			var example = new StatementList(MetaData.Empty,
 				new VariableDeclaration(MetaData.Empty, "recurFunc",
 					lambda),
@@ -124,7 +124,7 @@ namespace Cmc_Test
 				new AssignmentStatement(MetaData.Empty,
 					new VariableExpression(MetaData.Empty, "gg"),
 					new FunctionCallExpression(MetaData.Empty,
-						new VariableExpression(MetaData.Empty, "id"),
+						new VariableExpression(MetaData.Empty, "recurFunc"),
 						new List<Expression>(new[] {new IntLiteralExpression(MetaData.Empty, "233", true, 8)}))));
 			example.SurroundWith(Environment.SolarSystem);
 		}

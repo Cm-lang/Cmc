@@ -26,7 +26,6 @@ namespace Cmc.Expr
 		{
 			Body = body;
 			DeclaredType = returnType;
-			if (null != DeclaredType) _type = DeclaredType;
 			ParameterList = parameterList ?? new List<VariableDeclaration>(0);
 		}
 
@@ -41,6 +40,7 @@ namespace Cmc.Expr
 			// FEATURE #37
 			var recur = new VariableDeclaration(MetaData, "recur", this);
 			// https://github.com/Cm-lang/Cm-Document/issues/12
+			if (null != DeclaredType) _type = new LambdaType(MetaData, ParameterList.Select(i => i.Type).ToList(), DeclaredType);
 			recur.SurroundWith(Env);
 			bodyEnv.Declarations.Add(recur);
 			Body.SurroundWith(bodyEnv);
@@ -63,23 +63,17 @@ namespace Cmc.Expr
 			_type = new LambdaType(MetaData, ParameterList.Select(i => i.Type).ToList(), retType);
 		}
 
-		public override Type GetExpressionType()
-		{
-			return _type;
-		}
+		public override Type GetExpressionType() => _type;
 
-		public override IEnumerable<string> Dump()
-		{
-			return new[]
-				{
-					"lambda:\n",
-					"  type:\n"
-				}
-				.Concat(GetExpressionType().Dump().Select(MapFunc2))
-				.Concat(new[] {"  parameters:\n"})
-				.Concat(ParameterList.SelectMany(i => i.Dump().Select(MapFunc2)))
-				.Concat(new[] {"  body:\n"})
-				.Concat(Body.Dump().Select(MapFunc2));
-		}
+		public override IEnumerable<string> Dump() => new[]
+			{
+				"lambda:\n",
+				"  type:\n"
+			}
+			.Concat(GetExpressionType().Dump().Select(MapFunc2))
+			.Concat(new[] {"  parameters:\n"})
+			.Concat(ParameterList.SelectMany(i => i.Dump().Select(MapFunc2)))
+			.Concat(new[] {"  body:\n"})
+			.Concat(Body.Dump().Select(MapFunc2));
 	}
 }
