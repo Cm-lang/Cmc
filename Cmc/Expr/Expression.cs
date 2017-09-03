@@ -18,14 +18,8 @@ namespace Cmc.Expr
 		[NotNull]
 		public abstract Type GetExpressionType();
 
-		[NotNull]
-		public virtual IEnumerable<RecurCallExpression> FindRecur() => new List<RecurCallExpression>(0);
-
 		[CanBeNull]
-		public virtual VariableExpression GetLhsExpression()
-		{
-			return null;
-		}
+		public virtual VariableExpression GetLhsExpression() => null;
 	}
 
 	public sealed class NullExpression : Expression
@@ -135,9 +129,6 @@ namespace Cmc.Expr
 			Owner = owner;
 			Member = member;
 		}
-
-		public override IEnumerable<RecurCallExpression> FindRecur() =>
-			Owner.FindRecur().Concat(Member.FindRecur());
 
 		public override void SurroundWith(Environment environment)
 		{

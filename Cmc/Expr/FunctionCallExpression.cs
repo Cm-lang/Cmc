@@ -12,9 +12,6 @@ namespace Cmc.Expr
 		[NotNull] public readonly Expression Receiver;
 		private Type _type;
 
-		public override IEnumerable<RecurCallExpression> FindRecur() =>
-			Receiver.FindRecur().Concat(ParameterList.SelectMany(i => i.FindRecur()));
-
 		public FunctionCallExpression(MetaData metaData, [NotNull] Expression receiver,
 			[NotNull] IList<Expression> parameterList) :
 			base(metaData)
@@ -87,10 +84,6 @@ namespace Cmc.Expr
 		{
 			ParameterList = parameterList;
 		}
-
-		public override IEnumerable<RecurCallExpression> FindRecur() =>
-			new[] {this}
-				.Concat(ParameterList.SelectMany(i => i.FindRecur()));
 
 		public override void SurroundWith(Environment environment)
 		{

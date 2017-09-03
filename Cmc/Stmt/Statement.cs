@@ -20,9 +20,6 @@ namespace Cmc.Stmt
 		[NotNull]
 		public virtual IEnumerable<JumpStatement> FindJumpStatements() => new List<JumpStatement>(0);
 
-		[NotNull]
-		public virtual IEnumerable<RecurCallExpression> FindRecur() => new List<RecurCallExpression>(0);
-
 		public override IEnumerable<string> Dump() => new[] {"empty statement"};
 	}
 
