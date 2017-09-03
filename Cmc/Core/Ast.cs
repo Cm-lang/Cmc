@@ -34,7 +34,7 @@ namespace Cmc.Core
 		/// </summary>
 		/// <returns>compilation information</returns>
 		[NotNull]
-		public virtual IEnumerable<string> Dump() => new[] {ToString()};
+		public virtual IEnumerable<string> Dump() => new[] {$"{this}\n"};
 
 		public void PrintDumpInfo() => Console.WriteLine(string.Join("", Dump()));
 	}

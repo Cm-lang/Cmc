@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Cmc.Core;
@@ -7,7 +6,6 @@ using Cmc.Expr;
 using Cmc.Stmt;
 using JetBrains.Annotations;
 using static System.StringComparison;
-using Environment = Cmc.Core.Environment;
 
 #pragma warning disable 659
 
@@ -78,22 +76,17 @@ namespace Cmc
 				Errors.Add($"{MetaData.GetErrorHeader()}type mismatch, expected: {Type}, actual: {exprType}");
 		}
 
-		public override bool Equals(object obj)
-		{
-			return obj is Declaration declaration && declaration.Name == Name;
-		}
+		public override bool Equals(object obj) =>
+			obj is Declaration declaration && declaration.Name == Name;
 
-		public override IEnumerable<string> Dump()
-		{
-			return new[]
-				{
-					$"variable declaration [{Name}]:\n",
-					"  type:\n"
-				}
-				.Concat(Type?.Dump().Select(MapFunc2) ?? new[] {"    cannot infer!\n"})
-				.Concat(new[] {"  initialize expression:\n"})
-				.Concat(Expression.Dump().Select(MapFunc2));
-		}
+		public override IEnumerable<string> Dump() => new[]
+			{
+				$"variable declaration [{Name}]:\n",
+				"  type:\n"
+			}
+			.Concat(Type?.Dump().Select(MapFunc2) ?? new[] {"    cannot infer!\n"})
+			.Concat(new[] {"  initialize expression:\n"})
+			.Concat(Expression.Dump().Select(MapFunc2));
 	}
 
 	/// <summary>
@@ -157,9 +150,7 @@ namespace Cmc
 			Content = content;
 		}
 
-		public override IEnumerable<string> Dump()
-		{
-			return new[] {"macro(this shouldn't appear)\n"};
-		}
+		public override IEnumerable<string> Dump() =>
+			new[] {"macro(this shouldn't appear)\n"};
 	}
 }

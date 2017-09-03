@@ -127,6 +127,7 @@ namespace Cmc_Test
 						new VariableExpression(MetaData.Empty, "recurFunc"),
 						new List<Expression>(new[] {new IntLiteralExpression(MetaData.Empty, "233", true, 8)}))));
 			example.SurroundWith(Environment.SolarSystem);
+			example.PrintDumpInfo();
 		}
 	}
 }
