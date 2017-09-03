@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 
 namespace Cmc.Expr
 {
-	public class FunctionCallExpression : AtomicExpression
+	public class FunctionCallExpression : Expression
 	{
 		[NotNull] public readonly IList<Expression> ParameterList;
 

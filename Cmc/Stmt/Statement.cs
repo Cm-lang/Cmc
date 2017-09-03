@@ -14,8 +14,14 @@ namespace Cmc.Stmt
 		{
 		}
 
-		public virtual IEnumerable<ReturnStatement> FindReturnStatements() => new List<ReturnStatement>();
-		public virtual IEnumerable<JumpStatement> FindJumpStatements() => new List<JumpStatement>();
+		[NotNull]
+		public virtual IEnumerable<ReturnStatement> FindReturnStatements() => new List<ReturnStatement>(0);
+
+		[NotNull]
+		public virtual IEnumerable<JumpStatement> FindJumpStatements() => new List<JumpStatement>(0);
+
+		[NotNull]
+		public virtual IEnumerable<RecurCallExpression> FindRecur() => new List<RecurCallExpression>(0);
 
 		public override IEnumerable<string> Dump() => new[] {"empty statement"};
 	}

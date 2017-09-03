@@ -45,10 +45,7 @@ namespace Cmc.Core
 			SolarSystem.Declarations.Add(puts);
 		}
 
-		public Environment(Environment outer = null)
-		{
-			Outer = outer;
-		}
+		public Environment(Environment outer = null) => Outer = outer;
 
 		/// FEATURE #3
 		[NotNull]

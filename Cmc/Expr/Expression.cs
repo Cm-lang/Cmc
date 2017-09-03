@@ -18,17 +18,13 @@ namespace Cmc.Expr
 		[NotNull]
 		public abstract Type GetExpressionType();
 
+		[NotNull]
+		public virtual IEnumerable<RecurCallExpression> FindRecur() => new List<RecurCallExpression>(0);
+
 		[CanBeNull]
 		public virtual VariableExpression GetLhsExpression()
 		{
 			return null;
-		}
-	}
-
-	public abstract class AtomicExpression : Expression
-	{
-		protected AtomicExpression(MetaData metaData) : base(metaData)
-		{
 		}
 	}
 
@@ -38,18 +34,12 @@ namespace Cmc.Expr
 		{
 		}
 
-		public override Type GetExpressionType()
-		{
-			return new PrimaryType(MetaData, PrimaryType.NullType);
-		}
+		public override Type GetExpressionType() => new PrimaryType(MetaData, PrimaryType.NullType);
 
-		public override IEnumerable<string> Dump()
-		{
-			return new[] {"null expression\n"};
-		}
+		public override IEnumerable<string> Dump() => new[] {"null expression\n"};
 	}
 
-	public class LiteralExpression : AtomicExpression
+	public class LiteralExpression : Expression
 	{
 		[NotNull] public readonly Type Type;
 
@@ -58,10 +48,7 @@ namespace Cmc.Expr
 			Type = type;
 		}
 
-		public override Type GetExpressionType()
-		{
-			return Type;
-		}
+		public override Type GetExpressionType() => Type;
 	}
 
 	public class IntLiteralExpression : LiteralExpression
@@ -86,11 +73,9 @@ namespace Cmc.Expr
 				Errors.Add($"{MetaData.GetErrorHeader()}integer length of {length} is not supported");
 		}
 
-		public override IEnumerable<string> Dump()
-		{
-			return new[] {$"literal expression [{Value}]:\n"}
+		public override IEnumerable<string> Dump() =>
+			new[] {$"literal expression [{Value}]:\n"}
 				.Concat(Type.Dump().Select(MapFunc));
-		}
 	}
 
 	public class BoolLiteralExpression : LiteralExpression
@@ -103,15 +88,10 @@ namespace Cmc.Expr
 			Value = value;
 		}
 
-		public int ValueToInt()
-		{
-			return Value ? 1 : 0;
-		}
+		public int ValueToInt() => Value ? 1 : 0;
 
-		public override IEnumerable<string> Dump()
-		{
-			return new[] {$"bool literal expression [{Value}]:\n"};
-		}
+		public override IEnumerable<string> Dump() =>
+			new[] {$"bool literal expression [{Value}]:\n"};
 	}
 
 	public class StringLiteralExpression : LiteralExpression
@@ -136,15 +116,12 @@ namespace Cmc.Expr
 		///     FEATURE #23
 		/// </summary>
 		/// <returns>dump msg</returns>
-		public override IEnumerable<string> Dump()
-		{
-			return new[]
-					{$"string literal expression <{ConstantPoolIndex}>[{Value}]:\n"}
+		public override IEnumerable<string> Dump() =>
+			new[] {$"string literal expression <{ConstantPoolIndex}>[{Value}]:\n"}
 				.Concat(Type.Dump().Select(MapFunc));
-		}
 	}
 
-	public class MemberAccessExpression : AtomicExpression
+	public class MemberAccessExpression : Expression
 	{
 		[NotNull] public readonly VariableExpression Member;
 		[NotNull] public readonly Expression Owner;
@@ -170,18 +147,12 @@ namespace Cmc.Expr
 				Errors.Add(MetaData.GetErrorHeader() + "invalid member access expression");
 		}
 
-		public override Type GetExpressionType()
-		{
-			return Member.GetExpressionType();
-		}
+		public override Type GetExpressionType() => Member.GetExpressionType();
 
-		public override VariableExpression GetLhsExpression()
-		{
-			return Member.GetLhsExpression();
-		}
+		public override VariableExpression GetLhsExpression() => Member.GetLhsExpression();
 	}
 
-	public class VariableExpression : AtomicExpression
+	public class VariableExpression : Expression
 	{
 		[NotNull] public readonly string Name;
 		[CanBeNull] private Type _type;
@@ -228,9 +199,7 @@ namespace Cmc.Expr
 		{
 		}
 
-		public override Type GetExpressionType()
-		{
+		public override Type GetExpressionType() =>
 			throw new CompilerException("cannot get hole's type");
-		}
 	}
 }

@@ -10,7 +10,7 @@ namespace Cmc.Expr
 	///     A function is a variable with the type of lambda
 	///     This is the class for anonymous lambda
 	/// </summary>
-	public class LambdaExpression : AtomicExpression
+	public class LambdaExpression : Expression
 	{
 		[CanBeNull] private readonly Type _declaredType;
 		[NotNull] public readonly StatementList Body;
@@ -26,7 +26,7 @@ namespace Cmc.Expr
 		{
 			Body = body;
 			_declaredType = returnType;
-			ParameterList = parameterList ?? new List<VariableDeclaration>();
+			ParameterList = parameterList ?? new List<VariableDeclaration>(0);
 		}
 
 		public override void SurroundWith(Environment environment)
