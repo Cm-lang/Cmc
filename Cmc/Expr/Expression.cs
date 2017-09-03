@@ -136,6 +136,9 @@ namespace Cmc.Expr
 			Member = member;
 		}
 
+		public override IEnumerable<RecurCallExpression> FindRecur() =>
+			Owner.FindRecur().Concat(Member.FindRecur());
+
 		public override void SurroundWith(Environment environment)
 		{
 			base.SurroundWith(environment);

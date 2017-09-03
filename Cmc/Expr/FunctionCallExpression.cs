@@ -12,6 +12,9 @@ namespace Cmc.Expr
 		[NotNull] public readonly Expression Receiver;
 		private Type _type;
 
+		public override IEnumerable<RecurCallExpression> FindRecur() =>
+			Receiver.FindRecur().Concat(ParameterList.SelectMany(i => i.FindRecur()));
+
 		public FunctionCallExpression(MetaData metaData, [NotNull] Expression receiver,
 			[NotNull] IList<Expression> parameterList) :
 			base(metaData)
@@ -52,31 +55,24 @@ namespace Cmc.Expr
 							$"found {ParameterList[i].GetExpressionType()}");
 			}
 			else
-			{
 				Errors.Add(
 					$"{MetaData.GetErrorHeader()}the function call receiver shoule be a function," +
 					$" not {Receiver.GetExpressionType()}.");
+		}
+
+		public override Type GetExpressionType() =>
+			_type ?? throw new CompilerException("type cannot be inferred");
+
+		public override IEnumerable<string> Dump() => new[]
+			{
+				"function call expression:\n",
+				"  receiver:\n"
 			}
-		}
-
-		public override Type GetExpressionType()
-		{
-			return _type ?? throw new CompilerException("type cannot be inferred");
-		}
-
-		public override IEnumerable<string> Dump()
-		{
-			return new[]
-				{
-					"function call expression:\n",
-					"  receiver:\n"
-				}
-				.Concat(Receiver.Dump().Select(MapFunc2))
-				.Concat(new[] {"  parameters:\n"})
-				.Concat(ParameterList.SelectMany(i => i.Dump().Select(MapFunc2)))
-				.Concat(new[] {"  type:\n"})
-				.Concat(_type.Dump().Select(MapFunc2));
-		}
+			.Concat(Receiver.Dump().Select(MapFunc2))
+			.Concat(new[] {"  parameters:\n"})
+			.Concat(ParameterList.SelectMany(i => i.Dump().Select(MapFunc2)))
+			.Concat(new[] {"  type:\n"})
+			.Concat(_type.Dump().Select(MapFunc2));
 	}
 
 	public class RecurCallExpression : Expression
@@ -91,6 +87,10 @@ namespace Cmc.Expr
 		{
 			ParameterList = parameterList;
 		}
+
+		public override IEnumerable<RecurCallExpression> FindRecur() =>
+			new[] {this}
+				.Concat(ParameterList.SelectMany(i => i.FindRecur()));
 
 		public override void SurroundWith(Environment environment)
 		{
