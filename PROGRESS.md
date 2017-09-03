@@ -55,7 +55,8 @@ and you see the result.
 + [X] return statements' types should be same (#24) (tested)
 + [ ] return statement exhaustiveness check (extra)
 + [X] defaultly no parameter (#22)
-+ [ ] y-combinator-like recur
++ [X] y-combinator-like recur (#37)
++ [ ] recur can invoke outside lambdas
 
 ## main function
 
