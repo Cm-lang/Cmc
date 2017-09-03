@@ -12,7 +12,7 @@ namespace Cmc.Expr
 	/// </summary>
 	public class LambdaExpression : Expression
 	{
-		[CanBeNull] private readonly Type _declaredType;
+		[CanBeNull] public Type DeclaredType;
 		[NotNull] public readonly StatementList Body;
 		[NotNull] public readonly IList<VariableDeclaration> ParameterList;
 		private Type _type;
@@ -25,7 +25,8 @@ namespace Cmc.Expr
 			[CanBeNull] Type returnType = null) : base(metaData)
 		{
 			Body = body;
-			_declaredType = returnType;
+			DeclaredType = returnType;
+			if (null != DeclaredType) _type = DeclaredType;
 			ParameterList = parameterList ?? new List<VariableDeclaration>(0);
 		}
 
@@ -39,6 +40,7 @@ namespace Cmc.Expr
 				bodyEnv.Declarations.Add(variableDeclaration);
 			// FEATURE #37
 			var recur = new VariableDeclaration(MetaData, "recur", this);
+			// https://github.com/Cm-lang/Cm-Document/issues/12
 			recur.SurroundWith(Env);
 			bodyEnv.Declarations.Add(recur);
 			Body.SurroundWith(bodyEnv);
@@ -48,13 +50,13 @@ namespace Cmc.Expr
 				return i.Expression.GetExpressionType();
 			}).ToList();
 			// FEATURE #24
-			if (retTypes.Any(i => !Equals(i, _declaredType ?? retTypes.First())))
+			if (retTypes.Any(i => !Equals(i, DeclaredType ?? retTypes.First())))
 				Errors.Add(
 					$"{MetaData.GetErrorHeader()}ambiguous return types:\n" +
-					(_declaredType != null ? $"<{_declaredType}>" : "") +
+					(DeclaredType != null ? $"<{DeclaredType}>" : "") +
 					$"[{string.Join(",", retTypes.Select(i => i.ToString()))}]");
 			// FEATURE #12
-			var retType = _declaredType ?? (retTypes.Count != 0
+			var retType = DeclaredType ?? (retTypes.Count != 0
 				              ? retTypes.First()
 				              // FEATURE #19
 				              : new PrimaryType(MetaData, PrimaryType.NullType));

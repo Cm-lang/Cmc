@@ -2,6 +2,8 @@
 using System.Linq;
 using Cmc.Core;
 using JetBrains.Annotations;
+using static System.StringComparison;
+using Environment = Cmc.Core.Environment;
 
 namespace Cmc.Expr
 {
@@ -40,7 +42,18 @@ namespace Cmc.Expr
 					receiverDeclaration.Used = true;
 				}
 			}
-			var hisType = Receiver.GetExpressionType() as LambdaType;
+			LambdaType hisType;
+			try
+			{
+				hisType = Receiver.GetExpressionType() as LambdaType;
+			}
+			catch (CompilerException)
+			{
+				if (Receiver is VariableExpression variable && string.Equals(variable.Name, "recur", Ordinal))
+					throw new CompilerException(
+						$"{MetaData.GetErrorHeader()}please specify lamdba return type when using `recur`");
+				throw;
+			}
 			if (null != hisType)
 			{
 				_type = hisType.RetType;
