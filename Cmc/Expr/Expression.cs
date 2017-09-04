@@ -37,10 +37,10 @@ namespace Cmc.Expr
 	{
 		[NotNull] public readonly Type Type;
 
-		protected LiteralExpression(MetaData metaData, [NotNull] Type type) : base(metaData)
-		{
-			Type = type;
-		}
+		protected LiteralExpression(
+			MetaData metaData,
+			[NotNull] Type type) :
+			base(metaData) => Type = type;
 
 		public override Type GetExpressionType() => Type;
 	}
@@ -76,11 +76,14 @@ namespace Cmc.Expr
 	{
 		public readonly bool Value;
 
-		public BoolLiteralExpression(MetaData metaData, bool value) : base(metaData,
-			new PrimaryType(metaData, PrimaryType.BoolType, 1))
-		{
-			Value = value;
-		}
+		public BoolLiteralExpression(
+			MetaData metaData,
+			bool value) :
+			base(metaData, new PrimaryType(
+				metaData,
+				PrimaryType.BoolType,
+				1))
+			=> Value = value;
 
 		public int ValueToInt() => Value ? 1 : 0;
 
@@ -155,10 +158,7 @@ namespace Cmc.Expr
 		public VariableExpression(
 			MetaData metaData,
 			[NotNull] string name) :
-			base(metaData)
-		{
-			Name = name;
-		}
+			base(metaData) => Name = name;
 
 		public override void SurroundWith(Environment environment)
 		{
