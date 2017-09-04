@@ -132,6 +132,8 @@ namespace Cmc_Test
 
 		/// <summary>
 		///  recur test
+		///  expression:
+		///  { a: i32 -> { recur(a) }() }
 		/// </summary>
 		[Test]
 		public void FuncCallTest5()
@@ -139,14 +141,16 @@ namespace Cmc_Test
 			var lambda = new LambdaExpression(MetaData.Empty,
 				new StatementList(MetaData.Empty,
 					new ReturnStatement(MetaData.Empty,
-						new LambdaExpression(MetaData.Empty,
-							new StatementList(MetaData.Empty,
-								new ReturnStatement(MetaData.Empty,
-									new FunctionCallExpression(MetaData.Empty,
-										new VariableExpression(MetaData.Empty, "recur"),
-										new List<Expression>(new[] {new VariableExpression(MetaData.Empty, "a")})))
-							), returnType:
-							new UnknownType(MetaData.Empty, "i8")))),
+						new FunctionCallExpression(MetaData.Empty,
+							new LambdaExpression(MetaData.Empty,
+								new StatementList(MetaData.Empty,
+									new ReturnStatement(MetaData.Empty,
+										new FunctionCallExpression(MetaData.Empty,
+											new VariableExpression(MetaData.Empty, "recur"),
+											new List<Expression>(new[] {new VariableExpression(MetaData.Empty, "a")})))
+								), returnType:
+								new UnknownType(MetaData.Empty, "i8")),
+							new List<Expression>()))),
 				new List<VariableDeclaration>(new[]
 				{
 					new VariableDeclaration(MetaData.Empty, "a", type:
@@ -164,6 +168,7 @@ namespace Cmc_Test
 						new List<Expression>(new[] {new IntLiteralExpression(MetaData.Empty, "233", true, 8)}))));
 			example.SurroundWith(Environment.SolarSystem);
 			example.PrintDumpInfo();
+			Assert.IsEmpty(Errors.ErrList);
 		}
 	}
 }
