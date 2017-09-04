@@ -32,6 +32,11 @@ namespace Cmc.Expr
 		public override void SurroundWith(Environment environment)
 		{
 			base.SurroundWith(environment);
+			if (DeclaredType is UnknownType unknownType)
+			{
+				unknownType.SurroundWith(Env);
+				DeclaredType = unknownType.Resolve();
+			}
 			foreach (var variableDeclaration in ParameterList)
 				variableDeclaration.SurroundWith(Env);
 			var bodyEnv = new Environment(Env);

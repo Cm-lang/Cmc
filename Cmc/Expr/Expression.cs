@@ -152,7 +152,6 @@ namespace Cmc.Expr
 	public class VariableExpression : Expression
 	{
 		[NotNull] public readonly string Name;
-		[CanBeNull] private Type _type;
 		[CanBeNull] public VariableDeclaration Declaration;
 
 		public VariableExpression(
@@ -168,21 +167,20 @@ namespace Cmc.Expr
 			{
 				Declaration = variableDeclaration;
 				Declaration.Used = true;
-				_type = Declaration.Type;
 			}
 			else
 				Errors.Add($"{MetaData.GetErrorHeader()}{declaration} isn't a variable");
 		}
 
 		public override Type GetExpressionType() =>
-			_type ?? throw new CompilerException("unknown type");
+			Declaration?.Type ?? throw new CompilerException("unknown type");
 
 		public override IEnumerable<string> Dump() => new[]
 			{
 				$"variable expression [{Name}]:\n",
 				"  type:\n"
 			}
-			.Concat(_type?.Dump().Select(MapFunc2) ?? new[] {"    cannot infer!\n"});
+			.Concat(Declaration?.Type?.Dump().Select(MapFunc2) ?? new[] {"    cannot infer!\n"});
 
 		public override VariableExpression GetLhsExpression() => this;
 	}
