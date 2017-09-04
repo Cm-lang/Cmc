@@ -22,7 +22,7 @@ namespace Cmc.Expr
 		public virtual VariableExpression GetLhsExpression() => null;
 	}
 
-	public sealed class NullExpression : Expression
+	public sealed class NullExpression : AtomicExpression
 	{
 		public NullExpression(MetaData metaData) : base(metaData)
 		{
@@ -33,7 +33,18 @@ namespace Cmc.Expr
 		public override IEnumerable<string> Dump() => new[] {"null expression\n"};
 	}
 
-	public class LiteralExpression : Expression
+	/// <summary>
+	///  expressions that can be used directly
+	///  without turning it into a variable
+	/// </summary>
+	public abstract class AtomicExpression : Expression
+	{
+		protected AtomicExpression(MetaData metaData) : base(metaData)
+		{
+		}
+	}
+
+	public class LiteralExpression : AtomicExpression
 	{
 		[NotNull] public readonly Type Type;
 
@@ -91,14 +102,19 @@ namespace Cmc.Expr
 			new[] {$"bool literal expression [{Value}]:\n"};
 	}
 
-	public class StringLiteralExpression : LiteralExpression
+	public class StringLiteralExpression : Expression
 	{
 		public readonly int ConstantPoolIndex;
 		public readonly int Length;
-		public readonly string Value;
+		[NotNull] public readonly string Value;
 
-		public StringLiteralExpression(MetaData metaData, string value) : base(metaData,
-			new PrimaryType(MetaData.Empty, PrimaryType.StringType))
+		[NotNull] public static readonly Type Type =
+			new PrimaryType(MetaData.Empty, PrimaryType.StringType);
+
+		public StringLiteralExpression(
+			MetaData metaData,
+			[NotNull] string value) :
+			base(metaData)
 		{
 			Length = value.Length + 1;
 			Value = string.Concat(
@@ -116,6 +132,8 @@ namespace Cmc.Expr
 		public override IEnumerable<string> Dump() =>
 			new[] {$"string literal expression <{ConstantPoolIndex}>[{Value}]:\n"}
 				.Concat(Type.Dump().Select(MapFunc));
+
+		public override Type GetExpressionType() => Type;
 	}
 
 	public class MemberAccessExpression : Expression
@@ -149,7 +167,7 @@ namespace Cmc.Expr
 		public override VariableExpression GetLhsExpression() => Member.GetLhsExpression();
 	}
 
-	public class VariableExpression : Expression
+	public class VariableExpression : AtomicExpression
 	{
 		[NotNull] public readonly string Name;
 		[CanBeNull] public VariableDeclaration Declaration;
@@ -185,7 +203,7 @@ namespace Cmc.Expr
 		public override VariableExpression GetLhsExpression() => this;
 	}
 
-	public class HoleExpression : Expression
+	public sealed class HoleExpression : Expression
 	{
 		public HoleExpression(MetaData metaData) : base(metaData)
 		{
