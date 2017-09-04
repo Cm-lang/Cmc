@@ -65,6 +65,7 @@ and you see the result.
 ## structs
 
 + [X] mutual recursion detection (#34) (tested)
++ [ ] generic structs
 
 ## if
 
@@ -73,6 +74,11 @@ and you see the result.
 + [X] when condition is constant value, delete redundant branch (#17)
 + [ ] if as expression (extra)
 + [ ] tenary operator
+
+## low-level stuffs
+
++ [ ] expression splitting
++ [X] string pool (#38)
 
 ## int
 

@@ -2,6 +2,9 @@
 
 namespace Cmc.Expr
 {
+	/// <summary>
+	///  FEATURE #38
+	/// </summary>
 	public static class Constants
 	{
 		public static readonly IList<string> StringConstants = new List<string>();

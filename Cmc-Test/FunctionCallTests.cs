@@ -133,7 +133,7 @@ namespace Cmc_Test
 		/// <summary>
 		///  recur test
 		///  expression:
-		///  { a: i32 -> { recur(a) }() }
+		///  i8 { a: i32 -> i8 { recur(a) }() }
 		/// </summary>
 		[Test]
 		public void FuncCallTest5()
