@@ -69,6 +69,7 @@ namespace Cmc.Expr
 				Errors.Add(
 					$"{MetaData.GetErrorHeader()}the function call receiver shoule be a function," +
 					$" not {Receiver.GetExpressionType()}.");
+			// TODO split expressions
 		}
 
 		public override Type GetExpressionType() =>

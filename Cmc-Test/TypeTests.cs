@@ -91,6 +91,7 @@ namespace Cmc_Test
 			example.SurroundWith(Environment.SolarSystem);
 			example.PrintDumpInfo();
 			var type = (LambdaType) example.Type;
+			Assert.NotNull(type);
 			Assert.AreEqual("i32", type.RetType.ToString());
 			Assert.IsEmpty(type.ArgsList);
 		}
@@ -110,9 +111,9 @@ namespace Cmc_Test
 			example = new IntLiteralExpression(MetaData.Empty, "123456789", false, 64);
 			example.PrintDumpInfo();
 			Assert.AreEqual("u64", example.Type.ToString());
-			example = new StringLiteralExpression(MetaData.Empty, "\"boy \\ next \\ door\n\t\"");
-			example.PrintDumpInfo();
-			Assert.AreEqual(PrimaryType.StringType, example.Type.ToString());
+			var example2 = new StringLiteralExpression(MetaData.Empty, "\"boy \\ next \\ door\n\t\"");
+			example2.PrintDumpInfo();
+			Assert.AreEqual(PrimaryType.StringType, example2.GetExpressionType().ToString());
 			// var type = new SecondaryType(MetaData.Empty, "vec", new PrimaryType(MetaData.Empty, "i8"), example.Type);
 			// type.SurroundWith(Environment.TopEnvironment);
 			// type.PrintDumpInfo();

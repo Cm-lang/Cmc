@@ -11,17 +11,20 @@ namespace LLVM
 			[NotNull] Expression element,
 			ref ulong varName)
 		{
-			// ReSharper disable once InvertIf
+			if (element is StringLiteralExpression str)
+				builder.AppendLine(
+					$"  store i8* getelementptr inbounds ([{str.Length} x i8]," +
+					$"[{str.Length} x i8]* @.str{str.ConstantPoolIndex}, i32 0, i32 0)," +
+					$"i8** %{varName}, align 8");
+			else // ReSharper disable once InvertIf
 			if (element is LiteralExpression expression)
 			{
-				if (expression is StringLiteralExpression str)
-					builder.AppendLine(
-						$"  store i8* getelementptr inbounds ([{str.Length} x i8]," +
-						$"[{str.Length} x i8]* @.str{str.ConstantPoolIndex}, i32 0, i32 0)," +
-						$"i8** %{varName}, align 8");
-				else if (expression is IntLiteralExpression integer)
+				if (expression is IntLiteralExpression integer)
 					builder.AppendLine(
 						$"  store {integer.Type} {integer.Value}, {integer.Type}* %{varName}, align {integer.Type.Align}");
+				else if (expression is BoolLiteralExpression boolean)
+					builder.AppendLine(
+						$"  store i8 {boolean.ValueToInt()}, i8* %{varName}, align 1");
 			}
 			else if (element is FunctionCallExpression functionCall)
 			{
