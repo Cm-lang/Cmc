@@ -33,6 +33,7 @@ namespace Cmc.Expr
 				var receiverDeclaration = Env.FindDeclarationSatisfies(declaration =>
 					declaration is VariableDeclaration variableDeclaration &&
 					variableDeclaration.Type is LambdaType lambdaType &&
+					lambdaType.ArgsList.Count == ParameterList.Count &&
 					lambdaType.ArgsList.SequenceEqual(ParameterList.Select(i => i.GetExpressionType())));
 				if (null != receiverDeclaration)
 				{
