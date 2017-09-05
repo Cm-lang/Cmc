@@ -123,7 +123,7 @@ namespace Cmc.Stmt
 		{
 			base.SurroundWith(environment);
 			var env = new Environment(Env);
-			var converted = new List<Statement>(Statements);
+			var converted = new List<Statement>(Statements.Count + 5);
 			// FEATURE #4
 			foreach (var statement in Statements)
 			{
@@ -148,7 +148,7 @@ namespace Cmc.Stmt
 				else
 					converted.Add(statement);
 			}
-			Statements = converted;
+			ConvertedStatementList = new StatementList(MetaData, converted.ToArray());
 		}
 
 		public override IEnumerable<ReturnStatement> FindReturnStatements() =>
