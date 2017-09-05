@@ -15,6 +15,14 @@ namespace Cmc.Stmt
 		{
 		}
 
+		/// <summary>
+		///  sometimes you need to convert those complex expressions
+		///  or statements into a statement list.
+		///
+		///  in order to express them as a list of simple expressions
+		/// </summary>
+		[CanBeNull] public Statement ConvertedStatementList = null;
+
 		[NotNull]
 		public virtual IEnumerable<ReturnStatement> FindReturnStatements() => new List<ReturnStatement>(0);
 
@@ -69,7 +77,7 @@ namespace Cmc.Stmt
 		{
 			base.SurroundWith(environment);
 			if (Expression is AtomicExpression) return;
-			var variableName = $"{MetaData.FileName}{MetaData.LineNumber}{GetHashCode()}";
+			var variableName = $"{MetaData.TrimedFileName}{MetaData.LineNumber}{GetHashCode()}";
 			ConvertedStatementList = new StatementList(MetaData,
 				new VariableDeclaration(MetaData, variableName, Expression, true),
 				new ReturnStatement(MetaData, new VariableExpression(MetaData, variableName)));

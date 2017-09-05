@@ -4,7 +4,6 @@ using Cmc.Core;
 using Cmc.Decl;
 using JetBrains.Annotations;
 using static System.StringComparison;
-using Environment = Cmc.Core.Environment;
 
 namespace Cmc.Expr
 {
@@ -70,7 +69,6 @@ namespace Cmc.Expr
 				Errors.Add(
 					$"{MetaData.GetErrorHeader()}the function call receiver shoule be a function," +
 					$" not {Receiver.GetExpressionType()}.");
-			// TODO split expressions
 		}
 
 		public override Type GetExpressionType() =>

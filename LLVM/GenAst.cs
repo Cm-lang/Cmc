@@ -26,8 +26,8 @@ namespace LLVM
 		{
 			if (element is EmptyStatement) return;
 			// convertion
-			while (element.ConvertedStatementList != null)
-				element = element.ConvertedStatementList;
+			while (element is Statement statement && statement.ConvertedStatementList != null)
+				element = statement.ConvertedStatementList;
 			// optimization
 			while (element.OptimizedStatementList != null && !Pragma.KeepAll)
 				element = element.OptimizedStatementList;

@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using System.Linq;
+using JetBrains.Annotations;
 
 namespace Cmc.Core
 {
@@ -12,12 +13,7 @@ namespace Cmc.Core
 		{
 			LineNumber = lineNumber;
 			FileName = fileName;
-			TrimedFileName = FileName
-				.Replace(' ', '_')
-				.Replace('\n', '_')
-				.Replace('#', '_')
-				.Replace(' ', '_')
-				.Replace('\t', '_');
+			TrimedFileName = string.Concat(FileName.Where(i => char.IsLetterOrDigit(i) || i == '_'));
 		}
 
 		// FEATURE #10
