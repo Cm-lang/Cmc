@@ -1,15 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Cmc.Core;
 using Cmc.Expr;
 using Cmc.Stmt;
 using JetBrains.Annotations;
-using static System.StringComparison;
+using Environment = Cmc.Core.Environment;
 
 #pragma warning disable 659
 
-namespace Cmc
+namespace Cmc.Decl
 {
 	public class Declaration : Statement
 	{
@@ -54,7 +55,7 @@ namespace Cmc
 		{
 			base.SurroundWith(environment);
 			// https://github.com/Cm-lang/Cm-Document/issues/12
-			if (string.Equals(Name, "recur", Ordinal))
+			if (string.Equals(Name, "recur", StringComparison.Ordinal))
 			{
 				Debug.Assert(null != Expression);
 				Debug.Assert(null != Expression.Env);
@@ -70,7 +71,7 @@ namespace Cmc
 			if (Type is UnknownType unknownType) Type = unknownType.Resolve();
 			if (Type is PrimaryType primaryType) Align = primaryType.Align;
 			// FEATURE #11
-			if (!string.Equals(exprType.ToString(), PrimaryType.NullType, Ordinal) &&
+			if (!string.Equals(exprType.ToString(), PrimaryType.NullType, StringComparison.Ordinal) &&
 			    !Equals(Type, exprType))
 				// FEATURE #9
 				Errors.Add($"{MetaData.GetErrorHeader()}type mismatch, expected: {Type}, actual: {exprType}");

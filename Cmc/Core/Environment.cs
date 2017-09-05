@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Cmc.Decl;
 using Cmc.Expr;
 using Cmc.Stmt;
 using JetBrains.Annotations;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Cmc.Core;
+using Cmc.Decl;
 using Cmc.Expr;
 using JetBrains.Annotations;
 using Environment = Cmc.Core.Environment;

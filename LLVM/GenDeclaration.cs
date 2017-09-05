@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text;
 using Cmc;
+using Cmc.Decl;
 using Cmc.Expr;
 using Cmc.Stmt;
 using JetBrains.Annotations;

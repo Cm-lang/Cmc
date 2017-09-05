@@ -1,5 +1,6 @@
 ﻿using Cmc;
 using Cmc.Core;
+using Cmc.Decl;
 using Cmc.Expr;
 using Cmc.Stmt;
 using NUnit.Framework;
