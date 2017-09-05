@@ -46,6 +46,7 @@
     <Compile Include="Expr\FunctionCallExpression.cs" />
     <Compile Include="Expr\LambdaExpression.cs" />
     <Compile Include="Duplicate.cs" />
+    <Compile Include="Expr\LiteralExpression.cs" />
     <Compile Include="Modifier.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Stmt\IfStatement.cs" />
