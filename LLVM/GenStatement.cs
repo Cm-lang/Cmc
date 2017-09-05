@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using Cmc;
+using Cmc.Expr;
 using Cmc.Stmt;
 using JetBrains.Annotations;
 using static LLVM.GenAstHolder;
@@ -18,10 +19,10 @@ namespace LLVM
 		{
 			if (element is ReturnStatement returnStatement)
 			{
-				var expr = returnStatement.Expression;
-				GenAst(builder, expr, ref varName);
+				var expr = (AtomicExpression) returnStatement.Expression;
+				// expr should be an atomic expression
 				builder.AppendLine(
-					$"  ret {ConvertType(expr.GetExpressionType())} %var{varName}");
+					$"  ret {ConvertType(expr.GetExpressionType())} {expr.AtomicRepresentation()}");
 				varName++;
 			}
 			else if (element is StatementList statements)

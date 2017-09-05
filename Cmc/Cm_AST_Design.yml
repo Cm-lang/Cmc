@@ -1,8 +1,8 @@
 Ast:
   Statement:
     AssignmentStatement
-    ReturnStatement
-    ExpressionStatement
+    ExpressionStatement:
+      ReturnStatement
     JumpStatement
     StatementList
     WhileStatement:
@@ -12,15 +12,16 @@ Ast:
       StructDeclaration
       TypeDeclaration
   Expression:
-    VariableExpression
     FunctionCallExpression
     MemberAccessExpression
-    NullExpression
-    LiteralExpression:
-      IntLiteralExpression
-      BoolLiteralExpression
-      StringLiteralExpression
-      LambdaExpression
+    AtomicExpression:
+      VariableExpression
+      LiteralExpression:
+        NullExpression
+        IntLiteralExpression
+        BoolLiteralExpression
+    StringLiteralExpression
+    LambdaExpression
   Type:
     PrimaryType
     SecondaryType
