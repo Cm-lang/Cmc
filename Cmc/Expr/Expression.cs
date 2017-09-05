@@ -31,6 +31,8 @@ namespace Cmc.Expr
 		public override Type GetExpressionType() => new PrimaryType(MetaData, PrimaryType.NullType);
 
 		public override IEnumerable<string> Dump() => new[] {"null expression\n"};
+
+		public override string AtomicRepresentation() => "0";
 	}
 
 	/// <summary>
@@ -42,6 +44,9 @@ namespace Cmc.Expr
 		protected AtomicExpression(MetaData metaData) : base(metaData)
 		{
 		}
+
+		[NotNull]
+		public abstract string AtomicRepresentation();
 	}
 
 	public class StringLiteralExpression : Expression
@@ -144,6 +149,9 @@ namespace Cmc.Expr
 			.Concat(Declaration?.Type?.Dump().Select(MapFunc2) ?? new[] {"    cannot infer!\n"});
 
 		public override VariableExpression GetLhsExpression() => this;
+
+		public override string AtomicRepresentation() =>
+			Declaration?.LlvmNameGen() ?? throw new CompilerException($"{MetaData.GetErrorHeader()}undeclared {Name}.");
 	}
 
 	/// <summary>

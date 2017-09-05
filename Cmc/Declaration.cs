@@ -87,6 +87,8 @@ namespace Cmc
 			.Concat(Type?.Dump().Select(MapFunc2) ?? new[] {"    cannot infer!\n"})
 			.Concat(new[] {"  initialize expression:\n"})
 			.Concat(Expression.Dump().Select(MapFunc2));
+
+		public string LlvmNameGen() => IsGlobal ? $"@glob{Address}" : $"%var{Address}";
 	}
 
 	/// <summary>

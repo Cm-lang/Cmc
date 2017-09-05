@@ -1,9 +1,11 @@
-﻿using Cmc.Core;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Cmc.Core;
 using JetBrains.Annotations;
 
 namespace Cmc.Expr
 {
-	public class LiteralExpression : AtomicExpression
+	public abstract class LiteralExpression : AtomicExpression
 	{
 		[NotNull] public readonly Type Type;
 
@@ -37,6 +39,8 @@ namespace Cmc.Expr
 				Errors.Add($"{MetaData.GetErrorHeader()}integer length of {length} is not supported");
 		}
 
+		public override string AtomicRepresentation() => Value;
+
 		public override IEnumerable<string> Dump() =>
 			new[] {$"literal expression [{Value}]:\n"}
 				.Concat(Type.Dump().Select(MapFunc));
@@ -56,6 +60,8 @@ namespace Cmc.Expr
 			=> Value = value;
 
 		public int ValueToInt() => Value ? 1 : 0;
+
+		public override string AtomicRepresentation() => ValueToInt().ToString();
 
 		public override IEnumerable<string> Dump() =>
 			new[] {$"bool literal expression [{Value}]:\n"};
