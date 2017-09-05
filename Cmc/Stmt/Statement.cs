@@ -152,15 +152,22 @@ namespace Cmc.Stmt
 		}
 
 		public override IEnumerable<ReturnStatement> FindReturnStatements() =>
-			Statements.SelectMany(i => i.FindReturnStatements());
+			from i in Statements
+			from j in i.FindReturnStatements()
+			select j;
 
 		public override IEnumerable<JumpStatement> FindJumpStatements() =>
-			Statements.SelectMany(i => i.FindJumpStatements());
+			from i in Statements
+			from j in i.FindJumpStatements()
+			select j;
 
 		public override IEnumerable<string> Dump() => Statements.Count == 0
 			? new[] {"empty statement list\n"}
 			: new[] {"statement list:\n"}
-				.Concat(Statements.SelectMany(i => i.Dump().Select(MapFunc)));
+				.Concat(
+					from i in Statements
+					from j in i.Dump().Select(MapFunc)
+					select j);
 	}
 
 	public class AssignmentStatement : Statement

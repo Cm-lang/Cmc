@@ -46,7 +46,10 @@ namespace Cmc.Expr
 			// FEATURE #37
 			var recur = new VariableDeclaration(MetaData, ReservedWords.Recur, this);
 			// https://github.com/Cm-lang/Cm-Document/issues/12
-			if (null != DeclaredType) _type = new LambdaType(MetaData, ParameterList.Select(i => i.Type).ToList(), DeclaredType);
+			if (null != DeclaredType)
+				_type = new LambdaType(MetaData, (
+					from i in ParameterList
+					select i.Type).ToList(), DeclaredType);
 			recur.SurroundWith(Env);
 			bodyEnv.Declarations.Add(recur);
 			Body.SurroundWith(bodyEnv);
@@ -66,7 +69,9 @@ namespace Cmc.Expr
 				              ? retTypes.First()
 				              // FEATURE #19
 				              : new PrimaryType(MetaData, PrimaryType.NullType));
-			_type = new LambdaType(MetaData, ParameterList.Select(i => i.Type).ToList(), retType);
+			_type = new LambdaType(MetaData, (
+				from i in ParameterList
+				select i.Type).ToList(), retType);
 		}
 
 		public override Type GetExpressionType() => _type;
@@ -78,7 +83,10 @@ namespace Cmc.Expr
 			}
 			.Concat(GetExpressionType().Dump().Select(MapFunc2))
 			.Concat(new[] {"  parameters:\n"})
-			.Concat(ParameterList.SelectMany(i => i.Dump().Select(MapFunc2)))
+			.Concat(
+				from i in ParameterList
+				from j in i.Dump().Select(MapFunc2)
+				select j)
 			.Concat(new[] {"  body:\n"})
 			.Concat(Body.Dump().Select(MapFunc2));
 	}

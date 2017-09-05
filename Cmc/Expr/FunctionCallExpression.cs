@@ -83,7 +83,10 @@ namespace Cmc.Expr
 			}
 			.Concat(Receiver.Dump().Select(MapFunc2))
 			.Concat(new[] {"  parameters:\n"})
-			.Concat(ParameterList.SelectMany(i => i.Dump().Select(MapFunc2)))
+			.Concat(
+				from i in ParameterList
+				from j in i.Dump().Select(MapFunc2)
+				select j)
 			.Concat(new[] {"  type:\n"})
 			.Concat(_type.Dump().Select(MapFunc2));
 	}
