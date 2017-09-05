@@ -39,6 +39,7 @@
     <Compile Include="Core\Environment.cs" />
     <Compile Include="Core\MetaData.cs" />
     <Compile Include="Core\Pragma.cs" />
+    <Compile Include="Core\ReservedWords.cs" />
     <Compile Include="Decl\Declaration.cs" />
     <Compile Include="Decl\VariableDeclaration.cs" />
     <Compile Include="Error.cs" />

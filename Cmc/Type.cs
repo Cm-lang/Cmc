@@ -78,9 +78,9 @@ namespace Cmc
 	/// </summary>
 	public class PrimaryType : Type
 	{
-		[NotNull] public const string StringType = "string";
-		[NotNull] public const string NullType = "nulltype";
-		[NotNull] public const string BoolType = "bool";
+		[NotNull] public const string StringType = ReservedWords.StringType;
+		[NotNull] public const string NullType = ReservedWords.NullType;
+		[NotNull] public const string BoolType = ReservedWords.BoolType;
 
 		public PrimaryType(
 			MetaData metaData,

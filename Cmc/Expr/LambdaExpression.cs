@@ -44,7 +44,7 @@ namespace Cmc.Expr
 			foreach (var variableDeclaration in ParameterList)
 				bodyEnv.Declarations.Add(variableDeclaration);
 			// FEATURE #37
-			var recur = new VariableDeclaration(MetaData, "recur", this);
+			var recur = new VariableDeclaration(MetaData, ReservedWords.Recur, this);
 			// https://github.com/Cm-lang/Cm-Document/issues/12
 			if (null != DeclaredType) _type = new LambdaType(MetaData, ParameterList.Select(i => i.Type).ToList(), DeclaredType);
 			recur.SurroundWith(Env);

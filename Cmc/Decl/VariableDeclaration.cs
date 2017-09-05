@@ -6,6 +6,7 @@ using Cmc.Core;
 using Cmc.Expr;
 using JetBrains.Annotations;
 using Environment = Cmc.Core.Environment;
+#pragma warning disable 659
 
 namespace Cmc.Decl
 {
@@ -36,7 +37,7 @@ namespace Cmc.Decl
 		{
 			base.SurroundWith(environment);
 			// https://github.com/Cm-lang/Cm-Document/issues/12
-			if (string.Equals(Name, "recur", StringComparison.Ordinal))
+			if (string.Equals(Name, ReservedWords.Recur, StringComparison.Ordinal))
 			{
 				Debug.Assert(null != Expression);
 				Debug.Assert(null != Expression.Env);
