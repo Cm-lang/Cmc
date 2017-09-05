@@ -123,8 +123,10 @@ namespace Cmc.Stmt
 		{
 			base.SurroundWith(environment);
 			var env = new Environment(Env);
+			var converted = new List<Statement>(Statements);
 			// FEATURE #4
 			foreach (var statement in Statements)
+			{
 				if (!(statement is Declaration declaration))
 					statement.SurroundWith(env);
 				else
@@ -133,6 +135,20 @@ namespace Cmc.Stmt
 					env = new Environment(env);
 					env.Declarations.Add(declaration);
 				}
+				if (statement is ExpressionStatement expression)
+				{
+					var convertedResult = expression.Expression.ConvertedResult;
+					// ReSharper disable once InvertIf
+					if (convertedResult != null)
+					{
+						converted.AddRange(convertedResult.ConvertedStatements);
+						converted.Add(new ExpressionStatement(MetaData, convertedResult.ConvertedExpression));
+					}
+				}
+				else
+					converted.Add(statement);
+			}
+			Statements = converted;
 		}
 
 		public override IEnumerable<ReturnStatement> FindReturnStatements() =>

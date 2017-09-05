@@ -34,7 +34,9 @@ namespace Cmc.Expr
 					declaration is VariableDeclaration variableDeclaration &&
 					variableDeclaration.Type is LambdaType lambdaType &&
 					lambdaType.ArgsList.Count == ParameterList.Count &&
-					lambdaType.ArgsList.SequenceEqual(ParameterList.Select(i => i.GetExpressionType())));
+					lambdaType.ArgsList.SequenceEqual(
+						from i in ParameterList
+						select i.GetExpressionType()));
 				if (null != receiverDeclaration)
 				{
 					// receiverDeclaration is obviously a variable declaraion

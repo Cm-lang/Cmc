@@ -63,10 +63,11 @@ namespace Cmc.Core
 						i.Name,
 						from q in ((StructDeclaration) i)
 							.FieldList
-						where !Environment.SolarSystem
-							.Declarations
-							.Select(qq => qq.Name)
-							.Contains(q.Type.ToString())
+						where !
+							from qq in Environment.SolarSystem
+								.Declarations
+							select qq.Name
+								.Contains(q.Type.ToString())
 						select q.Type.Name))
 			{
 				structs.Add(keyValuePair.Key);

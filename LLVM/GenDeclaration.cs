@@ -91,12 +91,12 @@ namespace LLVM
 					GenGlobVarDeclaration(builder, variable, ref varName);
 				else
 				{
-					if (!variable.Used)
-					{
-						builder.AppendLine($"  ; unused declaration {variable.Name}, removed");
-						GenAstExpression(builder, variable.Expression, ref varName);
-						return;
-					}
+//					if (!variable.Used)
+//					{
+//						builder.AppendLine($"  ; unused declaration {variable.Name}, removed");
+//						GenAstExpression(builder, variable.Expression, ref varName);
+//						return;
+//					}
 					builder.AppendLine(
 						$"  %var{varName} = alloca {ConvertType(variable.Type)}, align {variable.Align}");
 					variable.Address = varName;

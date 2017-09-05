@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Cmc.Core;
 using Cmc.Decl;
+using Cmc.Stmt;
 using JetBrains.Annotations;
 using Environment = Cmc.Core.Environment;
 
@@ -10,11 +11,27 @@ using Environment = Cmc.Core.Environment;
 
 namespace Cmc.Expr
 {
+	public class ExpressionConvertedResult
+	{
+		[NotNull] public IList<Statement> ConvertedStatements;
+		[NotNull] public Expression ConvertedExpression;
+
+		public ExpressionConvertedResult(
+			[NotNull] IList<Statement> convertedStatements,
+			[NotNull] Expression convertedExpression)
+		{
+			ConvertedStatements = convertedStatements;
+			ConvertedExpression = convertedExpression;
+		}
+	}
+
 	public abstract class Expression : Ast
 	{
 		protected Expression(MetaData metaData) : base(metaData)
 		{
 		}
+
+		[CanBeNull] public ExpressionConvertedResult ConvertedResult = null;
 
 		[NotNull]
 		public abstract Type GetExpressionType();

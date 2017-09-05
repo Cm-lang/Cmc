@@ -62,7 +62,9 @@ namespace LLVM
 				else
 					// TODO add attributes
 					builder.AppendLine(
-						$"attributes #{i} = ");
+						$"attributes #{i} = " +
+						"{ " +
+						" }");
 			return builder.ToString();
 		}
 
