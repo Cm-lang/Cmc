@@ -6,7 +6,7 @@ namespace LLVM
 {
 	public static class GenExpression
 	{
-		private static void StoreAtomicExpression(
+		public static void StoreAtomicExpression(
 			[NotNull] StringBuilder builder,
 			[NotNull] AtomicExpression expression,
 			ref ulong varName)
@@ -18,8 +18,12 @@ namespace LLVM
 				builder.AppendLine(
 					$"  store i8 {boolean.ValueToInt()}, i8* %{varName}, align 1");
 			else if (expression is VariableExpression variable)
+			{
+				var type = variable.GetExpressionType();
+				var varAddress = variable.Declaration.Address;
 				builder.AppendLine(
-					$"  store {variable.GetExpressionType()} %{}, {}, align {variable.GetExpressionType().Align}");
+					$"  store {type} %{varAddress}, {varAddress}, align {type.Align}");
+			}
 		}
 
 		public static void GenAstExpression(
@@ -33,6 +37,7 @@ namespace LLVM
 					$"[{str.Length} x i8]* @.str{str.ConstantPoolIndex}, i32 0, i32 0)," +
 					$"i8** %{varName}, align 8");
 			else if (element is AtomicExpression expression)
+				// maybe I shouldn't simply "store" this value
 				StoreAtomicExpression(builder, expression, ref varName);
 			else if (element is FunctionCallExpression functionCall)
 			{

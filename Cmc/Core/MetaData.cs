@@ -15,10 +15,8 @@ namespace Cmc.Core
 
 		// FEATURE #10
 		[NotNull]
-		public string GetErrorHeader()
-		{
-			return $"Error in file {FileName} at line {LineNumber}: ";
-		}
+		public string GetErrorHeader() =>
+			$"Error in file {FileName} at line {LineNumber}: ";
 
 		private static int _count;
 		public static readonly MetaData Empty = new MetaData(_count++, "Unknown");

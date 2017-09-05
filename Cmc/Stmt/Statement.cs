@@ -64,6 +64,16 @@ namespace Cmc.Stmt
 		{
 		}
 
+		public override void SurroundWith(Environment environment)
+		{
+			base.SurroundWith(environment);
+			if (Expression is AtomicExpression) return;
+			var variableName = $"{MetaData.FileName}{MetaData.LineNumber}{GetHashCode()}";
+			ConvertedStatementList = new StatementList(MetaData,
+				new VariableDeclaration(MetaData, variableName, Expression, true),
+				new ReturnStatement(MetaData, new VariableExpression(MetaData, variableName)));
+		}
+
 		public override IEnumerable<string> Dump() => new[] {"return statement:\n"}
 			.Concat(Expression.Dump().Select(MapFunc));
 
