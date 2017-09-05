@@ -6,11 +6,18 @@ namespace Cmc.Core
 	{
 		public int LineNumber;
 		public string FileName;
+		public string TrimedFileName;
 
 		public MetaData(int lineNumber, string fileName)
 		{
 			LineNumber = lineNumber;
 			FileName = fileName;
+			TrimedFileName = FileName
+				.Replace(' ', '_')
+				.Replace('\n', '_')
+				.Replace('#', '_')
+				.Replace(' ', '_')
+				.Replace('\t', '_');
 		}
 
 		// FEATURE #10

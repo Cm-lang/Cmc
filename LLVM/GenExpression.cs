@@ -13,16 +13,16 @@ namespace LLVM
 		{
 			if (expression is IntLiteralExpression integer)
 				builder.AppendLine(
-					$"  store {integer.Type} {integer.Value}, {integer.Type}* %{varName}, align {integer.Type.Align}");
+					$"  store {integer.Type} {integer.Value}, {integer.Type}* %var{varName}, align {integer.Type.Align}");
 			else if (expression is BoolLiteralExpression boolean)
 				builder.AppendLine(
-					$"  store i8 {boolean.ValueToInt()}, i8* %{varName}, align 1");
+					$"  store i8 {boolean.ValueToInt()}, i8* %var{varName}, align 1");
 			else if (expression is VariableExpression variable)
 			{
 				var type = variable.GetExpressionType();
 				var varAddress = variable.Declaration.Address;
 				builder.AppendLine(
-					$"  store {type} %{varAddress}, {varAddress}, align {type.Align}");
+					$"  store {type} %var{varAddress}, {type}* %var{varAddress}, align {type.Align}");
 			}
 		}
 
@@ -35,16 +35,16 @@ namespace LLVM
 				builder.AppendLine(
 					$"  store i8* getelementptr inbounds ([{str.Length} x i8]," +
 					$"[{str.Length} x i8]* @.str{str.ConstantPoolIndex}, i32 0, i32 0)," +
-					$"i8** %{varName}, align 8");
+					$"i8** %var{varName}, align 8");
 			else if (element is AtomicExpression expression)
 				// maybe I shouldn't simply "store" this value
 				StoreAtomicExpression(builder, expression, ref varName);
 			else if (element is FunctionCallExpression functionCall)
 			{
-				// TODO localize paramters
-				// TODO localize function name
+				// function callee and parameters should already be splitted
+				// into atomic expressions
 				builder.AppendLine(
-					$"  %{varName} = call i32 @puts(i8* %6)");
+					$"  %var{varName} = call i32 @puts(i8* %6)");
 				varName++;
 			}
 		}

@@ -21,7 +21,7 @@ namespace LLVM
 				var expr = returnStatement.Expression;
 				GenAst(builder, expr, ref varName);
 				builder.AppendLine(
-					$"  ret {ConvertType(expr.GetExpressionType())} %{varName}");
+					$"  ret {ConvertType(expr.GetExpressionType())} %var{varName}");
 				varName++;
 			}
 			else if (element is StatementList statements)

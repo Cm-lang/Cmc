@@ -175,6 +175,11 @@ namespace Cmc.Stmt
 			else if (!validLhs.Declaration.Mutability)
 				Errors.Add($"{MetaData.GetErrorHeader()}cannot assign to an immutable variable.");
 			else validLhs.Declaration.Used = true;
+			if (!(RhsExpression is AtomicExpression))
+			{
+				ConvertedStatementList = new StatementList(MetaData,
+					new VariableDeclaration(MetaData, ""));
+			}
 		}
 
 		public override IEnumerable<string> Dump() => new[]

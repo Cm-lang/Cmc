@@ -59,7 +59,7 @@ namespace LLVM
 					}
 					else
 					{
-						builder.Append($"@{varName}=global {ConvertType(variable.Type)} ");
+						builder.Append($"@glob{varName}=global {ConvertType(variable.Type)} ");
 						if (variable.Expression is IntLiteralExpression integer)
 							builder.Append(
 								$"{integer.Value}");
@@ -85,7 +85,7 @@ namespace LLVM
 						return;
 					}
 					builder.AppendLine(
-						$"  %{varName} = alloca {ConvertType(variable.Type)}, align {variable.Align}");
+						$"  %var{varName} = alloca {ConvertType(variable.Type)}, align {variable.Align}");
 					variable.Address = varName;
 					GenAstExpression(builder, variable.Expression, ref varName);
 					varName++;
