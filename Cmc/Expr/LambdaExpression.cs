@@ -63,7 +63,7 @@ namespace Cmc.Expr
 				Errors.Add(
 					$"{MetaData.GetErrorHeader()}ambiguous return types:\n" +
 					(DeclaredType != null ? $"<{DeclaredType}>" : "") +
-					$"[{string.Join(",", retTypes.Select(i => i.ToString()))}]");
+					$"[{string.Join(",", from i in retTypes select i.ToString())}]");
 			// FEATURE #12
 			var retType = DeclaredType ?? (retTypes.Count != 0
 				              ? retTypes.First()
