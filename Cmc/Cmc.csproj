@@ -53,6 +53,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Stmt\IfStatement.cs" />
     <Compile Include="Stmt\Statement.cs" />
+    <Compile Include="Stmt\StatementList.cs" />
     <Compile Include="Stmt\WhileStatement.cs" />
     <Compile Include="Type.cs" />
   </ItemGroup>
