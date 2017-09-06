@@ -74,8 +74,8 @@ namespace LLVM
 			[NotNull] params Declaration[] declarations)
 		{
 			var generate = Generate(declarations);
+			Console.WriteLine(generate);
 			File.WriteAllText($"{outputFile}.ll", generate);
-			CommandLine.RunCommand("ls");
 			CommandLine.RunCommand($"llc-4.0 {outputFile}.ll -filetype=obj");
 			CommandLine.RunCommand($"gcc {outputFile}.o -o {outputFile}");
 		}

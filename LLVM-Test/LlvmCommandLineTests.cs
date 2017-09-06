@@ -27,7 +27,7 @@ namespace LLVM_Test
 					"main", new LambdaExpression(MetaData.Empty,
 						new StatementList(MetaData.Empty,
 							new VariableDeclaration(MetaData.Empty,
-								"j", new StringLiteralExpression(MetaData.Empty, "boy next door")),
+								"j", new StringLiteralExpression(MetaData.Empty, "Hello, World!")),
 							new ExpressionStatement(MetaData.Empty,
 								new FunctionCallExpression(MetaData.Empty,
 									new VariableExpression(MetaData.Empty, "print"),

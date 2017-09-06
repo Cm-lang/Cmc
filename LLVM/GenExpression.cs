@@ -57,7 +57,10 @@ namespace LLVM
 						Errors.Add($"{functionCall.MetaData.GetErrorHeader()}error call to function print.");
 					var param = (VariableExpression) functionCall.ParameterList.First();
 					builder.AppendLine(
-						$"  call i32 @puts(i8* %var{param.Declaration.Address})");
+						$"  %var{varName + 1} = load i8*, i8** %var{param.Declaration.Address}, align {param.Declaration.Align}");
+					varName++;
+					builder.AppendLine(
+						$"  call i32 @puts(i8* %var{varName})");
 				}
 				else
 				{

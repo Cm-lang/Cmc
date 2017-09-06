@@ -127,7 +127,6 @@ namespace Cmc.Expr
 				Errors.Add(MetaData.GetErrorHeader() + "invalid member access expression");
 			if (null != Owner.ConvertedResult)
 			{
-				
 			}
 		}
 
