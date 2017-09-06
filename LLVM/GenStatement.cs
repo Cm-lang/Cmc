@@ -27,7 +27,7 @@ namespace LLVM
 				varName++;
 			}
 			else if (element is ExpressionStatement expression)
-				GenAst(builder, expression, ref varName);
+				GenAst(builder, expression.Expression, ref varName);
 			else if (element is StatementList statements)
 			{
 				ulong localVarCount = 1;
