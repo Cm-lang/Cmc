@@ -34,12 +34,13 @@ namespace Cmc.Stmt
 				if (statement is ExpressionStatement expression)
 				{
 					var convertedResult = expression.Expression.ConvertedResult;
-					// ReSharper disable once InvertIf
 					if (convertedResult != null)
 					{
 						converted.AddRange(convertedResult.ConvertedStatements);
 						converted.Add(new ExpressionStatement(MetaData, convertedResult.ConvertedExpression));
 					}
+					else
+						converted.Add(expression);
 				}
 				else
 					converted.Add(statement);
