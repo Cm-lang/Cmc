@@ -55,10 +55,9 @@ namespace LLVM
 					    !Equals(functionCall.ParameterList.First().GetExpressionType(),
 						    new PrimaryType(MetaData.BuiltIn, "string")))
 						Errors.Add($"{functionCall.MetaData.GetErrorHeader()}error call to function print.");
-					var param = functionCall.ParameterList.First();
-					param.PrintDumpInfo();
+					var param = (VariableExpression) functionCall.ParameterList.First();
 					builder.AppendLine(
-						$"  call i32 @puts(i8* %{233})");
+						$"  call i32 @puts(i8* %var{param.Declaration.Address})");
 				}
 				else
 				{

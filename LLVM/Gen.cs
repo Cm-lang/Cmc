@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text;
 using Cmc;
 using Cmc.Core;
@@ -72,7 +73,9 @@ namespace LLVM
 			[NotNull] string outputFile,
 			[NotNull] params Declaration[] declarations)
 		{
-			File.WriteAllText($"{outputFile}.ll", Generate(declarations));
+			var generate = Generate(declarations);
+			File.WriteAllText($"{outputFile}.ll", generate);
+			CommandLine.RunCommand("ls");
 			CommandLine.RunCommand($"llc-4.0 {outputFile}.ll -filetype=obj");
 			CommandLine.RunCommand($"gcc {outputFile}.o -o {outputFile}");
 		}
