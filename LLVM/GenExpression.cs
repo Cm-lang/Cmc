@@ -1,6 +1,11 @@
-﻿using System.Text;
+﻿using System;
+using System.Linq;
+using System.Text;
+using Cmc;
+using Cmc.Core;
 using Cmc.Expr;
 using JetBrains.Annotations;
+using static System.StringComparison;
 
 namespace LLVM
 {
@@ -43,9 +48,22 @@ namespace LLVM
 			{
 				// function callee and parameters should already be splitted
 				// into atomic expressions
-				builder.AppendLine(
-					$"  %var{varName} = call i32 @puts(i8* %6)");
-				varName++;
+				if (functionCall.Receiver is VariableExpression variable &&
+				    string.Equals(variable.Name, "print", Ordinal))
+				{
+					if (functionCall.ParameterList.Count != 1 ||
+					    !Equals(functionCall.ParameterList.First().GetExpressionType(),
+						    new PrimaryType(MetaData.BuiltIn, "string")))
+						Errors.Add($"{functionCall.MetaData.GetErrorHeader()}error call to function print.");
+					var param = functionCall.ParameterList.First();
+					param.PrintDumpInfo();
+					builder.AppendLine(
+						$"  call i32 @puts(i8* %{233})");
+				}
+				else
+				{
+					// TODO gen other function calls
+				}
 			}
 		}
 	}

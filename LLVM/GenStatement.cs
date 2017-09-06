@@ -26,6 +26,8 @@ namespace LLVM
 					$"  ret {ConvertType(expr.GetExpressionType())} {expr.AtomicRepresentation()}");
 				varName++;
 			}
+			else if (element is ExpressionStatement expression)
+				GenAst(builder, expression, ref varName);
 			else if (element is StatementList statements)
 			{
 				ulong localVarCount = 1;

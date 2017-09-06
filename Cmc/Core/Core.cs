@@ -40,7 +40,6 @@ namespace Cmc.Core
 					variableDeclaration.IsGlobal = true;
 			}
 			CheckMutualRec(declarations);
-			// TODO topo sort, dependency analyze
 			foreach (var declaration in declarations)
 				declaration.SurroundWith(planet);
 			return declarations;

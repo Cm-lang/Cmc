@@ -125,7 +125,10 @@ namespace Cmc.Expr
 			if (!(Owner.GetExpressionType() is SecondaryType type) ||
 			    !type.Struct.FieldList.Contains(Member.Declaration))
 				Errors.Add(MetaData.GetErrorHeader() + "invalid member access expression");
-			// TODO split expressions
+			if (null != Owner.ConvertedResult)
+			{
+				
+			}
 		}
 
 		public override Type GetExpressionType() => Member.GetExpressionType();

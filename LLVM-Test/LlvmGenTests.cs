@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Cmc;
 using Cmc.Core;
 using Cmc.Decl;
@@ -25,6 +26,13 @@ namespace LLVM_Test
 						new StatementList(MetaData.Empty,
 							new VariableDeclaration(MetaData.Empty,
 								"j", new StringLiteralExpression(MetaData.Empty, "boy next door")),
+							new ExpressionStatement(MetaData.Empty,
+								new FunctionCallExpression(MetaData.Empty,
+									new VariableExpression(MetaData.Empty, "print"),
+									new List<Expression>(new[]
+									{
+										new VariableExpression(MetaData.Empty, "j")
+									}))),
 							new ReturnStatement(MetaData.Empty,
 								new IntLiteralExpression(MetaData.Empty, "0", true)))))
 			);
