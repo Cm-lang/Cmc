@@ -22,7 +22,6 @@ namespace CmcExec.ErrorSamples
 						new StatementList(MetaData.Empty,
 							new VariableDeclaration(MetaData.Empty,
 								"local", new StringLiteralExpression(MetaData.Empty, "NullRefTest")),
-							
 							new ExpressionStatement(MetaData.Empty,
 								new FunctionCallExpression(MetaData.Empty,
 									new VariableExpression(MetaData.Empty, "print"),
@@ -49,7 +48,7 @@ namespace CmcExec.ErrorSamples
 							new ExpressionStatement(MetaData.Empty,
 								new FunctionCallExpression( MetaData.Empty,
 									new VariableExpression(MetaData.Empty, "myfunc"),
-									new List<Expression>(){})),
+									new List<Expression>())),
 							new ReturnStatement(MetaData.Empty,
 								new IntLiteralExpression(MetaData.Empty, "0", true)))))
 			);
