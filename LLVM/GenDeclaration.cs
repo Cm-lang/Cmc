@@ -53,7 +53,12 @@ namespace LLVM
 					GenMain(builder, lambda, ref varName);
 				else
 				{
-					// TODO create functions
+					builder.AppendLine(
+						$"define @_cm_{variable.Name}_{variable.GetHashCode()}(" +
+						string.Join(",",
+							from i in lambda.ParameterList
+							select ConvertType(i.Type)) +
+						$") #{Attr.GlobalFunctionCount++} {{");
 					// global functions doesn't need capturing, so much easier
 				}
 			}
