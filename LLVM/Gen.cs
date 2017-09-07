@@ -16,7 +16,14 @@ namespace LLVM
 	{
 		public static ulong GlobalFunctionCount;
 		public static ulong MainFunctionIndex;
-		public static bool IsMainDefined = false;
+		public static bool IsMainDefined;
+
+		public static void Restore()
+		{
+			GlobalFunctionCount = 0;
+			MainFunctionIndex = 0;
+			IsMainDefined = false;
+		}
 	}
 
 	public static class Gen
@@ -27,6 +34,7 @@ namespace LLVM
 		public static string Generate(
 			[NotNull] params Declaration[] declarations)
 		{
+			Attr.Restore();
 			var core = new Core();
 			var builder = new StringBuilder();
 			var analyzedDeclarations = core.Analyze(declarations);
