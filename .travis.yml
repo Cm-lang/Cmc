@@ -15,3 +15,7 @@ script:
   # local:
   # mono ./testrunner/NUnit.ConsoleRunner.3.7.0/tools/nunit3-console.exe ./Cmc-Test/bin/Debug/Cmc_Test.dll
   # mono ./testrunner/NUnit.ConsoleRunner.3.7.0/tools/nunit3-console.exe ./LLVM-Test/bin/Debug/LLVM_Test.dll
+
+cache:
+  apt: true
+				

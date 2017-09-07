@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Cmc.Core;
 using Cmc.Decl;
 using JetBrains.Annotations;
 using static System.StringComparison;
+using Environment = Cmc.Core.Environment;
 
 namespace Cmc.Expr
 {
@@ -109,9 +111,21 @@ namespace Cmc.Expr
 			base.SurroundWith(environment);
 			foreach (var expression in ParameterList)
 				expression.SurroundWith(environment);
-			var declaration = (VariableDeclaration) Env.FindDeclarationSatisfies(
-				de => de is VariableDeclaration variable && variable.Type is LambdaType);
-			// TODO type check
+			var declaration = Env.FindDeclarationSatisfies(decl =>
+				decl is VariableDeclaration variable &&
+				variable.Type is LambdaType lambdaType &&
+				string.Equals(variable.Name, ReservedWords.Recur, Ordinal) &&
+				lambdaType.ArgsList.Count == ParameterList.Count &&
+				lambdaType.ArgsList.SequenceEqual(
+					from i in ParameterList
+					select i.GetExpressionType())) as VariableDeclaration;
+			if (null == declaration)
+				Errors.Add(
+					$"{MetaData.GetErrorHeader()}call to recur" +
+					$"({string.Join(",", from p in ParameterList select p.GetExpressionType().ToString())})" +
+					"not found");
+			else
+				Outside = (LambdaExpression) declaration.Expression;
 		}
 
 		public override Type GetExpressionType() =>
