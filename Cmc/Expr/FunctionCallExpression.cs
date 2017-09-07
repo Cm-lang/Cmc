@@ -96,7 +96,7 @@ namespace Cmc.Expr
 	public class RecurCallExpression : Expression
 	{
 		[NotNull] public readonly IList<Expression> ParameterList;
-		[CanBeNull] public LambdaExpression Outside = null;
+		[CanBeNull] public LambdaExpression Outside;
 
 		public RecurCallExpression(
 			MetaData metaData,

@@ -44,8 +44,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ErrorSamples\JustMainCanBeDefined.cs" />
-    <Compile Include="ErrorSamples\NoMainNoLambdef.cs" />
     <Compile Include="Executable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

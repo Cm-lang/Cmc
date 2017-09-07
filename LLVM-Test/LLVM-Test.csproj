@@ -42,6 +42,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ErrorSamples\OnlyMainCanBeDefined.cs" />
+    <Compile Include="ErrorSamples\NoMainNoLambdef.cs" />
     <Compile Include="LlvmCommandLineTests.cs" />
     <Compile Include="LlvmGenTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

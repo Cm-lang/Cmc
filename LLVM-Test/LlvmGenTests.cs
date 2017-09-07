@@ -5,6 +5,7 @@ using Cmc.Core;
 using Cmc.Decl;
 using Cmc.Expr;
 using Cmc.Stmt;
+using CmcExec.ErrorSamples;
 using LLVM;
 using NUnit.Framework;
 
@@ -38,6 +39,12 @@ namespace LLVM_Test
 			);
 			Console.WriteLine(res);
 		}
+
+		/// <summary>
+		///  ambiguous main definition
+		/// </summary>
+		[Test]
+		public void CodeGenFailTest1() => Assert.Throws<CompilerException>(() => OnlyMainCanBeDefined.Run(new[] {""}));
 
 		[SetUp]
 		public void Init() => Errors.ErrList.Clear();
