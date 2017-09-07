@@ -7,6 +7,7 @@ using Cmc.Decl;
 using Cmc.Expr;
 using JetBrains.Annotations;
 using static LLVM.GenAstHolder;
+using System.Linq;
 
 namespace LLVM
 {
@@ -20,6 +21,7 @@ namespace LLVM
 	public static class Gen
 	{
 		public static ulong GlobalVarCount;
+		public static bool DEBUG = true; 
 
 		public static string Generate(
 			[NotNull] params Declaration[] declarations)
@@ -74,6 +76,22 @@ namespace LLVM
 			[NotNull] string outputFile,
 			[NotNull] params Declaration[] declarations)
 		{
+
+			if (DEBUG){
+				declarations.ToList().ForEach(
+					x =>{
+						try{
+							x.Dump().ToList().ForEach(Console.WriteLine);
+						}
+						catch(Exception e){
+							Console.WriteLine("Node Name : {0}\nNode Type : {1} \n {2}",
+												  x.Name,     x.GetType(),          e
+							);
+						}
+					}
+				);
+			}
+			
 			var generate = Generate(declarations);
 			Console.WriteLine(generate);
 			File.WriteAllText($"{outputFile}.ll", generate);
