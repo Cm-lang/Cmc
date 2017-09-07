@@ -29,7 +29,6 @@ namespace LLVM
 	public static class Gen
 	{
 		public static ulong GlobalVarCount;
-		public static bool Debug = true;
 
 		public static string Generate(
 			[NotNull] params Declaration[] declarations)
@@ -86,7 +85,7 @@ namespace LLVM
 			[NotNull] params Declaration[] declarations)
 		{
 			var generate = Generate(declarations);
-			if (Debug) declarations.ToList().ForEach(i => i.PrintDumpInfo());
+			if (Pragma.PrintDumpInfo) declarations.ToList().ForEach(i => i.PrintDumpInfo());
 			Console.WriteLine(generate);
 			File.WriteAllText($"{outputFile}.ll", generate);
 			CommandLine.RunCommand($"llc-4.0 {outputFile}.ll -filetype=obj");

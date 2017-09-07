@@ -6,5 +6,6 @@
 		public static bool Hm = false;
 		public static bool KeepAll = false;
 		public static bool AbortAtFirst = false;
+		public static bool PrintDumpInfo = true;
 	}
 }
