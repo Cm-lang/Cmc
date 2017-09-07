@@ -44,6 +44,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ErrorSamples\TestError1.cs" />
+    <Compile Include="ErrorSamples\TestError2.cs" />
     <Compile Include="Executable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -14,6 +14,7 @@ namespace LLVM
 	{
 		public static ulong GlobalFunctionCount;
 		public static ulong MainFunctionIndex;
+		public static bool IsMainDefined = false;
 	}
 
 	public static class Gen

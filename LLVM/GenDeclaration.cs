@@ -50,7 +50,11 @@ namespace LLVM
 			if (variable.Expression is LambdaExpression lambda)
 			{
 				if (string.Equals(variable.Name, "main", Ordinal))
-					GenMain(builder, lambda, ref varName);
+				{
+					if (!Attr.IsMainDefined) GenMain(builder, lambda, ref varName);
+					else throw new CompilerException("you shouldn't declare more than one main function!");
+					Attr.IsMainDefined = true;
+				}
 				else
 				{
 					builder.AppendLine(
