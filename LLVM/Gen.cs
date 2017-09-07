@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Cmc;
@@ -21,7 +22,7 @@ namespace LLVM
 	public static class Gen
 	{
 		public static ulong GlobalVarCount;
-		public static bool DEBUG = true; 
+		public static bool Debug = true;
 
 		public static string Generate(
 			[NotNull] params Declaration[] declarations)
@@ -76,22 +77,19 @@ namespace LLVM
 			[NotNull] string outputFile,
 			[NotNull] params Declaration[] declarations)
 		{
-
-			if (DEBUG){
-				declarations.ToList().ForEach(
-					x =>{
-						try{
-							x.Dump().ToList().ForEach(Console.WriteLine);
-						}
-						catch(Exception e){
-							Console.WriteLine("Node Name : {0}\nNode Type : {1} \n {2}",
-												  x.Name,     x.GetType(),          e
-							);
-						}
+			if (Debug)
+			{
+				foreach (var x in declarations)
+					try
+					{
+						x.Dump().ToList().ForEach(Console.WriteLine);
 					}
-				);
+					catch (CompilerException e)
+					{
+						Console.WriteLine($"Node Name : {x.Name}\nNode Type : {x.GetType()} \n {e}");
+					}
 			}
-			
+
 			var generate = Generate(declarations);
 			Console.WriteLine(generate);
 			File.WriteAllText($"{outputFile}.ll", generate);
