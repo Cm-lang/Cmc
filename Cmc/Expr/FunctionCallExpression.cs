@@ -75,14 +75,19 @@ namespace Cmc.Expr
 					$"{MetaData.GetErrorHeader()}the function call receiver shoule be a function," +
 					$" not {Receiver.GetExpressionType()}.");
 			List<Statement> statements = null;
-			foreach (var convertedRes in
-				from expression in ParameterList
-				where null != expression.ConvertedResult
-				select expression.ConvertedResult)
+			for (var index = 0; index < ParameterList.Count; index++)
 			{
-				if (null == ConvertedResult) statements = new List<Statement>();
+				var expression = ParameterList[index];
+				if (null == expression.ConvertedResult) continue;
+				var convertedRes = expression.ConvertedResult;
+				if (null == statements) statements = new List<Statement>();
 				statements.AddRange(convertedRes.ConvertedStatements);
+				var name = $"tmp{expression.GetHashCode()}";
+				statements.Add(new VariableDeclaration(MetaData, name, convertedRes.ConvertedExpression));
+				ParameterList[index] = new VariableExpression(MetaData, name);
 			}
+			if (null != statements)
+				ConvertedResult = new ExpressionConvertedResult(statements, this);
 		}
 
 		public override Type GetExpressionType() =>
