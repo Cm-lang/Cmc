@@ -5,8 +5,8 @@ using Cmc.Core;
 using Cmc.Decl;
 using Cmc.Expr;
 using Cmc.Stmt;
-using CmcExec.ErrorSamples;
 using LLVM;
+using LLVM_Test.ErrorSamples;
 using NUnit.Framework;
 
 namespace LLVM_Test

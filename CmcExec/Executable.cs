@@ -3,7 +3,6 @@ using Cmc.Core;
 using Cmc.Decl;
 using Cmc.Expr;
 using Cmc.Stmt;
-using CmcExec.ErrorSamples;
 using LLVM;
 
 namespace CmcExec
@@ -32,9 +31,6 @@ namespace CmcExec
 							new IntLiteralExpression(MetaData.Empty, "0", true)))))
 		);
 
-		public static void Main(string[] args)
-		{
-			JustMainCanBeDefined.Run(args);
-		}
+		public static void Main(string[] args) => TestOk();
 	}
 }

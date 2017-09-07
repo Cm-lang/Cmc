@@ -5,7 +5,7 @@ using Cmc.Expr;
 using Cmc.Stmt;
 using LLVM;
 
-namespace CmcExec.ErrorSamples
+namespace LLVM_Test.ErrorSamples
 {
 	public class OnlyMainCanBeDefined
 	{

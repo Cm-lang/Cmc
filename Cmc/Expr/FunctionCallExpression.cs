@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Cmc.Core;
 using Cmc.Decl;
+using Cmc.Stmt;
 using JetBrains.Annotations;
 using static System.StringComparison;
 using Environment = Cmc.Core.Environment;
@@ -73,6 +74,15 @@ namespace Cmc.Expr
 				Errors.Add(
 					$"{MetaData.GetErrorHeader()}the function call receiver shoule be a function," +
 					$" not {Receiver.GetExpressionType()}.");
+			List<Statement> statements = null;
+			foreach (var convertedRes in
+				from expression in ParameterList
+				where null != expression.ConvertedResult
+				select expression.ConvertedResult)
+			{
+				if (null == ConvertedResult) statements = new List<Statement>();
+				statements.AddRange(convertedRes.ConvertedStatements);
+			}
 		}
 
 		public override Type GetExpressionType() =>
