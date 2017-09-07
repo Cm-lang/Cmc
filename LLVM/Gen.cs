@@ -77,20 +77,8 @@ namespace LLVM
 			[NotNull] string outputFile,
 			[NotNull] params Declaration[] declarations)
 		{
-			if (Debug)
-			{
-				foreach (var x in declarations)
-					try
-					{
-						x.Dump().ToList().ForEach(Console.WriteLine);
-					}
-					catch (CompilerException e)
-					{
-						Console.WriteLine($"Node Name : {x.Name}\nNode Type : {x.GetType()} \n {e}");
-					}
-			}
-
 			var generate = Generate(declarations);
+			if (Debug) declarations.ToList().ForEach(i => i.PrintDumpInfo());
 			Console.WriteLine(generate);
 			File.WriteAllText($"{outputFile}.ll", generate);
 			CommandLine.RunCommand($"llc-4.0 {outputFile}.ll -filetype=obj");

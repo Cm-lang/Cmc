@@ -35,8 +35,9 @@ namespace Cmc.Core
 					new PrimaryType(MetaData.BuiltIn, builtinType)))
 				Galaxy.Declarations.Add(typeDeclaration);
 			var puts = new VariableDeclaration(MetaData.BuiltIn, "print",
-				new LambdaExpression(MetaData.BuiltIn,
+				new BuiltinLambda(MetaData.BuiltIn,
 					new StatementList(MetaData.BuiltIn),
+					new PrimaryType(MetaData.BuiltIn, PrimaryType.NullType),
 					new List<VariableDeclaration>(new[]
 					{
 						new VariableDeclaration(MetaData.BuiltIn, "s", type:
