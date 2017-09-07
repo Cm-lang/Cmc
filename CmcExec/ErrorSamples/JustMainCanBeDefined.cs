@@ -7,7 +7,7 @@ using LLVM;
 
 namespace CmcExec.ErrorSamples
 {
-	internal class JustMainCanBeDefined
+	public class JustMainCanBeDefined
 	{
 		public static void Run(string[] args)
 		{

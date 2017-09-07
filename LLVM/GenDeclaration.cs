@@ -63,6 +63,8 @@ namespace LLVM
 							from i in lambda.ParameterList
 							select ConvertType(i.Type)) +
 						$") #{Attr.GlobalFunctionCount++} {{");
+					GenAst(builder, lambda.Body, ref varName);
+					builder.AppendLine("}");
 					// global functions doesn't need capturing, so much easier
 				}
 			}

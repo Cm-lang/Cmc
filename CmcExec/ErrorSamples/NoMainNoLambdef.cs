@@ -7,7 +7,7 @@ using LLVM;
 
 namespace CmcExec.ErrorSamples
 {
-	internal class NoMainNoLambdef
+	public class NoMainNoLambdef
 	{
 		public static void Run(string[] args)
 		{
