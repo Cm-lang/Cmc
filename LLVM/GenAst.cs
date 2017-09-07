@@ -1,9 +1,13 @@
 ﻿using System.Text;
 using Cmc;
 using Cmc.Core;
-using Cmc.Expression;
-using Cmc.Statement;
+using Cmc.Decl;
+using Cmc.Expr;
+using Cmc.Stmt;
 using JetBrains.Annotations;
+using static LLVM.GenDeclaration;
+using static LLVM.GenExpression;
+using static LLVM.GenStatement;
 
 namespace LLVM
 {
@@ -21,14 +25,18 @@ namespace LLVM
 			ref ulong varName)
 		{
 			if (element is EmptyStatement) return;
+			// convertion
+			while (element is Statement statement && statement.ConvertedStatementList != null)
+				element = statement.ConvertedStatementList;
 			// optimization
-			if (element.OptimizedStatementList != null) element = element.OptimizedStatementList;
+			while (element.OptimizedStatementList != null && !Pragma.KeepAll)
+				element = element.OptimizedStatementList;
 			if (element is Expression expression)
-				GenExpression.GenAstExpression(builder, expression, ref varName);
+				GenAstExpression(builder, expression, ref varName);
 			else if (element is Declaration declaration)
-				GenDeclaration.GenAstDeclaration(builder, declaration, ref varName);
+				GenAstDeclaration(builder, declaration, ref varName);
 			else if (element is Statement statement)
-				GenStatement.GenAstStatement(builder, statement, ref varName);
+				GenAstStatement(builder, statement, ref varName);
 		}
 	}
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using Cmc.Decl;
 using JetBrains.Annotations;
 
 namespace Cmc.Core
@@ -39,7 +40,6 @@ namespace Cmc.Core
 					variableDeclaration.IsGlobal = true;
 			}
 			CheckMutualRec(declarations);
-			// TODO topo sort, dependency analyze
 			foreach (var declaration in declarations)
 				declaration.SurroundWith(planet);
 			return declarations;
@@ -62,9 +62,9 @@ namespace Cmc.Core
 						i.Name,
 						from q in ((StructDeclaration) i)
 							.FieldList
-						where !Environment.SolarSystem
-							.Declarations
-							.Select(qq => qq.Name)
+						where !(
+								from qq in Environment.SolarSystem.Declarations
+								select qq.Name)
 							.Contains(q.Type.ToString())
 						select q.Type.Name))
 			{

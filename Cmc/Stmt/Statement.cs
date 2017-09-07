@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using Cmc.Core;
-using Cmc.Expression;
+using Cmc.Decl;
+using Cmc.Expr;
 using JetBrains.Annotations;
 using Environment = Cmc.Core.Environment;
 
-namespace Cmc.Statement
+namespace Cmc.Stmt
 {
 	public class Statement : Ast
 	{
@@ -14,8 +15,19 @@ namespace Cmc.Statement
 		{
 		}
 
-		public virtual IEnumerable<ReturnStatement> FindReturnStatements() => new List<ReturnStatement>();
-		public virtual IEnumerable<JumpStatement> FindJumpStatements() => new List<JumpStatement>();
+		/// <summary>
+		///  sometimes you need to convert those complex expressions
+		///  or statements into a statement list.
+		///
+		///  in order to express them as a list of simple expressions
+		/// </summary>
+		[CanBeNull] public Statement ConvertedStatementList = null;
+
+		[NotNull]
+		public virtual IEnumerable<ReturnStatement> FindReturnStatements() => new List<ReturnStatement>(0);
+
+		[NotNull]
+		public virtual IEnumerable<JumpStatement> FindJumpStatements() => new List<JumpStatement>(0);
 
 		public override IEnumerable<string> Dump() => new[] {"empty statement"};
 	}
@@ -32,11 +44,11 @@ namespace Cmc.Statement
 
 	public class ExpressionStatement : Statement
 	{
-		[NotNull] public readonly Expression.Expression Expression;
+		[NotNull] public readonly Expression Expression;
 
 		public ExpressionStatement(
 			MetaData metaData,
-			[NotNull] Expression.Expression expression) :
+			[NotNull] Expression expression) :
 			base(metaData) =>
 			Expression = expression;
 
@@ -56,9 +68,19 @@ namespace Cmc.Statement
 
 		public ReturnStatement(
 			MetaData metaData,
-			[CanBeNull] Expression.Expression expression = null) :
+			[CanBeNull] Expression expression = null) :
 			base(metaData, expression ?? new NullExpression(metaData))
 		{
+		}
+
+		public override void SurroundWith(Environment environment)
+		{
+			base.SurroundWith(environment);
+			if (Expression is AtomicExpression) return;
+			var variableName = $"{MetaData.TrimedFileName}{MetaData.LineNumber}{GetHashCode()}";
+			ConvertedStatementList = new StatementList(MetaData,
+				new VariableDeclaration(MetaData, variableName, Expression, true),
+				new ReturnStatement(MetaData, new VariableExpression(MetaData, variableName)));
 		}
 
 		public override IEnumerable<string> Dump() => new[] {"return statement:\n"}
@@ -88,52 +110,15 @@ namespace Cmc.Statement
 		public override IEnumerable<JumpStatement> FindJumpStatements() => new[] {this};
 	}
 
-	public class StatementList : Statement
-	{
-		[NotNull] public IList<Statement> Statements;
-
-		public StatementList(
-			MetaData metaData,
-			params Statement[] statements) :
-			base(metaData) => Statements = statements;
-
-		public override void SurroundWith(Environment environment)
-		{
-			base.SurroundWith(environment);
-			var env = new Environment(Env);
-			// FEATURE #4
-			foreach (var statement in Statements)
-				if (!(statement is Declaration declaration))
-					statement.SurroundWith(env);
-				else
-				{
-					statement.SurroundWith(env);
-					env = new Environment(env);
-					env.Declarations.Add(declaration);
-				}
-		}
-
-		public override IEnumerable<ReturnStatement> FindReturnStatements() =>
-			Statements.SelectMany(i => i.FindReturnStatements());
-
-		public override IEnumerable<JumpStatement> FindJumpStatements() =>
-			Statements.SelectMany(i => i.FindJumpStatements());
-
-		public override IEnumerable<string> Dump() => Statements.Count == 0
-			? new[] {"empty statement list\n"}
-			: new[] {"statement list:\n"}
-				.Concat(Statements.SelectMany(i => i.Dump().Select(MapFunc)));
-	}
-
 	public class AssignmentStatement : Statement
 	{
-		[NotNull] public readonly Expression.Expression LhsExpression;
-		[NotNull] public readonly Expression.Expression RhsExpression;
+		[NotNull] public readonly Expression LhsExpression;
+		[NotNull] public readonly Expression RhsExpression;
 
 		public AssignmentStatement(
 			MetaData metaData,
-			[NotNull] Expression.Expression lhsExpression,
-			[NotNull] Expression.Expression rhsExpression) :
+			[NotNull] Expression lhsExpression,
+			[NotNull] Expression rhsExpression) :
 			base(metaData)
 		{
 			LhsExpression = lhsExpression;
@@ -162,6 +147,11 @@ namespace Cmc.Statement
 			else if (!validLhs.Declaration.Mutability)
 				Errors.Add($"{MetaData.GetErrorHeader()}cannot assign to an immutable variable.");
 			else validLhs.Declaration.Used = true;
+			if (!(RhsExpression is AtomicExpression))
+			{
+				ConvertedStatementList = new StatementList(MetaData,
+					new VariableDeclaration(MetaData, ""));
+			}
 		}
 
 		public override IEnumerable<string> Dump() => new[]

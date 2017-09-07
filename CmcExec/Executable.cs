@@ -1,22 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using Cmc;
+﻿using System.Collections.Generic;
 using Cmc.Core;
 using Cmc.Decl;
 using Cmc.Expr;
 using Cmc.Stmt;
 using LLVM;
-using NUnit.Framework;
 
-namespace LLVM_Test
+namespace CmcExec
 {
-	[TestFixture]
-	public class LlvmGenTests
+	internal class Executable
 	{
-		[Test]
-		public void LlvmGenTest1()
+		public static void Main(string[] args)
 		{
-			var res = Gen.Generate(
+			Gen.RunLlvm(
+				"out.exe",
 				new VariableDeclaration(MetaData.Empty,
 					"i", new IntLiteralExpression(MetaData.Empty, "1", true)),
 				new VariableDeclaration(MetaData.Empty,
@@ -25,7 +21,7 @@ namespace LLVM_Test
 					"main", new LambdaExpression(MetaData.Empty,
 						new StatementList(MetaData.Empty,
 							new VariableDeclaration(MetaData.Empty,
-								"j", new StringLiteralExpression(MetaData.Empty, "boy next door")),
+								"j", new StringLiteralExpression(MetaData.Empty, "Hello, World")),
 							new ExpressionStatement(MetaData.Empty,
 								new FunctionCallExpression(MetaData.Empty,
 									new VariableExpression(MetaData.Empty, "print"),
@@ -36,10 +32,6 @@ namespace LLVM_Test
 							new ReturnStatement(MetaData.Empty,
 								new IntLiteralExpression(MetaData.Empty, "0", true)))))
 			);
-			Console.WriteLine(res);
 		}
-
-		[SetUp]
-		public void Init() => Errors.ErrList.Clear();
 	}
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Cmc.Core;
+using Cmc.Decl;
 using JetBrains.Annotations;
 using Environment = Cmc.Core.Environment;
 
@@ -26,10 +27,8 @@ namespace Cmc
 		public abstract override string ToString();
 		public abstract override bool Equals(object obj);
 
-		public static IEnumerable<Type> FindCommon(IEnumerable<Type> list1, IEnumerable<Type> list2)
-		{
-			return list1.Where(list2.Contains).ToList();
-		}
+		public static IEnumerable<Type> FindCommon(IEnumerable<Type> list1, IEnumerable<Type> list2) =>
+			list1.Where(list2.Contains).ToList();
 	}
 
 	public class UnknownType : Type
@@ -62,15 +61,10 @@ namespace Cmc
 			throw new CompilerException($"cannot resolve {Name}");
 		}
 
-		public void Gg()
-		{
+		public void Gg() =>
 			Errors.Add($"{MetaData.GetErrorHeader()}unresolved type: {MetaData}");
-		}
 
-		public override string ToString()
-		{
-			return Name;
-		}
+		public override string ToString() => Name;
 
 		public override bool Equals(object obj)
 		{
@@ -84,9 +78,9 @@ namespace Cmc
 	/// </summary>
 	public class PrimaryType : Type
 	{
-		[NotNull] public const string StringType = "string";
-		[NotNull] public const string NullType = "nulltype";
-		[NotNull] public const string BoolType = "bool";
+		[NotNull] public const string StringType = ReservedWords.StringType;
+		[NotNull] public const string NullType = ReservedWords.NullType;
+		[NotNull] public const string BoolType = ReservedWords.BoolType;
 
 		public PrimaryType(
 			MetaData metaData,
@@ -103,7 +97,7 @@ namespace Cmc
 		{
 		}
 
-		public override IEnumerable<string> Dump() => new[] {$"- primary type [{Name}]\n"};
+		public override IEnumerable<string> Dump() => new[] {$"primary type [{this}]\n"};
 
 		public override string ToString() => Name;
 
@@ -146,7 +140,7 @@ namespace Cmc
 			obj is SecondaryType type && string.Equals(type.Name, Name, StringComparison.Ordinal);
 
 		public override IEnumerable<string> Dump() =>
-			new[] {"secondary type[{Container}]:\n"};
+			new[] {$"secondary type[{this}]:\n"};
 	}
 
 	/// <summary>
@@ -177,10 +171,7 @@ namespace Cmc
 			if (RetType is UnknownType wtf) RetType = wtf.Resolve();
 		}
 
-		public override string ToString()
-		{
-			return LambdaTypeToString(ArgsList, RetType);
-		}
+		public override string ToString() => LambdaTypeToString(ArgsList, RetType);
 
 		public override bool Equals(object obj)
 		{
@@ -192,21 +183,10 @@ namespace Cmc
 		}
 
 		[NotNull]
-		public static string LambdaTypeToString([NotNull] IList<Type> args, [NotNull] Type ret)
-		{
-			return $"({string.Join(",", args)})->{ret}";
-		}
+		public static string LambdaTypeToString([NotNull] IList<Type> args, [NotNull] Type ret) =>
+			$"({string.Join(",", args)})->{ret}";
 
-		public override IEnumerable<string> Dump()
-		{
-			return new[]
-				{
-					"lambda type:\n",
-					"  parameters' types:\n"
-				}
-				.Concat(ArgsList.SelectMany(i => i.Dump().Select(MapFunc).Select(MapFunc)))
-				.Concat(new[] {"  return type:\n"})
-				.Concat(RetType.Dump().Select(MapFunc).Select(MapFunc));
-		}
+		public override IEnumerable<string> Dump() => new[]
+			{$"lambda type [{this}]\n"};
 	}
 }

@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using System.Linq;
+using JetBrains.Annotations;
 
 namespace Cmc.Core
 {
@@ -6,19 +7,19 @@ namespace Cmc.Core
 	{
 		public int LineNumber;
 		public string FileName;
+		public string TrimedFileName;
 
 		public MetaData(int lineNumber, string fileName)
 		{
 			LineNumber = lineNumber;
 			FileName = fileName;
+			TrimedFileName = string.Concat(FileName.Where(i => char.IsLetterOrDigit(i) || i == '_'));
 		}
 
 		// FEATURE #10
 		[NotNull]
-		public string GetErrorHeader()
-		{
-			return $"Error in file {FileName} at line {LineNumber}: ";
-		}
+		public string GetErrorHeader() =>
+			$"Error in file {FileName} at line {LineNumber}: ";
 
 		private static int _count;
 		public static readonly MetaData Empty = new MetaData(_count++, "Unknown");

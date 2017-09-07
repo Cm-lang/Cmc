@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Cmc.Stmt;
 using JetBrains.Annotations;
 
 namespace Cmc.Core
@@ -11,25 +12,22 @@ namespace Cmc.Core
 		public Environment Env;
 		public MetaData MetaData;
 
-		[CanBeNull] public Statement.Statement OptimizedStatementList = null;
+		/// <summary>
+		///  inline/constant folding/etc.
+		/// </summary>
+		[CanBeNull] public Statement OptimizedStatementList = null;
 
 		protected Ast(MetaData metaData) => MetaData = metaData;
 
-		public virtual void SurroundWith([NotNull] Environment environment)
-		{
-			Env = environment;
-		}
+		public virtual void SurroundWith([NotNull] Environment environment) => Env = Env ?? environment;
 
 		/// <summary>
 		///   FEATURE #15
 		/// </summary>
 		/// <returns>compilation information</returns>
 		[NotNull]
-		public virtual IEnumerable<string> Dump() => new[] {ToString()};
+		public virtual IEnumerable<string> Dump() => new[] {$"{this}\n"};
 
-		public void PrintDumpInfo()
-		{
-			Console.WriteLine(string.Join("", Dump()));
-		}
+		public void PrintDumpInfo() => Console.WriteLine(string.Join("", Dump()));
 	}
 }

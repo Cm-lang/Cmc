@@ -1,8 +1,10 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text;
 using Cmc;
 using Cmc.Core;
-using Cmc.Expression;
+using Cmc.Decl;
+using Cmc.Expr;
 using JetBrains.Annotations;
 using static LLVM.GenAstHolder;
 
@@ -61,7 +63,9 @@ namespace LLVM
 				else
 					// TODO add attributes
 					builder.AppendLine(
-						$"attributes #{i} = ");
+						$"attributes #{i} = " +
+						"{ " +
+						" }");
 			return builder.ToString();
 		}
 
@@ -69,7 +73,9 @@ namespace LLVM
 			[NotNull] string outputFile,
 			[NotNull] params Declaration[] declarations)
 		{
-			File.WriteAllText($"{outputFile}.ll", Generate(declarations));
+			var generate = Generate(declarations);
+			Console.WriteLine(generate);
+			File.WriteAllText($"{outputFile}.ll", generate);
 			CommandLine.RunCommand($"llc-4.0 {outputFile}.ll -filetype=obj");
 			CommandLine.RunCommand($"gcc {outputFile}.o -o {outputFile}");
 		}

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Cmc;
 using Cmc.Core;
+using Cmc.Decl;
 using NUnit.Framework;
 
 namespace Cmc_Test

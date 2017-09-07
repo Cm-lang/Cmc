@@ -9,6 +9,10 @@
 *.dylib
 *.dll
 
+# LLVM
+*.ll
+*.s
+
 # Compiled Static libraries
 *.a
 *.lib

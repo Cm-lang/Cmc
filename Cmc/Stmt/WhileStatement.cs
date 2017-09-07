@@ -2,21 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using Cmc.Core;
-using Cmc.Expression;
+using Cmc.Expr;
 using JetBrains.Annotations;
 using Environment = Cmc.Core.Environment;
 
-namespace Cmc.Statement
+namespace Cmc.Stmt
 {
 	public class WhileStatement : Statement
 	{
-		[NotNull] public readonly Expression.Expression Condition;
+		[NotNull] public readonly Expression Condition;
 		[NotNull] public StatementList OkStatementList;
 		public int Optimized;
 
 		public WhileStatement(
 			MetaData metaData,
-			[NotNull] Expression.Expression condition,
+			[NotNull] Expression condition,
 			[NotNull] StatementList okStatementList) : base(metaData)
 		{
 			Condition = condition;

@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Cmc.Expression;
-using Cmc.Statement;
+using Cmc.Decl;
+using Cmc.Expr;
+using Cmc.Stmt;
 using JetBrains.Annotations;
 
 namespace Cmc.Core
@@ -33,7 +34,7 @@ namespace Cmc.Core
 					builtinType,
 					new PrimaryType(MetaData.BuiltIn, builtinType)))
 				Galaxy.Declarations.Add(typeDeclaration);
-			var puts = new VariableDeclaration(MetaData.BuiltIn, "puts",
+			var puts = new VariableDeclaration(MetaData.BuiltIn, "print",
 				new LambdaExpression(MetaData.BuiltIn,
 					new StatementList(MetaData.BuiltIn),
 					new List<VariableDeclaration>(new[]
@@ -45,10 +46,7 @@ namespace Cmc.Core
 			SolarSystem.Declarations.Add(puts);
 		}
 
-		public Environment(Environment outer = null)
-		{
-			Outer = outer;
-		}
+		public Environment(Environment outer = null) => Outer = outer;
 
 		/// FEATURE #3
 		[NotNull]

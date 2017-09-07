@@ -19,12 +19,13 @@ namespace LLVM
 				}
 			if (type is LambdaType lambdaType)
 			{
-				// TODO
+				// TODO select a class
 			}
+			// ReSharper disable once InvertIf
 			if (type is SecondaryType secondaryType)
 			{
 				if (secondaryType.Struct != null)
-					return $"{{{string.Join(",", secondaryType.Struct.FieldList.Select(i => ConvertType(i.Type)))}}}";
+					return $"{{{string.Join(",", from i in secondaryType.Struct.FieldList select ConvertType(i.Type))}}}";
 				throw new CompilerException($"cannot resolve {type}");
 			}
 			throw new CompilerException($"unknown type {type}");

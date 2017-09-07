@@ -9,7 +9,7 @@ Travis CI|
 
 [![Build Status](https://travis-ci.org/Cm-lang/Cmc.svg?branch=master)](https://travis-ci.org/Cm-lang/Cmc)
 [![](https://img.shields.io/badge/Cm--lang-Compiler-ff69b4.svg)](https://github.com/Cm-lang/Cmc)
-[![](https://img.shields.io/badge/request-new%20features-blue.svg)](https://github.com/Cm-lang/Cmc/blob/master/PROGRESS.md)
+[![](https://img.shields.io/badge/request-new%20features-blue.svg)](https://github.com/Cm-lang/Cm-Document/issues/new)
 [![](https://img.shields.io/badge/backend-LLVM-ab51ba.svg)](http://llvm.org/)<br/>
 [![NuGet](https://img.shields.io/nuget/dt/Cmc.svg)](https://www.nuget.org/packages/Cmc/)
 [![NuGet](https://img.shields.io/nuget/v/Cmc.svg)](https://www.nuget.org/packages/Cmc/)<br/>
@@ -30,4 +30,5 @@ Maybe there will be an optional H-M type system, and hole-oriented programming (
 
 ## Document
 
-[AST Design](./Cmc/Cm_AST_Design.yml)
++ [AST Design](./Cmc/Cm_AST_Design.yml)
++ [Progress](./PROGRESS.md)

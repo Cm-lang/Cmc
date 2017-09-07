@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LLVM", "LLVM\LLVM.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LLVM-Test", "LLVM-Test\LLVM-Test.csproj", "{978F4B9A-3E9A-4D7D-A7A3-10AC3A499E8E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CmcExec", "CmcExec\CmcExec.csproj", "{7172A461-5A1E-4297-B3F8-F4FC4192113D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,6 +34,10 @@ Global
 		{978F4B9A-3E9A-4D7D-A7A3-10AC3A499E8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{978F4B9A-3E9A-4D7D-A7A3-10AC3A499E8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{978F4B9A-3E9A-4D7D-A7A3-10AC3A499E8E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7172A461-5A1E-4297-B3F8-F4FC4192113D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7172A461-5A1E-4297-B3F8-F4FC4192113D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7172A461-5A1E-4297-B3F8-F4FC4192113D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7172A461-5A1E-4297-B3F8-F4FC4192113D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

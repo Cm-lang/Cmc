@@ -10,6 +10,7 @@ and you see the result.
 ## basic language features
 
 + [X] type aliases (#31)
++ [X] no functions (see [README](./README.md))
 
 ## scoping
 
@@ -54,6 +55,8 @@ and you see the result.
 + [X] return statements' types should be same (#24) (tested)
 + [ ] return statement exhaustiveness check (extra)
 + [X] defaultly no parameter (#22)
++ [X] y-combinator-like recur (#37)
++ [ ] recur can invoke outside lambdas
 
 ## main function
 
@@ -62,6 +65,7 @@ and you see the result.
 ## structs
 
 + [X] mutual recursion detection (#34) (tested)
++ [ ] generic structs
 
 ## if
 
@@ -70,6 +74,11 @@ and you see the result.
 + [X] when condition is constant value, delete redundant branch (#17)
 + [ ] if as expression (extra)
 + [ ] tenary operator
+
+## low-level stuffs
+
++ [ ] expression splitting
++ [X] string pool (#38)
 
 ## int
 

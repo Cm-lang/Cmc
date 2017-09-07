@@ -1,8 +1,10 @@
 ﻿using System.Text;
 using Cmc;
-using Cmc.Expression;
-using Cmc.Statement;
+using Cmc.Decl;
+using Cmc.Expr;
+using Cmc.Stmt;
 using JetBrains.Annotations;
+using static LLVM.GenAstHolder;
 using static LLVM.GenDeclaration;
 using static LLVM.GenExpression;
 using static LLVM.TypeConverter;
@@ -18,21 +20,23 @@ namespace LLVM
 		{
 			if (element is ReturnStatement returnStatement)
 			{
-				var expr = returnStatement.Expression;
-				GenAstExpression(builder, expr, ref varName);
+				var expr = (AtomicExpression) returnStatement.Expression;
+				// expr should be an atomic expression
 				builder.AppendLine(
-					$"  ret {ConvertType(expr.GetExpressionType())} %{varName}");
+					$"  ret {ConvertType(expr.GetExpressionType())} {expr.AtomicRepresentation()}");
 				varName++;
 			}
+			else if (element is ExpressionStatement expression)
+				GenAst(builder, expression.Expression, ref varName);
 			else if (element is StatementList statements)
 			{
 				ulong localVarCount = 1;
 				foreach (var statement in statements.Statements)
-					GenAstStatement(builder, statement, ref localVarCount);
+					GenAst(builder, statement, ref localVarCount);
 			}
 			// this should rarely happen
 			else if (element is Declaration declaration)
-				GenAstDeclaration(builder, declaration, ref varName);
+				GenAst(builder, declaration, ref varName);
 		}
 	}
 }
