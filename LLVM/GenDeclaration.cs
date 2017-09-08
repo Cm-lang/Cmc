@@ -50,10 +50,21 @@ namespace LLVM
 			if (variable.Expression is LambdaExpression lambda)
 			{
 				if (string.Equals(variable.Name, "main", Ordinal))
-					GenMain(builder, lambda, ref varName);
+				{
+					if (!Attr.IsMainDefined) GenMain(builder, lambda, ref varName);
+					else throw new CompilerException("you shouldn't declare more than one main function!");
+					Attr.IsMainDefined = true;
+				}
 				else
 				{
-					// TODO create functions
+					builder.AppendLine(
+						$"define @_cm_{variable.Name}_{variable.GetHashCode()}(" +
+						string.Join(",",
+							from i in lambda.ParameterList
+							select ConvertType(i.Type)) +
+						$") #{Attr.GlobalFunctionCount++} {{");
+					GenAst(builder, lambda.Body, ref varName);
+					builder.AppendLine("}");
 					// global functions doesn't need capturing, so much easier
 				}
 			}
@@ -70,7 +81,7 @@ namespace LLVM
 					builder.Append(
 						$"getelementptr inbounds ([{str.Length} x i8], [{str.Length} x i8]* " +
 						$"@.str{str.ConstantPoolIndex}, i32 0, i32 0)");
-				builder.AppendLine($", align {variable.Align}");
+				builder.AppendLine($", align {variable.Align} ; {variable.Name}");
 			}
 			// TODO deal with other types
 			variable.Address = varName;
@@ -97,7 +108,7 @@ namespace LLVM
 //						return;
 //					}
 					builder.AppendLine(
-						$"  %var{varName} = alloca {ConvertType(variable.Type)}, align {variable.Align}");
+						$"  %var{varName} = alloca {ConvertType(variable.Type)}, align {variable.Align} ; {variable.Name}");
 					variable.Address = varName;
 					GenAstExpression(builder, variable.Expression, ref varName);
 					varName++;

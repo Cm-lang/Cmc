@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
 using Cmc.Core;
 using Cmc.Decl;
 using Cmc.Stmt;
@@ -16,7 +18,7 @@ namespace Cmc.Expr
 		[CanBeNull] public Type DeclaredType;
 		[NotNull] public readonly StatementList Body;
 		[NotNull] public readonly IList<VariableDeclaration> ParameterList;
-		private Type _type;
+		protected Type Type;
 
 		public LambdaExpression(
 			MetaData metaData,
@@ -47,7 +49,7 @@ namespace Cmc.Expr
 			var recur = new VariableDeclaration(MetaData, ReservedWords.Recur, this);
 			// https://github.com/Cm-lang/Cm-Document/issues/12
 			if (null != DeclaredType)
-				_type = new LambdaType(MetaData, (
+				Type = new LambdaType(MetaData, (
 					from i in ParameterList
 					select i.Type).ToList(), DeclaredType);
 			recur.SurroundWith(Env);
@@ -69,12 +71,12 @@ namespace Cmc.Expr
 				              ? retTypes.First()
 				              // FEATURE #19
 				              : new PrimaryType(MetaData, PrimaryType.NullType));
-			_type = new LambdaType(MetaData, (
+			Type = new LambdaType(MetaData, (
 				from i in ParameterList
 				select i.Type).ToList(), retType);
 		}
 
-		public override Type GetExpressionType() => _type;
+		public override Type GetExpressionType() => Type;
 
 		public override IEnumerable<string> Dump() => new[]
 			{
@@ -89,5 +91,38 @@ namespace Cmc.Expr
 				select j)
 			.Concat(new[] {"  body:\n"})
 			.Concat(Body.Dump().Select(MapFunc2));
+	}
+
+	public class BuiltinLambda : LambdaExpression
+	{
+		public BuiltinLambda(
+			MetaData metaData,
+			[NotNull] StatementList body,
+			[NotNull] Type returnType,
+			[CanBeNull] IList<VariableDeclaration> parameterList = null) :
+			base(metaData, body, parameterList ?? new List<VariableDeclaration>(), returnType)
+		{
+		}
+
+		public override void SurroundWith(Environment environment)
+		{
+			Env = environment;
+			Body.SurroundWith(Env);
+			Type = new LambdaType(MetaData, (
+				from i in ParameterList
+				select i.Type).ToList(), DeclaredType);
+		}
+
+		public override IEnumerable<string> Dump() => new[]
+			{
+				"built-in lambda:\n",
+				"  type:\n"
+			}
+			.Concat(GetExpressionType().Dump().Select(MapFunc2))
+			.Concat(new[] {"  parameters:\n"})
+			.Concat(
+				from i in ParameterList
+				from j in i.Dump().Select(MapFunc2)
+				select j);
 	}
 }

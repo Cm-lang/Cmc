@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Cmc;
@@ -7,6 +8,7 @@ using Cmc.Decl;
 using Cmc.Expr;
 using JetBrains.Annotations;
 using static LLVM.GenAstHolder;
+using System.Linq;
 
 namespace LLVM
 {
@@ -14,6 +16,14 @@ namespace LLVM
 	{
 		public static ulong GlobalFunctionCount;
 		public static ulong MainFunctionIndex;
+		public static bool IsMainDefined;
+
+		public static void Restore()
+		{
+			GlobalFunctionCount = 0;
+			MainFunctionIndex = 0;
+			IsMainDefined = false;
+		}
 	}
 
 	public static class Gen
@@ -23,6 +33,7 @@ namespace LLVM
 		public static string Generate(
 			[NotNull] params Declaration[] declarations)
 		{
+			Attr.Restore();
 			var core = new Core();
 			var builder = new StringBuilder();
 			var analyzedDeclarations = core.Analyze(declarations);
@@ -74,6 +85,7 @@ namespace LLVM
 			[NotNull] params Declaration[] declarations)
 		{
 			var generate = Generate(declarations);
+			if (Pragma.PrintDumpInfo) declarations.ToList().ForEach(i => i.PrintDumpInfo());
 			Console.WriteLine(generate);
 			File.WriteAllText($"{outputFile}.ll", generate);
 			CommandLine.RunCommand($"llc-4.0 {outputFile}.ll -filetype=obj");

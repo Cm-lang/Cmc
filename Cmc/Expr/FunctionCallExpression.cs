@@ -1,9 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Cmc.Core;
 using Cmc.Decl;
+using Cmc.Stmt;
 using JetBrains.Annotations;
 using static System.StringComparison;
+using Environment = Cmc.Core.Environment;
 
 namespace Cmc.Expr
 {
@@ -71,6 +74,20 @@ namespace Cmc.Expr
 				Errors.Add(
 					$"{MetaData.GetErrorHeader()}the function call receiver shoule be a function," +
 					$" not {Receiver.GetExpressionType()}.");
+			List<Statement> statements = null;
+			for (var index = 0; index < ParameterList.Count; index++)
+			{
+				var expression = ParameterList[index];
+				if (null == expression.ConvertedResult) continue;
+				var convertedRes = expression.ConvertedResult;
+				if (null == statements) statements = new List<Statement>();
+				statements.AddRange(convertedRes.ConvertedStatements);
+				var name = $"tmp{expression.GetHashCode()}";
+				statements.Add(new VariableDeclaration(MetaData, name, convertedRes.ConvertedExpression));
+				ParameterList[index] = new VariableExpression(MetaData, name);
+			}
+			if (null != statements)
+				ConvertedResult = new ExpressionConvertedResult(statements, this);
 		}
 
 		public override Type GetExpressionType() =>
@@ -94,7 +111,7 @@ namespace Cmc.Expr
 	public class RecurCallExpression : Expression
 	{
 		[NotNull] public readonly IList<Expression> ParameterList;
-		[CanBeNull] public LambdaExpression Outside = null;
+		[CanBeNull] public LambdaExpression Outside;
 
 		public RecurCallExpression(
 			MetaData metaData,
@@ -109,9 +126,21 @@ namespace Cmc.Expr
 			base.SurroundWith(environment);
 			foreach (var expression in ParameterList)
 				expression.SurroundWith(environment);
-			var declaration = (VariableDeclaration) Env.FindDeclarationSatisfies(
-				de => de is VariableDeclaration variable && variable.Type is LambdaType);
-			// TODO type check
+			var declaration = Env.FindDeclarationSatisfies(decl =>
+				decl is VariableDeclaration variable &&
+				variable.Type is LambdaType lambdaType &&
+				string.Equals(variable.Name, ReservedWords.Recur, Ordinal) &&
+				lambdaType.ArgsList.Count == ParameterList.Count &&
+				lambdaType.ArgsList.SequenceEqual(
+					from i in ParameterList
+					select i.GetExpressionType())) as VariableDeclaration;
+			if (null == declaration)
+				Errors.Add(
+					$"{MetaData.GetErrorHeader()}call to recur" +
+					$"({string.Join(",", from p in ParameterList select p.GetExpressionType().ToString())})" +
+					"not found");
+			else
+				Outside = (LambdaExpression) declaration.Expression;
 		}
 
 		public override Type GetExpressionType() =>
