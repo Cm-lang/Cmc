@@ -90,6 +90,11 @@ and you see the result.
 + [X] signed and unsigned (#27)
 + [ ] check value is valid
 
+## float
+
++ [X] only 32, 64 are valid length (#41)
++ [ ] check value is valid
+
 ## while
 
 + [X] check for condition type (#16)

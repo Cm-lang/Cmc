@@ -61,7 +61,7 @@ namespace Cmc.Expr
 		{
 			Value = value;
 			Length = length;
-			// FEATURE #26
+			// FEATURE #41
 			if (!AcceptableLength.Contains(length))
 				Errors.Add($"{MetaData.GetErrorHeader()}float length of {length} is not supported");
 		}
