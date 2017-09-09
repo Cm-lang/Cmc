@@ -16,13 +16,11 @@ namespace LLVM
 	{
 		public static ulong GlobalFunctionCount;
 		public static ulong MainFunctionIndex;
-		public static bool IsMainDefined;
 
 		public static void Restore()
 		{
 			GlobalFunctionCount = 0;
 			MainFunctionIndex = 0;
-			IsMainDefined = false;
 		}
 	}
 

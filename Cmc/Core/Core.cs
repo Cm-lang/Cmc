@@ -1,8 +1,12 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
+using System.Runtime.Serialization.Formatters;
 using Cmc.Decl;
+using Cmc.Expr;
 using JetBrains.Annotations;
+using static System.StringComparison;
 
 namespace Cmc.Core
 {
@@ -33,11 +37,18 @@ namespace Cmc.Core
 		public Declaration[] Analyze(params Declaration[] declarations)
 		{
 			var planet = new Environment(Environment.SolarSystem);
+			var isMainDefined = false;
 			foreach (var declaration in declarations)
 			{
 				planet.Declarations.Add(declaration);
 				if (declaration is VariableDeclaration variableDeclaration)
+				{
 					variableDeclaration.IsGlobal = true;
+					// FEATURE #40
+					if (variableDeclaration.Expression is LambdaExpression &&
+					    string.Equals(variableDeclaration.Name, "main", Ordinal))
+						Errors.Add($"{variableDeclaration.MetaData}you shouldn\'t declare more than one main function!");
+				}
 			}
 			CheckMutualRec(declarations);
 			foreach (var declaration in declarations)

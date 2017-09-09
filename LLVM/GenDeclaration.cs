@@ -31,7 +31,6 @@ namespace LLVM
 			{
 				var err = $"the main function must return i32 or null, but it's {retTypeName}";
 				Errors.Add(err);
-				throw new CompilerException(err);
 			}
 			Attr.MainFunctionIndex = Attr.GlobalFunctionCount;
 			builder.AppendLine(
@@ -50,11 +49,7 @@ namespace LLVM
 			if (variable.Expression is LambdaExpression lambda)
 			{
 				if (string.Equals(variable.Name, "main", Ordinal))
-				{
-					if (!Attr.IsMainDefined) GenMain(builder, lambda, ref varName);
-					else throw new CompilerException("you shouldn't declare more than one main function!");
-					Attr.IsMainDefined = true;
-				}
+					GenMain(builder, lambda, ref varName);
 				else
 				{
 					builder.AppendLine(
