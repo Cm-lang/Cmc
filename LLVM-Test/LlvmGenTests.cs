@@ -44,7 +44,11 @@ namespace LLVM_Test
 		///  ambiguous main definition
 		/// </summary>
 		[Test]
-		public void CodeGenFailTest1() => Assert.Throws<CompilerException>(() => OnlyMainCanBeDefined.Run(new[] {""}));
+		public void CodeGenFailTest1()
+		{
+			OnlyMainCanBeDefined.Run(new[] {""});
+			Assert.IsNotEmpty(Errors.ErrList);
+		}
 
 		[SetUp]
 		public void Init() => Errors.ErrList.Clear();
