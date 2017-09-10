@@ -19,6 +19,7 @@ Ast:
       LiteralExpression:
         NullExpression
         IntLiteralExpression
+        FloatLiteralExpression
         BoolLiteralExpression
     StringLiteralExpression
     LambdaExpression
@@ -26,3 +27,4 @@ Ast:
     PrimaryType
     SecondaryType
     LambdaType
+

@@ -42,7 +42,34 @@ namespace Cmc.Expr
 		public override string AtomicRepresentation() => Value;
 
 		public override IEnumerable<string> Dump() =>
-			new[] {$"literal expression [{Value}]:\n"}
+			new[] {$"int literal [{Value}]:\n"}
+				.Concat(Type.Dump().Select(MapFunc));
+	}
+
+	public class FloatLiteralExpression : LiteralExpression
+	{
+		public static readonly int[] AcceptableLength = {32, 64};
+		public readonly int Length;
+
+		[NotNull] public readonly string Value;
+
+		public FloatLiteralExpression(
+			MetaData metaData,
+			[NotNull] string value,
+			int length = 32)
+			: base(metaData, new PrimaryType(metaData, $"f{length}", length / 8))
+		{
+			Value = value;
+			Length = length;
+			// FEATURE #41
+			if (!AcceptableLength.Contains(length))
+				Errors.Add($"{MetaData.GetErrorHeader()}float length of {length} is not supported");
+		}
+
+		public override string AtomicRepresentation() => Value; // TODO check for correctness
+
+		public override IEnumerable<string> Dump() =>
+			new[] {$"float literal [{Value}]:\n"}
 				.Concat(Type.Dump().Select(MapFunc));
 	}
 

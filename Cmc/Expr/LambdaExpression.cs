@@ -52,6 +52,7 @@ namespace Cmc.Expr
 				Type = new LambdaType(MetaData, (
 					from i in ParameterList
 					select i.Type).ToList(), DeclaredType);
+			// FEATURE #39
 			recur.SurroundWith(Env);
 			bodyEnv.Declarations.Add(recur);
 			Body.SurroundWith(bodyEnv);

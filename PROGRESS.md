@@ -4,13 +4,14 @@ Please add feature request here.
 Codes related to some implemented feature can be found by searching their number.
 
 I.E. Want to find codes related to `lexical scoping` (the 4th one in the `scoping` section)?
-[search "FEATURE \#18"](https://github.com/Cm-lang/Cmc/search?utf8=%E2%9C%93&q=%22FEATURE+%2318%22&type=),
+[search "FEATURE \#18"](https://github.com/Cm-lang/Cmc/search?utf8=%E2%9C%93&q=%22FEATURE+%2318%22),
 and you see the result.
 
 ## basic language features
 
 + [X] type aliases (#31)
 + [X] no functions (see [README](./README.md))
++ [ ] foreign function interfaces
 
 ## scoping
 
@@ -29,6 +30,8 @@ and you see the result.
 + [X] resolve types defined in the context (unknown types) (#30) (tested)
 + [X] `nulltype` can be assigned to variables with any type (#11) (tested)
 + [ ] an HM type system (extra)
++ [ ] pointers
++ [ ] raw arrays
 
 ## contracting (extra)
 
@@ -56,11 +59,12 @@ and you see the result.
 + [ ] return statement exhaustiveness check (extra)
 + [X] defaultly no parameter (#22)
 + [X] y-combinator-like recur (#37)
-+ [ ] recur can invoke outside lambdas
++ [X] recur can invoke outside lambdas (#38) (tested)
 
 ## main function
 
 + [X] only `nulltype` and `i32` returning are allowed (#35)
++ [X] check for main function duplication (#40)
 
 ## structs
 
@@ -84,6 +88,11 @@ and you see the result.
 
 + [X] only 8, 16, 32, 64 are valid length (#26)
 + [X] signed and unsigned (#27)
++ [ ] check value is valid
+
+## float
+
++ [X] only 32, 64 are valid length (#41)
 + [ ] check value is valid
 
 ## while

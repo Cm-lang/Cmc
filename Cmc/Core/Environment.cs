@@ -26,7 +26,11 @@ namespace Cmc.Core
 			// FEATURE #0
 			foreach (var typeDeclaration in from builtinType in new[]
 				{
-					"i8", "i16", "i32", "i64", "u8", "u16", "u32", "u64", PrimaryType.StringType, PrimaryType.NullType,
+					"i8", "i16", "i32", "i64",
+					"u8", "u16", "u32", "u64",
+					"f32", "f64",
+					PrimaryType.StringType,
+					PrimaryType.NullType,
 					PrimaryType.BoolType
 				}
 				select new TypeDeclaration(
