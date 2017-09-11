@@ -143,13 +143,21 @@ namespace Cmc.Expr
 			for (var index = 0; index < ParameterList.Count; index++)
 			{
 				var expression = ParameterList[index];
-				if (null == expression.ConvertedResult) continue;
-				var convertedRes = expression.ConvertedResult;
-				if (null == statements) statements = new List<Statement>();
-				statements.AddRange(convertedRes.ConvertedStatements);
+				if (expression is AtomicExpression) continue;
 				var name = $"tmp{expression.GetHashCode()}";
-				statements.Add(new VariableDeclaration(MetaData, name, convertedRes.ConvertedExpression));
-				ParameterList[index] = new VariableExpression(MetaData, name);
+				if (null == statements) statements = new List<Statement>();
+				if (null == expression.ConvertedResult)
+				{
+					statements.Add(new VariableDeclaration(MetaData, name, expression));
+					ParameterList[index] = new VariableExpression(MetaData, name);
+				}
+				else
+				{
+					var convertedRes = expression.ConvertedResult;
+					statements.AddRange(convertedRes.ConvertedStatements);
+					statements.Add(new VariableDeclaration(MetaData, name, convertedRes.ConvertedExpression));
+					ParameterList[index] = new VariableExpression(MetaData, name);
+				}
 			}
 			if (null != statements)
 				ConvertedResult = new ExpressionConvertedResult(statements, this);

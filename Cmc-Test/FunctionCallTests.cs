@@ -189,7 +189,8 @@ namespace Cmc_Test
 								}))
 						}))));
 			expr.SurroundWith(Environment.SolarSystem);
-			expr.PrintDumpInfo();
+			expr.Statements.Last().PrintDumpInfo();
+			expr.Statements.Last().ConvertedStatementList.PrintDumpInfo();
 		}
 	}
 }
