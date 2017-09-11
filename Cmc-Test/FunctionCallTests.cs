@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Cmc;
 using Cmc.Core;
@@ -189,8 +190,9 @@ namespace Cmc_Test
 								}))
 						}))));
 			expr.SurroundWith(Environment.SolarSystem);
-			expr.Statements.Last().PrintDumpInfo();
-			expr.Statements.Last().ConvertedStatementList.PrintDumpInfo();
+			expr.PrintDumpInfo();
+			Assert.IsNotNull(expr.ConvertedStatementList);
+			expr.ConvertedStatementList.PrintDumpInfo();
 		}
 	}
 }
