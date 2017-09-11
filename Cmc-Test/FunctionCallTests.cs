@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Cmc;
 using Cmc.Core;
 using Cmc.Decl;
@@ -183,10 +184,7 @@ namespace Cmc_Test
 								new List<Expression>(new[]
 								{
 									new FunctionCallExpression(MetaData.Empty, new VariableExpression(MetaData.Empty, "id"),
-										new List<Expression>(new[]
-										{
-											new IntLiteralExpression(MetaData.Empty, "123", true)
-										})
+										new List<Expression>(new[] {new IntLiteralExpression(MetaData.Empty, "123", true)})
 									)
 								}))
 						}))));
