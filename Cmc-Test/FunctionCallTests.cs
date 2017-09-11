@@ -13,6 +13,22 @@ namespace Cmc_Test
 	[TestFixture]
 	public class FunctionCallTests
 	{
+		/// <summary>
+		///  id function
+		///  let id = { a: i8 -> a }
+		/// </summary>
+		public VariableDeclaration IdDeclaration =>
+			new VariableDeclaration(MetaData.Empty, "id",
+				new LambdaExpression(MetaData.Empty,
+					new StatementList(MetaData.Empty,
+						new ReturnStatement(MetaData.Empty,
+							new VariableExpression(MetaData.Empty, "a"))),
+					new List<VariableDeclaration>(new[]
+					{
+						new VariableDeclaration(MetaData.Empty, "a", type:
+							new UnknownType(MetaData.Empty, "i8"))
+					})));
+
 		[SetUp]
 		public void Init() => Errors.ErrList.Clear();
 
@@ -20,16 +36,7 @@ namespace Cmc_Test
 		public void FuncCallTest1()
 		{
 			var example = new StatementList(MetaData.Empty,
-				new VariableDeclaration(MetaData.Empty, "id",
-					new LambdaExpression(MetaData.Empty,
-						new StatementList(MetaData.Empty,
-							new ReturnStatement(MetaData.Empty,
-								new VariableExpression(MetaData.Empty, "a"))),
-						new List<VariableDeclaration>(new[]
-						{
-							new VariableDeclaration(MetaData.Empty, "a", type:
-								new UnknownType(MetaData.Empty, "i8"))
-						}))),
+				IdDeclaration,
 				new VariableDeclaration(MetaData.Empty, "gg", type:
 					new UnknownType(MetaData.Empty, "i8")),
 				new AssignmentStatement(MetaData.Empty,
@@ -47,16 +54,7 @@ namespace Cmc_Test
 		public void FuncCallTest2()
 		{
 			var example = new StatementList(MetaData.Empty,
-				new VariableDeclaration(MetaData.Empty, "id",
-					new LambdaExpression(MetaData.Empty,
-						new StatementList(MetaData.Empty,
-							new ReturnStatement(MetaData.Empty,
-								new VariableExpression(MetaData.Empty, "a"))),
-						new List<VariableDeclaration>(new[]
-						{
-							new VariableDeclaration(MetaData.Empty, "a", type:
-								new UnknownType(MetaData.Empty, "i8"))
-						}))),
+				IdDeclaration,
 				new VariableDeclaration(MetaData.Empty, "gg", isMutable: true, type:
 					new UnknownType(MetaData.Empty, "i8")),
 				new AssignmentStatement(MetaData.Empty,
@@ -170,6 +168,13 @@ namespace Cmc_Test
 			example.SurroundWith(Environment.SolarSystem);
 			example.PrintDumpInfo();
 			Assert.IsEmpty(Errors.ErrList);
+		}
+
+		[Test]
+		public void ExpressionSplittingTest1()
+		{
+			var expr = new StatementList(MetaData.Empty,
+			);
 		}
 	}
 }
