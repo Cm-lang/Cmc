@@ -174,7 +174,24 @@ namespace Cmc_Test
 		public void ExpressionSplittingTest1()
 		{
 			var expr = new StatementList(MetaData.Empty,
-			);
+				IdDeclaration,
+				new ExpressionStatement(MetaData.Empty,
+					new FunctionCallExpression(MetaData.Empty,
+						new VariableExpression(MetaData.Empty, "id"), new List<Expression>(new[]
+						{
+							new FunctionCallExpression(MetaData.Empty, new VariableExpression(MetaData.Empty, "id"),
+								new List<Expression>(new[]
+								{
+									new FunctionCallExpression(MetaData.Empty, new VariableExpression(MetaData.Empty, "id"),
+										new List<Expression>(new[]
+										{
+											new IntLiteralExpression(MetaData.Empty, "123", true)
+										})
+									)
+								}))
+						}))));
+			expr.SurroundWith(Environment.SolarSystem);
+			expr.PrintDumpInfo();
 		}
 	}
 }
