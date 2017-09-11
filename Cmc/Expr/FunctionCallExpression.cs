@@ -149,7 +149,7 @@ namespace Cmc.Expr
 			{
 				var expression = ParameterList[index];
 				if (expression is AtomicExpression) continue;
-				var name = $"tmp{expression.GetHashCode()}";
+				var name = $"tmp{(ulong) expression.GetHashCode()}";
 				if (null == statements) statements = new List<Statement>();
 				if (null == expression.ConvertedResult)
 					statements.Add(new VariableDeclaration(MetaData, name, expression));
