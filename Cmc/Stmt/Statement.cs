@@ -21,7 +21,7 @@ namespace Cmc.Stmt
 		///
 		///  in order to express them as a list of simple expressions
 		/// </summary>
-		[CanBeNull] public Statement ConvertedStatementList = null;
+		[CanBeNull] public Statement ConvertedStatementList;
 
 		[NotNull]
 		public virtual IEnumerable<ReturnStatement> FindReturnStatements() => new List<ReturnStatement>(0);
@@ -56,6 +56,13 @@ namespace Cmc.Stmt
 		{
 			base.SurroundWith(environment);
 			Expression.SurroundWith(Env);
+			var res = Expression.ConvertedResult;
+			if (null != res)
+				ConvertedStatementList = new StatementList(MetaData,
+					res.ConvertedStatements.Concat(new[]
+					{
+						new ExpressionStatement(MetaData, res.ConvertedExpression)
+					}).ToArray());
 		}
 
 		public override IEnumerable<string> Dump() => new[] {"expression statement:\n"}

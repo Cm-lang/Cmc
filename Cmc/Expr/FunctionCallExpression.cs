@@ -76,12 +76,17 @@ namespace Cmc.Expr
 			for (var index = 0; index < ParameterList.Count; index++)
 			{
 				var expression = ParameterList[index];
-				if (null == expression.ConvertedResult) continue;
-				var convertedRes = expression.ConvertedResult;
+				if (expression is AtomicExpression) continue;
+				var name = $"tmp{(ulong) expression.GetHashCode()}";
 				if (null == statements) statements = new List<Statement>();
-				statements.AddRange(convertedRes.ConvertedStatements);
-				var name = $"tmp{expression.GetHashCode()}";
-				statements.Add(new VariableDeclaration(MetaData, name, convertedRes.ConvertedExpression));
+				if (null == expression.ConvertedResult)
+					statements.Add(new VariableDeclaration(MetaData, name, expression));
+				else
+				{
+					var convertedRes = expression.ConvertedResult;
+					statements.AddRange(convertedRes.ConvertedStatements);
+					statements.Add(new VariableDeclaration(MetaData, name, convertedRes.ConvertedExpression));
+				}
 				ParameterList[index] = new VariableExpression(MetaData, name);
 			}
 			if (null != statements)
@@ -139,6 +144,25 @@ namespace Cmc.Expr
 					"not found");
 			else
 				Outside = (LambdaExpression) declaration.Expression;
+			List<Statement> statements = null;
+			for (var index = 0; index < ParameterList.Count; index++)
+			{
+				var expression = ParameterList[index];
+				if (expression is AtomicExpression) continue;
+				var name = $"tmp{(ulong) expression.GetHashCode()}";
+				if (null == statements) statements = new List<Statement>();
+				if (null == expression.ConvertedResult)
+					statements.Add(new VariableDeclaration(MetaData, name, expression));
+				else
+				{
+					var convertedRes = expression.ConvertedResult;
+					statements.AddRange(convertedRes.ConvertedStatements);
+					statements.Add(new VariableDeclaration(MetaData, name, convertedRes.ConvertedExpression));
+				}
+				ParameterList[index] = new VariableExpression(MetaData, name);
+			}
+			if (null != statements)
+				ConvertedResult = new ExpressionConvertedResult(statements, this);
 		}
 
 		public override Type GetExpressionType() =>
