@@ -26,28 +26,32 @@ namespace Cmc.Expr
 		protected void Split()
 		{
 			List<Statement> statements = null;
-			Environment env = null;
 			for (var index = 0; index < ParameterList.Count; index++)
 			{
 				var expression = ParameterList[index];
 				if (expression is AtomicExpression) continue;
 				var name = $"tmp{(ulong) expression.GetHashCode()}";
 				if (null == statements) statements = new List<Statement>();
-				if (null == env) env = new Environment(Env);
+				VariableDeclaration decl;
 				if (null == expression.ConvertedResult)
-					statements.Add(new VariableDeclaration(MetaData, name, expression));
+					decl = new VariableDeclaration(MetaData, name, expression)
+					{
+						Type = expression.GetExpressionType()
+					};
 				else
 				{
 					var convertedRes = expression.ConvertedResult;
 					statements.AddRange(convertedRes.ConvertedStatements);
-					var variableDeclaration = new VariableDeclaration(MetaData, name, convertedRes.ConvertedExpression);
-					env.Declarations.Add(variableDeclaration);
-					variableDeclaration.SurroundWith(env);
-					statements.Add(variableDeclaration);
+					decl = new VariableDeclaration(MetaData, name, convertedRes.ConvertedExpression)
+					{
+						Type = convertedRes.ConvertedExpression.GetExpressionType()
+					};
 				}
-				var variableExpression = new VariableExpression(MetaData, name);
-				variableExpression.SurroundWith(env);
-				ParameterList[index] = variableExpression;
+				statements.Add(decl);
+				ParameterList[index] = new VariableExpression(MetaData, name)
+				{
+					Declaration = decl
+				};
 			}
 			if (null != statements)
 				ConvertedResult = new ExpressionConvertedResult(statements, this);
