@@ -1,18 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using Cmc;
 using Cmc.Core;
 using Cmc.Decl;
 using Cmc.Expr;
 using Cmc.Stmt;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Environment = Cmc.Core.Environment;
 
-namespace Cmc_Test
+namespace CmcTest
 {
-	[TestFixture]
+	[TestClass]
 	public class FunctionCallTests
 	{
 		/// <summary>
@@ -31,10 +29,10 @@ namespace Cmc_Test
 							new UnknownType(MetaData.Empty, "i8"))
 					})));
 
-		[SetUp]
+		[TestInitialize]
 		public void Init() => Errors.ErrList.Clear();
 
-		[Test]
+		[TestMethod]
 		public void FuncCallTest1()
 		{
 			var example = new StatementList(MetaData.Empty,
@@ -49,10 +47,10 @@ namespace Cmc_Test
 			example.SurroundWith(Environment.SolarSystem);
 			example.PrintDumpInfo();
 			Console.WriteLine(string.Join("\n", Errors.ErrList));
-			Assert.IsNotEmpty(Errors.ErrList);
+			Assert.IsTrue(0 != Errors.ErrList.Count);
 		}
 
-		[Test]
+		[TestMethod]
 		public void FuncCallTest2()
 		{
 			var example = new StatementList(MetaData.Empty,
@@ -67,13 +65,13 @@ namespace Cmc_Test
 			example.SurroundWith(Environment.SolarSystem);
 			example.PrintDumpInfo();
 			Console.WriteLine(string.Join("\n", Errors.ErrList));
-			Assert.IsEmpty(Errors.ErrList);
+			Assert.IsTrue(0 == Errors.ErrList.Count);
 		}
 
 		/// <summary>
 		///  recur fail test
 		/// </summary>
-		[Test]
+		[TestMethod]
 		public void FuncCallTest3()
 		{
 			var lambda = new LambdaExpression(MetaData.Empty,
@@ -97,13 +95,13 @@ namespace Cmc_Test
 					new FunctionCallExpression(MetaData.Empty,
 						new VariableExpression(MetaData.Empty, "recurFunc"),
 						new List<Expression>(new[] {new IntLiteralExpression(MetaData.Empty, "233", true, 8)}))));
-			Assert.Throws<CompilerException>(() => { example.SurroundWith(Environment.SolarSystem); });
+			Assert.ThrowsException<CompilerException>(() => { example.SurroundWith(Environment.SolarSystem); });
 		}
 
 		/// <summary>
 		///  recur test
 		/// </summary>
-		[Test]
+		[TestMethod]
 		public void FuncCallTest4()
 		{
 			var lambda = new LambdaExpression(MetaData.Empty,
@@ -136,7 +134,7 @@ namespace Cmc_Test
 		///  expression:
 		///  i8 { a: i32 -> i8 { recur(a) }() }
 		/// </summary>
-		[Test]
+		[TestMethod]
 		public void FuncCallTest5()
 		{
 			var lambda = new LambdaExpression(MetaData.Empty,
@@ -169,10 +167,10 @@ namespace Cmc_Test
 						new List<Expression>(new[] {new IntLiteralExpression(MetaData.Empty, "233", true, 8)}))));
 			example.SurroundWith(Environment.SolarSystem);
 			example.PrintDumpInfo();
-			Assert.IsEmpty(Errors.ErrList);
+			Assert.IsTrue(0 == Errors.ErrList.Count);
 		}
 
-		[Test]
+		[TestMethod]
 		public void ExpressionSplittingTest1()
 		{
 			var expr = new StatementList(MetaData.Empty,

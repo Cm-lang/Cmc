@@ -2,17 +2,17 @@
 using Cmc;
 using Cmc.Core;
 using Cmc.Decl;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Cmc_Test
+namespace CmcTest
 {
-	[TestFixture]
+	[TestClass]
 	public class MutualRecTests
 	{
-		[SetUp]
+		[TestInitialize]
 		public void Init() => Errors.ErrList.Clear();
 
-		[Test]
+		[TestMethod]
 		public void MutualRecTest1()
 		{
 			var core = new Core();
@@ -25,11 +25,11 @@ namespace Cmc_Test
 			var env = new Environment(Environment.SolarSystem);
 			env.Declarations.Add(def);
 			core.CheckMutualRec(new[] {def});
-			Assert.IsNotEmpty(Errors.ErrList);
+			Assert.IsTrue(0 != Errors.ErrList.Count);
 			Errors.PrintErrorInfo();
 		}
 
-		[Test]
+		[TestMethod]
 		public void MutualRecTest2()
 		{
 			var core = new Core();
@@ -51,11 +51,11 @@ namespace Cmc_Test
 			env.Declarations.Add(def);
 			env.Declarations.Add(def2);
 			core.CheckMutualRec(new[] {def, def2});
-			Assert.IsNotEmpty(Errors.ErrList);
+			Assert.IsTrue(0 != Errors.ErrList.Count);
 			Errors.PrintErrorInfo();
 		}
 
-		[Test]
+		[TestMethod]
 		public void MutualRecTest3()
 		{
 			var core = new Core();
@@ -100,7 +100,7 @@ namespace Cmc_Test
 //			foreach (var structDeclaration in defs)
 //				structDeclaration.PrintDumpInfo();
 			core.CheckMutualRec(defs);
-			Assert.IsNotEmpty(Errors.ErrList);
+			Assert.IsTrue(0 != Errors.ErrList.Count);
 			Errors.PrintErrorInfo();
 		}
 	}

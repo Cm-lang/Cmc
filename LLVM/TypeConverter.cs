@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 
 namespace LLVM
 {
-	public class TypeConverter
+	public static class TypeConverter
 	{
 		public static string ConvertType([CanBeNull] Type type)
 		{
