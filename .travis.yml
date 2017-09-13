@@ -1,21 +1,4 @@
-language: csharp
-solution: Cmc.sln
-
-install:
-  - nuget restore Cmc.sln
-  - nuget install NUnit.Runners -Version 3.2.0 -OutputDirectory testrunner
-
-cache:
-  apt: true
+# TODO
 
 script:
-  - xbuild /p:Configuration=Release Cmc.sln
-  - mono ./testrunner/NUnit.ConsoleRunner.3.2.0/tools/nunit3-console.exe ./Cmc-Test/bin/Release/Cmc_Test.dll
-  - mono ./testrunner/NUnit.ConsoleRunner.3.2.0/tools/nunit3-console.exe ./LLVM-Test/bin/Release/LLVM_Test.dll
-  # local:
-  # mono ./testrunner/NUnit.ConsoleRunner.3.7.0/tools/nunit3-console.exe ./Cmc-Test/bin/Debug/Cmc_Test.dll
-  # mono ./testrunner/NUnit.ConsoleRunner.3.7.0/tools/nunit3-console.exe ./LLVM-Test/bin/Debug/LLVM_Test.dll
-
-cache:
-  apt: true
-
+  - echo "???"

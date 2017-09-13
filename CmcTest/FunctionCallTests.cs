@@ -17,7 +17,7 @@ namespace CmcTest
 		///  id function
 		///  let id = { a: i8 -> a }
 		/// </summary>
-		public VariableDeclaration IdDeclaration =>
+		private static VariableDeclaration IdDeclaration =>
 			new VariableDeclaration(MetaData.Empty, "id",
 				new LambdaExpression(MetaData.Empty,
 					new StatementList(MetaData.Empty,

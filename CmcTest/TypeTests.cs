@@ -95,7 +95,7 @@ namespace CmcTest
 			var type = (LambdaType) example.Type;
 			Assert.IsNotNull(type);
 			Assert.AreEqual("i32", type.RetType.ToString());
-			Assert.IsTrue(0 == ((IList<string>) type.ArgsList).Count);
+			Assert.IsTrue(0 == type.ArgsList.Count);
 		}
 
 		[TestMethod]
