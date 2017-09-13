@@ -8,25 +8,80 @@ using static System.StringComparison;
 
 namespace Cmc.Expr
 {
-	public class FunctionCallExpression : Expression
+	public abstract class CallExpression : Expression
 	{
 		[NotNull] public readonly IList<Expression> ParameterList;
 
+		protected CallExpression(
+			MetaData metaData,
+			[NotNull] IList<Expression> parameterList) : base(metaData) => ParameterList = parameterList;
+
+		public override void SurroundWith(Environment environment)
+		{
+			base.SurroundWith(environment);
+			foreach (var expression in ParameterList)
+				expression.SurroundWith(environment);
+		}
+
+		protected IEnumerable<string> DumpParams() =>
+			new[] {"  parameters:\n"}
+				.Concat(
+					from i in ParameterList
+					from j in i.Dump().Select(MapFunc2)
+					select j);
+
+		protected void Split()
+		{
+			List<Statement> statements = null;
+			for (var index = 0; index < ParameterList.Count; index++)
+			{
+				var expression = ParameterList[index];
+				if (expression is AtomicExpression) continue;
+				var name = $"tmp{(ulong) expression.GetHashCode()}";
+				if (null == statements) statements = new List<Statement>();
+				VariableDeclaration decl;
+				if (null == expression.ConvertedResult)
+					decl = new VariableDeclaration(MetaData, name, expression)
+					{
+						Type = expression.GetExpressionType()
+					};
+				else
+				{
+					var convertedRes = expression.ConvertedResult;
+					statements.AddRange(convertedRes.ConvertedStatements);
+					decl = new VariableDeclaration(MetaData, name, convertedRes.ConvertedExpression)
+					{
+						Type = convertedRes.ConvertedExpression.GetExpressionType()
+					};
+				}
+				statements.Add(decl);
+				ParameterList[index] = new VariableExpression(MetaData, name)
+				{
+					Declaration = decl
+				};
+			}
+			if (null != statements)
+				ConvertedResult = new ExpressionConvertedResult(statements, this);
+		}
+	}
+
+	public class FunctionCallExpression : CallExpression
+	{
 		[NotNull] public readonly Expression Receiver;
 		private Type _type;
 
-		public FunctionCallExpression(MetaData metaData, [NotNull] Expression receiver,
+		public FunctionCallExpression(
+			MetaData metaData,
+			[NotNull] Expression receiver,
 			[NotNull] IList<Expression> parameterList) :
-			base(metaData)
+			base(metaData, parameterList)
 		{
-			ParameterList = parameterList;
 			Receiver = receiver;
 		}
 
 		public override void SurroundWith(Environment environment)
 		{
 			base.SurroundWith(environment);
-			foreach (var expression in ParameterList) expression.SurroundWith(Env);
 			Receiver.SurroundWith(Env);
 			// FEATURE #33
 			if (Receiver is VariableExpression receiver)
@@ -72,25 +127,7 @@ namespace Cmc.Expr
 				Errors.Add(
 					$"{MetaData.GetErrorHeader()}the function call receiver shoule be a function," +
 					$" not {Receiver.GetExpressionType()}.");
-			List<Statement> statements = null;
-			for (var index = 0; index < ParameterList.Count; index++)
-			{
-				var expression = ParameterList[index];
-				if (expression is AtomicExpression) continue;
-				var name = $"tmp{(ulong) expression.GetHashCode()}";
-				if (null == statements) statements = new List<Statement>();
-				if (null == expression.ConvertedResult)
-					statements.Add(new VariableDeclaration(MetaData, name, expression));
-				else
-				{
-					var convertedRes = expression.ConvertedResult;
-					statements.AddRange(convertedRes.ConvertedStatements);
-					statements.Add(new VariableDeclaration(MetaData, name, convertedRes.ConvertedExpression));
-				}
-				ParameterList[index] = new VariableExpression(MetaData, name);
-			}
-			if (null != statements)
-				ConvertedResult = new ExpressionConvertedResult(statements, this);
+			Split();
 		}
 
 		public override Type GetExpressionType() =>
@@ -102,33 +139,25 @@ namespace Cmc.Expr
 				"  receiver:\n"
 			}
 			.Concat(Receiver.Dump().Select(MapFunc2))
-			.Concat(new[] {"  parameters:\n"})
-			.Concat(
-				from i in ParameterList
-				from j in i.Dump().Select(MapFunc2)
-				select j)
+			.Concat(DumpParams())
 			.Concat(new[] {"  type:\n"})
 			.Concat(_type.Dump().Select(MapFunc2));
 	}
 
-	public class RecurCallExpression : Expression
+	public class RecurCallExpression : CallExpression
 	{
-		[NotNull] public readonly IList<Expression> ParameterList;
 		[CanBeNull] public LambdaExpression Outside;
 
 		public RecurCallExpression(
 			MetaData metaData,
 			[NotNull] IList<Expression> parameterList) :
-			base(metaData)
+			base(metaData, parameterList)
 		{
-			ParameterList = parameterList;
 		}
 
 		public override void SurroundWith(Environment environment)
 		{
 			base.SurroundWith(environment);
-			foreach (var expression in ParameterList)
-				expression.SurroundWith(environment);
 			var declaration = Env.FindDeclarationSatisfies(decl =>
 				decl is VariableDeclaration variable &&
 				variable.Type is LambdaType lambdaType &&
@@ -144,26 +173,16 @@ namespace Cmc.Expr
 					"not found");
 			else
 				Outside = (LambdaExpression) declaration.Expression;
-			List<Statement> statements = null;
-			for (var index = 0; index < ParameterList.Count; index++)
-			{
-				var expression = ParameterList[index];
-				if (expression is AtomicExpression) continue;
-				var name = $"tmp{(ulong) expression.GetHashCode()}";
-				if (null == statements) statements = new List<Statement>();
-				if (null == expression.ConvertedResult)
-					statements.Add(new VariableDeclaration(MetaData, name, expression));
-				else
-				{
-					var convertedRes = expression.ConvertedResult;
-					statements.AddRange(convertedRes.ConvertedStatements);
-					statements.Add(new VariableDeclaration(MetaData, name, convertedRes.ConvertedExpression));
-				}
-				ParameterList[index] = new VariableExpression(MetaData, name);
-			}
-			if (null != statements)
-				ConvertedResult = new ExpressionConvertedResult(statements, this);
+			Split();
 		}
+
+		public override IEnumerable<string> Dump() => new[]
+			{
+				"recur call expression:\n",
+				"  receiver:\n"
+			}
+			.Concat(Outside?.Dump().Select(MapFunc2) ?? new[] {"    not found!"})
+			.Concat(DumpParams());
 
 		public override Type GetExpressionType() =>
 			Outside?.GetExpressionType() ??
