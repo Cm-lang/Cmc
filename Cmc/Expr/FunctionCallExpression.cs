@@ -16,6 +16,13 @@ namespace Cmc.Expr
 			MetaData metaData,
 			[NotNull] IList<Expression> parameterList) : base(metaData) => ParameterList = parameterList;
 
+		public override void SurroundWith(Environment environment)
+		{
+			base.SurroundWith(environment);
+			foreach (var expression in ParameterList)
+				expression.SurroundWith(environment);
+		}
+
 		protected void Split()
 		{
 			List<Statement> statements = null;
@@ -35,7 +42,7 @@ namespace Cmc.Expr
 					statements.AddRange(convertedRes.ConvertedStatements);
 					var variableDeclaration = new VariableDeclaration(MetaData, name, convertedRes.ConvertedExpression);
 					env.Declarations.Add(variableDeclaration);
-					variableDeclaration.SurroundWith(Env);
+					variableDeclaration.SurroundWith(env);
 					statements.Add(variableDeclaration);
 				}
 				var variableExpression = new VariableExpression(MetaData, name);
@@ -64,7 +71,6 @@ namespace Cmc.Expr
 		public override void SurroundWith(Environment environment)
 		{
 			base.SurroundWith(environment);
-			foreach (var expression in ParameterList) expression.SurroundWith(Env);
 			Receiver.SurroundWith(Env);
 			// FEATURE #33
 			if (Receiver is VariableExpression receiver)
@@ -145,8 +151,6 @@ namespace Cmc.Expr
 		public override void SurroundWith(Environment environment)
 		{
 			base.SurroundWith(environment);
-			foreach (var expression in ParameterList)
-				expression.SurroundWith(environment);
 			var declaration = Env.FindDeclarationSatisfies(decl =>
 				decl is VariableDeclaration variable &&
 				variable.Type is LambdaType lambdaType &&
