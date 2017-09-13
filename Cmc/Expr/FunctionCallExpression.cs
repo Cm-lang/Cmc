@@ -23,6 +23,13 @@ namespace Cmc.Expr
 				expression.SurroundWith(environment);
 		}
 
+		protected IEnumerable<string> DumpParams() =>
+			new[] {"  parameters:\n"}
+				.Concat(
+					from i in ParameterList
+					from j in i.Dump().Select(MapFunc2)
+					select j);
+
 		protected void Split()
 		{
 			List<Statement> statements = null;
@@ -132,11 +139,7 @@ namespace Cmc.Expr
 				"  receiver:\n"
 			}
 			.Concat(Receiver.Dump().Select(MapFunc2))
-			.Concat(new[] {"  parameters:\n"})
-			.Concat(
-				from i in ParameterList
-				from j in i.Dump().Select(MapFunc2)
-				select j)
+			.Concat(DumpParams())
 			.Concat(new[] {"  type:\n"})
 			.Concat(_type.Dump().Select(MapFunc2));
 	}
@@ -172,6 +175,14 @@ namespace Cmc.Expr
 				Outside = (LambdaExpression) declaration.Expression;
 			Split();
 		}
+
+		public override IEnumerable<string> Dump() => new[]
+			{
+				"recur call expression:\n",
+				"  receiver:\n"
+			}
+			.Concat(Outside?.Dump().Select(MapFunc2) ?? new[] {"    not found!"})
+			.Concat(DumpParams());
 
 		public override Type GetExpressionType() =>
 			Outside?.GetExpressionType() ??
