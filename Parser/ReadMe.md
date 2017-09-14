@@ -4,7 +4,8 @@
 ### EBNF SelfExamination
 
 [EBNF Grammar](../selfexamine.ebnf)
-```BNF
+
+```bnf
 Expr    ::= Or+
 Or      ::= AtomExpr ('|' AtomExpr)* 
 
@@ -21,49 +22,41 @@ Name   ::= R'[a-zA-Z_][a-zA-Z0-9]*'
 Str ::= R'[\w|\W]*'
 Number ::= R'\d+'
 ```
------------------------------
-[Token for EBNF](./LanguageTest/SelfExaminationForEBNF/Token.cs)
------------------------------
+
+\-----------------------------  
+[Token for EBNF](./LanguageTest/SelfExaminationForEBNF/Token.cs)  
+\-----------------------------
 
 [Parser for EBNF](./LanguageTest/SelfExaminationForEBNF/Parser.cs)  
+
 Here is the definition of `Atom`.
-```CSharp
-var Atom = new Ast(
-                compile_closure:ref compile_closure,
-                name:"Atom",
-                ebnf:new BaseAst[][]{
-                    new BaseAst[]{
-                        DefualtToken.Name
-                    },
-                    new BaseAst[]{
-                        DefualtToken.Str
-                    },
-                    new BaseAst[]{
-                        DefualtToken.LB,
-                        new LazyDef("Expr"),
-                        DefualtToken.RB
-                    },
-                    new BaseAst[]{
-                        DefualtToken.LP,
-                        new LazyDef("Expr"),
-                        DefualtToken.RP
-                    }
-                }
-            );
+
+```c#
+var atom = new Ast(
+    ref compileClosure,
+    "Atom", new BaseAst[]
+    {
+        DefualtToken.Name
+    }, new BaseAst[]
+    {
+        DefualtToken.Str
+    }, new BaseAst[]
+    {
+        DefualtToken.Lb,
+        new LazyDef("Expr"),
+        DefualtToken.Rb
+    }, new BaseAst[]
+    {
+        DefualtToken.Lp,
+        new LazyDef("Expr"),
+        DefualtToken.Rp
+    });
 ```
------------------------------
+
+\-----------------------------  
 ### Core Codes
 
 [Node.cs](./ObjectRegex/Node.cs)  
 The results parsed are organized by `CSharp.ObjectRegex.Mode`.   
 If you want to dump the results, just use `CSharp.ObjectRegex.Mode.Dump()`.  
 Here is an example at [testres_csharp](../testres_csharp)
-
-
-
-
-
-
-
-
-
