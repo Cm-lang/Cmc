@@ -34,13 +34,13 @@ namespace LLVM
 			switch (element)
 			{
 				case Expression expression:
-					GenAstExpression(builder, expression, ref varName);
+					GenAstExpression(builder, expression);
 					break;
 				case Declaration declaration:
-					GenAstDeclaration(builder, declaration, ref varName);
+					GenAstDeclaration(builder, declaration);
 					break;
 				case Statement statement:
-					GenAstStatement(builder, statement, ref varName);
+					GenAstStatement(builder, statement);
 					break;
 			}
 		}
