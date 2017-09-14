@@ -11,7 +11,7 @@ using static LLVM.TypeConverter;
 
 namespace LLVM
 {
-	public class GenStatement
+	public static class GenStatement
 	{
 		public static void GenAstStatement(
 			[NotNull] StringBuilder builder,

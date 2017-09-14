@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Package</id>
+    <version>0.0.2</version>
+    <authors>ice1000</authors>
+    <owners>ice1000 SmallLuma</owners>
+    <licenseUrl>https://github.com/Cm-lang/Cmc/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/Cm-lang/Cmc</projectUrl>
+    <iconUrl>https://avatars1.githubusercontent.com/u/31237156</iconUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>The compiler for the Cm programming language</description>
+    <releaseNotes>Second release</releaseNotes>
+    <copyright>Copyright 2017</copyright>
+    <tags>Compiler Analyzer TypeSystem Cm Cmlang</tags>
+    <dependencies>
+      <dependency id="JetBrains.Annotations" version="11.0.0" />
+      <dependency id="Microsoft.NETCore.App" version="2.0.0" />
+    </dependencies>
+  </metadata>
+</package>

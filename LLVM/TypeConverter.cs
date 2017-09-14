@@ -29,6 +29,7 @@ namespace LLVM
 							       select ConvertType(i.Type)) + "}";
 					throw new CompilerException($"cannot resolve {type}");
 			}
+			throw new CompilerException($"cannot resolve {type}");
 		}
 	}
 }
