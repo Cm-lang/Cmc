@@ -26,8 +26,6 @@ namespace LLVM
 
 	public static class Gen
 	{
-		public static ulong GlobalVarCount;
-
 		[NotNull]
 		public static string Generate(
 			[NotNull] params Declaration[] declarations)

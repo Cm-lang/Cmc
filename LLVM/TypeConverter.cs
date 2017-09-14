@@ -19,17 +19,16 @@ namespace LLVM
 						default:
 							return primaryType.ToString();
 					}
-					break;
 				case LambdaType lambdaType:
 					// TODO select a class
 					break;
 				case SecondaryType secondaryType:
 					if (secondaryType.Struct != null)
-						return $"{{{string.Join(",", from i in secondaryType.Struct.FieldList select ConvertType(i.Type))}}}";
+						return "{" + string.Join(",",
+							       from i in secondaryType.Struct.FieldList
+							       select ConvertType(i.Type)) + "}";
 					throw new CompilerException($"cannot resolve {type}");
 			}
-			// ReSharper disable once InvertIf
-			throw new CompilerException($"unknown type {type}");
 		}
 	}
 }
