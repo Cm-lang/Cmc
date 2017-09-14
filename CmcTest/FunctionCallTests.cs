@@ -214,6 +214,7 @@ namespace CmcTest
 			expr.SurroundWith(Environment.SolarSystem);
 			expr.PrintDumpInfo();
 			Assert.IsNotNull(expr.ConvertedStatementList);
+			Assert.IsTrue(0 != Errors.ErrList.Count);
 			expr.ConvertedStatementList.PrintDumpInfo();
 		}
 	}

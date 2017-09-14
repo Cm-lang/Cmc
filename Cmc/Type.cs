@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Cmc.Core;
 using Cmc.Decl;
 using JetBrains.Annotations;
+using static System.StringComparison;
 using Environment = Cmc.Core.Environment;
 
 #pragma warning disable 659
@@ -103,7 +103,7 @@ namespace Cmc
 		public override string ToString() => Name;
 
 		public override bool Equals(object obj) =>
-			obj is PrimaryType type && string.Equals(type.Name, Name, StringComparison.Ordinal);
+			obj is PrimaryType type && string.Equals(type.Name, Name, Ordinal);
 	}
 
 	/// <summary>
@@ -138,7 +138,7 @@ namespace Cmc
 		public override string ToString() => Name;
 
 		public override bool Equals(object obj) =>
-			obj is SecondaryType type && string.Equals(type.Name, Name, StringComparison.Ordinal);
+			obj is SecondaryType type && string.Equals(type.Name, Name, Ordinal);
 
 		public override IEnumerable<string> Dump() =>
 			new[] {$"secondary type[{this}]:\n"};

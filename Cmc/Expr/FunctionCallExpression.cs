@@ -100,6 +100,8 @@ namespace Cmc.Expr
 					receiver.Declaration = (VariableDeclaration) receiverDeclaration;
 					receiverDeclaration.Used = true;
 				}
+				else
+					Errors.Add($"{MetaData.GetErrorHeader()}unresolved reference {receiver.Name}");
 			}
 			LambdaType hisType;
 			try
