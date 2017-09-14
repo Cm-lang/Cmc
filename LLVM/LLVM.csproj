@@ -1,11 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	<PropertyGroup>
-		<TargetFramework>netstandard2.0</TargetFramework>
-	</PropertyGroup>
-	<ItemGroup>
-		<ProjectReference Include="..\Cmc\Cmc.csproj">
-			<Project>{17e0de41-2426-4616-8424-ba6c0f97f7c0}</Project>
-			<Name>Cmc</Name>
-		</ProjectReference>
-	</ItemGroup>
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Cmc\Cmc.csproj">
+      <Project>{17e0de41-2426-4616-8424-ba6c0f97f7c0}</Project>
+      <Name>Cmc</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="LLVM.NativeLibrary" Version="0.1.0.1" />
+    <PackageReference Include="LLVMSharp" Version="3.9.1-rc3" />
+  </ItemGroup>
 </Project>
