@@ -32,49 +32,13 @@ namespace LLVM
 		{
 			Attr.Restore();
 			var core = new Core();
-			var builder = new StringBuilder();
 			var analyzedDeclarations = core.Analyze(declarations);
-			builder.AppendLine("declare i32 @puts(i8*) #1");
 			for (var i = 0; i < Constants.StringConstants.Count; i++)
 			{
 				var str = Constants.StringConstants[i];
 				var len = Constants.StringConstantLengths[i];
-				builder.AppendLine(
-					$"@.str{i}=private unnamed_addr constant [{len} x i8] c\"{str}\", align 1");
 			}
-			var varName = 0ul;
-			foreach (var analyzedDeclaration in analyzedDeclarations)
-			{
-				GenAst(builder, analyzedDeclaration, ref varName);
-				varName++;
-			}
-			for (var i = 0ul; i < Attr.GlobalFunctionCount; i++)
-				if (i == Attr.MainFunctionIndex)
-					builder.AppendLine(
-						$"attributes #{i} = " +
-						"{ noinline norecurse uwtable " +
-						"\"correctly-rounded-divide-sqrt-fp-math\"=\"false\" " +
-						"\"disable-tail-calls\"=\"false\" " +
-						"\"less-precise-fpmad\"=\"false\" " +
-						"\"no-frame-pointer-elim\"=\"true\" " +
-						"\"no-frame-pointer-elim-non-leaf\" " +
-						"\"no-infs-fp-math\"=\"false\" " +
-						"\"no-jump-tables\"=\"false\" " +
-						"\"no-nans-fp-math\"=\"false\" " +
-						"\"no-signed-zeros-fp-math\"=\"false\" " +
-						"\"no-trapping-math\"=\"false\" " +
-						"\"stack-protector-buffer-size\"=\"8\" " +
-						"\"target-cpu\"=\"x86-64\" " +
-						"\"target-features\"=\"+fxsr,+mmx,+sse,+sse2,+x87\" " +
-						"\"unsafe-fp-math\"=\"false\" " +
-						"\"use-soft-float\"=\"false\" }");
-				else
-					// TODO add attributes
-					builder.AppendLine(
-						$"attributes #{i} = " +
-						"{ " +
-						" }");
-			return builder.ToString();
+			return ""; // TODO
 		}
 
 		public static void RunLlvm(
