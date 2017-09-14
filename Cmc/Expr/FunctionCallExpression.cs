@@ -158,15 +158,14 @@ namespace Cmc.Expr
 		public override void SurroundWith(Environment environment)
 		{
 			base.SurroundWith(environment);
-			var declaration = Env.FindDeclarationSatisfies(decl =>
+			if (!(Env.FindDeclarationSatisfies(decl =>
 				decl is VariableDeclaration variable &&
 				variable.Type is LambdaType lambdaType &&
 				string.Equals(variable.Name, ReservedWords.Recur, Ordinal) &&
 				lambdaType.ArgsList.Count == ParameterList.Count &&
 				lambdaType.ArgsList.SequenceEqual(
 					from i in ParameterList
-					select i.GetExpressionType())) as VariableDeclaration;
-			if (null == declaration)
+					select i.GetExpressionType())) is VariableDeclaration declaration))
 				Errors.Add(
 					$"{MetaData.GetErrorHeader()}call to recur" +
 					$"({string.Join(",", from p in ParameterList select p.GetExpressionType().ToString())})" +

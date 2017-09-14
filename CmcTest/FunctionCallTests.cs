@@ -79,7 +79,10 @@ namespace CmcTest
 					new ReturnStatement(MetaData.Empty,
 						new FunctionCallExpression(MetaData.Empty,
 							new VariableExpression(MetaData.Empty, "recur"),
-							new List<Expression>(new[] {new VariableExpression(MetaData.Empty, "a")})))),
+							new List<Expression>(new[]
+							{
+								new VariableExpression(MetaData.Empty, "a")
+							})))),
 				new List<VariableDeclaration>(new[]
 				{
 					new VariableDeclaration(MetaData.Empty, "a", type:
@@ -94,7 +97,10 @@ namespace CmcTest
 					new VariableExpression(MetaData.Empty, "gg"),
 					new FunctionCallExpression(MetaData.Empty,
 						new VariableExpression(MetaData.Empty, "recurFunc"),
-						new List<Expression>(new[] {new IntLiteralExpression(MetaData.Empty, "233", true, 8)}))));
+						new List<Expression>(new[]
+						{
+							new IntLiteralExpression(MetaData.Empty, "233", true, 8)
+						}))));
 			Assert.ThrowsException<CompilerException>(() => { example.SurroundWith(Environment.SolarSystem); });
 		}
 
@@ -109,7 +115,10 @@ namespace CmcTest
 					new ReturnStatement(MetaData.Empty,
 						new FunctionCallExpression(MetaData.Empty,
 							new VariableExpression(MetaData.Empty, "recur"),
-							new List<Expression>(new[] {new VariableExpression(MetaData.Empty, "a")})))),
+							new List<Expression>(new[]
+							{
+								new VariableExpression(MetaData.Empty, "a")
+							})))),
 				new List<VariableDeclaration>(new[]
 				{
 					new VariableDeclaration(MetaData.Empty, "a", type:
@@ -124,7 +133,10 @@ namespace CmcTest
 					new VariableExpression(MetaData.Empty, "gg"),
 					new FunctionCallExpression(MetaData.Empty,
 						new VariableExpression(MetaData.Empty, "recurFunc"),
-						new List<Expression>(new[] {new IntLiteralExpression(MetaData.Empty, "233", true, 8)}))));
+						new List<Expression>(new[]
+						{
+							new IntLiteralExpression(MetaData.Empty, "233", true, 8)
+						}))));
 			example.SurroundWith(Environment.SolarSystem);
 			example.PrintDumpInfo();
 		}
@@ -146,7 +158,10 @@ namespace CmcTest
 									new ReturnStatement(MetaData.Empty,
 										new FunctionCallExpression(MetaData.Empty,
 											new VariableExpression(MetaData.Empty, "recur"),
-											new List<Expression>(new[] {new VariableExpression(MetaData.Empty, "a")})))
+											new List<Expression>(new[]
+											{
+												new VariableExpression(MetaData.Empty, "a")
+											})))
 								), returnType:
 								new UnknownType(MetaData.Empty, "i8")),
 							new List<Expression>()))),
@@ -164,7 +179,10 @@ namespace CmcTest
 					new VariableExpression(MetaData.Empty, "gg"),
 					new FunctionCallExpression(MetaData.Empty,
 						new VariableExpression(MetaData.Empty, "recurFunc"),
-						new List<Expression>(new[] {new IntLiteralExpression(MetaData.Empty, "233", true, 8)}))));
+						new List<Expression>(new[]
+						{
+							new IntLiteralExpression(MetaData.Empty, "233", true, 8)
+						}))));
 			example.SurroundWith(Environment.SolarSystem);
 			example.PrintDumpInfo();
 			Assert.IsTrue(0 == Errors.ErrList.Count);
@@ -177,13 +195,19 @@ namespace CmcTest
 				IdDeclaration,
 				new ExpressionStatement(MetaData.Empty,
 					new FunctionCallExpression(MetaData.Empty,
-						new VariableExpression(MetaData.Empty, "id"), new List<Expression>(new[]
+						new VariableExpression(MetaData.Empty, "id"),
+						new List<Expression>(new[]
 						{
-							new FunctionCallExpression(MetaData.Empty, new VariableExpression(MetaData.Empty, "id"),
+							new FunctionCallExpression(MetaData.Empty,
+								new VariableExpression(MetaData.Empty, "id"),
 								new List<Expression>(new[]
 								{
-									new FunctionCallExpression(MetaData.Empty, new VariableExpression(MetaData.Empty, "id"),
-										new List<Expression>(new[] {new IntLiteralExpression(MetaData.Empty, "123", true)})
+									new FunctionCallExpression(MetaData.Empty,
+										new VariableExpression(MetaData.Empty, "id"),
+										new List<Expression>(new[]
+										{
+											new IntLiteralExpression(MetaData.Empty, "123", true)
+										})
 									)
 								}))
 						}))));

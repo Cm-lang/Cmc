@@ -41,7 +41,6 @@ namespace Cmc.Decl
 			// https://github.com/Cm-lang/Cm-Document/issues/12
 			if (string.Equals(Name, ReservedWords.Recur, Ordinal))
 			{
-				Debug.Assert(null != Expression);
 				Debug.Assert(null != Expression.Env);
 				Type = Expression.GetExpressionType();
 				return;

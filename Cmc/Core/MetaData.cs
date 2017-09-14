@@ -5,9 +5,9 @@ namespace Cmc.Core
 {
 	public struct MetaData
 	{
-		public int LineNumber;
-		public string FileName;
-		public string TrimedFileName;
+		public readonly int LineNumber;
+		public readonly string FileName;
+		public readonly string TrimedFileName;
 
 		public MetaData(int lineNumber, string fileName)
 		{

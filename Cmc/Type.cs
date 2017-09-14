@@ -46,16 +46,17 @@ namespace Cmc
 		public Type Resolve()
 		{
 			var declaration = Env.FindDeclarationByName(Name);
-			if (null == declaration) Gg();
-			if (declaration is TypeDeclaration typeDeclaration)
+			switch (declaration)
 			{
-				typeDeclaration.Used = true;
-				return typeDeclaration.Type;
-			}
-			if (declaration is StructDeclaration structDeclaration)
-			{
-				structDeclaration.Used = true;
-				return structDeclaration.Type;
+				case null:
+					Gg();
+					break;
+				case TypeDeclaration typeDeclaration:
+					typeDeclaration.Used = true;
+					return typeDeclaration.Type;
+				case StructDeclaration structDeclaration:
+					structDeclaration.Used = true;
+					return structDeclaration.Type;
 			}
 			Errors.Add(MetaData.GetErrorHeader() + Name + " is not a type");
 			throw new CompilerException($"cannot resolve {Name}");
