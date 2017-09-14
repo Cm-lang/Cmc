@@ -10,32 +10,32 @@ namespace Cmc.Expr
 {
 	public abstract class CallExpression : Expression
 	{
-		[NotNull] public readonly IList<Expression> ParameterList;
+		[NotNull] public readonly IList<Expression> ArgsList;
 
 		protected CallExpression(
 			MetaData metaData,
-			[NotNull] IList<Expression> parameterList) : base(metaData) => ParameterList = parameterList;
+			[NotNull] IList<Expression> parameterList) : base(metaData) => ArgsList = parameterList;
 
 		public override void SurroundWith(Environment environment)
 		{
 			base.SurroundWith(environment);
-			foreach (var expression in ParameterList)
+			foreach (var expression in ArgsList)
 				expression.SurroundWith(environment);
 		}
 
 		protected IEnumerable<string> DumpParams() =>
 			new[] {"  parameters:\n"}
 				.Concat(
-					from i in ParameterList
+					from i in ArgsList
 					from j in i.Dump().Select(MapFunc2)
 					select j);
 
 		protected void Split()
 		{
 			List<Statement> statements = null;
-			for (var index = 0; index < ParameterList.Count; index++)
+			for (var index = 0; index < ArgsList.Count; index++)
 			{
-				var expression = ParameterList[index];
+				var expression = ArgsList[index];
 				if (expression is AtomicExpression) continue;
 				var name = $"tmp{(ulong) expression.GetHashCode()}";
 				if (null == statements) statements = new List<Statement>();
@@ -55,7 +55,7 @@ namespace Cmc.Expr
 					};
 				}
 				statements.Add(decl);
-				ParameterList[index] = new VariableExpression(MetaData, name)
+				ArgsList[index] = new VariableExpression(MetaData, name)
 				{
 					Declaration = decl
 				};
@@ -89,9 +89,9 @@ namespace Cmc.Expr
 				var receiverDeclaration = Env.FindDeclarationSatisfies(declaration =>
 					declaration is VariableDeclaration variableDeclaration &&
 					variableDeclaration.Type is LambdaType lambdaType &&
-					lambdaType.ArgsList.Count == ParameterList.Count &&
-					lambdaType.ArgsList.SequenceEqual(
-						from i in ParameterList
+					lambdaType.ParamsList.Count == ArgsList.Count &&
+					lambdaType.ParamsList.SequenceEqual(
+						from i in ArgsList
 						select i.GetExpressionType()));
 				if (null != receiverDeclaration)
 				{
@@ -117,11 +117,11 @@ namespace Cmc.Expr
 			{
 				_type = hisType.RetType;
 				// FEATURE #32
-				for (var i = 0; i < ParameterList.Count; i++)
-					if (!Equals(ParameterList[i].GetExpressionType(), hisType.ArgsList[i]))
+				for (var i = 0; i < ArgsList.Count; i++)
+					if (!Equals(ArgsList[i].GetExpressionType(), hisType.ParamsList[i]))
 						Errors.Add(
-							$"{MetaData.GetErrorHeader()}type mismatch: expected {hisType.ArgsList[i]}, " +
-							$"found {ParameterList[i].GetExpressionType()}");
+							$"{MetaData.GetErrorHeader()}type mismatch: expected {hisType.ParamsList[i]}, " +
+							$"found {ArgsList[i].GetExpressionType()}");
 			}
 			else
 				Errors.Add(
@@ -162,13 +162,13 @@ namespace Cmc.Expr
 				decl is VariableDeclaration variable &&
 				variable.Type is LambdaType lambdaType &&
 				string.Equals(variable.Name, ReservedWords.Recur, Ordinal) &&
-				lambdaType.ArgsList.Count == ParameterList.Count &&
-				lambdaType.ArgsList.SequenceEqual(
-					from i in ParameterList
+				lambdaType.ParamsList.Count == ArgsList.Count &&
+				lambdaType.ParamsList.SequenceEqual(
+					from i in ArgsList
 					select i.GetExpressionType())) is VariableDeclaration declaration))
 				Errors.Add(
 					$"{MetaData.GetErrorHeader()}call to recur" +
-					$"({string.Join(",", from p in ParameterList select p.GetExpressionType().ToString())})" +
+					$"({string.Join(",", from p in ArgsList select p.GetExpressionType().ToString())})" +
 					"not found");
 			else
 				Outside = (LambdaExpression) declaration.Expression;

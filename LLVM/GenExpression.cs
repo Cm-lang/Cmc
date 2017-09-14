@@ -59,11 +59,11 @@ namespace LLVM
 						// TODO FIXME ugly code
 						if (string.Equals(variable.Name, "print", Ordinal))
 						{
-							if (functionCall.ParameterList.Count != 1 ||
-							    !Equals(functionCall.ParameterList.First().GetExpressionType(),
+							if (functionCall.ArgsList.Count != 1 ||
+							    !Equals(functionCall.ArgsList.First().GetExpressionType(),
 								    new PrimaryType(MetaData.BuiltIn, "string")))
 								Errors.Add($"{functionCall.MetaData.GetErrorHeader()}error call to function print.");
-							var param = (VariableExpression) functionCall.ParameterList.First();
+							var param = (VariableExpression) functionCall.ArgsList.First();
 							builder.AppendLine(
 								$"  %var{varName + 1} = load i8*, i8** %var{param.Declaration.Address}, align {param.Declaration.Align}");
 							varName++;
@@ -72,7 +72,7 @@ namespace LLVM
 						}
 						else
 						{
-							var param = from i in functionCall.ParameterList
+							var param = from i in functionCall.ArgsList
 								select $"{TypeConverter.ConvertType(i.GetExpressionType())} {((AtomicExpression) i).AtomicRepresentation()}";
 							builder.AppendLine(
 								$"  call {functionCall.GetExpressionType()} @{variable.Name}({string.Join(",", param)})");

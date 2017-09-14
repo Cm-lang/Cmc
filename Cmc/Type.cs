@@ -25,7 +25,7 @@ namespace Cmc
 		}
 
 		public abstract override string ToString();
-		public abstract override bool Equals(object obj);
+		public abstract override bool Equals([CanBeNull] object obj);
 
 		public static IEnumerable<Type> FindCommon(IEnumerable<Type> list1, IEnumerable<Type> list2) =>
 			list1.Where(list2.Contains).ToList();
@@ -149,38 +149,38 @@ namespace Cmc
 	/// </summary>
 	public class LambdaType : Type
 	{
-		[NotNull] public readonly IList<Type> ArgsList;
+		[NotNull] public readonly IList<Type> ParamsList;
 		[NotNull] public Type RetType;
 
-		public LambdaType(MetaData metaData, [NotNull] IList<Type> args, [NotNull] Type ret) :
-			base(metaData, LambdaTypeToString(args, ret))
+		public LambdaType(MetaData metaData, [NotNull] IList<Type> @params, [NotNull] Type ret) :
+			base(metaData, LambdaTypeToString(@params, ret))
 		{
-			ArgsList = args;
+			ParamsList = @params;
 			RetType = ret;
 		}
 
 		public override void SurroundWith(Environment environment)
 		{
 			base.SurroundWith(environment);
-			for (var i = 0; i < ArgsList.Count; i++)
+			for (var i = 0; i < ParamsList.Count; i++)
 			{
-				var type = ArgsList[i];
+				var type = ParamsList[i];
 				type.SurroundWith(Env);
-				if (type is UnknownType unknownType) ArgsList[i] = unknownType.Resolve();
+				if (type is UnknownType unknownType) ParamsList[i] = unknownType.Resolve();
 			}
 			RetType.SurroundWith(Env);
 			if (RetType is UnknownType wtf) RetType = wtf.Resolve();
 		}
 
-		public override string ToString() => LambdaTypeToString(ArgsList, RetType);
+		public override string ToString() => LambdaTypeToString(ParamsList, RetType);
 
 		public override bool Equals(object obj)
 		{
 			var ok = obj is LambdaType type && Equals(type.RetType, RetType) &&
-			         Equals(type.ArgsList.Count, ArgsList.Count);
+			         Equals(type.ParamsList.Count, ParamsList.Count);
 			if (!ok) return false;
 			var lambdaType = (LambdaType) obj;
-			return !ArgsList.Where((t, i) => !Equals(lambdaType.ArgsList[i], t)).Any();
+			return !ParamsList.Where((t, i) => !Equals(lambdaType.ParamsList[i], t)).Any();
 		}
 
 		[NotNull]
