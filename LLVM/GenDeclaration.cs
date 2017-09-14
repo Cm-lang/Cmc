@@ -66,16 +66,22 @@ namespace LLVM
 			else
 			{
 				builder.Append($"@glob{varName}=global {ConvertType(variable.Type)} ");
-				if (variable.Expression is IntLiteralExpression integer)
-					builder.Append(
-						$"{integer.Value}");
-				else if (variable.Expression is BoolLiteralExpression boolean)
-					builder.Append(
-						$"{boolean.ValueToInt()}");
-				else if (variable.Expression is StringLiteralExpression str)
-					builder.Append(
-						$"getelementptr inbounds ([{str.Length} x i8], [{str.Length} x i8]* " +
-						$"@.str{str.ConstantPoolIndex}, i32 0, i32 0)");
+				switch (variable.Expression)
+				{
+					case IntLiteralExpression integer:
+						builder.Append(
+							$"{integer.Value}");
+						break;
+					case BoolLiteralExpression boolean:
+						builder.Append(
+							$"{boolean.ValueToInt()}");
+						break;
+					case StringLiteralExpression str:
+						builder.Append(
+							$"getelementptr inbounds ([{str.Length} x i8], [{str.Length} x i8]* " +
+							$"@.str{str.ConstantPoolIndex}, i32 0, i32 0)");
+						break;
+				}
 				builder.AppendLine($", align {variable.Align} ; {variable.Name}");
 			}
 			// TODO deal with other types
@@ -88,26 +94,29 @@ namespace LLVM
 			[NotNull] Declaration element,
 			ref ulong varName)
 		{
-			if (element is TypeDeclaration typeDeclaration)
-				builder.AppendLine($"  ; type alias: <{typeDeclaration.Name}> -> <{typeDeclaration.Type}>");
-			else if (element is VariableDeclaration variable)
+			switch (element)
 			{
-				if (variable.IsGlobal)
-					GenGlobVarDeclaration(builder, variable, ref varName);
-				else
-				{
+				case TypeDeclaration typeDeclaration:
+					builder.AppendLine($"  ; type alias: <{typeDeclaration.Name}> -> <{typeDeclaration.Type}>");
+					break;
+				case VariableDeclaration variable:
+					if (variable.IsGlobal)
+						GenGlobVarDeclaration(builder, variable, ref varName);
+					else
+					{
 //					if (!variable.Used)
 //					{
 //						builder.AppendLine($"  ; unused declaration {variable.Name}, removed");
 //						GenAstExpression(builder, variable.Expression, ref varName);
 //						return;
 //					}
-					builder.AppendLine(
-						$"  %var{varName} = alloca {ConvertType(variable.Type)}, align {variable.Align} ; {variable.Name}");
-					variable.Address = varName;
-					GenAstExpression(builder, variable.Expression, ref varName);
-					varName++;
-				}
+						builder.AppendLine(
+							$"  %var{varName} = alloca {ConvertType(variable.Type)}, align {variable.Align} ; {variable.Name}");
+						variable.Address = varName;
+						GenAstExpression(builder, variable.Expression, ref varName);
+						varName++;
+					}
+					break;
 			}
 		}
 	}

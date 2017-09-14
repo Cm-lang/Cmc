@@ -18,25 +18,27 @@ namespace LLVM
 			[NotNull] Statement element,
 			ref ulong varName)
 		{
-			if (element is ReturnStatement returnStatement)
+			switch (element)
 			{
-				var expr = (AtomicExpression) returnStatement.Expression;
-				// expr should be an atomic expression
-				builder.AppendLine(
-					$"  ret {ConvertType(expr.GetExpressionType())} {expr.AtomicRepresentation()}");
-				varName++;
+				case ReturnStatement returnStatement:
+					var expr = (AtomicExpression) returnStatement.Expression;
+					// expr should be an atomic expression
+					builder.AppendLine(
+						$"  ret {ConvertType(expr.GetExpressionType())} {expr.AtomicRepresentation()}");
+					varName++;
+					break;
+				case ExpressionStatement expression:
+					GenAst(builder, expression.Expression, ref varName);
+					break;
+				case StatementList statements:
+					ulong localVarCount = 1;
+					foreach (var statement in statements.Statements)
+						GenAst(builder, statement, ref localVarCount);
+					break;
+				case Declaration declaration:
+					GenAst(builder, declaration, ref varName);
+					break;
 			}
-			else if (element is ExpressionStatement expression)
-				GenAst(builder, expression.Expression, ref varName);
-			else if (element is StatementList statements)
-			{
-				ulong localVarCount = 1;
-				foreach (var statement in statements.Statements)
-					GenAst(builder, statement, ref localVarCount);
-			}
-			// this should rarely happen
-			else if (element is Declaration declaration)
-				GenAst(builder, declaration, ref varName);
 		}
 	}
 }
