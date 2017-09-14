@@ -73,7 +73,7 @@ namespace LLVMTest
 										new VariableExpression(MetaData.Empty, "id"),
 										new List<Expression>(new[]
 										{
-											new IntLiteralExpression(MetaData.Empty, "123", true)
+											new IntLiteralExpression(MetaData.Empty, "123", true, 8)
 										})
 									)
 								}))
