@@ -215,6 +215,7 @@ namespace CmcTest
 			expr.PrintDumpInfo();
 			Assert.IsNotNull(expr.ConvertedStatementList);
 			Assert.IsTrue(0 != Errors.ErrList.Count);
+			Errors.PrintErrorInfo();
 			expr.ConvertedStatementList.PrintDumpInfo();
 		}
 	}
