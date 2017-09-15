@@ -13,12 +13,31 @@ namespace ParserTest
 		[TestMethod]
 		public void TestBootstrap()
 		{
+			const string code = @"
+
+Expr    ::= Or+
+Or      ::= AtomExpr ('|' AtomExpr)* 
+
+AtomExpr::= Atom Trailer 
+Atom    ::= Name | Str | '[' Expr ']' | '(' Expr ')' 
+
+
+Def    ::= '::='
+Equals ::= Name Def Expr
+
+Trailer::= ['*' | '+' | '{' Number{1 2} '}']
+
+Name   ::= R'[a-zA-Z_][a-zA-Z0-9]*'
+Str    ::= R'[\w|\W]*'
+Number ::= R'\d+'
+
+";
 			// Initialize parser
 			var parser = BootstrapParser.GenParser();
 			var re = DefualtToken.Token();
 
 			// Gen tokenized words
-			var tokens = re.Matches(File.ReadAllText("../selfexamine.ebnf")).Select(i => i.ToString()).ToArray();
+			var tokens = re.Matches(code).Select(i => i.ToString()).ToArray();
 
 			// Parsing
 			var meta = new MetaInfo();
