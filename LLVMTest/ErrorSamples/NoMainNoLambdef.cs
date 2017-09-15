@@ -5,7 +5,7 @@ using Cmc.Expr;
 using Cmc.Stmt;
 using LLVM;
 
-namespace LLVM_Test.ErrorSamples
+namespace LLVMTest.ErrorSamples
 {
 	public class NoMainNoLambdef
 	{

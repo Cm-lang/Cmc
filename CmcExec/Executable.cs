@@ -7,7 +7,7 @@ using LLVM;
 
 namespace CmcExec
 {
-	internal class Executable
+	internal static class Executable
 	{
 		private static void TestOk() => Gen.RunLlvm(
 			"out.exe",

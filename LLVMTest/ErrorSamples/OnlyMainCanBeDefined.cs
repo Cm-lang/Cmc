@@ -5,9 +5,9 @@ using Cmc.Expr;
 using Cmc.Stmt;
 using LLVM;
 
-namespace LLVM_Test.ErrorSamples
+namespace LLVMTest.ErrorSamples
 {
-	public class OnlyMainCanBeDefined
+	public static class OnlyMainCanBeDefined
 	{
 		public static void Run(string[] args)
 		{

@@ -4,24 +4,21 @@ using Cmc.Core;
 using Cmc.Decl;
 using Cmc.Expr;
 using Cmc.Stmt;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Environment = Cmc.Core.Environment;
 
-namespace Cmc_Test
+namespace CmcTest
 {
-	[TestFixture]
+	[TestClass]
 	public class StatementTests
 	{
-		[SetUp]
-		public void Init()
-		{
-			Errors.ErrList.Clear();
-		}
+		[TestInitialize]
+		public void Init() => Errors.ErrList.Clear();
 
 		/// <summary>
 		///     simplest test
 		/// </summary>
-		[Test]
+		[TestMethod]
 		public void StatementTest1()
 		{
 			foreach (var stmt in
@@ -34,7 +31,7 @@ namespace Cmc_Test
 		/// <summary>
 		///     check for condition type
 		/// </summary>
-		[Test]
+		[TestMethod]
 		public void StatementTest2()
 		{
 			var stmt = new IfStatement(
@@ -44,7 +41,7 @@ namespace Cmc_Test
 			);
 			stmt.SurroundWith(Environment.SolarSystem);
 			stmt.PrintDumpInfo();
-			Assert.IsEmpty(Errors.ErrList);
+			Assert.IsTrue(0 == Errors.ErrList.Count);
 			var stmt2 = new IfStatement(
 				MetaData.Empty,
 				new NullExpression(MetaData.Empty),
@@ -53,7 +50,7 @@ namespace Cmc_Test
 			stmt2.SurroundWith(Environment.SolarSystem);
 			Console.WriteLine("");
 			Console.WriteLine("");
-			Assert.IsNotEmpty(Errors.ErrList);
+			Assert.IsTrue(0 != Errors.ErrList.Count);
 			foreach (var s in Errors.ErrList)
 				Console.WriteLine(s);
 			stmt2.PrintDumpInfo();
@@ -62,7 +59,7 @@ namespace Cmc_Test
 		/// <summary>
 		///     check for mutability
 		/// </summary>
-		[Test]
+		[TestMethod]
 		public void StatementTest3()
 		{
 			const string var1 = "variableOne";
@@ -77,14 +74,14 @@ namespace Cmc_Test
 							new BoolLiteralExpression(MetaData.Empty, false)))));
 			stmt.SurroundWith(Environment.SolarSystem);
 			stmt.PrintDumpInfo();
-			Assert.IsNotEmpty(Errors.ErrList);
+			Assert.IsTrue(0 != Errors.ErrList.Count);
 			Errors.PrintErrorInfo();
 		}
 
 		/// <summary>
 		///     type check (when it's correct)
 		/// </summary>
-		[Test]
+		[TestMethod]
 		public void StatementTest4()
 		{
 			const string var1 = "variableOne";
@@ -99,13 +96,13 @@ namespace Cmc_Test
 							new BoolLiteralExpression(MetaData.Empty, false)))));
 			stmt.SurroundWith(Environment.SolarSystem);
 			stmt.PrintDumpInfo();
-			Assert.IsEmpty(Errors.ErrList);
+			Assert.IsTrue(0 == Errors.ErrList.Count);
 		}
 
 		/// <summary>
 		///     type check (when it's nulltype)
 		/// </summary>
-		[Test]
+		[TestMethod]
 		public void StatementTest5()
 		{
 			const string var1 = "variableOne";
@@ -120,13 +117,13 @@ namespace Cmc_Test
 							new NullExpression(MetaData.Empty)))));
 			stmt.SurroundWith(Environment.SolarSystem);
 			stmt.PrintDumpInfo();
-			Assert.IsEmpty(Errors.ErrList);
+			Assert.IsTrue(0 == Errors.ErrList.Count);
 		}
 
 		/// <summary>
 		///     type check (when it's incorrect)
 		/// </summary>
-		[Test]
+		[TestMethod]
 		public void StatementTest6()
 		{
 			const string var1 = "variableOne";
@@ -141,7 +138,7 @@ namespace Cmc_Test
 							new IntLiteralExpression(MetaData.Empty, "123", true)))));
 			stmt.SurroundWith(Environment.SolarSystem);
 			stmt.PrintDumpInfo();
-			Assert.IsNotEmpty(Errors.ErrList);
+			Assert.IsTrue(0 != Errors.ErrList.Count);
 			Errors.PrintErrorInfo();
 		}
 	}

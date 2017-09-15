@@ -34,7 +34,7 @@ namespace Cmc.Core
 		/// </param>
 		/// <returns>the analyzed declarations (errors are given during this process)</returns>
 		[NotNull]
-		public Declaration[] Analyze(params Declaration[] declarations)
+		public IEnumerable<Declaration> Analyze(params Declaration[] declarations)
 		{
 			var planet = new Environment(Environment.SolarSystem);
 			var isMainDefined = false;
@@ -45,9 +45,11 @@ namespace Cmc.Core
 				{
 					variableDeclaration.IsGlobal = true;
 					// FEATURE #40
-					if (variableDeclaration.Expression is LambdaExpression &&
+					if (isMainDefined &&
+					    variableDeclaration.Expression is LambdaExpression &&
 					    string.Equals(variableDeclaration.Name, "main", Ordinal))
 						Errors.Add($"{variableDeclaration.MetaData}you shouldn\'t declare more than one main function!");
+					else isMainDefined = true;
 				}
 			}
 			CheckMutualRec(declarations);

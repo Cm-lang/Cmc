@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="JetBrains.Annotations" Version="11.0.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.5.0-preview-20170914-09" />
+    <PackageReference Include="MSTest.TestAdapter" Version="1.1.18" />
+    <PackageReference Include="MSTest.TestFramework" Version="1.1.18" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Cmc\Cmc.csproj">
+      <Project>{17e0de41-2426-4616-8424-ba6c0f97f7c0}</Project>
+      <Name>Cmc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LLVM\LLVM.csproj">
+      <Project>{f0f0ac0c-7ddb-4555-ad24-4724b14dbab5}</Project>
+      <Name>LLVM</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

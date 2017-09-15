@@ -31,12 +31,18 @@ namespace LLVM
 			// optimization
 			while (element.OptimizedStatementList != null && !Pragma.KeepAll)
 				element = element.OptimizedStatementList;
-			if (element is Expression expression)
-				GenAstExpression(builder, expression, ref varName);
-			else if (element is Declaration declaration)
-				GenAstDeclaration(builder, declaration, ref varName);
-			else if (element is Statement statement)
-				GenAstStatement(builder, statement, ref varName);
+			switch (element)
+			{
+				case Expression expression:
+					GenAstExpression(builder, expression);
+					break;
+				case Declaration declaration:
+					GenAstDeclaration(builder, declaration);
+					break;
+				case Statement statement:
+					GenAstStatement(builder, statement);
+					break;
+			}
 		}
 	}
 }

@@ -7,8 +7,8 @@ namespace Cmc.Core
 {
 	public abstract class Ast
 	{
-		[NotNull] public static Func<string, string> MapFunc = i => $"  {i}";
-		[NotNull] public static Func<string, string> MapFunc2 = i => $"    {i}";
+		[NotNull] public static readonly Func<string, string> MapFunc = i => $"  {i}";
+		[NotNull] public static readonly Func<string, string> MapFunc2 = i => $"    {i}";
 		public Environment Env;
 		public MetaData MetaData;
 

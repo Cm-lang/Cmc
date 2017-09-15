@@ -3,17 +3,17 @@ using Cmc.Core;
 using Cmc.Decl;
 using Cmc.Expr;
 using Cmc.Stmt;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Cmc_Test
+namespace CmcTest
 {
-	[TestFixture]
+	[TestClass]
 	public class ReturnTests
 	{
-		[SetUp]
+		[TestInitialize]
 		public void Init() => Errors.ErrList.Clear();
 
-		[Test]
+		[TestMethod]
 		public void ReturnTest1()
 		{
 			const string var = "var";
@@ -32,10 +32,10 @@ namespace Cmc_Test
 			block.SurroundWith(Environment.SolarSystem);
 			block.PrintDumpInfo();
 			Errors.PrintErrorInfo();
-			Assert.IsNotEmpty(Errors.ErrList);
+			Assert.IsTrue(0 != Errors.ErrList.Count);
 		}
 
-		[Test]
+		[TestMethod]
 		public void ReturnTest2()
 		{
 			const string var = "var";
@@ -53,7 +53,7 @@ namespace Cmc_Test
 								new IntLiteralExpression(MetaData.Empty, "45", false, 8))))));
 			block.SurroundWith(Environment.SolarSystem);
 			block.PrintDumpInfo();
-			Assert.IsEmpty(Errors.ErrList);
+			Assert.IsTrue(0 == Errors.ErrList.Count);
 		}
 	}
 }

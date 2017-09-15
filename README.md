@@ -32,3 +32,7 @@ Maybe there will be an optional H-M type system, and hole-oriented programming (
 
 + [AST Design](./Cmc/Cm_AST_Design.yml)
 + [Progress](./PROGRESS.md)
+
+## Used Project
+
++ [swigged.llvm](https://github.com/kaby76/swigged-llvm)

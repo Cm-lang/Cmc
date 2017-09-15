@@ -16,7 +16,7 @@ namespace Cmc.Core
 		[NotNull] public readonly IList<Declaration> Declarations = new List<Declaration>();
 
 		// FEATURE #18
-		[CanBeNull] public readonly Environment Outer;
+		[CanBeNull] private readonly Environment _outer;
 
 		static Environment()
 		{
@@ -51,7 +51,7 @@ namespace Cmc.Core
 			SolarSystem.Declarations.Add(puts);
 		}
 
-		public Environment(Environment outer = null) => Outer = outer;
+		public Environment(Environment outer = null) => _outer = outer;
 
 		/// FEATURE #3
 		[NotNull]
@@ -65,7 +65,7 @@ namespace Cmc.Core
 					from declaration in env.Declarations
 					where string.Equals(declaration.Name, name, StringComparison.Ordinal)
 					select declaration);
-			} while ((env = env.Outer) != null);
+			} while ((env = env._outer) != null);
 			return list;
 		}
 
@@ -86,7 +86,7 @@ namespace Cmc.Core
 					where string.Equals(declaration.Name, name, StringComparison.Ordinal)
 					select declaration)
 					return declaration;
-			} while ((env = env.Outer) != null);
+			} while ((env = env._outer) != null);
 			return null;
 		}
 
@@ -106,7 +106,7 @@ namespace Cmc.Core
 					where predicate(declaration)
 					select declaration)
 					return declaration;
-			} while ((env = env.Outer) != null);
+			} while ((env = env._outer) != null);
 			return null;
 		}
 	}

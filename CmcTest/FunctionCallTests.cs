@@ -1,25 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using Cmc;
 using Cmc.Core;
 using Cmc.Decl;
 using Cmc.Expr;
 using Cmc.Stmt;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Environment = Cmc.Core.Environment;
 
-namespace Cmc_Test
+namespace CmcTest
 {
-	[TestFixture]
+	[TestClass]
 	public class FunctionCallTests
 	{
 		/// <summary>
 		///  id function
 		///  let id = { a: i8 -> a }
 		/// </summary>
-		public VariableDeclaration IdDeclaration =>
+		private static VariableDeclaration IdDeclaration =>
 			new VariableDeclaration(MetaData.Empty, "id",
 				new LambdaExpression(MetaData.Empty,
 					new StatementList(MetaData.Empty,
@@ -31,10 +29,10 @@ namespace Cmc_Test
 							new UnknownType(MetaData.Empty, "i8"))
 					})));
 
-		[SetUp]
+		[TestInitialize]
 		public void Init() => Errors.ErrList.Clear();
 
-		[Test]
+		[TestMethod]
 		public void FuncCallTest1()
 		{
 			var example = new StatementList(MetaData.Empty,
@@ -49,10 +47,10 @@ namespace Cmc_Test
 			example.SurroundWith(Environment.SolarSystem);
 			example.PrintDumpInfo();
 			Console.WriteLine(string.Join("\n", Errors.ErrList));
-			Assert.IsNotEmpty(Errors.ErrList);
+			Assert.IsTrue(0 != Errors.ErrList.Count);
 		}
 
-		[Test]
+		[TestMethod]
 		public void FuncCallTest2()
 		{
 			var example = new StatementList(MetaData.Empty,
@@ -67,13 +65,13 @@ namespace Cmc_Test
 			example.SurroundWith(Environment.SolarSystem);
 			example.PrintDumpInfo();
 			Console.WriteLine(string.Join("\n", Errors.ErrList));
-			Assert.IsEmpty(Errors.ErrList);
+			Assert.IsTrue(0 == Errors.ErrList.Count);
 		}
 
 		/// <summary>
 		///  recur fail test
 		/// </summary>
-		[Test]
+		[TestMethod]
 		public void FuncCallTest3()
 		{
 			var lambda = new LambdaExpression(MetaData.Empty,
@@ -81,7 +79,10 @@ namespace Cmc_Test
 					new ReturnStatement(MetaData.Empty,
 						new FunctionCallExpression(MetaData.Empty,
 							new VariableExpression(MetaData.Empty, "recur"),
-							new List<Expression>(new[] {new VariableExpression(MetaData.Empty, "a")})))),
+							new List<Expression>(new[]
+							{
+								new VariableExpression(MetaData.Empty, "a")
+							})))),
 				new List<VariableDeclaration>(new[]
 				{
 					new VariableDeclaration(MetaData.Empty, "a", type:
@@ -96,14 +97,17 @@ namespace Cmc_Test
 					new VariableExpression(MetaData.Empty, "gg"),
 					new FunctionCallExpression(MetaData.Empty,
 						new VariableExpression(MetaData.Empty, "recurFunc"),
-						new List<Expression>(new[] {new IntLiteralExpression(MetaData.Empty, "233", true, 8)}))));
-			Assert.Throws<CompilerException>(() => { example.SurroundWith(Environment.SolarSystem); });
+						new List<Expression>(new[]
+						{
+							new IntLiteralExpression(MetaData.Empty, "233", true, 8)
+						}))));
+			Assert.ThrowsException<CompilerException>(() => { example.SurroundWith(Environment.SolarSystem); });
 		}
 
 		/// <summary>
 		///  recur test
 		/// </summary>
-		[Test]
+		[TestMethod]
 		public void FuncCallTest4()
 		{
 			var lambda = new LambdaExpression(MetaData.Empty,
@@ -111,7 +115,10 @@ namespace Cmc_Test
 					new ReturnStatement(MetaData.Empty,
 						new FunctionCallExpression(MetaData.Empty,
 							new VariableExpression(MetaData.Empty, "recur"),
-							new List<Expression>(new[] {new VariableExpression(MetaData.Empty, "a")})))),
+							new List<Expression>(new[]
+							{
+								new VariableExpression(MetaData.Empty, "a")
+							})))),
 				new List<VariableDeclaration>(new[]
 				{
 					new VariableDeclaration(MetaData.Empty, "a", type:
@@ -126,7 +133,10 @@ namespace Cmc_Test
 					new VariableExpression(MetaData.Empty, "gg"),
 					new FunctionCallExpression(MetaData.Empty,
 						new VariableExpression(MetaData.Empty, "recurFunc"),
-						new List<Expression>(new[] {new IntLiteralExpression(MetaData.Empty, "233", true, 8)}))));
+						new List<Expression>(new[]
+						{
+							new IntLiteralExpression(MetaData.Empty, "233", true, 8)
+						}))));
 			example.SurroundWith(Environment.SolarSystem);
 			example.PrintDumpInfo();
 		}
@@ -136,7 +146,7 @@ namespace Cmc_Test
 		///  expression:
 		///  i8 { a: i32 -> i8 { recur(a) }() }
 		/// </summary>
-		[Test]
+		[TestMethod]
 		public void FuncCallTest5()
 		{
 			var lambda = new LambdaExpression(MetaData.Empty,
@@ -148,7 +158,10 @@ namespace Cmc_Test
 									new ReturnStatement(MetaData.Empty,
 										new FunctionCallExpression(MetaData.Empty,
 											new VariableExpression(MetaData.Empty, "recur"),
-											new List<Expression>(new[] {new VariableExpression(MetaData.Empty, "a")})))
+											new List<Expression>(new[]
+											{
+												new VariableExpression(MetaData.Empty, "a")
+											})))
 								), returnType:
 								new UnknownType(MetaData.Empty, "i8")),
 							new List<Expression>()))),
@@ -166,32 +179,43 @@ namespace Cmc_Test
 					new VariableExpression(MetaData.Empty, "gg"),
 					new FunctionCallExpression(MetaData.Empty,
 						new VariableExpression(MetaData.Empty, "recurFunc"),
-						new List<Expression>(new[] {new IntLiteralExpression(MetaData.Empty, "233", true, 8)}))));
+						new List<Expression>(new[]
+						{
+							new IntLiteralExpression(MetaData.Empty, "233", true, 8)
+						}))));
 			example.SurroundWith(Environment.SolarSystem);
 			example.PrintDumpInfo();
-			Assert.IsEmpty(Errors.ErrList);
+			Assert.IsTrue(0 == Errors.ErrList.Count);
 		}
 
-		[Test]
+		[TestMethod]
 		public void ExpressionSplittingTest1()
 		{
 			var expr = new StatementList(MetaData.Empty,
 				IdDeclaration,
 				new ExpressionStatement(MetaData.Empty,
 					new FunctionCallExpression(MetaData.Empty,
-						new VariableExpression(MetaData.Empty, "id"), new List<Expression>(new[]
+						new VariableExpression(MetaData.Empty, "id"),
+						new List<Expression>(new[]
 						{
-							new FunctionCallExpression(MetaData.Empty, new VariableExpression(MetaData.Empty, "id"),
+							new FunctionCallExpression(MetaData.Empty,
+								new VariableExpression(MetaData.Empty, "id"),
 								new List<Expression>(new[]
 								{
-									new FunctionCallExpression(MetaData.Empty, new VariableExpression(MetaData.Empty, "id"),
-										new List<Expression>(new[] {new IntLiteralExpression(MetaData.Empty, "123", true)})
+									new FunctionCallExpression(MetaData.Empty,
+										new VariableExpression(MetaData.Empty, "id"),
+										new List<Expression>(new[]
+										{
+											new IntLiteralExpression(MetaData.Empty, "123", true)
+										})
 									)
 								}))
 						}))));
 			expr.SurroundWith(Environment.SolarSystem);
 			expr.PrintDumpInfo();
 			Assert.IsNotNull(expr.ConvertedStatementList);
+			Assert.IsTrue(0 != Errors.ErrList.Count);
+			Errors.PrintErrorInfo();
 			expr.ConvertedStatementList.PrintDumpInfo();
 		}
 	}

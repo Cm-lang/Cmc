@@ -5,14 +5,14 @@ using Cmc.Core;
 using Cmc.Decl;
 using Cmc.Expr;
 using Cmc.Stmt;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Cmc_Test
+namespace CmcTest
 {
-	[TestFixture]
+	[TestClass]
 	public class StructTests
 	{
-		[Test]
+		[TestMethod]
 		public void StructTest1()
 		{
 			var @struct = new StatementList(MetaData.Empty,

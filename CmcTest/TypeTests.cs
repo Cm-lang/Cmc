@@ -1,26 +1,27 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Cmc;
 using Cmc.Core;
 using Cmc.Decl;
 using Cmc.Expr;
 using Cmc.Stmt;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Environment = Cmc.Core.Environment;
 
-namespace Cmc_Test
+namespace CmcTest
 {
-	[TestFixture]
+	[TestClass]
 	public class TypeTests
 	{
-		[SetUp]
+		[TestInitialize]
 		public void Init() => Errors.ErrList.Clear();
 
 		/// <summary>
 		///     var someVar = 123u8;
 		///     someVar; // the type of this expression will be inferred as "u8".
 		/// </summary>
-		[Test]
+		[TestMethod]
 		public void TypeInferenceTest1()
 		{
 			const string varName = "someVar";
@@ -40,7 +41,7 @@ namespace Cmc_Test
 		///     var someVar = null;
 		///     someVar; // nulltype
 		/// </summary>
-		[Test]
+		[TestMethod]
 		public void TypeInferenceTest2()
 		{
 			const string varName = "someOtherVar";
@@ -61,7 +62,7 @@ namespace Cmc_Test
 		///     otherVar; // i8
 		///     FEATURE #11
 		/// </summary>
-		[Test]
+		[TestMethod]
 		public void TypeInferenceTest3()
 		{
 			const string varName = "otherVar";
@@ -80,7 +81,7 @@ namespace Cmc_Test
 		/// <summary>
 		///     lambda type inference
 		/// </summary>
-		[Test]
+		[TestMethod]
 		public void TypeInferenceTest4()
 		{
 			const string variable = "variable";
@@ -92,12 +93,12 @@ namespace Cmc_Test
 			example.SurroundWith(Environment.SolarSystem);
 			example.PrintDumpInfo();
 			var type = (LambdaType) example.Type;
-			Assert.NotNull(type);
+			Assert.IsNotNull(type);
 			Assert.AreEqual("i32", type.RetType.ToString());
-			Assert.IsEmpty(type.ArgsList);
+			Assert.IsTrue(0 == type.ParamsList.Count);
 		}
 
-		[Test]
+		[TestMethod]
 		public void TypeTest1()
 		{
 			LiteralExpression example = new IntLiteralExpression(MetaData.Empty, "123456789", true, 64);
