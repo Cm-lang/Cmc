@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Parser", "Parser\Parser.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LLVMTest", "LLVMTest\LLVMTest.csproj", "{09FCC9CC-8540-48BD-A76D-798C135BA275}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ParserTest", "ParserTest\ParserTest.csproj", "{B6F5D94A-8FAE-470C-8977-60D4A900073D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{09FCC9CC-8540-48BD-A76D-798C135BA275}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{09FCC9CC-8540-48BD-A76D-798C135BA275}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{09FCC9CC-8540-48BD-A76D-798C135BA275}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6F5D94A-8FAE-470C-8977-60D4A900073D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6F5D94A-8FAE-470C-8977-60D4A900073D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6F5D94A-8FAE-470C-8977-60D4A900073D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6F5D94A-8FAE-470C-8977-60D4A900073D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
