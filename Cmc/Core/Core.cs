@@ -41,15 +41,17 @@ namespace Cmc.Core
 			foreach (var declaration in declarations)
 			{
 				planet.Declarations.Add(declaration);
-				if (declaration is VariableDeclaration variableDeclaration)
+				switch (declaration)
 				{
-					variableDeclaration.IsGlobal = true;
-					// FEATURE #40
-					if (isMainDefined &&
-					    variableDeclaration.Expression is LambdaExpression &&
-					    string.Equals(variableDeclaration.Name, "main", Ordinal))
-						Errors.Add($"{variableDeclaration.MetaData}you shouldn\'t declare more than one main function!");
-					else isMainDefined = true;
+					case VariableDeclaration variableDeclaration:
+						variableDeclaration.IsGlobal = true;
+						// FEATURE #40
+						if (isMainDefined &&
+						    variableDeclaration.Expression is LambdaExpression &&
+						    string.Equals(variableDeclaration.Name, "main", Ordinal))
+							Errors.Add($"{variableDeclaration.MetaData}you shouldn't declare more than one main function!");
+						else isMainDefined = true;
+						break;
 				}
 			}
 			CheckMutualRec(declarations);

@@ -39,9 +39,9 @@ Number   ::= R'\d+'
 			// Parsing
 			var meta = new MetaInfo();
 			Console.WriteLine(parser.Stmt.Match(
-				objs: tokens,
-				partial: false,
-				meta: ref meta
+				tokens,
+				ref meta,
+				false
 			).Dump());
 		}
 	}

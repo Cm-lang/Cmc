@@ -65,7 +65,7 @@ namespace Cmc.Decl
 
 		public override IEnumerable<string> Dump() => new[]
 			{
-				$"variable declaration [{Name}]:\n",
+				$"{(Mutability ? "mutable" : "immutable")} variable declaration [{Name}]:\n",
 				"  type:\n"
 			}
 			.Concat(Type?.Dump().Select(MapFunc2) ?? new[] {"    cannot infer!\n"})

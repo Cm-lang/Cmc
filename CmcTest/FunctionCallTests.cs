@@ -191,9 +191,10 @@ namespace CmcTest
 		[TestMethod]
 		public void ExpressionSplittingTest1()
 		{
-			var expr = new StatementList(MetaData.Empty,
-				IdDeclaration,
-				new ExpressionStatement(MetaData.Empty,
+			var expr = new FunctionCallExpression(MetaData.Empty,
+				new VariableExpression(MetaData.Empty, "id"),
+				new List<Expression>(new[]
+				{
 					new FunctionCallExpression(MetaData.Empty,
 						new VariableExpression(MetaData.Empty, "id"),
 						new List<Expression>(new[]
@@ -202,21 +203,18 @@ namespace CmcTest
 								new VariableExpression(MetaData.Empty, "id"),
 								new List<Expression>(new[]
 								{
-									new FunctionCallExpression(MetaData.Empty,
-										new VariableExpression(MetaData.Empty, "id"),
-										new List<Expression>(new[]
-										{
-											new IntLiteralExpression(MetaData.Empty, "123", true)
-										})
-									)
-								}))
-						}))));
-			expr.SurroundWith(Environment.SolarSystem);
-			expr.PrintDumpInfo();
-			Assert.IsNotNull(expr.ConvertedStatementList);
+									new IntLiteralExpression(MetaData.Empty, "123", true)
+								})
+							)
+						}))
+				}));
+			var core = new Core();
+			core.Analyze(
+				IdDeclaration,
+				new VariableDeclaration(MetaData.Empty, "_", expr));
+			Assert.IsNotNull(expr.ConvertedResult);
 			Assert.IsTrue(0 != Errors.ErrList.Count);
 			Errors.PrintErrorInfo();
-			expr.ConvertedStatementList.PrintDumpInfo();
 		}
 	}
 }
