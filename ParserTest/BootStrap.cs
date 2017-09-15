@@ -14,23 +14,20 @@ namespace ParserTest
 		public void TestBootstrap()
 		{
 			const string code = @"
+Expr     ::= Or+
+Or       ::= AtomExpr ('|' AtomExpr)* 
 
-Expr    ::= Or+
-Or      ::= AtomExpr ('|' AtomExpr)* 
+AtomExpr ::= Atom Trailer 
+Atom     ::= Name | Str | '[' Expr ']' | '(' Expr ')' 
 
-AtomExpr::= Atom Trailer 
-Atom    ::= Name | Str | '[' Expr ']' | '(' Expr ')' 
+Def      ::= '::='
+Equals   ::= Name Def Expr
 
+Trailer  ::= ['*' | '+' | '{' Number{1 2} '}']
 
-Def    ::= '::='
-Equals ::= Name Def Expr
-
-Trailer::= ['*' | '+' | '{' Number{1 2} '}']
-
-Name   ::= R'[a-zA-Z_][a-zA-Z0-9]*'
-Str    ::= R'[\w|\W]*'
-Number ::= R'\d+'
-
+Name     ::= R'[a-zA-Z_][a-zA-Z0-9]*'
+Str      ::= R'[\w|\W]*'
+Number   ::= R'\d+'
 ";
 			// Initialize parser
 			var parser = BootstrapParser.GenParser();
