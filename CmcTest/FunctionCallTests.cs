@@ -188,8 +188,7 @@ namespace CmcTest
 			Assert.IsTrue(0 == Errors.ErrList.Count);
 		}
 
-		[TestMethod]
-		public void ExpressionSplittingTest1()
+		private static void ExpressionSplittingTestCore(IntLiteralExpression parameter, Action action)
 		{
 			var expr = new FunctionCallExpression(MetaData.Empty,
 				new VariableExpression(MetaData.Empty, "id"),
@@ -201,10 +200,7 @@ namespace CmcTest
 						{
 							new FunctionCallExpression(MetaData.Empty,
 								new VariableExpression(MetaData.Empty, "id"),
-								new List<Expression>(new[]
-								{
-									new IntLiteralExpression(MetaData.Empty, "123", true)
-								})
+								new List<Expression>(new[] {parameter})
 							)
 						}))
 				}));
@@ -217,9 +213,19 @@ namespace CmcTest
 				IdDeclaration,
 				new VariableDeclaration(MetaData.Empty, "_", lambdaExpression));
 			Assert.IsNotNull(expr.ConvertedResult);
-			Assert.IsTrue(0 != Errors.ErrList.Count);
+			action();
 			Errors.PrintErrorInfo();
 			lambdaExpression.Body.PrintDumpInfo();
 		}
+
+		[TestMethod]
+		public void ExpressionSplittingTest1() =>
+			ExpressionSplittingTestCore(new IntLiteralExpression(MetaData.Empty, "123", true),
+				() => Assert.IsTrue(0 != Errors.ErrList.Count));
+
+		[TestMethod]
+		public void ExpressionSplittingTest2() =>
+			ExpressionSplittingTestCore(new IntLiteralExpression(MetaData.Empty, "123", true, 8),
+				() => Assert.IsTrue(0 == Errors.ErrList.Count));
 	}
 }
