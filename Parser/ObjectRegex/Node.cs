@@ -41,7 +41,7 @@ namespace Parser.ObjectRegex
 			var tokenRule = escape ? Regex.Escape(a) : a;
 			var re = new Regex(tokenRule);
 
-			return (tokenRule, (string str) =>
+			return (tokenRule, str =>
 				{
 					if (str.Length.Equals(0))
 						return null;
@@ -159,8 +159,7 @@ namespace Parser.ObjectRegex
 			return this;
 		}
 
-		public string DumpTrace() => string.Join(" ",
-			Trace.Select((a, b) => $"({a}, {b})")
+		public string DumpTrace() => string.Join(" ",Trace.Select((a, b) => $"({a}, {b})")
 		);
 	}
 
