@@ -12,9 +12,7 @@ Ast:
       StructDeclaration
       TypeDeclaration
   Expression:
-    CallExpression:
-      FunctionCallExpression
-      RecurCallExpression
+    FunctionCallExpression
     MemberAccessExpression
     AtomicExpression:
       VariableExpression
