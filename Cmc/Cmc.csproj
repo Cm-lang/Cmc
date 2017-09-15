@@ -21,7 +21,7 @@
     <Description>The compiler for the Cm programming language</Description>
     <PackageLicenseUrl>https://www.gnu.org/licenses/gpl-3.0.en.html</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/Cm-lang/Cmc</PackageProjectUrl>
-    <Company>Cmc-language</Company>
+    <Company>Cm-lang</Company>
     <Authors>ice1000</Authors>
     <PackageReleaseNotes>First release.</PackageReleaseNotes>
     <PackageId>Cmc</PackageId>

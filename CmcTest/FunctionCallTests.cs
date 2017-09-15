@@ -211,7 +211,11 @@ namespace CmcTest
 			var core = new Core();
 			core.Analyze(
 				IdDeclaration,
-				new VariableDeclaration(MetaData.Empty, "_", expr));
+				new VariableDeclaration(MetaData.Empty, "_",
+					new LambdaExpression(MetaData.Empty,
+						new StatementList(MetaData.Empty,
+							new ReturnStatement(MetaData.Empty,
+								expr)))));
 			Assert.IsNotNull(expr.ConvertedResult);
 			Assert.IsTrue(0 != Errors.ErrList.Count);
 			Errors.PrintErrorInfo();
