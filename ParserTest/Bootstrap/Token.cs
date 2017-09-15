@@ -1,7 +1,7 @@
 using System.Text.RegularExpressions;
 using Parser.ObjectRegex;
 
-namespace Parser.LanguageTest.Bootstrap
+namespace ParserTest.Bootstrap
 {
 	public static class DefualtToken
 	{

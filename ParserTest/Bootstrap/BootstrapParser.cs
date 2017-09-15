@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using Parser.ObjectRegex;
 
-namespace Parser.LanguageTest.Bootstrap
+namespace ParserTest.Bootstrap
 {
-	public class Parser
+	public class BootstrapParser
 	{
 		public Ast Expr;
 		public Ast Or;
@@ -15,7 +15,7 @@ namespace Parser.LanguageTest.Bootstrap
 		public Ast Trailer;
 		public Dictionary<string, Ast> CompileClosure;
 
-		public Parser(Ast expr, Ast or, Ast split,
+		public BootstrapParser(Ast expr, Ast or, Ast split,
 			Ast atom, Ast atomExpr,
 			Ast eq, Ast stmt,
 			Ast trailer,
@@ -33,7 +33,7 @@ namespace Parser.LanguageTest.Bootstrap
 			CompileClosure = compileClosure;
 		}
 
-		public static Parser GenParser()
+		public static BootstrapParser GenParser()
 		{
 			var compileClosure = new Dictionary<string, Ast>();
 			var expr = new Ast(
@@ -170,7 +170,7 @@ namespace Parser.LanguageTest.Bootstrap
 			split.Compile(ref namestore);
 			stmt.Compile(ref namestore);
 
-			return new Parser(
+			return new BootstrapParser(
 				expr: expr,
 				atom: atom,
 				eq: eq,
