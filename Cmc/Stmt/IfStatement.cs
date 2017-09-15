@@ -48,10 +48,12 @@ namespace Cmc.Stmt
 		}
 
 		public override IEnumerable<ReturnStatement> FindReturnStatements() =>
-			OkStatementList.FindReturnStatements().Concat(ElseStatementList.FindReturnStatements());
+			OkStatementList.FindReturnStatements()
+				.Concat(ElseStatementList.FindReturnStatements());
 
 		public override IEnumerable<JumpStatement> FindJumpStatements() =>
-			OkStatementList.FindJumpStatements().Concat(ElseStatementList.FindJumpStatements());
+			OkStatementList.FindJumpStatements()
+				.Concat(ElseStatementList.FindJumpStatements());
 
 		public override IEnumerable<string> Dump() => new[]
 			{

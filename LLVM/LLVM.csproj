@@ -11,6 +11,5 @@
   <ItemGroup>
     <PackageReference Include="JetBrains.Annotations" Version="11.0.0" />
     <PackageReference Include="LLVM.NativeLibrary" Version="0.1.0.1" />
-    <PackageReference Include="swigged.llvm" Version="4.0.14" />
   </ItemGroup>
 </Project>
