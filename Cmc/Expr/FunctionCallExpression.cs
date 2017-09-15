@@ -30,6 +30,9 @@ namespace Cmc.Expr
 					from j in i.Dump().Select(MapFunc2)
 					select j);
 
+		/// <summary>
+		///  FEATURE #42
+		/// </summary>
 		protected void Split()
 		{
 			List<Statement> statements = null;
@@ -41,6 +44,7 @@ namespace Cmc.Expr
 				if (null == statements) statements = new List<Statement>();
 				VariableDeclaration decl;
 				if (null == expression.ConvertedResult)
+					// FEATURE #43
 					decl = new VariableDeclaration(MetaData, name, expression)
 					{
 						Type = expression.GetExpressionType()

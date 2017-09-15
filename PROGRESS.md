@@ -81,7 +81,8 @@ and you see the result.
 
 ## low-level stuffs
 
-+ [ ] expression splitting
++ [X] expression splitting (#42)
++ [X] temporary variables are not added to the env (#43)
 + [X] string pool (#38)
 
 ## int
