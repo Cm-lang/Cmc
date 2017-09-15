@@ -209,16 +209,17 @@ namespace CmcTest
 						}))
 				}));
 			var core = new Core();
+			var lambdaExpression = new LambdaExpression(MetaData.Empty,
+				new StatementList(MetaData.Empty,
+					new ReturnStatement(MetaData.Empty,
+						expr)));
 			core.Analyze(
 				IdDeclaration,
-				new VariableDeclaration(MetaData.Empty, "_",
-					new LambdaExpression(MetaData.Empty,
-						new StatementList(MetaData.Empty,
-							new ReturnStatement(MetaData.Empty,
-								expr)))));
+				new VariableDeclaration(MetaData.Empty, "_", lambdaExpression));
 			Assert.IsNotNull(expr.ConvertedResult);
 			Assert.IsTrue(0 != Errors.ErrList.Count);
 			Errors.PrintErrorInfo();
+			lambdaExpression.Body.PrintDumpInfo();
 		}
 	}
 }

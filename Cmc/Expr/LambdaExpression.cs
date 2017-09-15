@@ -16,7 +16,7 @@ namespace Cmc.Expr
 	public class LambdaExpression : Expression
 	{
 		[CanBeNull] public Type DeclaredType;
-		[NotNull] public readonly StatementList Body;
+		[NotNull] public StatementList Body;
 		[NotNull] public readonly IList<VariableDeclaration> ParameterList;
 		protected Type Type;
 
@@ -75,6 +75,10 @@ namespace Cmc.Expr
 			Type = new LambdaType(MetaData, (
 				from i in ParameterList
 				select i.Type).ToList(), retType);
+//			while (null != Body.OptimizedStatementList)
+//				Body = Body.OptimizedStatementList;
+			while (null != Body.ConvertedStatementList)
+				Body = Body.ConvertedStatementList;
 		}
 
 		public override Type GetExpressionType() => Type;

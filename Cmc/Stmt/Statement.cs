@@ -21,7 +21,7 @@ namespace Cmc.Stmt
 		///
 		///  in order to express them as a list of simple expressions
 		/// </summary>
-		[CanBeNull] public Statement ConvertedStatementList;
+		[CanBeNull] public StatementList ConvertedStatementList;
 
 		[NotNull]
 		public virtual IEnumerable<ReturnStatement> FindReturnStatements() => new List<ReturnStatement>(0);
