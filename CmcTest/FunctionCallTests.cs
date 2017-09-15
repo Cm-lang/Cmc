@@ -77,7 +77,8 @@ namespace CmcTest
 			var lambda = new LambdaExpression(MetaData.Empty,
 				new StatementList(MetaData.Empty,
 					new ReturnStatement(MetaData.Empty,
-						new RecurCallExpression(MetaData.Empty,
+						new FunctionCallExpression(MetaData.Empty,
+							new VariableExpression(MetaData.Empty, "recur"), 
 							new List<Expression>(new[]
 							{
 								new VariableExpression(MetaData.Empty, "a")
