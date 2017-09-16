@@ -35,4 +35,4 @@ Maybe there will be an optional H-M type system, and hole-oriented programming (
 
 ## Used Project
 
-+ [swigged.llvm](https://github.com/kaby76/swigged-llvm)
++ [LLVMSharp](https://github.com/Microsoft/LLVMSharp)
