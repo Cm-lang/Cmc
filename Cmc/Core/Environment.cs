@@ -43,15 +43,13 @@ namespace Cmc.Core
 					builtinType,
 					new PrimaryType(MetaData.BuiltIn, builtinType)))
 				Galaxy.Declarations.Add(typeDeclaration);
-			var puts = new VariableDeclaration(MetaData.BuiltIn, "print",
-				new BuiltinLambda(MetaData.BuiltIn,
-					new StatementList(MetaData.BuiltIn),
-					new PrimaryType(MetaData.BuiltIn, PrimaryType.NullType),
-					new List<VariableDeclaration>(new[]
+			var puts = new ExternDeclaration(MetaData.BuiltIn, "print", null,
+				new LambdaType(MetaData.BuiltIn,
+					new List<Type>
 					{
-						new VariableDeclaration(MetaData.BuiltIn, "s", type:
-							new PrimaryType(MetaData.BuiltIn, PrimaryType.StringType))
-					})));
+						new PrimaryType(MetaData.BuiltIn, PrimaryType.StringType)
+					},
+					new PrimaryType(MetaData.BuiltIn, PrimaryType.NullType)));
 			puts.SurroundWith(Galaxy);
 			SolarSystem.Declarations.Add(puts);
 		}

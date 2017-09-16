@@ -97,37 +97,4 @@ namespace Cmc.Expr
 			.Concat(new[] {"  body:\n"})
 			.Concat(Body.Dump().Select(MapFunc2));
 	}
-
-	public class BuiltinLambda : LambdaExpression
-	{
-		public BuiltinLambda(
-			MetaData metaData,
-			[NotNull] StatementList body,
-			[NotNull] Type returnType,
-			[CanBeNull] IList<VariableDeclaration> parameterList = null) :
-			base(metaData, body, parameterList ?? new List<VariableDeclaration>(), returnType)
-		{
-		}
-
-		public override void SurroundWith(Environment environment)
-		{
-			Env = environment;
-			Body.SurroundWith(Env);
-			Type = new LambdaType(MetaData, (
-				from i in ParameterList
-				select i.Type).ToList(), DeclaredType);
-		}
-
-		public override IEnumerable<string> Dump() => new[]
-			{
-				"built-in lambda:\n",
-				"  type:\n"
-			}
-			.Concat(GetExpressionType().Dump().Select(MapFunc2))
-			.Concat(new[] {"  parameters:\n"})
-			.Concat(
-				from i in ParameterList
-				from j in i.Dump().Select(MapFunc2)
-				select j);
-	}
 }
