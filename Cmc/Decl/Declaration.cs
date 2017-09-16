@@ -10,17 +10,17 @@ namespace Cmc.Decl
 {
 	public class Declaration : Statement
 	{
-		public readonly Modifier Modifier;
+		public readonly Modifier[] Modifiers;
 		[NotNull] public readonly string Name;
 		public bool Used = false;
 
 		public Declaration(
 			MetaData metaData,
 			[NotNull] string name,
-			Modifier modifier) : base(metaData)
+			Modifier[] modifiers) : base(metaData)
 		{
 			Name = name;
-			Modifier = modifier;
+			Modifiers = modifiers;
 		}
 	}
 
@@ -36,8 +36,8 @@ namespace Cmc.Decl
 			MetaData metaData,
 			[NotNull] string name,
 			[NotNull] Type type,
-			Modifier modifier = Modifier.Private)
-			: base(metaData, name, modifier)
+			Modifier[] modifiers)
+			: base(metaData, name, modifiers ?? new[] {Modifier.Private})
 		{
 			Type = type;
 		}
@@ -52,8 +52,8 @@ namespace Cmc.Decl
 			MetaData metaData,
 			[NotNull] string name,
 			[NotNull] IList<VariableDeclaration> fieldList,
-			Modifier modifier = Modifier.Private) :
-			base(metaData, name, modifier)
+			Modifier[] modifiers) :
+			base(metaData, name, modifiers ?? new[] {Modifier.Private})
 		{
 			FieldList = fieldList;
 			Type = new SecondaryType(metaData, name, this);
@@ -68,6 +68,16 @@ namespace Cmc.Decl
 		}
 	}
 
+	public class ExternFunctionDeclaration : Declaration
+	{
+		public ExternFunctionDeclaration(
+			MetaData metaData,
+			[NotNull] string name,
+			Modifier[] modifiers) : base(metaData, name, modifiers)
+		{
+		}
+	}
+
 	/// <summary>
 	///     Probably useless
 	/// </summary>
@@ -79,8 +89,8 @@ namespace Cmc.Decl
 			MetaData metaData,
 			[NotNull] string name,
 			[NotNull] string content,
-			Modifier modifier = Modifier.Private) :
-			base(metaData, name, modifier)
+			Modifier modifiers = Modifiers.Private) :
+			base(metaData, name, modifiers)
 		{
 			Content = content;
 		}

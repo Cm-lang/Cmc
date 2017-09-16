@@ -10,7 +10,11 @@ namespace Cmc.Core
 {
 	public class Environment
 	{
+		/// <summary>
+		///  preload functions/types
+		/// </summary>
 		public static readonly Environment Galaxy;
+
 		public static readonly Environment SolarSystem;
 
 		[NotNull] public readonly IList<Declaration> Declarations = new List<Declaration>();
@@ -24,7 +28,8 @@ namespace Cmc.Core
 			SolarSystem = new Environment(Galaxy);
 
 			// FEATURE #0
-			foreach (var typeDeclaration in from builtinType in new[]
+			foreach (var typeDeclaration in
+				from builtinType in new[]
 				{
 					"i8", "i16", "i32", "i64",
 					"u8", "u16", "u32", "u64",

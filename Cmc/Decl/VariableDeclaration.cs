@@ -17,7 +17,6 @@ namespace Cmc.Decl
 		[NotNull] public readonly Expression Expression;
 		public readonly bool Mutability;
 		public ulong Address;
-		public int Align = 8;
 		public bool IsGlobal = false;
 		[CanBeNull] public Type Type;
 
@@ -27,8 +26,8 @@ namespace Cmc.Decl
 			[CanBeNull] Expression expression = null,
 			bool isMutable = false,
 			[CanBeNull] Type type = null,
-			Modifier modifier = Modifier.Private) :
-			base(metaData, name, modifier)
+			Modifier modifiers = Modifiers.Private) :
+			base(metaData, name, modifiers)
 		{
 			Expression = expression ?? new NullExpression(MetaData);
 			Type = type;
@@ -52,7 +51,6 @@ namespace Cmc.Decl
 			// FEATURE #30
 			Type.SurroundWith(Env);
 			if (Type is UnknownType unknownType) Type = unknownType.Resolve();
-			if (Type is PrimaryType primaryType) Align = primaryType.Align;
 			// FEATURE #11
 			if (!string.Equals(exprType.ToString(), PrimaryType.NullType, Ordinal) &&
 			    !Equals(Type, exprType))
