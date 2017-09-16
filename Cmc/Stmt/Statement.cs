@@ -151,7 +151,7 @@ namespace Cmc.Stmt
 			else if (null == validLhs.Declaration)
 				Errors.Add($"{MetaData.GetErrorHeader()}can't find declaration of {validLhs.Name}");
 			// FEATURE #21
-			else if (!validLhs.Declaration.Mutability)
+			else if (!validLhs.DeclarationMutability)
 				Errors.Add($"{MetaData.GetErrorHeader()}cannot assign to an immutable variable.");
 			else validLhs.Declaration.Used = true;
 			if (!(RhsExpression is AtomicExpression))

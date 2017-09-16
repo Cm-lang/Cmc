@@ -134,6 +134,7 @@ namespace Cmc.Expr
 	{
 		[NotNull] public readonly string Name;
 		[CanBeNull] public Declaration Declaration;
+		public bool DeclarationMutability;
 		[CanBeNull] private Type _declarationType;
 
 		public VariableExpression(
@@ -150,11 +151,13 @@ namespace Cmc.Expr
 				case VariableDeclaration variableDeclaration:
 					Declaration = variableDeclaration;
 					_declarationType = variableDeclaration.Type;
+					DeclarationMutability = variableDeclaration.Mutability;
 					Declaration.Used = true;
 					break;
 				case ExternDeclaration externDeclaration:
 					Declaration = externDeclaration;
 					_declarationType = externDeclaration.Type;
+					DeclarationMutability = externDeclaration.Mutability;
 					Declaration.Used = true;
 					break;
 				default:

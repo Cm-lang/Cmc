@@ -16,7 +16,6 @@ namespace Cmc.Decl
 	{
 		[NotNull] public readonly Expression Expression;
 		public readonly bool Mutability;
-		public ulong Address;
 		public bool IsGlobal = false;
 		[CanBeNull] public Type Type;
 
@@ -69,7 +68,5 @@ namespace Cmc.Decl
 			.Concat(Type?.Dump().Select(MapFunc2) ?? new[] {"    cannot infer!\n"})
 			.Concat(new[] {"  initialize expression:\n"})
 			.Concat(Expression.Dump().Select(MapFunc2));
-
-		public string LlvmNameGen() => IsGlobal ? $"@glob{Address}" : $"%var{Address}";
 	}
 }

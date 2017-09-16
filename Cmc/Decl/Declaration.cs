@@ -72,15 +72,18 @@ namespace Cmc.Decl
 	public class ExternDeclaration : Declaration
 	{
 		public Type Type;
+		public readonly bool Mutability;
 
 		public ExternDeclaration(
 			MetaData metaData,
 			[NotNull] string name,
 			Modifier[] modifiers,
-			Type type) :
+			Type type,
+			bool mutability = false) :
 			base(metaData, name, modifiers ?? new[] {Modifier.Private})
 		{
 			Type = type;
+			Mutability = mutability;
 		}
 
 		public override IEnumerable<string> Dump() => new[]
