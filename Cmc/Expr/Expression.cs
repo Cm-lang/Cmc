@@ -49,8 +49,6 @@ namespace Cmc.Expr
 		public override Type GetExpressionType() => new PrimaryType(MetaData, PrimaryType.NullType);
 
 		public override IEnumerable<string> Dump() => new[] {"null expression\n"};
-
-		public override string AtomicRepresentation() => "0";
 	}
 
 	/// <summary>
@@ -62,9 +60,6 @@ namespace Cmc.Expr
 		protected AtomicExpression(MetaData metaData) : base(metaData)
 		{
 		}
-
-		[NotNull]
-		public abstract string AtomicRepresentation();
 	}
 
 	public class StringLiteralExpression : Expression
@@ -138,7 +133,8 @@ namespace Cmc.Expr
 	public class VariableExpression : AtomicExpression
 	{
 		[NotNull] public readonly string Name;
-		[CanBeNull] public VariableDeclaration Declaration;
+		[CanBeNull] public Declaration Declaration;
+		[CanBeNull] private Type _declarationType;
 
 		public VariableExpression(
 			MetaData metaData,
@@ -149,29 +145,35 @@ namespace Cmc.Expr
 		{
 			base.SurroundWith(environment);
 			var declaration = Env.FindDeclarationByName(Name);
-			if (declaration is VariableDeclaration variableDeclaration)
+			switch (declaration)
 			{
-				Declaration = variableDeclaration;
-				Declaration.Used = true;
+				case VariableDeclaration variableDeclaration:
+					Declaration = variableDeclaration;
+					_declarationType = variableDeclaration.Type;
+					Declaration.Used = true;
+					break;
+				case ExternDeclaration externDeclaration:
+					Declaration = externDeclaration;
+					_declarationType = externDeclaration.Type;
+					Declaration.Used = true;
+					break;
+				default:
+					Errors.Add($"{MetaData.GetErrorHeader()}{declaration} isn't a variable");
+					break;
 			}
-			else
-				Errors.Add($"{MetaData.GetErrorHeader()}{declaration} isn't a variable");
 		}
 
 		public override Type GetExpressionType() =>
-			Declaration?.Type ?? throw new CompilerException("unknown type");
+			_declarationType ?? throw new CompilerException("unknown type");
 
 		public override IEnumerable<string> Dump() => new[]
 			{
 				$"variable expression [{Name}]:\n",
 				"  type:\n"
 			}
-			.Concat(Declaration?.Type?.Dump().Select(MapFunc2) ?? new[] {"    cannot infer!\n"});
+			.Concat(_declarationType?.Dump().Select(MapFunc2) ?? new[] {"    cannot infer!\n"});
 
 		public override VariableExpression GetLhsExpression() => this;
-
-		public override string AtomicRepresentation() =>
-			Declaration?.LlvmNameGen() ?? throw new CompilerException($"{MetaData.GetErrorHeader()}undeclared {Name}.");
 	}
 
 	/// <summary>

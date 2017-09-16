@@ -39,7 +39,7 @@ namespace Cmc.Expr
 				Errors.Add($"{MetaData.GetErrorHeader()}integer length of {length} is not supported");
 		}
 
-		public override string AtomicRepresentation() => Value;
+		public virtual string AtomicRepresentation() => Value;
 
 		public override IEnumerable<string> Dump() =>
 			new[] {$"int literal [{Value}]:\n"}
@@ -66,7 +66,7 @@ namespace Cmc.Expr
 				Errors.Add($"{MetaData.GetErrorHeader()}float length of {length} is not supported");
 		}
 
-		public override string AtomicRepresentation() => Value; // TODO check for correctness
+		public virtual string AtomicRepresentation() => Value; // TODO check for correctness
 
 		public override IEnumerable<string> Dump() =>
 			new[] {$"float literal [{Value}]:\n"}
@@ -88,7 +88,7 @@ namespace Cmc.Expr
 
 		public int ValueToInt() => Value ? 1 : 0;
 
-		public override string AtomicRepresentation() => ValueToInt().ToString();
+		public virtual string AtomicRepresentation() => ValueToInt().ToString();
 
 		public override IEnumerable<string> Dump() =>
 			new[] {$"bool literal expression [{Value}]:\n"};
