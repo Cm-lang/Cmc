@@ -87,7 +87,7 @@ namespace Cmc.Decl
 		}
 
 		public override IEnumerable<string> Dump() => new[]
-				{$"extern declaration [{Name}]:"}
+				{$"extern declaration [{Name}]:\n"}
 			.Concat(Type.Dump());
 	}
 
