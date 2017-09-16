@@ -146,25 +146,34 @@ namespace Cmc.Expr
 		{
 			base.SurroundWith(environment);
 			var declaration = Env.FindDeclarationByName(Name);
-			Console.WriteLine(Name);
 			switch (declaration)
 			{
 				case VariableDeclaration variableDeclaration:
-					Declaration = variableDeclaration;
-					_declarationType = variableDeclaration.Type;
-					DeclarationMutability = variableDeclaration.Mutability;
-					Declaration.Used = true;
+					ChangeDeclaration(variableDeclaration);
 					break;
 				case ExternDeclaration externDeclaration:
-					Declaration = externDeclaration;
-					_declarationType = externDeclaration.Type;
-					DeclarationMutability = externDeclaration.Mutability;
-					Declaration.Used = true;
+					ChangeDeclaration(externDeclaration);
 					break;
 				default:
 					Errors.Add($"{MetaData.GetErrorHeader()}{declaration} isn't a variable");
 					break;
 			}
+		}
+
+		public void ChangeDeclaration(VariableDeclaration variableDeclaration)
+		{
+			_declarationType = variableDeclaration.Type;
+			DeclarationMutability = variableDeclaration.Mutability;
+			Declaration = variableDeclaration;
+			Declaration.Used = true;
+		}
+
+		public void ChangeDeclaration(ExternDeclaration externDeclaration)
+		{
+			_declarationType = externDeclaration.Type;
+			DeclarationMutability = externDeclaration.Mutability;
+			Declaration = externDeclaration;
+			Declaration.Used = true;
 		}
 
 		public override Type GetExpressionType() =>

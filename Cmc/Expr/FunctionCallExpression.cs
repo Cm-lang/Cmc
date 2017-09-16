@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Cmc.Core;
 using Cmc.Decl;
 using Cmc.Stmt;
 using JetBrains.Annotations;
 using static System.StringComparison;
+using Environment = Cmc.Core.Environment;
 
 namespace Cmc.Expr
 {
@@ -33,18 +35,30 @@ namespace Cmc.Expr
 			// FEATURE #33
 			if (Receiver is VariableExpression receiver)
 			{
+				var argsTypes = from i in ArgsList
+					select i.GetExpressionType();
 				var receiverDeclaration = Env.FindDeclarationSatisfies(declaration =>
-					declaration is VariableDeclaration variableDeclaration &&
-					variableDeclaration.Type is LambdaType lambdaType &&
-					lambdaType.ParamsList.Count == ArgsList.Count &&
-					lambdaType.ParamsList.SequenceEqual(
-						from i in ArgsList
-						select i.GetExpressionType()));
+					(declaration is VariableDeclaration variableDeclaration &&
+					 variableDeclaration.Type is LambdaType lambdaType &&
+					 lambdaType.ParamsList.Count == ArgsList.Count &&
+					 lambdaType.ParamsList.SequenceEqual(argsTypes)) ||
+					(declaration is ExternDeclaration externDeclaration &&
+					 externDeclaration.Type is LambdaType lambdaType2 &&
+					 lambdaType2.ParamsList.Count == ArgsList.Count &&
+					 lambdaType2.ParamsList.SequenceEqual(argsTypes)));
 				if (null != receiverDeclaration)
 				{
-					// receiverDeclaration is obviously a variable declaraion
+					// receiverDeclaration is obviously a variable declaraion / extern declaration
 					// because it's one of the filter condition
-					receiver.Declaration = (VariableDeclaration) receiverDeclaration;
+					switch (receiverDeclaration)
+					{
+						case VariableDeclaration variableDeclaration:
+							receiver.ChangeDeclaration(variableDeclaration);
+							break;
+						case ExternDeclaration externDeclaration:
+							receiver.ChangeDeclaration(externDeclaration);
+							break;
+					}
 					receiverDeclaration.Used = true;
 				}
 				else
