@@ -91,7 +91,7 @@ namespace LLVMTest
 		[TestMethod]
 		public void CodeGenFailTest1()
 		{
-			OnlyMainCanBeDefined.Run(new[] {""});
+			Assert.ThrowsException<CompilerException>(() => OnlyMainCanBeDefined.Run(new[] {""}));
 			Assert.IsTrue(0 != Errors.ErrList.Count);
 		}
 

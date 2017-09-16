@@ -5,6 +5,7 @@ using Cmc.Decl;
 using Cmc.Expr;
 using Cmc.Stmt;
 using JetBrains.Annotations;
+using static System.StringComparison;
 
 namespace Cmc.Core
 {
@@ -66,7 +67,7 @@ namespace Cmc.Core
 			{
 				list.AddRange(
 					from declaration in env.Declarations
-					where string.Equals(declaration.Name, name, StringComparison.Ordinal)
+					where string.Equals(declaration.Name, name, Ordinal)
 					select declaration);
 			} while ((env = env._outer) != null);
 			return list;
@@ -86,7 +87,7 @@ namespace Cmc.Core
 			{
 				foreach (var declaration in
 					from declaration in env.Declarations
-					where string.Equals(declaration.Name, name, StringComparison.Ordinal)
+					where string.Equals(declaration.Name, name, Ordinal)
 					select declaration)
 					return declaration;
 			} while ((env = env._outer) != null);

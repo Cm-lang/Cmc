@@ -146,7 +146,7 @@ namespace Cmc.Expr
 		{
 			base.SurroundWith(environment);
 			var declaration = Env.FindDeclarationByName(Name);
-			declaration.PrintDumpInfo();
+			Console.WriteLine(Name);
 			switch (declaration)
 			{
 				case VariableDeclaration variableDeclaration:
