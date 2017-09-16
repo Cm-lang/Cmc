@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Cmc.Core;
 using Cmc.Stmt;
 using JetBrains.Annotations;
@@ -17,7 +18,7 @@ namespace Cmc.Decl
 		public Declaration(
 			MetaData metaData,
 			[NotNull] string name,
-			Modifier[] modifiers) : base(metaData)
+			Modifier[] modifiers = null) : base(metaData)
 		{
 			Name = name;
 			Modifiers = modifiers;
@@ -36,7 +37,7 @@ namespace Cmc.Decl
 			MetaData metaData,
 			[NotNull] string name,
 			[NotNull] Type type,
-			Modifier[] modifiers)
+			Modifier[] modifiers = null)
 			: base(metaData, name, modifiers ?? new[] {Modifier.Private})
 		{
 			Type = type;
@@ -52,7 +53,7 @@ namespace Cmc.Decl
 			MetaData metaData,
 			[NotNull] string name,
 			[NotNull] IList<VariableDeclaration> fieldList,
-			Modifier[] modifiers) :
+			Modifier[] modifiers = null) :
 			base(metaData, name, modifiers ?? new[] {Modifier.Private})
 		{
 			FieldList = fieldList;
@@ -68,14 +69,23 @@ namespace Cmc.Decl
 		}
 	}
 
-	public class ExternFunctionDeclaration : Declaration
+	public class ExternDeclaration : Declaration
 	{
-		public ExternFunctionDeclaration(
+		public Type Type;
+
+		public ExternDeclaration(
 			MetaData metaData,
 			[NotNull] string name,
-			Modifier[] modifiers) : base(metaData, name, modifiers)
+			Modifier[] modifiers,
+			Type type) :
+			base(metaData, name, modifiers ?? new[] {Modifier.Private})
 		{
+			Type = type;
 		}
+
+		public override IEnumerable<string> Dump() => new[]
+				{$"extern declaration [{Name}]:"}
+			.Concat(Type.Dump());
 	}
 
 	/// <summary>
@@ -89,8 +99,8 @@ namespace Cmc.Decl
 			MetaData metaData,
 			[NotNull] string name,
 			[NotNull] string content,
-			Modifier modifiers = Modifiers.Private) :
-			base(metaData, name, modifiers)
+			Modifier[]modifiers = null) :
+			base(metaData, name, modifiers ?? new[] {Modifier.Private})
 		{
 			Content = content;
 		}

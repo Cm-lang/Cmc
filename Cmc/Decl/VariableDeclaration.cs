@@ -26,8 +26,8 @@ namespace Cmc.Decl
 			[CanBeNull] Expression expression = null,
 			bool isMutable = false,
 			[CanBeNull] Type type = null,
-			Modifier modifiers = Modifiers.Private) :
-			base(metaData, name, modifiers)
+			Modifier[] modifiers = null) :
+			base(metaData, name, modifiers ?? new[] {Modifier.Private})
 		{
 			Expression = expression ?? new NullExpression(MetaData);
 			Type = type;
