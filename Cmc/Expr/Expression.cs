@@ -165,7 +165,7 @@ namespace Cmc.Expr
 			_declarationType = variableDeclaration.Type;
 			DeclarationMutability = variableDeclaration.Mutability;
 			Declaration = variableDeclaration;
-			Declaration.Used = true;
+			Declaration.UsageCount++;
 		}
 
 		public void ChangeDeclaration(ExternDeclaration externDeclaration)
@@ -173,7 +173,7 @@ namespace Cmc.Expr
 			_declarationType = externDeclaration.Type;
 			DeclarationMutability = externDeclaration.Mutability;
 			Declaration = externDeclaration;
-			Declaration.Used = true;
+			Declaration.UsageCount++;
 		}
 
 		public override Type GetExpressionType() =>

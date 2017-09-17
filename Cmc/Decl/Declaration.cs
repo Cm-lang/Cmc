@@ -13,7 +13,7 @@ namespace Cmc.Decl
 	{
 		public readonly Modifier[] Modifiers;
 		[NotNull] public readonly string Name;
-		public bool Used = false;
+		public ulong UsageCount;
 
 		public Declaration(
 			MetaData metaData,

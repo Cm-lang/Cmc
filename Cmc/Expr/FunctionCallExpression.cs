@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Cmc.Core;
 using Cmc.Decl;
 using Cmc.Stmt;
 using JetBrains.Annotations;
 using static System.StringComparison;
-using Environment = Cmc.Core.Environment;
 
 namespace Cmc.Expr
 {
@@ -60,7 +58,6 @@ namespace Cmc.Expr
 							receiver.ChangeDeclaration(externDeclaration);
 							break;
 					}
-					receiverDeclaration.Used = true;
 				}
 				else
 					Errors.Add($"{MetaData.GetErrorHeader()}unresolved reference: \"{receiver.Name}\"");

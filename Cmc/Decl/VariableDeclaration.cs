@@ -57,6 +57,13 @@ namespace Cmc.Decl
 				Errors.Add($"{MetaData.GetErrorHeader()}type mismatch, expected: {Type}, actual: {exprType}");
 		}
 
+		/// <summary>
+		///  Conservatism inline
+		/// </summary>
+		/// <returns>if it should be inlined</returns>
+		public bool ShouldBeInlinedImmediately() =>
+			Mutability && (UsageCount <= 1 || Expression is AtomicExpression);
+
 		public override bool Equals(object obj) =>
 			obj is Declaration declaration && declaration.Name == Name;
 

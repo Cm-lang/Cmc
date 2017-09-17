@@ -45,7 +45,7 @@ namespace Cmc.Stmt
 			// FEATURE #21
 			else if (!validLhs.DeclarationMutability)
 				Errors.Add($"{MetaData.GetErrorHeader()}cannot assign to an immutable variable.");
-			else validLhs.Declaration.Used = true;
+			else validLhs.Declaration.UsageCount++;
 			if (!(RhsExpression is AtomicExpression))
 			{
 				ConvertedStatementList = new StatementList(MetaData,
