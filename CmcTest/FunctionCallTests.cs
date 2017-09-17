@@ -144,7 +144,11 @@ namespace CmcTest
 					}))));
 
 		[TestInitialize]
-		public void Init() => Errors.ErrList.Clear();
+		public void Init()
+		{
+			Errors.ErrList.Clear();
+			Pragma.KeepAll = false;
+		}
 
 		[TestMethod]
 		public void FuncCallTest1()
@@ -192,6 +196,16 @@ namespace CmcTest
 		[TestMethod]
 		public void FuncCallTest5()
 		{
+			var example = FuncCallAst5();
+			example.SurroundWith(Environment.SolarSystem);
+			example.PrintDumpInfo();
+			Assert.IsTrue(0 == Errors.ErrList.Count);
+		}
+
+		[TestMethod]
+		public void FuncCallTest5KeelAll()
+		{
+			Pragma.KeepAll = true;
 			var example = FuncCallAst5();
 			example.SurroundWith(Environment.SolarSystem);
 			example.PrintDumpInfo();

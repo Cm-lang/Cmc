@@ -90,7 +90,12 @@ namespace Cmc.Expr
 					$" not {Receiver.GetExpressionType()}.");
 			var tmp = Split();
 			// if keepall, don't inline anything
-			if (Pragma.KeepAll) return;
+			if (Pragma.KeepAll)
+			{
+				if (null != tmp)
+					ConvertedResult = new ExpressionConvertedResult(tmp, this);
+				return;
+			}
 			var statements = tmp ?? new List<Statement>();
 			// FEATURE #44
 			if (Receiver is LambdaExpression lambdaExpression)
@@ -98,17 +103,16 @@ namespace Cmc.Expr
 				var statementList = lambdaExpression.OptimizedStatementList;
 				var s = statementList?.Statements.ToList() ?? lambdaExpression.Body.Statements.ToList();
 				var ret = s.Last();
+				Expression expression;
 				if (ret is ReturnStatement returnStatement)
 				{
 					s.RemoveAt(s.Count - 1);
-					statements.AddRange(s);
-					ConvertedResult = new ExpressionConvertedResult(statements, returnStatement.Expression);
+					expression = returnStatement.Expression;
 				}
 				else
-				{
-					statements.AddRange(s);
-					ConvertedResult = new ExpressionConvertedResult(statements, new NullExpression(MetaData));
-				}
+					expression = new NullExpression(MetaData);
+				statements.AddRange(s);
+				ConvertedResult = new ExpressionConvertedResult(statements, expression);
 			}
 			else
 				ConvertedResult = new ExpressionConvertedResult(statements, this);

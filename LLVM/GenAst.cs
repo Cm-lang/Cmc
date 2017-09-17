@@ -24,7 +24,6 @@ namespace LLVM
 			[NotNull] Ast element,
 			ref ulong varName)
 		{
-			if (element is EmptyStatement) return;
 			// convertion
 			while (element is Statement statement && statement.ConvertedStatementList != null)
 				element = statement.ConvertedStatementList;
