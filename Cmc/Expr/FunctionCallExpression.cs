@@ -34,7 +34,7 @@ namespace Cmc.Expr
 			if (Receiver is VariableExpression receiver)
 			{
 				var argsTypes = (from i in ArgsList
-					select i.GetExpressionType())
+						select i.GetExpressionType())
 					.ToList();
 				var receiverDeclaration = Env.FindDeclarationSatisfies(declaration =>
 					(declaration is VariableDeclaration variableDeclaration &&
@@ -88,7 +88,30 @@ namespace Cmc.Expr
 				Errors.Add(
 					$"{MetaData.GetErrorHeader()}the function call receiver shoule be a function," +
 					$" not {Receiver.GetExpressionType()}.");
-			Split();
+			var tmp = Split();
+			// if keepall, don't inline anything
+			if (Pragma.KeepAll) return;
+			var statements = tmp ?? new List<Statement>();
+			// FEATURE #44
+			if (Receiver is LambdaExpression lambdaExpression)
+			{
+				var statementList = lambdaExpression.OptimizedStatementList;
+				var s = statementList?.Statements.ToList() ?? lambdaExpression.Body.Statements.ToList();
+				var ret = s.Last();
+				if (ret is ReturnStatement returnStatement)
+				{
+					s.RemoveAt(s.Count - 1);
+					statements.AddRange(s);
+					ConvertedResult = new ExpressionConvertedResult(statements, returnStatement.Expression);
+				}
+				else
+				{
+					statements.AddRange(s);
+					ConvertedResult = new ExpressionConvertedResult(statements, new NullExpression(MetaData));
+				}
+			}
+			else
+				ConvertedResult = new ExpressionConvertedResult(statements, this);
 		}
 
 		private IEnumerable<string> DumpParams() =>
@@ -100,8 +123,10 @@ namespace Cmc.Expr
 
 		/// <summary>
 		///  FEATURE #42
+		///  if argument expressions are not atomic,
+		///  convert them into seperate expressions
 		/// </summary>
-		private void Split()
+		private List<Statement> Split()
 		{
 			List<Statement> statements = null;
 			for (var index = 0; index < ArgsList.Count; index++)
@@ -132,8 +157,7 @@ namespace Cmc.Expr
 					Declaration = decl
 				};
 			}
-			if (null != statements)
-				ConvertedResult = new ExpressionConvertedResult(statements, this);
+			return statements;
 		}
 
 		public override Type GetExpressionType() =>

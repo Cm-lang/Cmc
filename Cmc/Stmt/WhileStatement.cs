@@ -36,7 +36,7 @@ namespace Cmc.Stmt
 			OkStatementList.SurroundWith(new Environment(Env));
 			// FEATURE #17
 			if (Pragma.KeepAll || !(Condition is BoolLiteralExpression boolean) || boolean.Value) return;
-			OptimizedStatementList = new EmptyStatement(MetaData);
+			OptimizedStatementList = new StatementList(MetaData);
 			Optimized = 1;
 		}
 

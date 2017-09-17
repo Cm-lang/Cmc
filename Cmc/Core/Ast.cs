@@ -15,7 +15,7 @@ namespace Cmc.Core
 		/// <summary>
 		///  inline/constant folding/etc.
 		/// </summary>
-		[CanBeNull] public Statement OptimizedStatementList = null;
+		[CanBeNull] public StatementList OptimizedStatementList = null;
 
 		protected Ast(MetaData metaData) => MetaData = metaData;
 

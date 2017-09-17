@@ -31,16 +31,6 @@ namespace Cmc.Stmt
 		public override IEnumerable<string> Dump() => new[] {"empty statement"};
 	}
 
-	/// <summary>
-	///  represent nothing
-	/// </summary>
-	public class EmptyStatement : Statement
-	{
-		public EmptyStatement(MetaData metaData) : base(metaData)
-		{
-		}
-	}
-
 	public class ExpressionStatement : Statement
 	{
 		[NotNull] public readonly Expression Expression;
