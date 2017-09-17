@@ -35,8 +35,9 @@ namespace Cmc.Expr
 			// FEATURE #33
 			if (Receiver is VariableExpression receiver)
 			{
-				var argsTypes = from i in ArgsList
-					select i.GetExpressionType();
+				var argsTypes = (from i in ArgsList
+					select i.GetExpressionType())
+					.ToList();
 				var receiverDeclaration = Env.FindDeclarationSatisfies(declaration =>
 					(declaration is VariableDeclaration variableDeclaration &&
 					 variableDeclaration.Type is LambdaType lambdaType &&
