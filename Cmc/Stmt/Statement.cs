@@ -44,7 +44,11 @@ namespace Cmc.Stmt
 			Expression.SurroundWith(Env);
 			var res = Expression.ConvertedResult;
 			if (null != res)
-				ConvertedStatementList = new StatementList(MetaData);
+				ConvertedStatementList = new StatementList(MetaData,
+					res.ConvertedStatements.Concat(new[]
+					{
+						new ExpressionStatement(MetaData, res.ConvertedExpression)
+					}).ToArray());
 		}
 
 		public override IEnumerable<string> Dump() => new[] {"expression statement:\n"}

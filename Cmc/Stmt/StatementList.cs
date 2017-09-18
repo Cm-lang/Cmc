@@ -50,7 +50,7 @@ namespace Cmc.Stmt
 				else
 					converted.Add(statement);
 			}
-			ConvertedStatementList = new StatementList(MetaData);
+			ConvertedStatementList = new StatementList(MetaData, converted.ToArray());
 		}
 
 		public override IEnumerable<JumpStatement> FindJumpStatements() =>

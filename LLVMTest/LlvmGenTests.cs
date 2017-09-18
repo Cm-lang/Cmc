@@ -82,8 +82,7 @@ namespace LLVMTest
 
 
 		[TestMethod]
-		public void CodeGenFailTest2()
-		{
+		public void CodeGenFailTest2() => Assert.ThrowsException<CompilerException>(() =>
 			Gen.RunLlvm(
 				"out.exe",
 				new VariableDeclaration(MetaData.Empty,
@@ -119,15 +118,13 @@ namespace LLVMTest
 									new List<Expression>())),
 							new ReturnStatement(MetaData.Empty,
 								new IntLiteralExpression(MetaData.Empty, "0", true)))))
-			);
-		}
+			));
 
 		/// <summary>
 		///  ambiguous main definition
 		/// </summary>
 		[TestMethod]
-		public void CodeGenFailTest1()
-		{
+		public void CodeGenFailTest1() => Assert.ThrowsException<CompilerException>(() =>
 			Gen.RunLlvm(
 				"out.exe",
 				new VariableDeclaration(MetaData.Empty,
@@ -167,9 +164,7 @@ namespace LLVMTest
 									new List<Expression>())),
 							new ReturnStatement(MetaData.Empty,
 								new IntLiteralExpression(MetaData.Empty, "0", true)))))
-			);
-			Assert.IsTrue(0 != Errors.ErrList.Count);
-		}
+			));
 
 		[TestInitialize]
 		public void Init() => Errors.ErrList.Clear();
