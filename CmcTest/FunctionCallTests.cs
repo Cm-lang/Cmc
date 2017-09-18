@@ -225,7 +225,9 @@ namespace CmcTest
 				}));
 			var core = new Core();
 			var lambdaExpression = new LambdaExpression(MetaData.Empty,
-				new StatementList(MetaData.Empty));
+				new StatementList(MetaData.Empty,
+					new ReturnStatement(MetaData.Empty,
+						expr)));
 			core.Analyze(
 				IdDeclaration(),
 				new VariableDeclaration(MetaData.Empty, "_", lambdaExpression));

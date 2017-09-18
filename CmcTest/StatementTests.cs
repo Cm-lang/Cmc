@@ -1,6 +1,7 @@
 ﻿using System;
 using Cmc;
 using Cmc.Core;
+using Cmc.Decl;
 using Cmc.Expr;
 using Cmc.Stmt;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -62,9 +63,14 @@ namespace CmcTest
 		{
 			const string var1 = "variableOne";
 			var stmt = new StatementList(MetaData.Empty,
+				new VariableDeclaration(MetaData.Empty, var1,
+					new BoolLiteralExpression(MetaData.Empty, true)),
 				new WhileStatement(MetaData.Empty,
 					new VariableExpression(MetaData.Empty, var1),
-					new StatementList(MetaData.Empty)));
+					new StatementList(MetaData.Empty,
+						new AssignmentStatement(MetaData.Empty,
+							new VariableExpression(MetaData.Empty, var1),
+							new BoolLiteralExpression(MetaData.Empty, false)))));
 			stmt.SurroundWith(Environment.SolarSystem);
 			stmt.PrintDumpInfo();
 			Assert.IsTrue(0 != Errors.ErrList.Count);
@@ -79,9 +85,14 @@ namespace CmcTest
 		{
 			const string var1 = "variableOne";
 			var stmt = new StatementList(MetaData.Empty,
+				new VariableDeclaration(MetaData.Empty, var1,
+					new BoolLiteralExpression(MetaData.Empty, true), true),
 				new WhileStatement(MetaData.Empty,
 					new VariableExpression(MetaData.Empty, var1),
-					new StatementList(MetaData.Empty)));
+					new StatementList(MetaData.Empty,
+						new AssignmentStatement(MetaData.Empty,
+							new VariableExpression(MetaData.Empty, var1),
+							new BoolLiteralExpression(MetaData.Empty, false)))));
 			stmt.SurroundWith(Environment.SolarSystem);
 			stmt.PrintDumpInfo();
 			Assert.IsTrue(0 == Errors.ErrList.Count);
@@ -95,9 +106,14 @@ namespace CmcTest
 		{
 			const string var1 = "variableOne";
 			var stmt = new StatementList(MetaData.Empty,
+				new VariableDeclaration(MetaData.Empty, var1,
+					new BoolLiteralExpression(MetaData.Empty, true), true),
 				new WhileStatement(MetaData.Empty,
 					new VariableExpression(MetaData.Empty, var1),
-					new StatementList(MetaData.Empty)));
+					new StatementList(MetaData.Empty,
+						new AssignmentStatement(MetaData.Empty,
+							new VariableExpression(MetaData.Empty, var1),
+							new NullExpression(MetaData.Empty)))));
 			stmt.SurroundWith(Environment.SolarSystem);
 			stmt.PrintDumpInfo();
 			Assert.IsTrue(0 == Errors.ErrList.Count);
@@ -111,9 +127,14 @@ namespace CmcTest
 		{
 			const string var1 = "variableOne";
 			var stmt = new StatementList(MetaData.Empty,
+				new VariableDeclaration(MetaData.Empty, var1,
+					new BoolLiteralExpression(MetaData.Empty, true), true),
 				new WhileStatement(MetaData.Empty,
 					new VariableExpression(MetaData.Empty, var1),
-					new StatementList(MetaData.Empty)));
+					new StatementList(MetaData.Empty,
+						new AssignmentStatement(MetaData.Empty,
+							new VariableExpression(MetaData.Empty, var1),
+							new IntLiteralExpression(MetaData.Empty, "123", true)))));
 			stmt.SurroundWith(Environment.SolarSystem);
 			stmt.PrintDumpInfo();
 			Assert.IsTrue(0 != Errors.ErrList.Count);
