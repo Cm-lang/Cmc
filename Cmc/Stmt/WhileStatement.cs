@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Cmc.Core;
+using Cmc.Decl;
 using Cmc.Expr;
 using JetBrains.Annotations;
 using Environment = Cmc.Core.Environment;
@@ -26,6 +27,8 @@ namespace Cmc.Stmt
 		public override void SurroundWith(Environment environment)
 		{
 			base.SurroundWith(environment);
+			var jmp = new JumpLabelDeclaration(MetaData, "");
+			jmp.SurroundWith(Env);
 			Condition.SurroundWith(Env);
 			// FEATURE #16
 			var conditionType = Condition.GetExpressionType().ToString();
@@ -33,6 +36,7 @@ namespace Cmc.Stmt
 				Errors.Add(
 					$"{MetaData.GetErrorHeader()}expected a bool as the \"while\" statement\'s condition, " +
 					$"found {conditionType}");
+			OkStatementList.Statements.Add(jmp);
 			OkStatementList.SurroundWith(new Environment(Env));
 			// FEATURE #17
 			if (Pragma.KeepAll || !(Condition is BoolLiteralExpression boolean) || boolean.Value) return;

@@ -92,10 +92,14 @@ namespace Cmc.Core
 		/// </param>
 		/// <returns>the declaration</returns>
 		[CanBeNull]
-		public ReturnLabelDeclaration FindReturnLabelByName([CanBeNull] string name) =>
+		public ReturnLabelDeclaration FindReturnLabelByName([NotNull] string name) =>
 			(ReturnLabelDeclaration) FindDeclarationSatisfies(i =>
-				i is ReturnLabelDeclaration &&
-				(null == name || string.Equals(i.Name, name, Ordinal)));
+				i is ReturnLabelDeclaration && string.Equals(i.Name, name, Ordinal));
+
+		[CanBeNull]
+		public JumpLabelDeclaration FindJumpLabelByName([NotNull] string name) =>
+			(JumpLabelDeclaration) FindDeclarationSatisfies(i =>
+				i is JumpLabelDeclaration && string.Equals(i.Name, name, Ordinal));
 
 		/// <summary>
 		///     Find a declaration satisfying one constraint

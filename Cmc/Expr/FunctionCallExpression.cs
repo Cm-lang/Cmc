@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Cmc.Core;
 using Cmc.Decl;
 using Cmc.Stmt;
 using JetBrains.Annotations;
 using static System.StringComparison;
+using Environment = Cmc.Core.Environment;
 
 namespace Cmc.Expr
 {
@@ -37,14 +39,15 @@ namespace Cmc.Expr
 						select i.GetExpressionType())
 					.ToList();
 				var receiverDeclaration = Env.FindDeclarationSatisfies(declaration =>
-					(declaration is VariableDeclaration variableDeclaration &&
-					 variableDeclaration.Type is LambdaType lambdaType &&
-					 lambdaType.ParamsList.Count == ArgsList.Count &&
-					 lambdaType.ParamsList.SequenceEqual(argsTypes)) ||
-					(declaration is ExternDeclaration externDeclaration &&
-					 externDeclaration.Type is LambdaType lambdaType2 &&
-					 lambdaType2.ParamsList.Count == ArgsList.Count &&
-					 lambdaType2.ParamsList.SequenceEqual(argsTypes)));
+					string.Equals(declaration.Name, receiver.Name, Ordinal) &&
+					((declaration is VariableDeclaration variableDeclaration &&
+					  variableDeclaration.Type is LambdaType lambdaType &&
+					  lambdaType.ParamsList.Count == ArgsList.Count &&
+					  lambdaType.ParamsList.SequenceEqual(argsTypes)) ||
+					 (declaration is ExternDeclaration externDeclaration &&
+					  externDeclaration.Type is LambdaType lambdaType2 &&
+					  lambdaType2.ParamsList.Count == ArgsList.Count &&
+					  lambdaType2.ParamsList.SequenceEqual(argsTypes))));
 				if (null != receiverDeclaration)
 				{
 					// receiverDeclaration is obviously a variable declaraion / extern declaration

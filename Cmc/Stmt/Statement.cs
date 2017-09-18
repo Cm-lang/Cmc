@@ -54,35 +54,39 @@ namespace Cmc.Stmt
 	public class ReturnStatement : ExpressionStatement
 	{
 		public ReturnLabelDeclaration ReturnLabel;
-		[CanBeNull] public string LabelName;
+		[CanBeNull] private readonly string _labelName;
 
 		public ReturnStatement(
 			MetaData metaData,
-			[CanBeNull] string labelName = null,
-			[CanBeNull] Expression expression = null) :
+			[CanBeNull] Expression expression = null,
+			[CanBeNull] string labelName = null) :
 			base(metaData, expression ?? new NullExpression(metaData))
 		{
-			LabelName = labelName;
+			_labelName = labelName;
 		}
 
 		public override void SurroundWith(Environment environment)
 		{
 			base.SurroundWith(environment);
-			ReturnLabel = Env.FindReturnLabelByName(LabelName);
-			if (null == ReturnLabel)
+			var returnLabel = Env.FindReturnLabelByName(_labelName ?? "");
+			if (null == returnLabel)
 			{
 				var msg = $"{MetaData.GetErrorHeader()}cannot return outside a lambda";
 				Errors.Add(msg);
 				throw new CompilerException(msg);
 			}
+			ReturnLabel = returnLabel;
 			ReturnLabel.StatementsUsingThis.Add(this);
 			if (Expression is AtomicExpression) return;
 			var variableName = $"{MetaData.TrimedFileName}{MetaData.LineNumber}{GetHashCode()}";
 			ConvertedStatementList = new StatementList(MetaData,
-				new ReturnStatement(MetaData, LabelName, new VariableExpression(MetaData, variableName)));
+				new ReturnStatement(MetaData, new VariableExpression(MetaData, variableName), _labelName));
 		}
 
-		public override IEnumerable<string> Dump() => new[] {"return statement:\n"}
+		public override IEnumerable<string> Dump() => new[]
+			{
+				$"return statement [{_labelName}]:\n"
+			}
 			.Concat(Expression.Dump().Select(MapFunc));
 	}
 
@@ -98,12 +102,37 @@ namespace Cmc.Stmt
 		}
 
 		public readonly Jump JumpKind;
-		public ReturnLabelDeclaration ReturnLabel;
+		public JumpLabelDeclaration JumpLabel;
+		[CanBeNull] private readonly string _labelName;
 
 		public JumpStatement(
 			MetaData metaData,
-			Jump jumpKind) :
-			base(metaData) => JumpKind = jumpKind;
+			Jump jumpKind,
+			[CanBeNull] string labelName = null) :
+			base(metaData)
+		{
+			JumpKind = jumpKind;
+			_labelName = labelName;
+		}
+
+		public override void SurroundWith(Environment environment)
+		{
+			base.SurroundWith(environment);
+			var jumpLabel = Env.FindJumpLabelByName(_labelName ?? "");
+			if (null == jumpLabel)
+			{
+				var msg = $"{MetaData.GetErrorHeader()}cannot return outside a lambda";
+				Errors.Add(msg);
+				throw new CompilerException(msg);
+			}
+			JumpLabel = jumpLabel;
+			JumpLabel.StatementsUsingThis.Add(this);
+		}
+
+		public override IEnumerable<string> Dump() => new[]
+		{
+			$"jump statement [{_labelName}]\n"
+		};
 
 		public override IEnumerable<JumpStatement> FindJumpStatements() => new[] {this};
 	}
