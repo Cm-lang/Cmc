@@ -15,7 +15,11 @@ namespace CmcTest
 	public class TypeTests
 	{
 		[TestInitialize]
-		public void Init() => Errors.ErrList.Clear();
+		public void Init()
+		{
+			Environment.Initialize();
+			Errors.ErrList.Clear();
+		}
 
 		/// <summary>
 		///     var someVar = 123u8;

@@ -14,16 +14,16 @@ namespace Cmc.Core
 		/// <summary>
 		///  preload functions/types
 		/// </summary>
-		public static readonly Environment Galaxy;
+		public static Environment Galaxy;
 
-		public static readonly Environment SolarSystem;
+		public static Environment SolarSystem;
 
 		[NotNull] public readonly IList<Declaration> Declarations = new List<Declaration>();
 
 		// FEATURE #18
 		[CanBeNull] private readonly Environment _outer;
 
-		static Environment()
+		public static void Initialize()
 		{
 			Galaxy = new Environment();
 			SolarSystem = new Environment(Galaxy);
@@ -54,6 +54,8 @@ namespace Cmc.Core
 			puts.SurroundWith(Galaxy);
 			SolarSystem.Declarations.Add(puts);
 		}
+
+		static Environment() => Initialize();
 
 		public Environment(Environment outer = null) => _outer = outer;
 
