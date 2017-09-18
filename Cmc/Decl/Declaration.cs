@@ -92,6 +92,19 @@ namespace Cmc.Decl
 	}
 
 	/// <summary>
+	///  jump to here
+	/// </summary>
+	public class LabelDeclaration : Declaration
+	{
+		public LabelDeclaration(
+			MetaData metaData,
+			[NotNull] string name) :
+			base(metaData, name)
+		{
+		}
+	}
+
+	/// <summary>
 	///     Probably useless
 	/// </summary>
 	public class Macro : Declaration
