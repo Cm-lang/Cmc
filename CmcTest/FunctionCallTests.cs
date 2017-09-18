@@ -20,7 +20,9 @@ namespace CmcTest
 		public static VariableDeclaration IdDeclaration() =>
 			new VariableDeclaration(MetaData.Empty, "id",
 				new LambdaExpression(MetaData.Empty,
-					new StatementList(MetaData.Empty),
+					new StatementList(MetaData.Empty,
+						new ReturnStatement(MetaData.Empty,
+							new VariableExpression(MetaData.Empty, "a"))),
 					new List<VariableDeclaration>(new[]
 					{
 						new VariableDeclaration(MetaData.Empty, "a", type:
@@ -233,27 +235,19 @@ namespace CmcTest
 				IdDeclaration(),
 				new VariableDeclaration(MetaData.Empty, "_", lambdaExpression));
 			Assert.IsNotNull(expr.ConvertedResult);
-			action();
 			Errors.PrintErrorInfo();
+			action();
 			lambdaExpression.Body.PrintDumpInfo();
 		}
 
 		[TestMethod]
 		public void ExpressionSplittingTest1() =>
 			ExpressionSplittingTestCore(new IntLiteralExpression(MetaData.Empty, "123", true),
-				() =>
-				{
-					Console.WriteLine(Errors.ErrList.Count);
-					Assert.IsTrue(0 != Errors.ErrList.Count);
-				});
+				() => Assert.IsTrue(0 != Errors.ErrList.Count));
 
-		//	[TestMethod]
+		[TestMethod]
 		public void ExpressionSplittingTest2() =>
 			ExpressionSplittingTestCore(new IntLiteralExpression(MetaData.Empty, "123", true, 8),
-				() =>
-				{
-					Console.WriteLine(Errors.ErrList.Count);
-					Assert.IsTrue(0 == Errors.ErrList.Count);
-				});
+				() => Assert.IsTrue(0 == Errors.ErrList.Count));
 	}
 }
