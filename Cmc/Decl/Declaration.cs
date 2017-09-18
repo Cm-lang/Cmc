@@ -92,18 +92,39 @@ namespace Cmc.Decl
 	}
 
 	/// <summary>
-	///  jump to here
+	///  return to here
 	/// </summary>
-	public class LabelDeclaration : Declaration
+	public class ReturnLabelDeclaration : Declaration
 	{
-		public LabelDeclaration(
+		[NotNull] public readonly IList<ReturnStatement> StatementsUsingThis;
+
+		public ReturnLabelDeclaration(
 			MetaData metaData,
 			[NotNull] string name) :
 			base(metaData, name)
 		{
+			StatementsUsingThis = new List<ReturnStatement>();
 		}
 
-		public override IEnumerable<string> Dump() => new[] {$"label [{Name}]\n"};
+		public override IEnumerable<string> Dump() => new[] {$"return label [{Name}]\n"};
+	}
+
+	/// <summary>
+	///  jump to here
+	/// </summary>
+	public class JumpLabelDeclaration : Declaration
+	{
+		[NotNull] public readonly IList<JumpStatement> StatementsUsingThis;
+
+		public JumpLabelDeclaration(
+			MetaData metaData,
+			[NotNull] string name) :
+			base(metaData, name)
+		{
+			StatementsUsingThis = new List<JumpStatement>();
+		}
+
+		public override IEnumerable<string> Dump() => new[] {$"jump label [{Name}]\n"};
 	}
 
 	/// <summary>

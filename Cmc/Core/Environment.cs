@@ -80,19 +80,8 @@ namespace Cmc.Core
 		/// <param name="name">the name of the required declaration</param>
 		/// <returns>the declaration</returns>
 		[CanBeNull]
-		public Declaration FindDeclarationByName([NotNull] string name)
-		{
-			var env = this;
-			do
-			{
-				foreach (var declaration in
-					from declaration in env.Declarations
-					where string.Equals(declaration.Name, name, Ordinal)
-					select declaration)
-					return declaration;
-			} while ((env = env._outer) != null);
-			return null;
-		}
+		public Declaration FindDeclarationByName([NotNull] string name) =>
+			FindDeclarationSatisfies(i => string.Equals(i.Name, name, Ordinal));
 
 		/// <summary>
 		///     If there's no such declaration, this funciton will return null.
@@ -103,19 +92,10 @@ namespace Cmc.Core
 		/// </param>
 		/// <returns>the declaration</returns>
 		[CanBeNull]
-		public LabelDeclaration FindLabelDeclarationByName([CanBeNull] string name)
-		{
-			var env = this;
-			do
-			{
-				foreach (var declaration in
-					from declaration in env.Declarations
-					where declaration is LabelDeclaration && (null == name || string.Equals(declaration.Name, name, Ordinal))
-					select declaration)
-					return (LabelDeclaration) declaration;
-			} while ((env = env._outer) != null);
-			return null;
-		}
+		public ReturnLabelDeclaration FindReturnLabelByName([CanBeNull] string name) =>
+			(ReturnLabelDeclaration) FindDeclarationSatisfies(i =>
+				i is ReturnLabelDeclaration &&
+				(null == name || string.Equals(i.Name, name, Ordinal)));
 
 		/// <summary>
 		///     Find a declaration satisfying one constraint

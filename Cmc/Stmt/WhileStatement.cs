@@ -40,9 +40,6 @@ namespace Cmc.Stmt
 			Optimized = 1;
 		}
 
-		public override IEnumerable<ReturnStatement> FindReturnStatements() =>
-			OkStatementList.FindReturnStatements();
-
 		public override IEnumerable<JumpStatement> FindJumpStatements() =>
 			OkStatementList.FindJumpStatements();
 

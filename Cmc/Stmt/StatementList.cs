@@ -53,11 +53,6 @@ namespace Cmc.Stmt
 			ConvertedStatementList = new StatementList(MetaData);
 		}
 
-		public override IEnumerable<ReturnStatement> FindReturnStatements() =>
-			from i in Statements
-			from j in i.FindReturnStatements()
-			select j;
-
 		public override IEnumerable<JumpStatement> FindJumpStatements() =>
 			from i in Statements
 			from j in i.FindJumpStatements()
