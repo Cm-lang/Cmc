@@ -116,8 +116,7 @@ namespace CmcTest
 		public void FuncCallTest1()
 		{
 			var example = FuncCallAst1();
-			example.SurroundWith(Environment.SolarSystem);
-			example.PrintDumpInfo();
+			Assert.ThrowsException<CompilerException>(() => example.SurroundWith(Environment.SolarSystem));
 			Console.WriteLine(string.Join("\n", Errors.ErrList));
 			Assert.IsTrue(0 != Errors.ErrList.Count);
 		}
