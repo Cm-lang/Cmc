@@ -70,11 +70,7 @@ namespace Cmc.Stmt
 			base.SurroundWith(environment);
 			var returnLabel = Env.FindReturnLabelByName(_labelName ?? "");
 			if (null == returnLabel)
-			{
-				var msg = $"{MetaData.GetErrorHeader()}cannot return outside a lambda";
-				Errors.Add(msg);
-				throw new CompilerException(msg);
-			}
+				Errors.AddAndThrow($"{MetaData.GetErrorHeader()}cannot return outside a lambda");
 			ReturnLabel = returnLabel;
 			ReturnLabel.StatementsUsingThis.Add(this);
 			if (Expression is AtomicExpression) return;
@@ -120,11 +116,7 @@ namespace Cmc.Stmt
 			base.SurroundWith(environment);
 			var jumpLabel = Env.FindJumpLabelByName(_labelName ?? "");
 			if (null == jumpLabel)
-			{
-				var msg = $"{MetaData.GetErrorHeader()}cannot return outside a lambda";
-				Errors.Add(msg);
-				throw new CompilerException(msg);
-			}
+				Errors.AddAndThrow($"{MetaData.GetErrorHeader()}cannot return outside a lambda");
 			JumpLabel = jumpLabel;
 			JumpLabel.StatementsUsingThis.Add(this);
 		}

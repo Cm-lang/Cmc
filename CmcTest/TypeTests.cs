@@ -26,6 +26,8 @@ namespace CmcTest
 		{
 			const string varName = "someVar";
 			var example = new StatementList(MetaData.Empty,
+				new VariableDeclaration(MetaData.Empty, varName,
+					new IntLiteralExpression(MetaData.Empty, "123", false, 8)),
 				new ExpressionStatement(MetaData.Empty,
 					new VariableExpression(MetaData.Empty, varName)));
 			example.SurroundWith(Environment.SolarSystem);
@@ -44,6 +46,8 @@ namespace CmcTest
 		{
 			const string varName = "someOtherVar";
 			var example = new StatementList(MetaData.Empty,
+				new VariableDeclaration(MetaData.Empty, varName,
+					new NullExpression(MetaData.Empty)),
 				new ExpressionStatement(MetaData.Empty,
 					new VariableExpression(MetaData.Empty, varName)));
 			example.SurroundWith(Environment.SolarSystem);
@@ -63,6 +67,9 @@ namespace CmcTest
 		{
 			const string varName = "otherVar";
 			var example = new StatementList(MetaData.Empty,
+				new VariableDeclaration(MetaData.Empty, varName,
+					new NullExpression(MetaData.Empty),
+					type: new UnknownType(MetaData.Empty, "i8")),
 				new ExpressionStatement(MetaData.Empty,
 					new VariableExpression(MetaData.Empty, varName)));
 			example.SurroundWith(Environment.SolarSystem);
@@ -80,7 +87,9 @@ namespace CmcTest
 			const string variable = "variable";
 			var example = new VariableDeclaration(MetaData.Empty, variable,
 				new LambdaExpression(MetaData.Empty,
-					new StatementList(MetaData.Empty)));
+					new StatementList(MetaData.Empty,
+						new ReturnStatement(MetaData.Empty,
+							new IntLiteralExpression(MetaData.Empty, "0", true)))));
 			example.SurroundWith(Environment.SolarSystem);
 			example.PrintDumpInfo();
 			var type = (LambdaType) example.Type;

@@ -19,6 +19,12 @@ namespace Cmc
 			if (Pragma.AbortAtFirst) throw new CompilerException("aborted.");
 		}
 
+		public static void AddAndThrow(string s)
+		{
+			Add(s);
+			throw new CompilerException(s);
+		}
+
 		public static void PrintErrorInfo() => Console.WriteLine(string.Join("\n", ErrList));
 	}
 

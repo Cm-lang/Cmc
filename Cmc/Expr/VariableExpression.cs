@@ -31,7 +31,7 @@ namespace Cmc.Expr
 					ChangeDeclaration(externDeclaration);
 					break;
 				default:
-					Errors.Add($"{MetaData.GetErrorHeader()}{declaration} isn't a variable");
+					Errors.AddAndThrow($"{MetaData.GetErrorHeader()}{declaration} isn't a variable");
 					break;
 			}
 		}

@@ -58,8 +58,7 @@ namespace Cmc
 					structDeclaration.UsageCount++;
 					return structDeclaration.Type;
 			}
-			Errors.Add(MetaData.GetErrorHeader() + Name + " is not a type");
-			throw new CompilerException($"cannot resolve {Name}");
+			Errors.AddAndThrow(MetaData.GetErrorHeader() + Name + " is not a type");
 		}
 
 		public void Gg() =>
@@ -128,10 +127,7 @@ namespace Cmc
 			if (null == Struct)
 				Struct = Env.FindDeclarationByName(Name) as StructDeclaration;
 			if (null == Struct)
-			{
-				Errors.Add($"{MetaData.GetErrorHeader()}cannot resolve type {Name}");
-				throw new CompilerException();
-			}
+				Errors.AddAndThrow($"{MetaData.GetErrorHeader()}cannot resolve type {Name}");
 			else Struct.UsageCount++;
 		}
 
