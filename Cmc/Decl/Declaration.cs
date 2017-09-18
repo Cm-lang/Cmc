@@ -102,6 +102,8 @@ namespace Cmc.Decl
 			base(metaData, name)
 		{
 		}
+
+		public override IEnumerable<string> Dump() => new[] {$"label [{Name}]\n"};
 	}
 
 	/// <summary>

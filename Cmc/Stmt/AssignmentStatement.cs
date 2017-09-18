@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Cmc.Core;
-using Cmc.Decl;
 using Cmc.Expr;
 using JetBrains.Annotations;
 using Environment = Cmc.Core.Environment;
@@ -48,8 +47,7 @@ namespace Cmc.Stmt
 			else validLhs.Declaration.UsageCount++;
 			if (!(RhsExpression is AtomicExpression))
 			{
-				ConvertedStatementList = new StatementList(MetaData,
-					new VariableDeclaration(MetaData, ""));
+				ConvertedStatementList = new StatementList(MetaData);
 			}
 		}
 

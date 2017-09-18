@@ -97,17 +97,20 @@ namespace Cmc.Core
 		/// <summary>
 		///     If there's no such declaration, this funciton will return null.
 		/// </summary>
-		/// <param name="name">the name of the required declaration</param>
+		/// <param name="name">
+		///     the name of the required declaration.
+		///     if it's null, find the nearest one.
+		/// </param>
 		/// <returns>the declaration</returns>
 		[CanBeNull]
-		public LabelDeclaration FindLabelDeclarationByName([NotNull] string name)
+		public LabelDeclaration FindLabelDeclarationByName([CanBeNull] string name)
 		{
 			var env = this;
 			do
 			{
 				foreach (var declaration in
 					from declaration in env.Declarations
-					where declaration is LabelDeclaration && string.Equals(declaration.Name, name, Ordinal)
+					where declaration is LabelDeclaration && (null == name || string.Equals(declaration.Name, name, Ordinal))
 					select declaration)
 					return (LabelDeclaration) declaration;
 			} while ((env = env._outer) != null);

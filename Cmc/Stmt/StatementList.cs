@@ -9,11 +9,16 @@ namespace Cmc.Stmt
 	public class StatementList : Statement
 	{
 		[NotNull] public IList<Statement> Statements;
+		[NotNull] public IList<Statement> JumpOutStatements;
 
 		public StatementList(
 			MetaData metaData,
 			params Statement[] statements) :
-			base(metaData) => Statements = statements;
+			base(metaData)
+		{
+			JumpOutStatements = new List<Statement>();
+			Statements = statements;
+		}
 
 		public override void SurroundWith(Environment environment)
 		{
@@ -45,7 +50,7 @@ namespace Cmc.Stmt
 				else
 					converted.Add(statement);
 			}
-			ConvertedStatementList = new StatementList(MetaData, converted.ToArray());
+			ConvertedStatementList = new StatementList(MetaData);
 		}
 
 		public override IEnumerable<ReturnStatement> FindReturnStatements() =>

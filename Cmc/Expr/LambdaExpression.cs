@@ -35,6 +35,8 @@ namespace Cmc.Expr
 		public override void SurroundWith(Environment environment)
 		{
 			base.SurroundWith(environment);
+			var endLabel = new LabelDeclaration(MetaData, "");
+			endLabel.SurroundWith(Env);
 			if (DeclaredType is UnknownType unknownType)
 			{
 				unknownType.SurroundWith(Env);
@@ -58,7 +60,7 @@ namespace Cmc.Expr
 			Body.SurroundWith(bodyEnv);
 			var retTypes = Body.FindReturnStatements().Select(i =>
 			{
-				i.WhereToJump = this;
+				i.Label = endLabel;
 				return i.Expression.GetExpressionType();
 			}).ToList();
 			// FEATURE #24
@@ -79,6 +81,7 @@ namespace Cmc.Expr
 //				Body = Body.OptimizedStatementList;
 			while (null != Body.ConvertedStatementList)
 				Body = Body.ConvertedStatementList;
+			Body.Statements.Add(endLabel);
 		}
 
 		public override Type GetExpressionType() => Type;

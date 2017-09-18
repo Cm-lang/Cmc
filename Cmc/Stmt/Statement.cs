@@ -47,11 +47,7 @@ namespace Cmc.Stmt
 			Expression.SurroundWith(Env);
 			var res = Expression.ConvertedResult;
 			if (null != res)
-				ConvertedStatementList = new StatementList(MetaData,
-					res.ConvertedStatements.Concat(new[]
-					{
-						new ExpressionStatement(MetaData, res.ConvertedExpression)
-					}).ToArray());
+				ConvertedStatementList = new StatementList(MetaData);
 		}
 
 		public override IEnumerable<string> Dump() => new[] {"expression statement:\n"}
@@ -60,7 +56,7 @@ namespace Cmc.Stmt
 
 	public class ReturnStatement : ExpressionStatement
 	{
-		public LambdaExpression WhereToJump;
+		public LabelDeclaration Label;
 
 		public ReturnStatement(
 			MetaData metaData,
@@ -75,7 +71,6 @@ namespace Cmc.Stmt
 			if (Expression is AtomicExpression) return;
 			var variableName = $"{MetaData.TrimedFileName}{MetaData.LineNumber}{GetHashCode()}";
 			ConvertedStatementList = new StatementList(MetaData,
-				new VariableDeclaration(MetaData, variableName, Expression, true),
 				new ReturnStatement(MetaData, new VariableExpression(MetaData, variableName)));
 		}
 
@@ -97,6 +92,7 @@ namespace Cmc.Stmt
 		}
 
 		public readonly Jump JumpKind;
+		public LabelDeclaration Label;
 
 		public JumpStatement(
 			MetaData metaData,

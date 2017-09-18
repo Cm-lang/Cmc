@@ -20,9 +20,7 @@ namespace LLVMTest
 		private static VariableDeclaration IdDeclaration =>
 			new VariableDeclaration(MetaData.Empty, "id",
 				new LambdaExpression(MetaData.Empty,
-					new StatementList(MetaData.Empty,
-						new ReturnStatement(MetaData.Empty,
-							new VariableExpression(MetaData.Empty, "a"))),
+					new StatementList(MetaData.Empty),
 					new List<VariableDeclaration>(new[]
 					{
 						new VariableDeclaration(MetaData.Empty, "a", type:
@@ -40,8 +38,6 @@ namespace LLVMTest
 				new VariableDeclaration(MetaData.Empty,
 					"main", new LambdaExpression(MetaData.Empty,
 						new StatementList(MetaData.Empty,
-							new VariableDeclaration(MetaData.Empty,
-								"j", new StringLiteralExpression(MetaData.Empty, "boy next door")),
 							new ExpressionStatement(MetaData.Empty,
 								new FunctionCallExpression(MetaData.Empty,
 									new VariableExpression(MetaData.Empty, "print"),
@@ -58,25 +54,7 @@ namespace LLVMTest
 		[TestMethod]
 		public void LlvmGenTest2()
 		{
-			var body = new StatementList(MetaData.Empty,
-				new ExpressionStatement(MetaData.Empty,
-					new FunctionCallExpression(MetaData.Empty,
-						new VariableExpression(MetaData.Empty, "id"),
-						new List<Expression>(new[]
-						{
-							new FunctionCallExpression(MetaData.Empty,
-								new VariableExpression(MetaData.Empty, "id"),
-								new List<Expression>(new[]
-								{
-									new FunctionCallExpression(MetaData.Empty,
-										new VariableExpression(MetaData.Empty, "id"),
-										new List<Expression>(new[]
-										{
-											new IntLiteralExpression(MetaData.Empty, "123", true, 8)
-										})
-									)
-								}))
-						}))));
+			var body = new StatementList(MetaData.Empty);
 			var res = Gen.Generate(
 				IdDeclaration,
 				new VariableDeclaration(MetaData.Empty,
@@ -96,8 +74,6 @@ namespace LLVMTest
 				new VariableDeclaration(MetaData.Empty,
 					"main", new LambdaExpression(MetaData.Empty,
 						new StatementList(MetaData.Empty,
-							new VariableDeclaration(MetaData.Empty,
-								"local", new StringLiteralExpression(MetaData.Empty, "NullRefTest")),
 							
 							new ExpressionStatement(MetaData.Empty,
 								new FunctionCallExpression(MetaData.Empty,
@@ -112,8 +88,6 @@ namespace LLVMTest
 				new VariableDeclaration(MetaData.Empty,
 					"main", new LambdaExpression(MetaData.Empty,
 						new StatementList(MetaData.Empty,
-							new VariableDeclaration(MetaData.Empty,
-								"j", new StringLiteralExpression(MetaData.Empty, "Hello, World")),
 							new ExpressionStatement(MetaData.Empty,
 								new FunctionCallExpression(MetaData.Empty,
 									new VariableExpression(MetaData.Empty, "print"),
@@ -145,8 +119,6 @@ namespace LLVMTest
 				new VariableDeclaration(MetaData.Empty,
 					"main", new LambdaExpression(MetaData.Empty,
 						new StatementList(MetaData.Empty,
-							new VariableDeclaration(MetaData.Empty,
-								"local", new StringLiteralExpression(MetaData.Empty, "NullRefTest")),
 							new ExpressionStatement(MetaData.Empty,
 								new FunctionCallExpression(MetaData.Empty,
 									new VariableExpression(MetaData.Empty, "print"),
@@ -160,8 +132,6 @@ namespace LLVMTest
 				new VariableDeclaration(MetaData.Empty,
 					"main", new LambdaExpression(MetaData.Empty,
 						new StatementList(MetaData.Empty,
-							new VariableDeclaration(MetaData.Empty,
-								"j", new StringLiteralExpression(MetaData.Empty, "Hello, World")),
 							new ExpressionStatement(MetaData.Empty,
 								new FunctionCallExpression(MetaData.Empty,
 									new VariableExpression(MetaData.Empty, "print"),
