@@ -58,7 +58,9 @@ namespace Cmc
 					structDeclaration.UsageCount++;
 					return structDeclaration.Type;
 			}
-			Errors.AddAndThrow(MetaData.GetErrorHeader() + Name + " is not a type");
+			var s = MetaData.GetErrorHeader() + Name + " is not a type";
+			Errors.Add(s);
+			throw new CompilerException(s);
 		}
 
 		public void Gg() =>
