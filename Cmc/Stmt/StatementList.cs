@@ -8,8 +8,8 @@ namespace Cmc.Stmt
 {
 	public class StatementList : Statement
 	{
-		[NotNull] public IList<Statement> Statements;
-		[NotNull] public IList<Statement> JumpOutStatements;
+		[NotNull] public List<Statement> Statements;
+		[NotNull] public List<Statement> JumpOutStatements;
 
 		public StatementList(
 			MetaData metaData,
@@ -17,7 +17,7 @@ namespace Cmc.Stmt
 			base(metaData)
 		{
 			JumpOutStatements = new List<Statement>();
-			Statements = statements;
+			Statements = statements.ToList();
 		}
 
 		public override void SurroundWith(Environment environment)
