@@ -117,9 +117,11 @@ namespace CmcTest
 										new List<Expression>(new[]
 										{
 											new VariableExpression(MetaData.Empty, "a")
-										})))
+										})),
+									"inner")
 							), returnType:
-							new UnknownType(MetaData.Empty, "i8")),
+							new UnknownType(MetaData.Empty, "i8"),
+							endLabel: new ReturnLabelDeclaration(MetaData.Empty, "inner")),
 						new List<Expression>()))),
 			new List<VariableDeclaration>(new[]
 			{
@@ -199,6 +201,7 @@ namespace CmcTest
 			var example = FuncCallAst5();
 			example.SurroundWith(Environment.SolarSystem);
 			example.PrintDumpInfo();
+			Errors.PrintErrorInfo();
 			Assert.IsTrue(0 == Errors.ErrList.Count);
 		}
 
@@ -209,6 +212,7 @@ namespace CmcTest
 			var example = FuncCallAst5();
 			example.SurroundWith(Environment.SolarSystem);
 			example.PrintDumpInfo();
+			Errors.PrintErrorInfo();
 			Assert.IsTrue(0 == Errors.ErrList.Count);
 		}
 

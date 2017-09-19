@@ -26,12 +26,13 @@ namespace Cmc.Expr
 			[NotNull] StatementList body,
 			// FEATURE #22
 			[CanBeNull] IList<VariableDeclaration> parameterList = null,
-			[CanBeNull] Type returnType = null) : base(metaData)
+			[CanBeNull] Type returnType = null,
+			[CanBeNull] ReturnLabelDeclaration endLabel = null) : base(metaData)
 		{
 			Body = body;
 			DeclaredType = returnType;
 			ParameterList = parameterList ?? new List<VariableDeclaration>(0);
-			EndLabel = new ReturnLabelDeclaration(MetaData, "");
+			EndLabel = endLabel ?? new ReturnLabelDeclaration(MetaData, "");
 		}
 
 		public override void SurroundWith(Environment environment)
