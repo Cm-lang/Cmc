@@ -14,6 +14,33 @@ namespace CmcTest
 	[TestClass]
 	public class TypeTests
 	{
+		private const string VarName = "someVar";
+
+		public static StatementList TypeInferenceAst1() => new StatementList(MetaData.Empty,
+			new VariableDeclaration(MetaData.Empty, VarName,
+				new IntLiteralExpression(MetaData.Empty, "123", false, 8)),
+			new ExpressionStatement(MetaData.Empty,
+				new VariableExpression(MetaData.Empty, VarName)));
+
+		public static StatementList TypeInferenceAst2() => new StatementList(MetaData.Empty,
+			new VariableDeclaration(MetaData.Empty, VarName,
+				new NullExpression(MetaData.Empty)),
+			new ExpressionStatement(MetaData.Empty,
+				new VariableExpression(MetaData.Empty, VarName)));
+
+		public static StatementList TypeInferenceAst3() => new StatementList(MetaData.Empty,
+			new VariableDeclaration(MetaData.Empty, VarName,
+				new NullExpression(MetaData.Empty),
+				type: new UnknownType(MetaData.Empty, "i8")),
+			new ExpressionStatement(MetaData.Empty,
+				new VariableExpression(MetaData.Empty, VarName)));
+
+		public static VariableDeclaration TypeInferenceAst4() => new VariableDeclaration(MetaData.Empty, VarName,
+			new LambdaExpression(MetaData.Empty,
+				new StatementList(MetaData.Empty,
+					new ReturnStatement(MetaData.Empty,
+						new IntLiteralExpression(MetaData.Empty, "0", true)))));
+
 		[TestInitialize]
 		public void Init()
 		{
@@ -28,12 +55,7 @@ namespace CmcTest
 		[TestMethod]
 		public void TypeInferenceTest1()
 		{
-			const string varName = "someVar";
-			var example = new StatementList(MetaData.Empty,
-				new VariableDeclaration(MetaData.Empty, varName,
-					new IntLiteralExpression(MetaData.Empty, "123", false, 8)),
-				new ExpressionStatement(MetaData.Empty,
-					new VariableExpression(MetaData.Empty, varName)));
+			var example = TypeInferenceAst1();
 			example.SurroundWith(Environment.SolarSystem);
 			example.PrintDumpInfo();
 			// ReSharper disable once PossibleNullReferenceException
@@ -48,12 +70,7 @@ namespace CmcTest
 		[TestMethod]
 		public void TypeInferenceTest2()
 		{
-			const string varName = "someOtherVar";
-			var example = new StatementList(MetaData.Empty,
-				new VariableDeclaration(MetaData.Empty, varName,
-					new NullExpression(MetaData.Empty)),
-				new ExpressionStatement(MetaData.Empty,
-					new VariableExpression(MetaData.Empty, varName)));
+			var example = TypeInferenceAst2();
 			example.SurroundWith(Environment.SolarSystem);
 			example.PrintDumpInfo();
 			Assert.AreEqual(PrimaryType.NullType,
@@ -69,13 +86,7 @@ namespace CmcTest
 		[TestMethod]
 		public void TypeInferenceTest3()
 		{
-			const string varName = "otherVar";
-			var example = new StatementList(MetaData.Empty,
-				new VariableDeclaration(MetaData.Empty, varName,
-					new NullExpression(MetaData.Empty),
-					type: new UnknownType(MetaData.Empty, "i8")),
-				new ExpressionStatement(MetaData.Empty,
-					new VariableExpression(MetaData.Empty, varName)));
+			var example = TypeInferenceAst3();
 			example.SurroundWith(Environment.SolarSystem);
 			Console.WriteLine(string.Join("", example.Dump()));
 			Assert.AreEqual("i8", ((ExpressionStatement) example.Statements.Last())
@@ -88,12 +99,7 @@ namespace CmcTest
 		[TestMethod]
 		public void TypeInferenceTest4()
 		{
-			const string variable = "variable";
-			var example = new VariableDeclaration(MetaData.Empty, variable,
-				new LambdaExpression(MetaData.Empty,
-					new StatementList(MetaData.Empty,
-						new ReturnStatement(MetaData.Empty,
-							new IntLiteralExpression(MetaData.Empty, "0", true)))));
+			var example = TypeInferenceAst4();
 			example.SurroundWith(Environment.SolarSystem);
 			example.PrintDumpInfo();
 			var type = (LambdaType) example.Type;

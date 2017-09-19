@@ -49,11 +49,15 @@ and you see the result.
 + [X] overloading (#33)
 + [ ] remove unused local variables but keep the expression (#36)
 
-## functions and lambdas
+## inline
 
 + [ ] general inline
 + [ ] inline lambda parameters
 + [X] inline when directly invoke a lambda expression (#44)
++ [ ] keep returning currect when inline
++ [ ] keep label return when inline
+
+## functions and lambdas
 + [X] check for parameter type (#32)
 + [X] the return type should be inferred, or `nulltype` (#19) (tested)
 + [X] return statements' types should be same (#24) (tested)
