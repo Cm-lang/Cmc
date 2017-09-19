@@ -106,7 +106,12 @@ namespace Cmc.Decl
 			StatementsUsingThis = new List<ReturnStatement>();
 		}
 
-		public override IEnumerable<string> Dump() => new[] {$"return label [{Name}]\n"};
+		public override string ToString() => Name.Length == 0 ? GetHashCode().ToString() : Name;
+
+		public override IEnumerable<string> Dump() => new[]
+		{
+			$"return label [{this}]\n"
+		};
 	}
 
 	/// <summary>
@@ -124,7 +129,12 @@ namespace Cmc.Decl
 			StatementsUsingThis = new List<JumpStatement>();
 		}
 
-		public override IEnumerable<string> Dump() => new[] {$"jump label [{Name}]\n"};
+		public override string ToString() => Name.Length == 0 ? GetHashCode().ToString() : Name;
+
+		public override IEnumerable<string> Dump() => new[]
+		{
+			$"jump label [{this}]\n"
+		};
 	}
 
 	/// <summary>
@@ -144,7 +154,9 @@ namespace Cmc.Decl
 			Content = content;
 		}
 
-		public override IEnumerable<string> Dump() =>
-			new[] {"macro(this shouldn't appear)\n"};
+		public override IEnumerable<string> Dump() => new[]
+		{
+			"macro(this shouldn't appear)\n"
+		};
 	}
 }

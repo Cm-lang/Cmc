@@ -50,7 +50,9 @@ namespace Cmc.Stmt
 					if (convertedResult != null)
 					{
 						converted.AddRange(convertedResult.ConvertedStatements);
-						converted.Add(new ExpressionStatement(MetaData, convertedResult.ConvertedExpression));
+						expression.Expression = convertedResult.ConvertedExpression;
+						converted.Add(expression);
+						// converted.Add(new ExpressionStatement(MetaData, convertedResult.ConvertedExpression));
 					}
 					else
 						converted.Add(expression);

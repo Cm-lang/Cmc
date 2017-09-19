@@ -30,13 +30,15 @@ namespace Cmc.Stmt
 
 	public class ExpressionStatement : Statement
 	{
-		[NotNull] public readonly Expression Expression;
+		[NotNull] public Expression Expression;
 
 		public ExpressionStatement(
 			MetaData metaData,
 			[NotNull] Expression expression) :
-			base(metaData) =>
+			base(metaData)
+		{
 			Expression = expression;
+		}
 
 		public override void SurroundWith(Environment environment)
 		{
@@ -92,7 +94,7 @@ namespace Cmc.Stmt
 
 		public override IEnumerable<string> Dump() => new[]
 		{
-			$"jump statement [{_labelName}]\n"
+			$"jump statement [{JumpLabel}]\n"
 		};
 
 		public override IEnumerable<JumpStatement> FindJumpStatements() => new[] {this};

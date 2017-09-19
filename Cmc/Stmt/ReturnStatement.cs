@@ -26,7 +26,9 @@ namespace Cmc.Stmt
 
 		public override void SurroundWith(Environment environment)
 		{
-			base.SurroundWith(environment);
+			// base.SurroundWith(environment);
+			Env = environment;
+			Expression.SurroundWith(Env);
 			var returnLabel = Env.FindReturnLabelByName(_labelName ?? "");
 			if (null == returnLabel)
 				Errors.AddAndThrow($"{MetaData.GetErrorHeader()}cannot return outside a lambda");
@@ -60,7 +62,7 @@ namespace Cmc.Stmt
 
 		public override IEnumerable<string> Dump() => new[]
 			{
-				$"return statement [{_labelName}]:\n"
+				$"return statement [{ReturnLabel}]:\n"
 			}
 			.Concat(Expression.Dump().Select(MapFunc));
 	}
