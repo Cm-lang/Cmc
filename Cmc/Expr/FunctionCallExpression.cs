@@ -105,12 +105,10 @@ namespace Cmc.Expr
 			{
 				var statementList = lambdaExpression.OptimizedStatementList;
 				var s = statementList?.Statements.ToList() ?? lambdaExpression.Body.Statements.ToList();
-				var ret = s.Last();
-				Expression expression;
-				if (ret is ReturnStatement returnStatement)
-					expression = returnStatement.Expression;
-				else
-					expression = new NullExpression(MetaData);
+				Expression ret = null;
+				for (var i = s.Count - 1; i >= 0; i--)
+					if (s[i] is ReturnStatement returnStatement) ret = returnStatement.Expression;
+				var expression = ret ?? new NullExpression(MetaData);
 				statements.AddRange(s);
 				ConvertedResult = new ExpressionConvertedResult(statements, expression);
 			}
