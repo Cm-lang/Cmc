@@ -61,12 +61,17 @@ namespace Cmc.Expr
 			recur.SurroundWith(Env);
 			bodyEnv.Declarations.Add(recur);
 			Body.SurroundWith(bodyEnv);
+//			while (null != Body.OptimizedStatementList)
+//				Body = Body.OptimizedStatementList;
+			while (null != Body.ConvertedStatementList)
+				Body = Body.ConvertedStatementList;
+			Body.Statements.Add(EndLabel);
 			var retTypes = EndLabel.StatementsUsingThis.Select(i =>
 			{
 				i.ReturnLabel = EndLabel;
 				return i.Expression.GetExpressionType();
 			}).ToList();
-			// FEATURE #24
+//			Body.Flatten();
 			if (retTypes.Any(i => !Equals(i, DeclaredType ?? retTypes.First())))
 				Errors.Add(
 					$"{MetaData.GetErrorHeader()}ambiguous return types:\n" +
@@ -77,14 +82,21 @@ namespace Cmc.Expr
 				              ? retTypes.First()
 				              // FEATURE #19
 				              : new PrimaryType(MetaData, PrimaryType.NullType));
+			if (retTypes.Count > 1)
+			{
+				var varName = $"returnCollector{(ulong) GetHashCode()}";
+				Body.Statements.Insert(0, new VariableDeclaration(MetaData, varName, type: retType));
+				var returnValueCollector = new VariableExpression(MetaData, varName);
+				foreach (var endLabelStatement in EndLabel.StatementsUsingThis)
+					endLabelStatement.InlineThis(returnValueCollector);
+				Body.Statements.Add(new ReturnStatement(MetaData, returnValueCollector)
+				{
+					ReturnLabel = EndLabel
+				});
+			}
 			Type = new LambdaType(MetaData, (
 				from i in ParameterList
 				select i.Type).ToList(), retType);
-//			while (null != Body.OptimizedStatementList)
-//				Body = Body.OptimizedStatementList;
-			while (null != Body.ConvertedStatementList)
-				Body = Body.ConvertedStatementList;
-			Body.Statements.Add(EndLabel);
 		}
 
 		public override Type GetExpressionType() => Type;

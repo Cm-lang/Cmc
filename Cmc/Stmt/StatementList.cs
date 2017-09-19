@@ -29,6 +29,12 @@ namespace Cmc.Stmt
 			Statements = statements.ToList();
 		}
 
+		public void Flatten() => Statements =
+			new List<Statement>(
+				from i in Statements
+				from j in i.ConvertedStatementList?.Statements ?? new[] {i}.ToList()
+				select j);
+
 		public override void SurroundWith(Environment environment)
 		{
 			base.SurroundWith(environment);
@@ -53,6 +59,7 @@ namespace Cmc.Stmt
 						converted.AddRange(convertedResult.ConvertedStatements);
 						expression.Expression = convertedResult.ConvertedExpression;
 						converted.Add(expression);
+						expression.Expression.ConvertedResult = null;
 						// expression might be a return statement
 						// converted.Add(new ExpressionStatement(MetaData, convertedResult.ConvertedExpression));
 					}

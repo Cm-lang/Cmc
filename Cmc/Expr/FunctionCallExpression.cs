@@ -105,17 +105,10 @@ namespace Cmc.Expr
 			{
 				var statementList = lambdaExpression.OptimizedStatementList;
 				var s = statementList?.Statements.ToList() ?? lambdaExpression.Body.Statements.ToList();
-				var ret = lambdaExpression.EndLabel.StatementsUsingThis;
+				var ret = s.Last();
 				Expression expression;
-				if (ret.Count > 0)
-				{
-					var varName = $"tmp{(ulong) ret.GetHashCode()}";
-					var variable = new VariableDeclaration(MetaData, varName, type: lambdaExpression.GetExpressionType());
-					// TODO change all return statements into assignment + jump
-					var expressionInside = new VariableExpression(MetaData, varName);
-					expressionInside.ChangeDeclaration(variable);
-					expression = expressionInside;
-				}
+				if (ret is ReturnStatement returnStatement)
+					expression = returnStatement.Expression;
 				else
 					expression = new NullExpression(MetaData);
 				statements.AddRange(s);

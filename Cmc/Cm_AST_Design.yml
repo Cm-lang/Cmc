@@ -11,6 +11,8 @@ Ast:
       VariableDeclaration
       StructDeclaration
       TypeDeclaration
+      ReturnLabelDeclaration
+      JumpLabelDeclaration
   Expression:
     FunctionCallExpression
     MemberAccessExpression

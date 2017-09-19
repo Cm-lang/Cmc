@@ -29,6 +29,7 @@ namespace Cmc.Stmt
 			// base.SurroundWith(environment);
 			Env = environment;
 			Expression.SurroundWith(Env);
+			if (null != ReturnLabel) return;
 			var returnLabel = Env.FindReturnLabelByName(_labelName ?? "");
 			if (null == returnLabel)
 				Errors.AddAndThrow($"{MetaData.GetErrorHeader()}cannot return outside a lambda");
