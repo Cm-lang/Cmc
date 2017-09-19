@@ -23,6 +23,5 @@ namespace Cmc.Core
 
 		private static int _count;
 		public static readonly MetaData Empty = new MetaData(_count++, "Unknown");
-		public static readonly MetaData BuiltIn = new MetaData(-1, "[built-in]");
 	}
 }

@@ -16,6 +16,8 @@ namespace Cmc.Core
 		/// </summary>
 		public static Environment Galaxy;
 
+		private static readonly MetaData BuiltIn = new MetaData(-1, "[built-in]");
+
 		public static Environment SolarSystem;
 
 		[NotNull] public readonly IList<Declaration> Declarations = new List<Declaration>();
@@ -40,17 +42,17 @@ namespace Cmc.Core
 					PrimaryType.BoolType
 				}
 				select new TypeDeclaration(
-					MetaData.BuiltIn,
+					BuiltIn,
 					builtinType,
-					new PrimaryType(MetaData.BuiltIn, builtinType)))
+					new PrimaryType(BuiltIn, builtinType)))
 				Galaxy.Declarations.Add(typeDeclaration);
-			var puts = new ExternDeclaration(MetaData.BuiltIn, "print", null,
-				new LambdaType(MetaData.BuiltIn,
+			var puts = new ExternDeclaration(BuiltIn, "print", null,
+				new LambdaType(BuiltIn,
 					new List<Type>
 					{
-						new PrimaryType(MetaData.BuiltIn, PrimaryType.StringType)
+						new PrimaryType(BuiltIn, PrimaryType.StringType)
 					},
-					new PrimaryType(MetaData.BuiltIn, PrimaryType.NullType)));
+					new PrimaryType(BuiltIn, PrimaryType.NullType)));
 			puts.SurroundWith(Galaxy);
 			SolarSystem.Declarations.Add(puts);
 		}

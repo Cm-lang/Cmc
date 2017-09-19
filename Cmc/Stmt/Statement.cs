@@ -87,8 +87,23 @@ namespace Cmc.Stmt
 				new ReturnStatement(MetaData, new VariableExpression(MetaData, variableName), _labelName));
 		}
 
-		public void InlineThis()
+		/// <summary>
+		///   make this an inlined return statement
+		/// </summary>
+		/// <param name="returnValueStorer">the variable used to store the return value</param>
+		public void InlineThis(VariableExpression returnValueStorer)
 		{
+			if (null != ConvertedStatementList)
+			{
+				var varDecl = ConvertedStatementList.Statements.First();
+				var varExpr = (VariableExpression) ((ReturnStatement) ConvertedStatementList.Statements.Last()).Expression;
+				ConvertedStatementList = new StatementList(MetaData,
+					varDecl,
+					new AssignmentStatement(MetaData, returnValueStorer, varExpr));
+			}
+			else
+				ConvertedStatementList = new StatementList(MetaData,
+					new AssignmentStatement(MetaData, returnValueStorer, Expression));
 		}
 
 		public override IEnumerable<string> Dump() => new[]
