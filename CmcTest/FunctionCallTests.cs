@@ -189,7 +189,9 @@ namespace CmcTest
 		/// <summary>
 		///  recur test
 		///  expression:
-		///  i8 { a: i32 -> i8 { recur(a) }() }
+		///  const recurFunc = i8 { a: i32 -> i8 { recur(a) }() }
+		///  var gg: i8 = null
+		///  gg = recurFunc(233u8)
 		/// </summary>
 		[TestMethod]
 		public void FuncCallTest5()

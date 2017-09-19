@@ -38,7 +38,10 @@ namespace Cmc.Stmt
 			var variableName = $"{MetaData.TrimedFileName}{MetaData.LineNumber}{GetHashCode()}";
 			ConvertedStatementList = new StatementList(MetaData,
 				new VariableDeclaration(MetaData, variableName, Expression, type: Expression.GetExpressionType()),
-				new ReturnStatement(MetaData, new VariableExpression(MetaData, variableName), _labelName));
+				new ReturnStatement(MetaData, new VariableExpression(MetaData, variableName), _labelName)
+				{
+					ReturnLabel = ReturnLabel
+				});
 		}
 
 		/// <summary>

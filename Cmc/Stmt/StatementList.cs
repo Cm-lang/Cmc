@@ -19,6 +19,7 @@ namespace Cmc.Stmt
 			JumpOutStatements = new List<Statement>();
 			Statements = statements.ToList();
 		}
+
 		public StatementList(
 			MetaData metaData,
 			IEnumerable<Statement> statements) :
@@ -47,11 +48,12 @@ namespace Cmc.Stmt
 				if (statement is ExpressionStatement expression)
 				{
 					var convertedResult = expression.Expression.ConvertedResult;
-					if (convertedResult != null)
+					if (convertedResult != null && 0 != convertedResult.ConvertedStatements.Count)
 					{
 						converted.AddRange(convertedResult.ConvertedStatements);
 						expression.Expression = convertedResult.ConvertedExpression;
 						converted.Add(expression);
+						// expression might be a return statement
 						// converted.Add(new ExpressionStatement(MetaData, convertedResult.ConvertedExpression));
 					}
 					else
