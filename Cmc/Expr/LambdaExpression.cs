@@ -18,6 +18,7 @@ namespace Cmc.Expr
 		[CanBeNull] public Type DeclaredType;
 		[NotNull] public StatementList Body;
 		[NotNull] public readonly IList<VariableDeclaration> ParameterList;
+		[NotNull] public readonly ReturnLabelDeclaration EndLabel;
 		protected Type Type;
 
 		public LambdaExpression(
@@ -30,6 +31,7 @@ namespace Cmc.Expr
 			Body = body;
 			DeclaredType = returnType;
 			ParameterList = parameterList ?? new List<VariableDeclaration>(0);
+			EndLabel = new ReturnLabelDeclaration(MetaData, "");
 		}
 
 		public override void SurroundWith(Environment environment)
@@ -42,10 +44,9 @@ namespace Cmc.Expr
 			}
 			foreach (var variableDeclaration in ParameterList)
 				variableDeclaration.SurroundWith(Env);
-			var endLabel = new ReturnLabelDeclaration(MetaData, "");
-			endLabel.SurroundWith(Env);
+			EndLabel.SurroundWith(Env);
 			var bodyEnv = new Environment(Env);
-			Env.Declarations.Add(endLabel);
+			Env.Declarations.Add(EndLabel);
 			foreach (var variableDeclaration in ParameterList)
 				bodyEnv.Declarations.Add(variableDeclaration);
 			// FEATURE #37
@@ -59,9 +60,9 @@ namespace Cmc.Expr
 			recur.SurroundWith(Env);
 			bodyEnv.Declarations.Add(recur);
 			Body.SurroundWith(bodyEnv);
-			var retTypes = endLabel.StatementsUsingThis.Select(i =>
+			var retTypes = EndLabel.StatementsUsingThis.Select(i =>
 			{
-				i.ReturnLabel = endLabel;
+				i.ReturnLabel = EndLabel;
 				return i.Expression.GetExpressionType();
 			}).ToList();
 			// FEATURE #24
@@ -82,7 +83,7 @@ namespace Cmc.Expr
 //				Body = Body.OptimizedStatementList;
 			while (null != Body.ConvertedStatementList)
 				Body = Body.ConvertedStatementList;
-			Body.Statements.Add(endLabel);
+			Body.Statements.Add(EndLabel);
 		}
 
 		public override Type GetExpressionType() => Type;
