@@ -55,6 +55,9 @@ namespace Cmc.Stmt
 			.Concat(Expression.Dump().Select(MapFunc));
 	}
 
+	/// <summary>
+	///  when codegen, use `converted statement`
+	/// </summary>
 	public class ReturnStatement : ExpressionStatement
 	{
 		public ReturnLabelDeclaration ReturnLabel;
@@ -80,7 +83,12 @@ namespace Cmc.Stmt
 			if (Expression is AtomicExpression) return;
 			var variableName = $"{MetaData.TrimedFileName}{MetaData.LineNumber}{GetHashCode()}";
 			ConvertedStatementList = new StatementList(MetaData,
+				new VariableDeclaration(MetaData, variableName, Expression, type: Expression.GetExpressionType()),
 				new ReturnStatement(MetaData, new VariableExpression(MetaData, variableName), _labelName));
+		}
+
+		public void InlineThis()
+		{
 		}
 
 		public override IEnumerable<string> Dump() => new[]

@@ -125,12 +125,14 @@ namespace Cmc.Expr
 				ConvertedResult = new ExpressionConvertedResult(statements, this);
 		}
 
-		private IEnumerable<string> DumpParams() =>
-			new[] {"  parameters:\n"}
-				.Concat(
-					from i in ArgsList
-					from j in i.Dump().Select(MapFunc2)
-					select j);
+		private IEnumerable<string> DumpParams() => new[]
+			{
+				"  parameters:\n"
+			}
+			.Concat(
+				from i in ArgsList
+				from j in i.Dump().Select(MapFunc2)
+				select j);
 
 		/// <summary>
 		///  FEATURE #42
