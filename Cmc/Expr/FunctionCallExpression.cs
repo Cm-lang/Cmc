@@ -107,10 +107,24 @@ namespace Cmc.Expr
 				var s = statementList?.Statements.ToList() ?? lambdaExpression.Body.Statements.ToList();
 				Expression ret = null;
 				for (var i = s.Count - 1; i >= 0; i--)
-					if (s[i] is ReturnStatement returnStatement) ret = returnStatement.Expression;
-				var expression = ret ?? new NullExpression(MetaData);
+					if (s[i] is ReturnStatement returnStatement)
+					{
+						ret = returnStatement.Expression;
+						s.RemoveAt(i);
+						break;
+					}
+				ret = ret ?? new NullExpression(MetaData);
+				if (!(ret is AtomicExpression))
+				{
+					var varName = $"retTmp{(ulong) ret.GetHashCode()}";
+					var expr = new VariableDeclaration(MetaData, varName, ret, type: ret.GetExpressionType());
+					s.Add(expr);
+					var variableExpression = new VariableExpression(MetaData, varName);
+					variableExpression.ChangeDeclaration(expr);
+					ret = variableExpression;
+				}
 				statements.AddRange(s);
-				ConvertedResult = new ExpressionConvertedResult(statements, expression);
+				ConvertedResult = new ExpressionConvertedResult(statements, ret);
 			}
 			else
 				ConvertedResult = new ExpressionConvertedResult(statements, this);
