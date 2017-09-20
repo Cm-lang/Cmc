@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Cmc.Core;
 using Cmc.Decl;
 using Cmc.Stmt;
 using JetBrains.Annotations;
 using static System.StringComparison;
-using Environment = Cmc.Core.Environment;
 
 namespace Cmc.Expr
 {
@@ -99,12 +97,27 @@ namespace Cmc.Expr
 					ConvertedResult = new ExpressionConvertedResult(tmp, this);
 				return;
 			}
+			Inline(tmp);
+		}
+
+		private void Inline([CanBeNull] List<Statement> tmp)
+		{
 			var statements = tmp ?? new List<Statement>();
 			// FEATURE #44
 			if (Receiver is LambdaExpression lambdaExpression)
 			{
 				var statementList = lambdaExpression.OptimizedStatementList;
 				var s = statementList?.Statements.ToList() ?? lambdaExpression.Body.Statements.ToList();
+				var len = ArgsList.Count;
+				// len = lambdaExpression.ParameterList.Count;
+				// should equal
+				for (var i = 0; i < len; i++)
+				{
+					var decl = lambdaExpression.ParameterList[i];
+					decl.Mutability = true;
+					decl.Expression = ArgsList[i];
+					statements.Add(decl);
+				}
 				Expression ret = null;
 				for (var i = s.Count - 1; i >= 0; i--)
 					if (s[i] is ReturnStatement returnStatement)

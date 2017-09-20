@@ -14,8 +14,8 @@ namespace Cmc.Decl
 {
 	public sealed class VariableDeclaration : Declaration
 	{
-		[NotNull] public readonly Expression Expression;
-		public readonly bool Mutability;
+		[NotNull] public Expression Expression;
+		public bool Mutability;
 		public bool IsGlobal = false;
 		[CanBeNull] public Type Type;
 
