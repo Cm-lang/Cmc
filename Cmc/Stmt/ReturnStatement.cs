@@ -14,6 +14,8 @@ namespace Cmc.Stmt
 	{
 		public ReturnLabelDeclaration ReturnLabel;
 		[CanBeNull] private readonly string _labelName;
+		private VariableDeclaration _convertedVariableDeclaration;
+		private ReturnStatement _convertedReturnStatement;
 
 		public ReturnStatement(
 			MetaData metaData,
@@ -37,28 +39,29 @@ namespace Cmc.Stmt
 			ReturnLabel.StatementsUsingThis.Add(this);
 			if (Expression is AtomicExpression) return;
 			var variableName = $"{MetaData.TrimedFileName}{MetaData.LineNumber}{GetHashCode()}";
+			_convertedVariableDeclaration =
+				new VariableDeclaration(MetaData, variableName, Expression, type: Expression.GetExpressionType());
+			_convertedReturnStatement = new ReturnStatement(MetaData,
+				new VariableExpression(MetaData, variableName), _labelName)
+			{
+				ReturnLabel = ReturnLabel
+			};
 			ConvertedStatementList = new StatementList(MetaData,
-				new VariableDeclaration(MetaData, variableName, Expression, type: Expression.GetExpressionType()),
-				new ReturnStatement(MetaData, new VariableExpression(MetaData, variableName), _labelName)
-				{
-					ReturnLabel = ReturnLabel
-				});
+				_convertedVariableDeclaration,
+				_convertedReturnStatement);
 		}
 
 		/// <summary>
 		///   make this an inlined return statement
 		/// </summary>
 		/// <param name="returnValueStorer">the variable used to store the return value</param>
-		public void InlineThis(VariableExpression returnValueStorer)
+		public void Unify(VariableExpression returnValueStorer)
 		{
 			if (null != ConvertedStatementList)
-			{
-				var varDecl = ConvertedStatementList.Statements.First();
-				var varExpr = (VariableExpression) ((ReturnStatement) ConvertedStatementList.Statements.Last()).Expression;
 				ConvertedStatementList = new StatementList(MetaData,
-					varDecl,
-					new AssignmentStatement(MetaData, returnValueStorer, varExpr));
-			}
+					_convertedVariableDeclaration,
+					new AssignmentStatement(MetaData, returnValueStorer,
+						_convertedReturnStatement.Expression));
 			else
 				ConvertedStatementList = new StatementList(MetaData,
 					new AssignmentStatement(MetaData, returnValueStorer, Expression));

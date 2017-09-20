@@ -88,7 +88,7 @@ namespace Cmc.Expr
 				Body.Statements.Insert(0, new VariableDeclaration(MetaData, varName, type: retType));
 				var returnValueCollector = new VariableExpression(MetaData, varName);
 				foreach (var endLabelStatement in EndLabel.StatementsUsingThis)
-					endLabelStatement.InlineThis(returnValueCollector);
+					endLabelStatement.Unify(returnValueCollector);
 				Body.Statements.Add(new ReturnStatement(MetaData, returnValueCollector)
 				{
 					ReturnLabel = EndLabel
