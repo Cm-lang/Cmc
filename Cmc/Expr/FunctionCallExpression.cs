@@ -47,19 +47,9 @@ namespace Cmc.Expr
 					  lambdaType2.ParamsList.Count == ArgsList.Count &&
 					  lambdaType2.ParamsList.SequenceEqual(argsTypes))));
 				if (null != receiverDeclaration)
-				{
 					// receiverDeclaration is obviously a variable declaraion / extern declaration
 					// because it's one of the filter condition
-					switch (receiverDeclaration)
-					{
-						case VariableDeclaration variableDeclaration:
-							receiver.ChangeDeclaration(variableDeclaration);
-							break;
-						case ExternDeclaration externDeclaration:
-							receiver.ChangeDeclaration(externDeclaration);
-							break;
-					}
-				}
+					receiver.Declaration = receiverDeclaration;
 				else
 					Errors.Add($"{MetaData.GetErrorHeader()}unresolved reference: \"{receiver.Name}\"");
 			}
@@ -116,6 +106,7 @@ namespace Cmc.Expr
 					var decl = lambdaExpression.ParameterList[i];
 					decl.Mutability = true;
 					decl.Expression = ArgsList[i];
+					// decl.Type = ArgsList[i].GetExpressionType();
 					statements.Add(decl);
 				}
 				Expression ret = null;
@@ -132,8 +123,10 @@ namespace Cmc.Expr
 					var varName = $"retTmp{(ulong) ret.GetHashCode()}";
 					var expr = new VariableDeclaration(MetaData, varName, ret, type: ret.GetExpressionType());
 					s.Add(expr);
-					var variableExpression = new VariableExpression(MetaData, varName);
-					variableExpression.ChangeDeclaration(expr);
+					var variableExpression = new VariableExpression(MetaData, varName)
+					{
+						Declaration = expr
+					};
 					ret = variableExpression;
 				}
 				statements.AddRange(s);

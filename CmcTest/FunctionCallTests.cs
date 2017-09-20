@@ -129,6 +129,38 @@ namespace CmcTest
 					new UnknownType(MetaData.Empty, "i8"))
 			}), new UnknownType(MetaData.Empty, "i8"));
 
+		public static LambdaExpression LambdaAst4() => new LambdaExpression(MetaData.Empty,
+			new StatementList(MetaData.Empty,
+				new ReturnStatement(MetaData.Empty,
+					new FunctionCallExpression(MetaData.Empty,
+						new LambdaExpression(MetaData.Empty,
+							new StatementList(MetaData.Empty,
+								new ReturnStatement(MetaData.Empty,
+									new FunctionCallExpression(MetaData.Empty,
+										new VariableExpression(MetaData.Empty, "recur"),
+										new List<Expression>(new[]
+										{
+											new VariableExpression(MetaData.Empty, "a")
+										})),
+									"inner")
+							),
+							returnType: new UnknownType(MetaData.Empty, "i8"),
+							parameterList: new List<VariableDeclaration>
+							{
+								new VariableDeclaration(MetaData.Empty, "unused_str",
+									type: new PrimaryType(MetaData.Empty, "string"))
+							},
+							endLabel: new ReturnLabelDeclaration(MetaData.Empty, "inner")),
+						new List<Expression>
+						{
+							new StringLiteralExpression(MetaData.Empty, "ass we can")
+						}))),
+			new List<VariableDeclaration>(new[]
+			{
+				new VariableDeclaration(MetaData.Empty, "a", type:
+					new UnknownType(MetaData.Empty, "i8"))
+			}), new UnknownType(MetaData.Empty, "i8"));
+
 		public static StatementList FuncCallAst5() => new StatementList(MetaData.Empty,
 			new VariableDeclaration(MetaData.Empty, "recurFunc", LambdaAst3()),
 			new VariableDeclaration(MetaData.Empty, "gg", isMutable: true, type:
@@ -137,6 +169,19 @@ namespace CmcTest
 				new VariableExpression(MetaData.Empty, "gg"),
 				new FunctionCallExpression(MetaData.Empty,
 					new VariableExpression(MetaData.Empty, "recurFunc"),
+					new List<Expression>(new[]
+					{
+						new IntLiteralExpression(MetaData.Empty, "233", true, 8)
+					}))));
+
+		public static StatementList FuncCallAst6() => new StatementList(MetaData.Empty,
+			new VariableDeclaration(MetaData.Empty, "recurFuncPlus", LambdaAst4()),
+			new VariableDeclaration(MetaData.Empty, "gg", isMutable: true, type:
+				new UnknownType(MetaData.Empty, "i8")),
+			new AssignmentStatement(MetaData.Empty,
+				new VariableExpression(MetaData.Empty, "gg"),
+				new FunctionCallExpression(MetaData.Empty,
+					new VariableExpression(MetaData.Empty, "recurFuncPlus"),
 					new List<Expression>(new[]
 					{
 						new IntLiteralExpression(MetaData.Empty, "233", true, 8)
@@ -199,6 +244,23 @@ namespace CmcTest
 		public void FuncCallTest5()
 		{
 			var example = FuncCallAst5();
+			example.SurroundWith(Environment.SolarSystem);
+			example.PrintDumpInfo();
+			Errors.PrintErrorInfo();
+			Assert.IsTrue(0 == Errors.ErrList.Count);
+		}
+
+		/// <summary>
+		///  recur test
+		///  expression:
+		///  const recurFuncPlus = i8 { a: i32 -> i8 { unused_str: string -> recur(a) }("ass we can") }
+		///  var gg: i8 = null
+		///  gg = recurFuncPlus(233u8)
+		/// </summary>
+		[TestMethod]
+		public void FuncCallTest6()
+		{
+			var example = FuncCallAst6();
 			example.SurroundWith(Environment.SolarSystem);
 			example.PrintDumpInfo();
 			Errors.PrintErrorInfo();

@@ -9,9 +9,31 @@ namespace Cmc.Expr
 	public class VariableExpression : AtomicExpression
 	{
 		[NotNull] public readonly string Name;
-		[CanBeNull] public Declaration Declaration;
+
+		[CanBeNull]
+		public Declaration Declaration
+		{
+			get => _declaration;
+			set
+			{
+				switch (value)
+				{
+					case VariableDeclaration variable:
+						ChangeDeclaration(variable);
+						break;
+					case ExternDeclaration @extern:
+						ChangeDeclaration(@extern);
+						break;
+					default:
+						Errors.AddAndThrow($"{MetaData.GetErrorHeader()}{value} isn't a variable");
+						throw new CompilerException("gg");
+				}
+			}
+		}
+
 		public bool DeclarationMutability;
 		[CanBeNull] private Type _declarationType;
+		[CanBeNull] private Declaration _declaration;
 
 		public VariableExpression(
 			MetaData metaData,
@@ -22,34 +44,23 @@ namespace Cmc.Expr
 		{
 			base.SurroundWith(environment);
 			var declaration = Env.FindDeclarationByName(Name);
-			switch (declaration)
-			{
-				case VariableDeclaration variableDeclaration:
-					ChangeDeclaration(variableDeclaration);
-					break;
-				case ExternDeclaration externDeclaration:
-					ChangeDeclaration(externDeclaration);
-					break;
-				default:
-					Errors.AddAndThrow($"{MetaData.GetErrorHeader()}{declaration} isn't a variable");
-					break;
-			}
+			Declaration = declaration;
 		}
 
-		public void ChangeDeclaration(VariableDeclaration variableDeclaration)
+		private void ChangeDeclaration(VariableDeclaration variableDeclaration)
 		{
 			_declarationType = variableDeclaration.Type;
 			DeclarationMutability = variableDeclaration.Mutability;
-			Declaration = variableDeclaration;
-			Declaration.UsageCount++;
+			_declaration = variableDeclaration;
+			_declaration.UsageCount++;
 		}
 
-		public void ChangeDeclaration(ExternDeclaration externDeclaration)
+		private void ChangeDeclaration(ExternDeclaration externDeclaration)
 		{
 			_declarationType = externDeclaration.Type;
 			DeclarationMutability = externDeclaration.Mutability;
-			Declaration = externDeclaration;
-			Declaration.UsageCount++;
+			_declaration = externDeclaration;
+			_declaration.UsageCount++;
 		}
 
 		public override Type GetExpressionType() =>
