@@ -26,7 +26,7 @@ namespace Cmc.Stmt
 		public virtual IEnumerable<JumpStatement> FindJumpStatements() => new List<JumpStatement>(0);
 
 		public override IEnumerable<string> Dump() => new[] {"empty statement"};
-		public override IEnumerable<string> DumpCode() => new[] {";"};
+		public override IEnumerable<string> DumpCode() => new[] {";\n"};
 	}
 
 	public class ExpressionStatement : Statement

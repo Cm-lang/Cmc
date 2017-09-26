@@ -117,11 +117,12 @@ namespace Cmc.Expr
 
 		public override IEnumerable<string> DumpCode() => new[]
 			{
-				$@"{Type.RetType}{{ {
+				$@"{string.Join("", Type.RetType.DumpCode())}{{ {
 						string.Join(", ",
 							from param in ParameterList
-							select $"{param.Name}: {param.Type}")
-					} ->\n"
+							select $"{param.Name}: {string.Join("", param.Type.DumpCode())}")
+					} ->
+"
 			}
 			.Concat(Body.DumpCode().Select(MapFunc))
 			.Append("}");
