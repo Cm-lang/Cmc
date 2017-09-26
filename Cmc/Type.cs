@@ -105,6 +105,7 @@ namespace Cmc
 		}
 
 		public override IEnumerable<string> Dump() => new[] {$"primary type [{this}]\n"};
+		public override IEnumerable<string> DumpCode() => new[] {$"{this}"};
 
 		public override string ToString() => Name;
 
