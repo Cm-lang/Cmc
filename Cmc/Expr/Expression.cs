@@ -48,6 +48,7 @@ namespace Cmc.Expr
 		public override Type GetExpressionType() => new PrimaryType(MetaData, PrimaryType.NullType);
 
 		public override IEnumerable<string> Dump() => new[] {"null expression\n"};
+		public override IEnumerable<string> DumpCode() => new[] {"null"};
 	}
 
 	/// <summary>
@@ -84,6 +85,7 @@ namespace Cmc.Expr
 			ConstantPoolIndex = Constants.AllocateStringConstant(Value, Length);
 		}
 
+		/// <inheritdoc />
 		/// <summary>
 		///     FEATURE #23
 		/// </summary>
@@ -91,6 +93,8 @@ namespace Cmc.Expr
 		public override IEnumerable<string> Dump() =>
 			new[] {$"string literal expression <{ConstantPoolIndex}>[{Value}]:\n"}
 				.Concat(Type.Dump().Select(MapFunc));
+
+		public override IEnumerable<string> DumpCode() => new[] {$"l\"{Value}\""};
 
 		public override Type GetExpressionType() => Type;
 	}
@@ -136,6 +140,8 @@ namespace Cmc.Expr
 			.Concat(Owner.Dump().Select(MapFunc2))
 			.Concat(new[] {"  member:\n"})
 			.Concat(Member.Dump().Select(MapFunc2));
+
+		public override IEnumerable<string> DumpCode() => new[] {$"{Owner}.{Member}"};
 	}
 
 	/// <summary>
@@ -151,5 +157,6 @@ namespace Cmc.Expr
 			throw new CompilerException("cannot get hole's type");
 
 		public override IEnumerable<string> Dump() => new[] {"[H O L E]\n"};
+		public override IEnumerable<string> DumpCode() => new[] {"<<hole>>"};
 	}
 }
