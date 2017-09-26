@@ -198,6 +198,9 @@ namespace Cmc.Expr
 			.Concat(_type.Dump().Select(MapFunc2));
 
 		public override IEnumerable<string> DumpCode() =>
-			new[] {$"{Receiver}({string.Join(",", ArgsList.Select(i => i.DumpCode()))})"};
+			new[]
+			{
+				$"{string.Join("  ", Receiver.DumpCode())}({string.Join(",", ArgsList.Select(i => string.Join("  ", i.DumpCode())))})"
+			};
 	}
 }

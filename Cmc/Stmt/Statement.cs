@@ -57,7 +57,7 @@ namespace Cmc.Stmt
 		public override IEnumerable<string> Dump() => new[] {"expression statement:\n"}
 			.Concat(Expression.Dump().Select(MapFunc));
 
-		public override IEnumerable<string> DumpCode() => new[] {$"{Expression};\n"};
+		public override IEnumerable<string> DumpCode() => new[] {$"{string.Join("  ", Expression.DumpCode())};\n"};
 	}
 
 	/// <summary>

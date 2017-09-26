@@ -141,7 +141,8 @@ namespace Cmc.Expr
 			.Concat(new[] {"  member:\n"})
 			.Concat(Member.Dump().Select(MapFunc2));
 
-		public override IEnumerable<string> DumpCode() => new[] {$"{Owner}.{Member}"};
+		public override IEnumerable<string> DumpCode() =>
+			new[] {$"{string.Join("  ", Owner.DumpCode())}.{string.Join("  ", Member)}"};
 	}
 
 	/// <summary>

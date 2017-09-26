@@ -47,5 +47,14 @@ namespace CmcTest
 			example.SurroundWith(Environment.SolarSystem);
 			example.PrintCode();
 		}
+
+		[TestMethod]
+		public void TestDump5KeepAll()
+		{
+			Pragma.KeepAll = true;
+			var example = FuncCallAst5();
+			example.SurroundWith(Environment.SolarSystem);
+			example.PrintCode();
+		}
 	}
 }
