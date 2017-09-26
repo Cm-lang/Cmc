@@ -72,5 +72,7 @@ namespace Cmc.Stmt
 				$"return statement [{ReturnLabel}]:\n"
 			}
 			.Concat(Expression.Dump().Select(MapFunc));
+
+		public override IEnumerable<string> DumpCode() => new[] {$"{this}:{ReturnLabel};\n"};
 	}
 }

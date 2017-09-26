@@ -59,7 +59,8 @@ namespace Cmc.Stmt
 				: OkStatementList.Dump().Select(MapFunc2));
 
 		public override IEnumerable<string> DumpCode() =>
-			new[] {$"while({Condition}) {{"}
-				.Concat(OkStatementList.DumpCode().Select(MapFunc));
+			new[] {$"while ({Condition}) {{"}
+				.Concat(OkStatementList.DumpCode().Select(MapFunc))
+				.Append("}");
 	}
 }
