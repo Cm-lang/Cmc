@@ -37,6 +37,6 @@ namespace Cmc.Core
 		public abstract IEnumerable<string> DumpCode();
 
 		public void PrintDumpInfo() => Console.WriteLine(string.Join("", Dump()));
-		public void PrintCode() => Console.WriteLine(string.Join("", DumpCode())));
+		public void PrintCode() => Console.WriteLine(string.Join("", DumpCode()));
 	}
 }
