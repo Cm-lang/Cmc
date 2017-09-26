@@ -78,6 +78,8 @@ namespace Cmc
 		{
 			$"unknown type{Name}\n"
 		};
+
+		public override IEnumerable<string> DumpCode() => new[] {$"[unknown:{Name}]"};
 	}
 
 	/// <summary>
@@ -146,6 +148,8 @@ namespace Cmc
 
 		public override IEnumerable<string> Dump() =>
 			new[] {$"secondary type[{this}]:\n"};
+
+		public override IEnumerable<string> DumpCode() => new[] {$"{this}"};
 	}
 
 	/// <summary>
@@ -188,10 +192,12 @@ namespace Cmc
 		}
 
 		[NotNull]
-		public static string LambdaTypeToString([NotNull] IList<Type> args, [NotNull] Type ret) =>
-			$"({string.Join(",", args)})->{ret}";
+		public static string LambdaTypeToString([NotNull] IEnumerable<Type> args, [NotNull] Type ret) =>
+			$"{ret}({string.Join(",", args)})";
 
 		public override IEnumerable<string> Dump() => new[]
 			{$"lambda type [{this}]\n"};
+
+		public override IEnumerable<string> DumpCode() => new[] {$"{this}"};
 	}
 }
