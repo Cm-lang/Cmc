@@ -2,9 +2,9 @@
 
 namespace Cmc
 {
-	public class Duplicate : Ast
+	public abstract class Duplicate : Ast
 	{
-		public Duplicate(MetaData metaData) : base(metaData)
+		protected Duplicate(MetaData metaData) : base(metaData)
 		{
 		}
 	}

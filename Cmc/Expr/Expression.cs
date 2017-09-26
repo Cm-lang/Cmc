@@ -127,6 +127,15 @@ namespace Cmc.Expr
 		public override Type GetExpressionType() => Member.GetExpressionType();
 
 		public override VariableExpression GetLhsExpression() => Member.GetLhsExpression();
+
+		public override IEnumerable<string> Dump() => new[]
+			{
+				"member access:\n",
+				"  owner:\n"
+			}
+			.Concat(Owner.Dump().Select(MapFunc2))
+			.Concat(new[] {"  member:\n"})
+			.Concat(Member.Dump().Select(MapFunc2));
 	}
 
 	/// <summary>
@@ -140,5 +149,7 @@ namespace Cmc.Expr
 
 		public override Type GetExpressionType() =>
 			throw new CompilerException("cannot get hole's type");
+
+		public override IEnumerable<string> Dump() => new[] {"[H O L E]\n"};
 	}
 }

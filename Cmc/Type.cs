@@ -73,6 +73,11 @@ namespace Cmc
 			Gg();
 			throw new CompilerException("unknown type");
 		}
+
+		public override IEnumerable<string> Dump() => new[]
+		{
+			$"unknown type{Name}\n"
+		};
 	}
 
 	/// <summary>
