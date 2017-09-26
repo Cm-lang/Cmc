@@ -67,7 +67,7 @@ namespace CmcTest
 					lambdaExpression.PrintCode();
 					Assert.IsTrue(0 == Errors.ErrList.Count);
 				});
-		
+
 		[TestMethod]
 		public void ReturnDumpTest1()
 		{
