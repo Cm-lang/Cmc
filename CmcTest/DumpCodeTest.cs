@@ -25,7 +25,7 @@ namespace CmcTest
 		}
 
 		[TestMethod]
-		public void FuncCallTest2()
+		public void TestDump2()
 		{
 			var example = FuncCallAst2();
 			example.SurroundWith(Environment.SolarSystem);
@@ -33,7 +33,7 @@ namespace CmcTest
 		}
 
 		[TestMethod]
-		public void FuncCallTest4()
+		public void TestDump4()
 		{
 			var example = FuncCallAst4();
 			example.SurroundWith(Environment.SolarSystem);
@@ -41,7 +41,7 @@ namespace CmcTest
 		}
 
 		[TestMethod]
-		public void FuncCallTest5()
+		public void TestDump5()
 		{
 			var example = FuncCallAst5();
 			example.SurroundWith(Environment.SolarSystem);
