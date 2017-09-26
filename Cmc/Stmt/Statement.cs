@@ -102,7 +102,7 @@ namespace Cmc.Stmt
 			$"jump statement [{this}] [{JumpLabel}]\n"
 		};
 
-		public override IEnumerable<string> DumpCode() => new[] {$"{this}"};
+		public override IEnumerable<string> DumpCode() => new[] {$"{this};\n"};
 
 		public override IEnumerable<JumpStatement> FindJumpStatements() => new[] {this};
 	}

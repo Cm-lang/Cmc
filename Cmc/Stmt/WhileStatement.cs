@@ -57,5 +57,10 @@ namespace Cmc.Stmt
 			.Concat(Optimized == 1
 				? new[] {"   [optimized]"}
 				: OkStatementList.Dump().Select(MapFunc2));
+
+		public override IEnumerable<string> DumpCode() => new[]
+		{
+			$"while({Condition}) {{"
+		}.Concat(OkStatementList.DumpCode().Select(MapFunc));
 	}
 }
