@@ -1,7 +1,9 @@
 ﻿using Cmc;
 using Cmc.Core;
+using Cmc.Expr;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using static CmcTest.FunctionCallTests;
+using static CmcTest.ReturnTests;
 
 namespace CmcTest
 {
@@ -55,6 +57,31 @@ namespace CmcTest
 			var example = FuncCallAst5();
 			example.SurroundWith(Environment.SolarSystem);
 			example.PrintCode();
+		}
+
+		[TestMethod]
+		public void TestSplittingDump1() =>
+			ExpressionSplittingTestCore(new IntLiteralExpression(MetaData.Empty, "123", true, 8),
+				lambdaExpression =>
+				{
+					lambdaExpression.PrintCode();
+					Assert.IsTrue(0 == Errors.ErrList.Count);
+				});
+		
+		[TestMethod]
+		public void ReturnDumpTest1()
+		{
+			var block = Block1();
+			block.SurroundWith(Environment.SolarSystem);
+			block.PrintCode();
+		}
+
+		[TestMethod]
+		public void ReturnDumpTest2()
+		{
+			var block = Block2();
+			block.SurroundWith(Environment.SolarSystem);
+			block.PrintCode();
 		}
 	}
 }

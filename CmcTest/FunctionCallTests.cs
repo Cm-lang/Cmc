@@ -278,7 +278,7 @@ namespace CmcTest
 			Assert.IsTrue(0 == Errors.ErrList.Count);
 		}
 
-		private static void ExpressionSplittingTestCore(IntLiteralExpression parameter, Action<LambdaExpression> action)
+		public static void ExpressionSplittingTestCore(IntLiteralExpression parameter, Action<LambdaExpression> action)
 		{
 			var expr = new FunctionCallExpression(MetaData.Empty,
 				new VariableExpression(MetaData.Empty, "id"),
