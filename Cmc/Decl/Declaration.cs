@@ -67,6 +67,17 @@ namespace Cmc.Decl
 			foreach (var variableDeclaration in FieldList)
 				variableDeclaration.SurroundWith(internalEnv);
 		}
+
+		public override IEnumerable<string> Dump() =>
+			new[]
+				{
+					"struct declaration:\n",
+					"  members:\n"
+				}
+				.Concat(
+					from field in FieldList
+					from dump in field.Dump()
+					select $"    {dump}");
 	}
 
 	public class ExternDeclaration : Declaration

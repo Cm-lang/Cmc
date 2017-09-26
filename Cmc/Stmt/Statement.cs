@@ -26,6 +26,7 @@ namespace Cmc.Stmt
 		public virtual IEnumerable<JumpStatement> FindJumpStatements() => new List<JumpStatement>(0);
 
 		public override IEnumerable<string> Dump() => new[] {"empty statement"};
+		public override IEnumerable<string> DumpCode() => new[] {";\n"};
 	}
 
 	public class ExpressionStatement : Statement
@@ -55,6 +56,8 @@ namespace Cmc.Stmt
 
 		public override IEnumerable<string> Dump() => new[] {"expression statement:\n"}
 			.Concat(Expression.Dump().Select(MapFunc));
+
+		public override IEnumerable<string> DumpCode() => new[] {$"{string.Join("  ", Expression.DumpCode())};\n"};
 	}
 
 	/// <summary>
@@ -92,10 +95,14 @@ namespace Cmc.Stmt
 			JumpLabel.StatementsUsingThis.Add(this);
 		}
 
+		public override string ToString() => JumpKind == Jump.Break ? "break" : "continue";
+
 		public override IEnumerable<string> Dump() => new[]
 		{
-			$"jump statement [{JumpLabel}]\n"
+			$"jump statement [{this}] [{JumpLabel}]\n"
 		};
+
+		public override IEnumerable<string> DumpCode() => new[] {$"{this}:{JumpLabel};\n"};
 
 		public override IEnumerable<JumpStatement> FindJumpStatements() => new[] {this};
 	}

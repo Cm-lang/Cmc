@@ -61,5 +61,12 @@ namespace Cmc.Stmt
 			.Concat(OkStatementList.Dump().Select(MapFunc2))
 			.Concat(new[] {$"  false branch{(Optimized == 1 ? " [optimized]" : "")}:\n"})
 			.Concat(ElseStatementList.Dump().Select(MapFunc2));
+
+		public override IEnumerable<string> DumpCode() =>
+			new[] {$"if ({string.Join("", Condition.DumpCode())}) {{\n"}
+				.Concat(OkStatementList.DumpCode().Select(MapFunc))
+				.Append("} else {\n")
+				.Concat(ElseStatementList.DumpCode().Select(MapFunc))
+				.Append("}\n");
 	}
 }

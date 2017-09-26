@@ -26,6 +26,8 @@ namespace Cmc.Decl
 		{
 			$"return label [{this}]\n"
 		};
+
+		public override IEnumerable<string> DumpCode() => new[] {$"rlabel:{this};\n"};
 	}
 
 	/// <summary>
@@ -49,5 +51,7 @@ namespace Cmc.Decl
 		{
 			$"jump label [{this}]\n"
 		};
+
+		public override IEnumerable<string> DumpCode() => new[] {$"jlabel:{this};\n"};
 	}
 }

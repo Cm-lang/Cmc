@@ -75,5 +75,8 @@ namespace Cmc.Decl
 			.Concat(Type?.Dump().Select(MapFunc2) ?? new[] {"    cannot infer!\n"})
 			.Concat(new[] {"  initialize expression:\n"})
 			.Concat(Expression.Dump().Select(MapFunc2));
+
+		public override IEnumerable<string> DumpCode() => new[]
+			{$"{(Mutability ? "var" : "let")} {Name} = {string.Join("", Expression.DumpCode())};\n"};
 	}
 }

@@ -59,5 +59,8 @@ namespace Cmc.Stmt
 			.Concat(LhsExpression.Dump().Select(MapFunc2))
 			.Concat(new[] {"  rhs:\n"})
 			.Concat(RhsExpression.Dump().Select(MapFunc2));
+
+		public override IEnumerable<string> DumpCode() => new[]
+			{$"{string.Join("", LhsExpression.DumpCode())} = {string.Join("", RhsExpression.DumpCode())};\n"};
 	}
 }

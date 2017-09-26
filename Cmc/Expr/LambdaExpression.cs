@@ -19,7 +19,7 @@ namespace Cmc.Expr
 		[NotNull] public StatementList Body;
 		[NotNull] public readonly IList<VariableDeclaration> ParameterList;
 		[NotNull] public readonly ReturnLabelDeclaration EndLabel;
-		protected Type Type;
+		protected LambdaType Type;
 
 		public LambdaExpression(
 			MetaData metaData,
@@ -114,5 +114,17 @@ namespace Cmc.Expr
 				select j)
 			.Concat(new[] {"  body:\n"})
 			.Concat(Body.Dump().Select(MapFunc2));
+
+		public override IEnumerable<string> DumpCode() => new[]
+			{
+				$@"{string.Join("  ", Type.RetType.DumpCode())}{{ {
+						string.Join(", ",
+							from param in ParameterList
+							select $"{param.Name}: {string.Join("  ", param.Type.DumpCode())}")
+					} ->
+"
+			}
+			.Concat(Body.DumpCode().Select(MapFunc))
+			.Append("}");
 	}
 }

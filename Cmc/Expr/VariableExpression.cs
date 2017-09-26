@@ -74,5 +74,7 @@ namespace Cmc.Expr
 			.Concat(_declarationType?.Dump().Select(MapFunc2) ?? new[] {"    cannot infer!\n"});
 
 		public override VariableExpression GetLhsExpression() => this;
+
+		public override IEnumerable<string> DumpCode() => new[] {$"{Name}"};
 	}
 }

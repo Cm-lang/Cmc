@@ -39,11 +39,11 @@ namespace Cmc.Expr
 				Errors.Add($"{MetaData.GetErrorHeader()}integer length of {length} is not supported");
 		}
 
-		public virtual string AtomicRepresentation() => Value;
-
 		public override IEnumerable<string> Dump() =>
 			new[] {$"int literal [{Value}]:\n"}
 				.Concat(Type.Dump().Select(MapFunc));
+
+		public override IEnumerable<string> DumpCode() => new[] {$"{Value}{Type}"};
 	}
 
 	public class FloatLiteralExpression : LiteralExpression
@@ -66,11 +66,11 @@ namespace Cmc.Expr
 				Errors.Add($"{MetaData.GetErrorHeader()}float length of {length} is not supported");
 		}
 
-		public virtual string AtomicRepresentation() => Value; // TODO check for correctness
-
 		public override IEnumerable<string> Dump() =>
 			new[] {$"float literal [{Value}]:\n"}
 				.Concat(Type.Dump().Select(MapFunc));
+
+		public override IEnumerable<string> DumpCode() => new[] {$"{Value}{Type}"};
 	}
 
 	public class BoolLiteralExpression : LiteralExpression
@@ -88,9 +88,9 @@ namespace Cmc.Expr
 
 		public int ValueToInt() => Value ? 1 : 0;
 
-		public virtual string AtomicRepresentation() => ValueToInt().ToString();
-
 		public override IEnumerable<string> Dump() =>
 			new[] {$"bool literal expression [{Value}]:\n"};
+
+		public override IEnumerable<string> DumpCode() => new[] {$"{Value}"};
 	}
 }
