@@ -84,5 +84,10 @@ namespace Cmc.Stmt
 					from i in Statements
 					from j in i.Dump().Select(MapFunc)
 					select j);
+
+		public override IEnumerable<string> DumpCode() =>
+			from stmt in Statements
+			from codes in stmt.DumpCode()
+			select codes;
 	}
 }
