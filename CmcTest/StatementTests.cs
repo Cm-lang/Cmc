@@ -17,7 +17,7 @@ namespace CmcTest
 
 		private const string Var1 = "variableOne";
 
-		public static Statement StmtAst4() => new StatementList(MetaData.Empty,
+		public static Statement StmtAst3() => new StatementList(MetaData.Empty,
 			new VariableDeclaration(MetaData.Empty, Var1,
 				new BoolLiteralExpression(MetaData.Empty, true)),
 			new WhileStatement(MetaData.Empty,
@@ -27,7 +27,27 @@ namespace CmcTest
 						new VariableExpression(MetaData.Empty, Var1),
 						new BoolLiteralExpression(MetaData.Empty, false)))));
 
-		public static Statement StmtAst3() => new StatementList(MetaData.Empty,
+		public static Statement StmtAst4() => new StatementList(MetaData.Empty,
+			new VariableDeclaration(MetaData.Empty, Var1,
+				new BoolLiteralExpression(MetaData.Empty, true), true),
+			new WhileStatement(MetaData.Empty,
+				new VariableExpression(MetaData.Empty, Var1),
+				new StatementList(MetaData.Empty,
+					new AssignmentStatement(MetaData.Empty,
+						new VariableExpression(MetaData.Empty, Var1),
+						new BoolLiteralExpression(MetaData.Empty, false)))));
+
+		public static Statement StmtAst6() => new StatementList(MetaData.Empty,
+			new VariableDeclaration(MetaData.Empty, Var1,
+				new BoolLiteralExpression(MetaData.Empty, true), true),
+			new WhileStatement(MetaData.Empty,
+				new VariableExpression(MetaData.Empty, Var1),
+				new StatementList(MetaData.Empty,
+					new AssignmentStatement(MetaData.Empty,
+						new VariableExpression(MetaData.Empty, Var1),
+						new IntLiteralExpression(MetaData.Empty, "123", true)))));
+
+		public static Statement StmtAst5() => new StatementList(MetaData.Empty,
 			new VariableDeclaration(MetaData.Empty, Var1,
 				new BoolLiteralExpression(MetaData.Empty, true), true),
 			new WhileStatement(MetaData.Empty,
@@ -87,7 +107,7 @@ namespace CmcTest
 		[TestMethod]
 		public void StatementTest3()
 		{
-			var stmt = StmtAst4();
+			var stmt = StmtAst3();
 			stmt.SurroundWith(Environment.SolarSystem);
 			stmt.PrintDumpInfo();
 			Assert.IsTrue(0 != Errors.ErrList.Count);
@@ -100,15 +120,7 @@ namespace CmcTest
 		[TestMethod]
 		public void StatementTest4()
 		{
-			var stmt = new StatementList(MetaData.Empty,
-				new VariableDeclaration(MetaData.Empty, Var1,
-					new BoolLiteralExpression(MetaData.Empty, true), true),
-				new WhileStatement(MetaData.Empty,
-					new VariableExpression(MetaData.Empty, Var1),
-					new StatementList(MetaData.Empty,
-						new AssignmentStatement(MetaData.Empty,
-							new VariableExpression(MetaData.Empty, Var1),
-							new BoolLiteralExpression(MetaData.Empty, false)))));
+			var stmt = StmtAst4();
 			stmt.SurroundWith(Environment.SolarSystem);
 			stmt.PrintDumpInfo();
 			Assert.IsTrue(0 == Errors.ErrList.Count);
@@ -120,7 +132,7 @@ namespace CmcTest
 		[TestMethod]
 		public void StatementTest5()
 		{
-			var stmt = StmtAst3();
+			var stmt = StmtAst5();
 			stmt.SurroundWith(Environment.SolarSystem);
 			stmt.PrintDumpInfo();
 			Assert.IsTrue(0 == Errors.ErrList.Count);
@@ -132,15 +144,7 @@ namespace CmcTest
 		[TestMethod]
 		public void StatementTest6()
 		{
-			var stmt = new StatementList(MetaData.Empty,
-				new VariableDeclaration(MetaData.Empty, Var1,
-					new BoolLiteralExpression(MetaData.Empty, true), true),
-				new WhileStatement(MetaData.Empty,
-					new VariableExpression(MetaData.Empty, Var1),
-					new StatementList(MetaData.Empty,
-						new AssignmentStatement(MetaData.Empty,
-							new VariableExpression(MetaData.Empty, Var1),
-							new IntLiteralExpression(MetaData.Empty, "123", true)))));
+			var stmt = StmtAst6();
 			stmt.SurroundWith(Environment.SolarSystem);
 			stmt.PrintDumpInfo();
 			Assert.IsTrue(0 != Errors.ErrList.Count);
