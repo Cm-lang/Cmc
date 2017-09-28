@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>netcoreapp2.0</TargetFramework>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="JetBrains.Annotations" Version="11.0.0"/>
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Cmc\Cmc.csproj">
+			<Project>{17e0de41-2426-4616-8424-ba6c0f97f7c0}</Project>
+			<Name>Cmc</Name>
+		</ProjectReference>
+	</ItemGroup>
+</Project>
