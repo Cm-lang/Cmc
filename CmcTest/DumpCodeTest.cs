@@ -100,5 +100,21 @@ namespace CmcTest
 			block.SurroundWith(Environment.SolarSystem);
 			block.PrintCode();
 		}
+
+		[TestMethod]
+		public void DumpStmtAst3()
+		{
+			var block = StmtAst3();
+			block.SurroundWith(Environment.SolarSystem);
+			block.PrintCode();
+		}
+
+		[TestMethod]
+		public void DumpStmtAst4()
+		{
+			var block = StmtAst4();
+			block.SurroundWith(Environment.SolarSystem);
+			block.PrintCode();
+		}
 	}
 }
