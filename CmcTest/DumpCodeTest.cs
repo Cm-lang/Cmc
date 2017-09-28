@@ -4,6 +4,7 @@ using Cmc.Expr;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using static CmcTest.FunctionCallTests;
 using static CmcTest.ReturnTests;
+using static CmcTest.StatementTests;
 
 namespace CmcTest
 {
@@ -80,6 +81,22 @@ namespace CmcTest
 		public void ReturnDumpTest2()
 		{
 			var block = Block2();
+			block.SurroundWith(Environment.SolarSystem);
+			block.PrintCode();
+		}
+
+		[TestMethod]
+		public void DumpStmtAst1()
+		{
+			var block = StmtAst1();
+			block.SurroundWith(Environment.SolarSystem);
+			block.PrintCode();
+		}
+
+		[TestMethod]
+		public void DumpStmtAst2()
+		{
+			var block = StmtAst2();
 			block.SurroundWith(Environment.SolarSystem);
 			block.PrintCode();
 		}
