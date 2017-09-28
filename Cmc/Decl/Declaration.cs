@@ -102,6 +102,26 @@ namespace Cmc.Decl
 			.Concat(Type.Dump());
 	}
 
+	public class DuplicateDeclaration : Declaration
+	{
+		public List<Duplicate> Instances;
+
+		public DuplicateDeclaration(
+			MetaData metaData,
+			[NotNull] string name,
+			[CanBeNull] List<Duplicate> instances = null,
+			Modifier[] modifiers = null) :
+			base(metaData, name, modifiers)
+		{
+			Instances = instances ?? new List<Duplicate>();
+		}
+
+		public void Instantiate([NotNull] Type type)
+		{
+			Instances.ForEach(i => i.ConvertedType = type);
+		}
+	}
+
 	/// <summary>
 	///     Probably useless
 	/// </summary>

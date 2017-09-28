@@ -1,11 +1,23 @@
-﻿using Cmc.Core;
+﻿using System.Collections.Generic;
+using Cmc.Core;
+using JetBrains.Annotations;
 
 namespace Cmc
 {
-	public abstract class Duplicate : Ast
+	public class Duplicate : Ast
 	{
-		protected Duplicate(MetaData metaData) : base(metaData)
+		public Type ConvertedType;
+		[NotNull] public string Name;
+
+		public Duplicate(
+			MetaData metaData,
+			[NotNull] string name) : base(metaData)
 		{
+			Name = name;
 		}
+
+		public override IEnumerable<string> Dump() => new[] {$"dup: [{Name}]"};
+
+		public override IEnumerable<string> DumpCode() => new[] {Name};
 	}
 }
