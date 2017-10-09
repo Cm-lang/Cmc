@@ -73,7 +73,18 @@ namespace CmcTest
 
 		[TestMethod]
 		public void TestSplittingDump1() =>
-			ExpressionSplittingTestCore(new IntLiteralExpression(MetaData.Empty, "123", true, 8),
+			ExpressionSplittingTestCore(false,
+				new IntLiteralExpression(MetaData.Empty, "123", true, 8),
+				lambdaExpression =>
+				{
+					lambdaExpression.PrintCode();
+					Assert.IsTrue(0 == Errors.ErrList.Count);
+				});
+
+		[TestMethod]
+		public void TestSplittingDump2() =>
+			ExpressionSplittingTestCore(true,
+				new IntLiteralExpression(MetaData.Empty, "123", true, 8),
 				lambdaExpression =>
 				{
 					lambdaExpression.PrintCode();
