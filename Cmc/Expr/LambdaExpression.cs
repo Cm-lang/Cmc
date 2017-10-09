@@ -90,7 +90,7 @@ namespace Cmc.Expr
 				              : new PrimaryType(MetaData, PrimaryType.NullType));
 			if (retTypes.Count > 1)
 			{
-				var varName = $"returnCollector{(ulong) GetHashCode()}";
+				var varName = $"retClctor{(ulong) GetHashCode()}";
 				Body.Statements.Insert(0, new VariableDeclaration(MetaData, varName, type: retType));
 				var returnValueCollector = new VariableExpression(MetaData, varName);
 				foreach (var endLabelStatement in EndLabel.StatementsUsingThis)

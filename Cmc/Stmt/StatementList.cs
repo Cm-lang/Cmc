@@ -59,6 +59,7 @@ namespace Cmc.Stmt
 					{
 						converted.AddRange(convertedResult.ConvertedStatements);
 						expression.Expression = convertedResult.ConvertedExpression;
+						expression.ConvertedStatementList = null;
 						converted.Add(expression);
 						expression.Expression.ConvertedResult = null;
 						// expression might be a return statement

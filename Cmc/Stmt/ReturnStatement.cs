@@ -38,7 +38,7 @@ namespace Cmc.Stmt
 			ReturnLabel = returnLabel;
 			ReturnLabel.StatementsUsingThis.Add(this);
 			if (Expression is AtomicExpression) return;
-			var variableName = $"{MetaData.TrimedFileName}{MetaData.LineNumber}{GetHashCode()}";
+			var variableName = $"genRet{(ulong) GetHashCode()}";
 			ConvertedVariableDeclaration =
 				new VariableDeclaration(MetaData, variableName, Expression, type: Expression.GetExpressionType());
 			ConvertedReturnStatement = new ReturnStatement(MetaData,

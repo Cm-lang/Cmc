@@ -79,6 +79,11 @@ namespace Cmc.Decl
 			.Concat(Expression.Dump().Select(MapFunc2));
 
 		public override IEnumerable<string> DumpCode() => new[]
-			{$"{(Mutability ? "var" : "let")} {Name} = {string.Join("", Expression.DumpCode())};\n"};
+		{
+			$@"{(Mutability ? "var" : "let")} {Name}: {string.Join("", Type.DumpCode())} = {
+					string.Join("", Expression.DumpCode())
+				};
+"
+		};
 	}
 }
