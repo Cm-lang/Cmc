@@ -82,6 +82,7 @@ namespace CmcTest
 		{
 			var block = Block1();
 			block.SurroundWith(Environment.SolarSystem);
+			block.ConvertGoto();
 			block.PrintCode();
 		}
 

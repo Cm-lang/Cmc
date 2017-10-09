@@ -84,7 +84,10 @@ namespace Cmc.Stmt
 						Statements[i] = label.GetLabel();
 						break;
 					case JumpStatement jumpStatement:
-						Statements[i] = jumpStatement.
+						Statements[i] = new GotoStatement(jumpStatement.MetaData, $"{jumpStatement.JumpLabel}");
+						break;
+					case ReturnStatement returnStatement:
+						Statements[i] = new GotoStatement(returnStatement.MetaData, $"{returnStatement.ReturnLabel}");
 						break;
 				}
 			}
