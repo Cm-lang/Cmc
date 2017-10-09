@@ -22,9 +22,6 @@ namespace Cmc.Stmt
 		/// </summary>
 		[CanBeNull] public StatementList ConvertedStatementList;
 
-		[NotNull]
-		public virtual IEnumerable<JumpStatement> FindJumpStatements() => new List<JumpStatement>(0);
-
 		public override IEnumerable<string> Dump() => new[] {"empty statement"};
 		public override IEnumerable<string> DumpCode() => new[] {";\n"};
 	}
@@ -54,10 +51,11 @@ namespace Cmc.Stmt
 					}).ToArray());
 		}
 
+		public override void ConvertGoto() => Expression.ConvertGoto();
+		public override IEnumerable<string> DumpCode() => new[] {$"{string.Join("", Expression.DumpCode())};\n"};
+
 		public override IEnumerable<string> Dump() => new[] {"expression statement:\n"}
 			.Concat(Expression.Dump().Select(MapFunc));
-
-		public override IEnumerable<string> DumpCode() => new[] {$"{string.Join("  ", Expression.DumpCode())};\n"};
 	}
 
 	/// <summary>
@@ -91,19 +89,27 @@ namespace Cmc.Stmt
 			var jumpLabel = Env.FindJumpLabelByName(_labelName ?? "");
 			if (null == jumpLabel)
 				Errors.AddAndThrow($"{MetaData.GetErrorHeader()}cannot return outside a lambda");
-			JumpLabel = jumpLabel;
-			JumpLabel.StatementsUsingThis.Add(this);
+			else
+			{
+				JumpLabel = jumpLabel;
+				JumpLabel.StatementsUsingThis.Add(this);
+			}
 		}
 
 		public override string ToString() => JumpKind == Jump.Break ? "break" : "continue";
-
-		public override IEnumerable<string> Dump() => new[]
-		{
-			$"jump statement [{this}] [{JumpLabel}]\n"
-		};
-
+		public override IEnumerable<string> Dump() => new[] {$"jump statement [{this}] [{JumpLabel}]\n"};
 		public override IEnumerable<string> DumpCode() => new[] {$"{this}:{JumpLabel};\n"};
+	}
 
-		public override IEnumerable<JumpStatement> FindJumpStatements() => new[] {this};
+	public class GotoStatement : Statement
+	{
+		[NotNull] public readonly string Label;
+
+		public GotoStatement(
+			MetaData metaData,
+			[NotNull] string label) : base(metaData) => Label = label;
+
+		public override IEnumerable<string> Dump() => new[] {$"goto statement [{Label}]:\n"};
+		public override IEnumerable<string> DumpCode() => new[] {$"goto {Label};\n"};
 	}
 }

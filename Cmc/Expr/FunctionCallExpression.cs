@@ -96,6 +96,7 @@ namespace Cmc.Expr
 			// FEATURE #44
 			if (Receiver is LambdaExpression lambdaExpression)
 			{
+				if (lambdaExpression.Recur) return;
 				var statementList = lambdaExpression.OptimizedStatementList;
 				var s = statementList?.Statements.ToList() ?? lambdaExpression.Body.Statements.ToList();
 				var len = ArgsList.Count;
@@ -136,10 +137,10 @@ namespace Cmc.Expr
 				ConvertedResult = new ExpressionConvertedResult(statements, this);
 		}
 
+		public override void ConvertGoto() => Receiver.ConvertGoto();
+
 		private IEnumerable<string> DumpParams() => new[]
-			{
-				"  parameters:\n"
-			}
+				{"  parameters:\n"}
 			.Concat(
 				from i in ArgsList
 				from j in i.Dump().Select(MapFunc2)
@@ -200,7 +201,7 @@ namespace Cmc.Expr
 		public override IEnumerable<string> DumpCode() =>
 			new[]
 			{
-				$"{string.Join("  ", Receiver.DumpCode())}({string.Join(",", ArgsList.Select(i => string.Join("  ", i.DumpCode())))})"
+				$"{string.Join("", Receiver.DumpCode())}({string.Join(",", ArgsList.Select(i => string.Join("", i.DumpCode())))})"
 			};
 	}
 }

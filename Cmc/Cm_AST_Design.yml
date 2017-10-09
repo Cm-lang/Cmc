@@ -5,7 +5,8 @@ Ast:
       ReturnStatement
     JumpStatement
     StatementList
-    WhileStatement:
+    ConditionalStatement:
+      WhileStatement
       IfStatement
     Declaration:
       VariableDeclaration

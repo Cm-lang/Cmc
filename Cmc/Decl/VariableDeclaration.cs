@@ -57,6 +57,8 @@ namespace Cmc.Decl
 				Errors.Add($"{MetaData.GetErrorHeader()}type mismatch, expected: {Type}, actual: {exprType}");
 		}
 
+		public override void ConvertGoto() => Expression.ConvertGoto();
+
 		/// <summary>
 		///  Conservatism inline
 		/// </summary>
@@ -77,6 +79,11 @@ namespace Cmc.Decl
 			.Concat(Expression.Dump().Select(MapFunc2));
 
 		public override IEnumerable<string> DumpCode() => new[]
-			{$"{(Mutability ? "var" : "let")} {Name} = {string.Join("", Expression.DumpCode())};\n"};
+		{
+			$@"{(Mutability ? "var" : "let")} {Name}: {string.Join("", Type.DumpCode())} = {
+					string.Join("", Expression.DumpCode())
+				};
+"
+		};
 	}
 }

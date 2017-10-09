@@ -24,6 +24,7 @@ namespace CmcTest
 		{
 			var example = FuncCallAst1();
 			example.SurroundWith(Environment.SolarSystem);
+			example.ConvertGoto();
 			example.PrintCode();
 		}
 
@@ -48,6 +49,16 @@ namespace CmcTest
 		{
 			var example = FuncCallAst5();
 			example.SurroundWith(Environment.SolarSystem);
+			example.ConvertGoto();
+			example.PrintCode();
+		}
+
+		[TestMethod]
+		public void TestDump6()
+		{
+			var example = FuncCallAst6();
+			example.SurroundWith(Environment.SolarSystem);
+			example.ConvertGoto();
 			example.PrintCode();
 		}
 
@@ -74,6 +85,7 @@ namespace CmcTest
 		{
 			var block = Block1();
 			block.SurroundWith(Environment.SolarSystem);
+			block.ConvertGoto();
 			block.PrintCode();
 		}
 
@@ -82,6 +94,7 @@ namespace CmcTest
 		{
 			var block = Block2();
 			block.SurroundWith(Environment.SolarSystem);
+			block.ConvertGoto();
 			block.PrintCode();
 		}
 
@@ -106,6 +119,7 @@ namespace CmcTest
 		{
 			var block = StmtAst3();
 			block.SurroundWith(Environment.SolarSystem);
+			block.ConvertGoto();
 			block.PrintCode();
 		}
 
@@ -114,6 +128,7 @@ namespace CmcTest
 		{
 			var block = StmtAst4();
 			block.SurroundWith(Environment.SolarSystem);
+			block.ConvertGoto();
 			block.PrintCode();
 		}
 
