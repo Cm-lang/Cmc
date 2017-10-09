@@ -201,7 +201,7 @@ namespace Cmc.Expr
 		public override IEnumerable<string> DumpCode() =>
 			new[]
 			{
-				$"{string.Join("  ", Receiver.DumpCode())}({string.Join(",", ArgsList.Select(i => string.Join("  ", i.DumpCode())))})"
+				$"{string.Join("", Receiver.DumpCode())}({string.Join(",", ArgsList.Select(i => string.Join("", i.DumpCode())))})"
 			};
 	}
 }

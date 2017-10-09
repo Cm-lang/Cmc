@@ -76,6 +76,6 @@ namespace Cmc.Stmt
 			.Concat(Expression.Dump().Select(MapFunc));
 
 		public override IEnumerable<string> DumpCode() =>
-			new[] {$"return:{ReturnLabel} {string.Join("  ", Expression.DumpCode())};\n"};
+			new[] {$"return:{ReturnLabel} {string.Join("", Expression.DumpCode())};\n"};
 	}
 }

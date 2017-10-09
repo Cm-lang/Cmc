@@ -80,7 +80,7 @@ namespace Cmc.Stmt
 		public override IEnumerable<string> DumpCode() =>
 			new[] {$"while ({string.Join("", Condition.DumpCode())}) {{\n"}
 				.Concat(OkStatementList.DumpCode().Select(MapFunc))
-				.Append("}\n");
+				.Append("}");
 
 		public override Type GetExpressionType() => new PrimaryType(MetaData, "void");
 	}

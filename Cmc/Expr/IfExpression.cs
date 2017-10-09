@@ -65,7 +65,7 @@ namespace Cmc.Stmt
 				.Concat(IfStatementList.DumpCode().Select(MapFunc))
 				.Append("} else {\n")
 				.Concat(ElseStatementList.DumpCode().Select(MapFunc))
-				.Append("}\n");
+				.Append("}");
 
 		public override Type GetExpressionType() => new PrimaryType(MetaData, "void");
 	}
