@@ -58,7 +58,7 @@ namespace Cmc.Core
 			foreach (var declaration in declarations)
 			{
 				declaration.SurroundWith(planet);
-				declaration.ConvertGoto();
+				if (!Pragma.KeepAll) declaration.ConvertGoto();
 			}
 			return declarations;
 		}

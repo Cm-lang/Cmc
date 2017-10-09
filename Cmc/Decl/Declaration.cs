@@ -13,14 +13,17 @@ namespace Cmc.Decl
 	{
 		public readonly Modifier[] Modifiers;
 		[NotNull] public readonly string Name;
+		[NotNull] public readonly List<TypeDeclaration> DupParams;
 		public ulong UsageCount;
 
 		public Declaration(
 			MetaData metaData,
 			[NotNull] string name,
-			Modifier[] modifiers = null) : base(metaData)
+			Modifier[] modifiers = null,
+			[CanBeNull] List<TypeDeclaration> dupParams = null) : base(metaData)
 		{
 			Name = name;
+			DupParams = dupParams ?? new List<TypeDeclaration>();
 			Modifiers = modifiers;
 		}
 	}
@@ -82,7 +85,7 @@ namespace Cmc.Decl
 
 	public class ExternDeclaration : Declaration
 	{
-		public Type Type;
+		public readonly Type Type;
 		public readonly bool Mutability;
 
 		public ExternDeclaration(

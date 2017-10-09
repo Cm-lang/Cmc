@@ -94,8 +94,20 @@ namespace Cmc.Stmt
 							res.AddRange(converted.Statements);
 						else
 						{
-							if (!(returnStatement.Expression is AtomicExpression atomic))
-								Errors.AddAndThrow(returnStatement.Expression.MetaData.GetErrorHeader() + "must be atomic");
+							var expr = returnStatement.Expression;
+							if (!(expr is AtomicExpression atomic))
+							{
+								var varName = $"tmp{(ulong) returnStatement.GetHashCode()}";
+								var varDecl = new VariableDeclaration(returnStatement.MetaData, varName, returnStatement.Expression)
+								{
+									Type = expr.GetExpressionType()
+								};
+								res.Add(varDecl);
+								res.Add(new ExitStatement(returnStatement.MetaData, new VariableExpression(MetaData, varName)
+								{
+									Declaration = varDecl
+								}));
+							}
 							else res.Add(new ExitStatement(returnStatement.MetaData, atomic));
 						}
 						break;
