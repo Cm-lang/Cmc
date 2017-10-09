@@ -39,6 +39,7 @@ namespace Cmc.Stmt
 		{
 			base.SurroundWith(environment);
 			var env = new Environment(Env);
+			var converted = new List<Statement>(Statements.Count + 5);
 			// FEATURE #4
 			foreach (var statement in Statements)
 			{
@@ -50,34 +51,23 @@ namespace Cmc.Stmt
 					env = new Environment(env);
 					env.Declarations.Add(declaration);
 				}
-			}
-		}
-
-		public override void Transform()
-		{
-			var converted = new List<Statement>(Statements.Count + 5);
-			foreach (var statement in Statements)
-			{
-				switch (statement)
+				if (statement is ExpressionStatement expression)
 				{
-					case ExpressionStatement expression:
-						var convertedResult = expression.Expression.ConvertedResult;
-						if (convertedResult != null && 0 != convertedResult.ConvertedStatements.Count)
-						{
-							converted.AddRange(convertedResult.ConvertedStatements);
-							expression.Expression = convertedResult.ConvertedExpression;
-							converted.Add(expression);
-							expression.Expression.ConvertedResult = null;
-							// expression might be a return statement
-							// converted.Add(new ExpressionStatement(MetaData, convertedResult.ConvertedExpression));
-						}
-						else
-							converted.Add(expression);
-						break;
-					default:
-						converted.Add(statement);
-						break;
+					var convertedResult = expression.Expression.ConvertedResult;
+					if (convertedResult != null && 0 != convertedResult.ConvertedStatements.Count)
+					{
+						converted.AddRange(convertedResult.ConvertedStatements);
+						expression.Expression = convertedResult.ConvertedExpression;
+						converted.Add(expression);
+						expression.Expression.ConvertedResult = null;
+						// expression might be a return statement
+						// converted.Add(new ExpressionStatement(MetaData, convertedResult.ConvertedExpression));
+					}
+					else
+						converted.Add(expression);
 				}
+				else
+					converted.Add(statement);
 			}
 			ConvertedStatementList = new StatementList(MetaData, converted);
 		}
