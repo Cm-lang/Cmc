@@ -22,9 +22,6 @@ namespace Cmc.Stmt
 		/// </summary>
 		[CanBeNull] public StatementList ConvertedStatementList;
 
-		[NotNull]
-		public virtual IEnumerable<JumpStatement> FindJumpStatements() => new List<JumpStatement>(0);
-
 		public override IEnumerable<string> Dump() => new[] {"empty statement"};
 		public override IEnumerable<string> DumpCode() => new[] {";\n"};
 	}
@@ -104,7 +101,7 @@ namespace Cmc.Stmt
 
 		public override IEnumerable<string> DumpCode() => new[] {$"{this}:{JumpLabel};\n"};
 
-		public override IEnumerable<JumpStatement> FindJumpStatements() => new[] {this};
+		public virtual IEnumerable<JumpStatement> FindJumpStatements() => new[] {this};
 	}
 
 	public class GotoStatement : Statement

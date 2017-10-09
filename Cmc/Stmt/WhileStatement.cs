@@ -1,4 +1,4 @@
-﻿﻿using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Cmc.Core;
@@ -9,7 +9,7 @@ using Environment = Cmc.Core.Environment;
 
 namespace Cmc.Stmt
 {
-	public abstract class ConditionalStatement : Statement
+	public abstract class ConditionalStatement : Expression
 	{
 		[NotNull] public readonly Expression Condition;
 
@@ -66,9 +66,6 @@ namespace Cmc.Stmt
 			Optimized = 1;
 		}
 
-		public override IEnumerable<JumpStatement> FindJumpStatements() =>
-			OkStatementList.FindJumpStatements();
-
 		public override IEnumerable<string> Dump() => new[]
 			{
 				"while statement:\n",
@@ -84,5 +81,7 @@ namespace Cmc.Stmt
 			new[] {$"while ({string.Join("", Condition.DumpCode())}) {{\n"}
 				.Concat(OkStatementList.DumpCode().Select(MapFunc))
 				.Append("}\n");
+
+		public override Type GetExpressionType() => new PrimaryType(MetaData, "void");
 	}
 }

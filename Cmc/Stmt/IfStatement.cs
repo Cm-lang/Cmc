@@ -1,4 +1,4 @@
-﻿﻿using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Cmc.Core;
@@ -49,10 +49,6 @@ namespace Cmc.Stmt
 			}
 		}
 
-		public override IEnumerable<JumpStatement> FindJumpStatements() =>
-			IfStatementList.FindJumpStatements()
-				.Concat(ElseStatementList.FindJumpStatements());
-
 		public override IEnumerable<string> Dump() => new[]
 			{
 				"if statement:\n",
@@ -70,5 +66,7 @@ namespace Cmc.Stmt
 				.Append("} else {\n")
 				.Concat(ElseStatementList.DumpCode().Select(MapFunc))
 				.Append("}\n");
+
+		public override Type GetExpressionType() => new PrimaryType(MetaData, "void");
 	}
 }

@@ -79,11 +79,6 @@ namespace Cmc.Stmt
 			Statements.ForEach(statement => { });
 		}
 
-		public override IEnumerable<JumpStatement> FindJumpStatements() =>
-			from i in Statements
-			from j in i.FindJumpStatements()
-			select j;
-
 		public override IEnumerable<string> Dump() => Statements.Count == 0
 			? new[] {"empty statement list\n"}
 			: new[] {"statement list:\n"}

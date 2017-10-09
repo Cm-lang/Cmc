@@ -9,7 +9,7 @@ using Environment = Cmc.Core.Environment;
 
 namespace Cmc.Stmt
 {
-	public class AssignmentStatement : Statement
+	public class AssignmentStatement : Expression
 	{
 		[NotNull] public readonly Expression LhsExpression;
 		[NotNull] public readonly Expression RhsExpression;
@@ -47,8 +47,11 @@ namespace Cmc.Stmt
 				Errors.Add($"{MetaData.GetErrorHeader()}cannot assign to an immutable variable.");
 			else validLhs.Declaration.UsageCount++;
 			if (!(RhsExpression is AtomicExpression))
-				ConvertedStatementList = new StatementList(MetaData,
-					new VariableDeclaration(MetaData, ""));
+			{
+				// TODO
+//				ConvertedStatementList = new StatementList(MetaData,
+//					new VariableDeclaration(MetaData, ""));
+			}
 		}
 
 		public override IEnumerable<string> Dump() => new[]
@@ -62,5 +65,7 @@ namespace Cmc.Stmt
 
 		public override IEnumerable<string> DumpCode() => new[]
 			{$"{string.Join("", LhsExpression.DumpCode())} = {string.Join("", RhsExpression.DumpCode())};\n"};
+
+		public override Type GetExpressionType() => new PrimaryType(MetaData, "void");
 	}
 }
