@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using Cmc.Core;
 using Cmc.Decl;
@@ -41,7 +42,7 @@ namespace Cmc.Stmt
 			var env = new Environment(Env);
 			var converted = new List<Statement>(Statements.Count + 5);
 			// FEATURE #4
-			foreach (var statement in Statements)
+			Statements.ForEach(statement =>
 			{
 				if (!(statement is Declaration declaration))
 					statement.SurroundWith(env);
@@ -68,8 +69,14 @@ namespace Cmc.Stmt
 				}
 				else
 					converted.Add(statement);
-			}
+			});
 			ConvertedStatementList = new StatementList(MetaData, converted);
+		}
+
+		public override void ConvertGoto()
+		{
+			base.ConvertGoto();
+			Statements.ForEach(statement => { });
 		}
 
 		public override IEnumerable<JumpStatement> FindJumpStatements() =>

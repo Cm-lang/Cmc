@@ -16,7 +16,7 @@ namespace Cmc.Expr
 	public class LambdaExpression : Expression
 	{
 		[CanBeNull] public Type DeclaredType;
-		private readonly bool _recur;
+		public readonly bool Recur;
 		[NotNull] public StatementList Body;
 		[NotNull] public readonly IList<VariableDeclaration> ParameterList;
 		[NotNull] public readonly ReturnLabelDeclaration EndLabel;
@@ -33,7 +33,7 @@ namespace Cmc.Expr
 		{
 			Body = body;
 			DeclaredType = returnType;
-			_recur = recur;
+			Recur = recur;
 			ParameterList = parameterList ?? new List<VariableDeclaration>(0);
 			EndLabel = endLabel ?? new ReturnLabelDeclaration(MetaData, "");
 		}
@@ -58,7 +58,7 @@ namespace Cmc.Expr
 				Type = new LambdaType(MetaData, (
 					from i in ParameterList
 					select i.Type).ToList(), DeclaredType);
-			if (_recur)
+			if (Recur)
 			{
 				// FEATURE #37
 				var recur = new VariableDeclaration(MetaData, ReservedWords.Recur, this);
@@ -123,7 +123,7 @@ namespace Cmc.Expr
 
 		public override IEnumerable<string> DumpCode() => new[]
 			{
-				$@"{string.Join("  ", Type.RetType.DumpCode())}{{ {
+				$@"{string.Join("  ", Type.RetType.DumpCode())} {(Recur ? "@" : "")}{{ {
 						string.Join(", ",
 							from param in ParameterList
 							select $"{param.Name}: {string.Join("  ", param.Type.DumpCode())}")

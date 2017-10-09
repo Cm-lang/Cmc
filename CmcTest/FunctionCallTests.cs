@@ -90,7 +90,8 @@ namespace CmcTest
 			{
 				new VariableDeclaration(MetaData.Empty, "a", type:
 					new UnknownType(MetaData.Empty, "i8"))
-			}), new UnknownType(MetaData.Empty, "i8"));
+			}), new UnknownType(MetaData.Empty, "i8"),
+			recur: true);
 
 		public static StatementList FuncCallAst4() => new StatementList(MetaData.Empty,
 			new VariableDeclaration(MetaData.Empty, "recurFunc", LambdaAst2()),
@@ -127,7 +128,8 @@ namespace CmcTest
 			{
 				new VariableDeclaration(MetaData.Empty, "a", type:
 					new UnknownType(MetaData.Empty, "i8"))
-			}), new UnknownType(MetaData.Empty, "i8"));
+			}), new UnknownType(MetaData.Empty, "i8"),
+			recur: true);
 
 		public static LambdaExpression LambdaAst4() => new LambdaExpression(MetaData.Empty,
 			new StatementList(MetaData.Empty,
@@ -159,7 +161,8 @@ namespace CmcTest
 			{
 				new VariableDeclaration(MetaData.Empty, "a", type:
 					new UnknownType(MetaData.Empty, "i8"))
-			}), new UnknownType(MetaData.Empty, "i8"));
+			}), new UnknownType(MetaData.Empty, "i8"),
+			recur: true);
 
 		public static StatementList FuncCallAst5() => new StatementList(MetaData.Empty,
 			new VariableDeclaration(MetaData.Empty, "recurFunc", LambdaAst3()),

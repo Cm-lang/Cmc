@@ -96,6 +96,7 @@ namespace Cmc.Expr
 			// FEATURE #44
 			if (Receiver is LambdaExpression lambdaExpression)
 			{
+				if (lambdaExpression.Recur) return;
 				var statementList = lambdaExpression.OptimizedStatementList;
 				var s = statementList?.Statements.ToList() ?? lambdaExpression.Body.Statements.ToList();
 				var len = ArgsList.Count;

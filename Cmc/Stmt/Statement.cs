@@ -106,4 +106,16 @@ namespace Cmc.Stmt
 
 		public override IEnumerable<JumpStatement> FindJumpStatements() => new[] {this};
 	}
+
+	public class GotoStatement : Statement
+	{
+		[NotNull] public readonly string Label;
+
+		public GotoStatement(
+			MetaData metaData,
+			[NotNull] string label) : base(metaData) => Label = label;
+
+		public override IEnumerable<string> Dump() => new[] {$"goto statement [{Label}]:\n"};
+		public override IEnumerable<string> DumpCode() => new[] {$"goto {Label};\n"};
+	}
 }

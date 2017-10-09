@@ -52,6 +52,14 @@ namespace CmcTest
 		}
 
 		[TestMethod]
+		public void TestDump6()
+		{
+			var example = FuncCallAst6();
+			example.SurroundWith(Environment.SolarSystem);
+			example.PrintCode();
+		}
+
+		[TestMethod]
 		public void TestDump5KeepAll()
 		{
 			Pragma.KeepAll = true;
