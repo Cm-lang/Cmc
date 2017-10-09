@@ -9,11 +9,11 @@ using Environment = Cmc.Core.Environment;
 
 namespace Cmc.Stmt
 {
-	public abstract class ConditionalStatement : Expression
+	public abstract class ConditionalExpression : Expression
 	{
 		[NotNull] public readonly Expression Condition;
 
-		protected ConditionalStatement(
+		protected ConditionalExpression(
 			MetaData metaData,
 			[NotNull] Expression condition) : base(metaData)
 		{
@@ -27,13 +27,13 @@ namespace Cmc.Stmt
 		}
 	}
 
-	public class WhileStatement : ConditionalStatement
+	public class WhileExpression : ConditionalExpression
 	{
 		[NotNull] public StatementList OkStatementList;
 		public int Optimized;
 		[NotNull] public readonly JumpLabelDeclaration EndLabel;
 
-		public WhileStatement(
+		public WhileExpression(
 			MetaData metaData,
 			[NotNull] Expression condition,
 			[NotNull] StatementList okStatementList,

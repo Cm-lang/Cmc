@@ -8,13 +8,13 @@ using Environment = Cmc.Core.Environment;
 
 namespace Cmc.Stmt
 {
-	public class IfStatement : ConditionalStatement
+	public class IfExpression : ConditionalExpression
 	{
 		[NotNull] public StatementList IfStatementList;
 		[NotNull] public StatementList ElseStatementList;
 		public int Optimized;
 
-		public IfStatement(
+		public IfExpression(
 			MetaData metaData,
 			[NotNull] Expression condition,
 			[NotNull] StatementList ifStatementList,

@@ -20,54 +20,56 @@ namespace CmcTest
 		public static Statement StmtAst3() => new StatementList(MetaData.Empty,
 			new VariableDeclaration(MetaData.Empty, Var1,
 				new BoolLiteralExpression(MetaData.Empty, true)),
-			new WhileStatement(MetaData.Empty,
+			new ExpressionStatement(MetaData.Empty, new WhileExpression(MetaData.Empty,
 				new VariableExpression(MetaData.Empty, Var1),
 				new StatementList(MetaData.Empty,
-					new AssignmentStatement(MetaData.Empty,
+					new ExpressionStatement(MetaData.Empty, new AssignmentStatement(MetaData.Empty,
 						new VariableExpression(MetaData.Empty, Var1),
-						new BoolLiteralExpression(MetaData.Empty, false)))));
+						new BoolLiteralExpression(MetaData.Empty, false)))))));
 
 		public static Statement StmtAst4() => new StatementList(MetaData.Empty,
 			new VariableDeclaration(MetaData.Empty, Var1,
 				new BoolLiteralExpression(MetaData.Empty, true), true),
-			new WhileStatement(MetaData.Empty,
+			new ExpressionStatement(MetaData.Empty, new WhileExpression(MetaData.Empty,
 				new VariableExpression(MetaData.Empty, Var1),
 				new StatementList(MetaData.Empty,
-					new AssignmentStatement(MetaData.Empty,
+					new ExpressionStatement(MetaData.Empty, new AssignmentStatement(MetaData.Empty,
 						new VariableExpression(MetaData.Empty, Var1),
-						new BoolLiteralExpression(MetaData.Empty, false)))));
+						new BoolLiteralExpression(MetaData.Empty, false)))))));
 
 		public static Statement StmtAst6() => new StatementList(MetaData.Empty,
 			new VariableDeclaration(MetaData.Empty, Var1,
 				new BoolLiteralExpression(MetaData.Empty, true), true),
-			new WhileStatement(MetaData.Empty,
+			new ExpressionStatement(MetaData.Empty, new WhileExpression(MetaData.Empty,
 				new VariableExpression(MetaData.Empty, Var1),
 				new StatementList(MetaData.Empty,
-					new AssignmentStatement(MetaData.Empty,
+					new ExpressionStatement(MetaData.Empty, new AssignmentStatement(MetaData.Empty,
 						new VariableExpression(MetaData.Empty, Var1),
-						new IntLiteralExpression(MetaData.Empty, "123", true)))));
+						new IntLiteralExpression(MetaData.Empty, "123", true)))))));
 
 		public static Statement StmtAst5() => new StatementList(MetaData.Empty,
 			new VariableDeclaration(MetaData.Empty, Var1,
 				new BoolLiteralExpression(MetaData.Empty, true), true),
-			new WhileStatement(MetaData.Empty,
+			new ExpressionStatement(MetaData.Empty, new WhileExpression(MetaData.Empty,
 				new VariableExpression(MetaData.Empty, Var1),
 				new StatementList(MetaData.Empty,
-					new AssignmentStatement(MetaData.Empty,
+					new ExpressionStatement(MetaData.Empty, new AssignmentStatement(MetaData.Empty,
 						new VariableExpression(MetaData.Empty, Var1),
-						new NullExpression(MetaData.Empty)))));
+						new NullExpression(MetaData.Empty)))))));
 
-		public static Statement StmtAst2() => new IfStatement(
-			MetaData.Empty,
-			new NullExpression(MetaData.Empty),
-			new StatementList(MetaData.Empty)
-		);
+		public static Statement StmtAst2() => new ExpressionStatement(MetaData.Empty,
+			new IfExpression(
+				MetaData.Empty,
+				new NullExpression(MetaData.Empty),
+				new StatementList(MetaData.Empty)
+			));
 
-		public static Statement StmtAst1() => new IfStatement(
-			MetaData.Empty,
-			new BoolLiteralExpression(MetaData.Empty, false),
-			new StatementList(MetaData.Empty)
-		);
+		public static Statement StmtAst1() => new ExpressionStatement(MetaData.Empty,
+			new IfExpression(
+				MetaData.Empty,
+				new BoolLiteralExpression(MetaData.Empty, false),
+				new StatementList(MetaData.Empty)
+			));
 
 		/// <summary>
 		///     simplest test
