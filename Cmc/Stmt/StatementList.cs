@@ -2,6 +2,7 @@
 using System.Linq;
 using Cmc.Core;
 using Cmc.Decl;
+using Cmc.Expr;
 using JetBrains.Annotations;
 
 namespace Cmc.Stmt
@@ -74,23 +75,35 @@ namespace Cmc.Stmt
 
 		public override void ConvertGoto()
 		{
-			for (var i = 0; i < Statements.Count; i++)
+			var res = new List<Statement>();
+			Statements.ForEach(statement =>
 			{
-				var statement = Statements[i];
 				statement.ConvertGoto();
 				switch (statement)
 				{
 					case ILabel label:
-						Statements[i] = label.GetLabel();
+						res.Add(label.GetLabel());
 						break;
 					case JumpStatement jumpStatement:
-						Statements[i] = new GotoStatement(jumpStatement.MetaData, $"{jumpStatement.JumpLabel}");
+						res.Add(new GotoStatement(jumpStatement.MetaData, $"{jumpStatement.JumpLabel}"));
 						break;
 					case ReturnStatement returnStatement:
-						Statements[i] = new GotoStatement(returnStatement.MetaData, $"{returnStatement.ReturnLabel}");
+						var converted = returnStatement.ConvertedStatementList;
+						if (null != converted)
+							res.AddRange(converted.Statements);
+						else
+						{
+							if (!(returnStatement.Expression is AtomicExpression atomic))
+								Errors.AddAndThrow(returnStatement.Expression.MetaData.GetErrorHeader() + "must be atomic");
+							else res.Add(new ExitStatement(returnStatement.MetaData, atomic));
+						}
+						break;
+					default:
+						res.Add(statement);
 						break;
 				}
-			}
+			});
+			Statements = res;
 		}
 
 		public override IEnumerable<string> Dump() => Statements.Count == 0

@@ -106,6 +106,7 @@ namespace Cmc.Expr
 		}
 
 		public override Type GetExpressionType() => Type;
+		public override void ConvertGoto() => Body.ConvertGoto();
 
 		public override IEnumerable<string> Dump() => new[]
 			{

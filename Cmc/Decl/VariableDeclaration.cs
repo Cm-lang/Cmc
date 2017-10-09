@@ -57,6 +57,8 @@ namespace Cmc.Decl
 				Errors.Add($"{MetaData.GetErrorHeader()}type mismatch, expected: {Type}, actual: {exprType}");
 		}
 
+		public override void ConvertGoto() => Expression.ConvertGoto();
+
 		/// <summary>
 		///  Conservatism inline
 		/// </summary>

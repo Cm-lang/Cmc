@@ -60,7 +60,7 @@ namespace Cmc.Decl
 		{
 		}
 
-		public override IEnumerable<string> Dump() => new[] {$"label [{this}]\n"};
-		public override IEnumerable<string> DumpCode() => new[] {$"label:{this};\n"};
+		public override IEnumerable<string> Dump() => new[] {$"label [{Name}]\n"};
+		public override IEnumerable<string> DumpCode() => new[] {$"label:{Name};\n"};
 	}
 }
