@@ -33,7 +33,7 @@ namespace CmcTest
 			IdDeclaration(),
 			new VariableDeclaration(MetaData.Empty, "gg", type:
 				new UnknownType(MetaData.Empty, "i8")),
-			new ExpressionStatement(MetaData.Empty, new AssignmentStatement(MetaData.Empty,
+			new ExpressionStatement(MetaData.Empty, new AssignmentExpression(MetaData.Empty,
 				new VariableExpression(MetaData.Empty, "gg"),
 				new FunctionCallExpression(MetaData.Empty,
 					new VariableExpression(MetaData.Empty, "id"),
@@ -43,7 +43,7 @@ namespace CmcTest
 			IdDeclaration(),
 			new VariableDeclaration(MetaData.Empty, "gg", isMutable: true, type:
 				new UnknownType(MetaData.Empty, "i8")),
-			new ExpressionStatement(MetaData.Empty, new AssignmentStatement(MetaData.Empty,
+			new ExpressionStatement(MetaData.Empty, new AssignmentExpression(MetaData.Empty,
 				new VariableExpression(MetaData.Empty, "gg"),
 				new FunctionCallExpression(MetaData.Empty,
 					new VariableExpression(MetaData.Empty, "id"),
@@ -68,7 +68,7 @@ namespace CmcTest
 			new VariableDeclaration(MetaData.Empty, "recurFunc", LambdaAst1()),
 			new VariableDeclaration(MetaData.Empty, "gg", isMutable: true, type:
 				new UnknownType(MetaData.Empty, "i8")),
-			new ExpressionStatement(MetaData.Empty, new AssignmentStatement(MetaData.Empty,
+			new ExpressionStatement(MetaData.Empty, new AssignmentExpression(MetaData.Empty,
 				new VariableExpression(MetaData.Empty, "gg"),
 				new FunctionCallExpression(MetaData.Empty,
 					new VariableExpression(MetaData.Empty, "recurFunc"),
@@ -97,7 +97,7 @@ namespace CmcTest
 			new VariableDeclaration(MetaData.Empty, "recurFunc", LambdaAst2()),
 			new VariableDeclaration(MetaData.Empty, "gg", isMutable: true, type:
 				new UnknownType(MetaData.Empty, "i8")),
-			new ExpressionStatement(MetaData.Empty, new AssignmentStatement(MetaData.Empty,
+			new ExpressionStatement(MetaData.Empty, new AssignmentExpression(MetaData.Empty,
 				new VariableExpression(MetaData.Empty, "gg"),
 				new FunctionCallExpression(MetaData.Empty,
 					new VariableExpression(MetaData.Empty, "recurFunc"),
@@ -169,7 +169,7 @@ namespace CmcTest
 			new VariableDeclaration(MetaData.Empty, "gg", isMutable: true, type:
 				new UnknownType(MetaData.Empty, "i8")),
 			new ExpressionStatement(MetaData.Empty,
-				new AssignmentStatement(MetaData.Empty,
+				new AssignmentExpression(MetaData.Empty,
 					new VariableExpression(MetaData.Empty, "gg"),
 					new FunctionCallExpression(MetaData.Empty,
 						new VariableExpression(MetaData.Empty, "recurFunc"),
@@ -182,7 +182,7 @@ namespace CmcTest
 			new VariableDeclaration(MetaData.Empty, "recurFuncPlus", LambdaAst4()),
 			new VariableDeclaration(MetaData.Empty, "gg", isMutable: true, type:
 				new UnknownType(MetaData.Empty, "i8")),
-			new ExpressionStatement(MetaData.Empty, new AssignmentStatement(MetaData.Empty,
+			new ExpressionStatement(MetaData.Empty, new AssignmentExpression(MetaData.Empty,
 				new VariableExpression(MetaData.Empty, "gg"),
 				new FunctionCallExpression(MetaData.Empty,
 					new VariableExpression(MetaData.Empty, "recurFuncPlus"),

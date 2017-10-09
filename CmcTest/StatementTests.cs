@@ -23,7 +23,7 @@ namespace CmcTest
 			new ExpressionStatement(MetaData.Empty, new WhileExpression(MetaData.Empty,
 				new VariableExpression(MetaData.Empty, Var1),
 				new StatementList(MetaData.Empty,
-					new ExpressionStatement(MetaData.Empty, new AssignmentStatement(MetaData.Empty,
+					new ExpressionStatement(MetaData.Empty, new AssignmentExpression(MetaData.Empty,
 						new VariableExpression(MetaData.Empty, Var1),
 						new BoolLiteralExpression(MetaData.Empty, false)))))));
 
@@ -33,7 +33,7 @@ namespace CmcTest
 			new ExpressionStatement(MetaData.Empty, new WhileExpression(MetaData.Empty,
 				new VariableExpression(MetaData.Empty, Var1),
 				new StatementList(MetaData.Empty,
-					new ExpressionStatement(MetaData.Empty, new AssignmentStatement(MetaData.Empty,
+					new ExpressionStatement(MetaData.Empty, new AssignmentExpression(MetaData.Empty,
 						new VariableExpression(MetaData.Empty, Var1),
 						new BoolLiteralExpression(MetaData.Empty, false)))))));
 
@@ -43,7 +43,7 @@ namespace CmcTest
 			new ExpressionStatement(MetaData.Empty, new WhileExpression(MetaData.Empty,
 				new VariableExpression(MetaData.Empty, Var1),
 				new StatementList(MetaData.Empty,
-					new ExpressionStatement(MetaData.Empty, new AssignmentStatement(MetaData.Empty,
+					new ExpressionStatement(MetaData.Empty, new AssignmentExpression(MetaData.Empty,
 						new VariableExpression(MetaData.Empty, Var1),
 						new IntLiteralExpression(MetaData.Empty, "123", true)))))));
 
@@ -53,7 +53,7 @@ namespace CmcTest
 			new ExpressionStatement(MetaData.Empty, new WhileExpression(MetaData.Empty,
 				new VariableExpression(MetaData.Empty, Var1),
 				new StatementList(MetaData.Empty,
-					new ExpressionStatement(MetaData.Empty, new AssignmentStatement(MetaData.Empty,
+					new ExpressionStatement(MetaData.Empty, new AssignmentExpression(MetaData.Empty,
 						new VariableExpression(MetaData.Empty, Var1),
 						new NullExpression(MetaData.Empty)))))));
 

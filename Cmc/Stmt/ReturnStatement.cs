@@ -61,12 +61,12 @@ namespace Cmc.Stmt
 				ConvertedStatementList = new StatementList(MetaData,
 					_convertedVariableDeclaration,
 					new ExpressionStatement(MetaData,
-						new AssignmentStatement(MetaData, returnValueStorer,
+						new AssignmentExpression(MetaData, returnValueStorer,
 							_convertedReturnStatement.Expression)));
 			else
 				ConvertedStatementList = new StatementList(MetaData,
 					new ExpressionStatement(MetaData,
-						new AssignmentStatement(MetaData, returnValueStorer, Expression)));
+						new AssignmentExpression(MetaData, returnValueStorer, Expression)));
 		}
 
 		public override IEnumerable<string> Dump() => new[]

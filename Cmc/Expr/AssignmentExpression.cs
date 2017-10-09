@@ -9,12 +9,12 @@ using Environment = Cmc.Core.Environment;
 
 namespace Cmc.Stmt
 {
-	public class AssignmentStatement : Expression
+	public class AssignmentExpression : Expression
 	{
 		[NotNull] public readonly Expression LhsExpression;
 		[NotNull] public readonly Expression RhsExpression;
 
-		public AssignmentStatement(
+		public AssignmentExpression(
 			MetaData metaData,
 			[NotNull] Expression lhsExpression,
 			[NotNull] Expression rhsExpression) :
