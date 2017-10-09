@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Data.Common;
 using System.Linq;
 using Cmc.Core;
 using Cmc.Decl;
@@ -75,8 +74,20 @@ namespace Cmc.Stmt
 
 		public override void ConvertGoto()
 		{
-			base.ConvertGoto();
-			Statements.ForEach(statement => { });
+			for (var i = 0; i < Statements.Count; i++)
+			{
+				var statement = Statements[i];
+				statement.ConvertGoto();
+				switch (statement)
+				{
+					case ILabel label:
+						Statements[i] = label.GetLabel();
+						break;
+					case JumpStatement jumpStatement:
+						Statements[i] = jumpStatement.
+						break;
+				}
+			}
 		}
 
 		public override IEnumerable<string> Dump() => Statements.Count == 0

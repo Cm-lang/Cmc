@@ -66,6 +66,8 @@ namespace Cmc.Stmt
 			Optimized = 1;
 		}
 
+		public override void ConvertGoto() => OkStatementList.ConvertGoto();
+
 		public override IEnumerable<string> Dump() => new[]
 			{
 				"while statement:\n",

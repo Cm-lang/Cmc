@@ -137,10 +137,10 @@ namespace Cmc.Expr
 				ConvertedResult = new ExpressionConvertedResult(statements, this);
 		}
 
+		public override void ConvertGoto() => Receiver.ConvertGoto();
+
 		private IEnumerable<string> DumpParams() => new[]
-			{
-				"  parameters:\n"
-			}
+				{"  parameters:\n"}
 			.Concat(
 				from i in ArgsList
 				from j in i.Dump().Select(MapFunc2)

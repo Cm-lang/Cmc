@@ -49,6 +49,12 @@ namespace Cmc.Stmt
 			}
 		}
 
+		public override void ConvertGoto()
+		{
+			IfStatementList.ConvertGoto();
+			ElseStatementList.ConvertGoto();
+		}
+
 		public override IEnumerable<string> Dump() => new[]
 			{
 				"if statement:\n",
