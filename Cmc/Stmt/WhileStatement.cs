@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Cmc.Core;
@@ -9,19 +9,39 @@ using Environment = Cmc.Core.Environment;
 
 namespace Cmc.Stmt
 {
-	public class WhileStatement : Statement
+	public abstract class ConditionalStatement : Statement
 	{
 		[NotNull] public readonly Expression Condition;
+
+		protected ConditionalStatement(
+			MetaData metaData,
+			[NotNull] Expression condition) : base(metaData)
+		{
+			Condition = condition;
+		}
+
+		public override void SurroundWith(Environment environment)
+		{
+			base.SurroundWith(environment);
+			Condition.SurroundWith(Env);
+		}
+	}
+
+	public class WhileStatement : ConditionalStatement
+	{
 		[NotNull] public StatementList OkStatementList;
 		public int Optimized;
+		[NotNull] public readonly JumpLabelDeclaration EndLabel;
 
 		public WhileStatement(
 			MetaData metaData,
 			[NotNull] Expression condition,
-			[NotNull] StatementList okStatementList) : base(metaData)
+			[NotNull] StatementList okStatementList,
+			[CanBeNull] JumpLabelDeclaration endLabel = null) :
+			base(metaData, condition)
 		{
-			Condition = condition;
 			OkStatementList = okStatementList;
+			EndLabel = endLabel ?? new JumpLabelDeclaration(MetaData, "");
 		}
 
 		public override void SurroundWith(Environment environment)
@@ -29,7 +49,7 @@ namespace Cmc.Stmt
 			base.SurroundWith(environment);
 			var jmp = new JumpLabelDeclaration(MetaData, "");
 			jmp.SurroundWith(Env);
-			Condition.SurroundWith(Env);
+			EndLabel.SurroundWith(Env);
 			// FEATURE #16
 			var conditionType = Condition.GetExpressionType().ToString();
 			if (!string.Equals(conditionType, PrimaryType.BoolType, StringComparison.Ordinal))
@@ -37,7 +57,9 @@ namespace Cmc.Stmt
 					$"{MetaData.GetErrorHeader()}expected a bool as the \"while\" statement\'s condition, " +
 					$"found {conditionType}");
 			OkStatementList.Statements.Add(jmp);
-			OkStatementList.SurroundWith(new Environment(Env));
+			var bodyEnv = new Environment(Env);
+			bodyEnv.Declarations.Add(EndLabel);
+			OkStatementList.SurroundWith(bodyEnv);
 			// FEATURE #17
 			if (Pragma.KeepAll || !(Condition is BoolLiteralExpression boolean) || boolean.Value) return;
 			OptimizedStatementList = new StatementList(MetaData);
