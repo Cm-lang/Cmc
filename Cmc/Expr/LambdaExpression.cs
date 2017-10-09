@@ -16,6 +16,7 @@ namespace Cmc.Expr
 	public class LambdaExpression : Expression
 	{
 		[CanBeNull] public Type DeclaredType;
+		private readonly bool _recur;
 		[NotNull] public StatementList Body;
 		[NotNull] public readonly IList<VariableDeclaration> ParameterList;
 		[NotNull] public readonly ReturnLabelDeclaration EndLabel;
@@ -27,10 +28,12 @@ namespace Cmc.Expr
 			// FEATURE #22
 			[CanBeNull] IList<VariableDeclaration> parameterList = null,
 			[CanBeNull] Type returnType = null,
-			[CanBeNull] ReturnLabelDeclaration endLabel = null) : base(metaData)
+			[CanBeNull] ReturnLabelDeclaration endLabel = null,
+			bool recur = false) : base(metaData)
 		{
 			Body = body;
 			DeclaredType = returnType;
+			_recur = recur;
 			ParameterList = parameterList ?? new List<VariableDeclaration>(0);
 			EndLabel = endLabel ?? new ReturnLabelDeclaration(MetaData, "");
 		}
@@ -50,16 +53,19 @@ namespace Cmc.Expr
 			Env.Declarations.Add(EndLabel);
 			foreach (var variableDeclaration in ParameterList)
 				bodyEnv.Declarations.Add(variableDeclaration);
-			// FEATURE #37
-			var recur = new VariableDeclaration(MetaData, ReservedWords.Recur, this);
 			// https://github.com/Cm-lang/Cm-Document/issues/12
 			if (null != DeclaredType)
 				Type = new LambdaType(MetaData, (
 					from i in ParameterList
 					select i.Type).ToList(), DeclaredType);
-			// FEATURE #39
-			recur.SurroundWith(Env);
-			bodyEnv.Declarations.Add(recur);
+			if (_recur)
+			{
+				// FEATURE #37
+				var recur = new VariableDeclaration(MetaData, ReservedWords.Recur, this);
+				// FEATURE #39
+				recur.SurroundWith(Env);
+				bodyEnv.Declarations.Add(recur);
+			}
 			Body.SurroundWith(bodyEnv);
 //			while (null != Body.OptimizedStatementList)
 //				Body = Body.OptimizedStatementList;
