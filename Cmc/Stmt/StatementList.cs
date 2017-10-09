@@ -2,6 +2,7 @@
 using System.Linq;
 using Cmc.Core;
 using Cmc.Decl;
+using Cmc.Expr;
 using JetBrains.Annotations;
 
 namespace Cmc.Stmt
@@ -41,7 +42,7 @@ namespace Cmc.Stmt
 			var env = new Environment(Env);
 			var converted = new List<Statement>(Statements.Count + 5);
 			// FEATURE #4
-			foreach (var statement in Statements)
+			Statements.ForEach(statement =>
 			{
 				if (!(statement is Declaration declaration))
 					statement.SurroundWith(env);
@@ -58,6 +59,7 @@ namespace Cmc.Stmt
 					{
 						converted.AddRange(convertedResult.ConvertedStatements);
 						expression.Expression = convertedResult.ConvertedExpression;
+						expression.ConvertedStatementList = null;
 						converted.Add(expression);
 						expression.Expression.ConvertedResult = null;
 						// expression might be a return statement
@@ -68,14 +70,42 @@ namespace Cmc.Stmt
 				}
 				else
 					converted.Add(statement);
-			}
+			});
 			ConvertedStatementList = new StatementList(MetaData, converted);
 		}
 
-		public override IEnumerable<JumpStatement> FindJumpStatements() =>
-			from i in Statements
-			from j in i.FindJumpStatements()
-			select j;
+		public override void ConvertGoto()
+		{
+			var res = new List<Statement>();
+			Statements.ForEach(statement =>
+			{
+				statement.ConvertGoto();
+				switch (statement)
+				{
+					case ILabel label:
+						res.Add(label.GetLabel());
+						break;
+					case JumpStatement jumpStatement:
+						res.Add(new GotoStatement(jumpStatement.MetaData, $"{jumpStatement.JumpLabel}"));
+						break;
+					case ReturnStatement returnStatement:
+						var converted = returnStatement.ConvertedStatementList;
+						if (null != converted)
+							res.AddRange(converted.Statements);
+						else
+						{
+							if (!(returnStatement.Expression is AtomicExpression atomic))
+								Errors.AddAndThrow(returnStatement.Expression.MetaData.GetErrorHeader() + "must be atomic");
+							else res.Add(new ExitStatement(returnStatement.MetaData, atomic));
+						}
+						break;
+					default:
+						res.Add(statement);
+						break;
+				}
+			});
+			Statements = res;
+		}
 
 		public override IEnumerable<string> Dump() => Statements.Count == 0
 			? new[] {"empty statement list\n"}

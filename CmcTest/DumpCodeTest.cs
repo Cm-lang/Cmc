@@ -4,6 +4,7 @@ using Cmc.Expr;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using static CmcTest.FunctionCallTests;
 using static CmcTest.ReturnTests;
+using static CmcTest.StatementTests;
 
 namespace CmcTest
 {
@@ -23,6 +24,7 @@ namespace CmcTest
 		{
 			var example = FuncCallAst1();
 			example.SurroundWith(Environment.SolarSystem);
+			example.ConvertGoto();
 			example.PrintCode();
 		}
 
@@ -47,6 +49,16 @@ namespace CmcTest
 		{
 			var example = FuncCallAst5();
 			example.SurroundWith(Environment.SolarSystem);
+			example.ConvertGoto();
+			example.PrintCode();
+		}
+
+		[TestMethod]
+		public void TestDump6()
+		{
+			var example = FuncCallAst6();
+			example.SurroundWith(Environment.SolarSystem);
+			example.ConvertGoto();
 			example.PrintCode();
 		}
 
@@ -73,6 +85,7 @@ namespace CmcTest
 		{
 			var block = Block1();
 			block.SurroundWith(Environment.SolarSystem);
+			block.ConvertGoto();
 			block.PrintCode();
 		}
 
@@ -80,6 +93,57 @@ namespace CmcTest
 		public void ReturnDumpTest2()
 		{
 			var block = Block2();
+			block.SurroundWith(Environment.SolarSystem);
+			block.ConvertGoto();
+			block.PrintCode();
+		}
+
+		[TestMethod]
+		public void DumpStmtAst1()
+		{
+			var block = StmtAst1();
+			block.SurroundWith(Environment.SolarSystem);
+			block.PrintCode();
+		}
+
+		[TestMethod]
+		public void DumpStmtAst2()
+		{
+			var block = StmtAst2();
+			block.SurroundWith(Environment.SolarSystem);
+			block.PrintCode();
+		}
+
+		[TestMethod]
+		public void DumpStmtAst3()
+		{
+			var block = StmtAst3();
+			block.SurroundWith(Environment.SolarSystem);
+			block.ConvertGoto();
+			block.PrintCode();
+		}
+
+		[TestMethod]
+		public void DumpStmtAst4()
+		{
+			var block = StmtAst4();
+			block.SurroundWith(Environment.SolarSystem);
+			block.ConvertGoto();
+			block.PrintCode();
+		}
+
+		[TestMethod]
+		public void DumpStmtAst5()
+		{
+			var block = StmtAst5();
+			block.SurroundWith(Environment.SolarSystem);
+			block.PrintCode();
+		}
+
+		[TestMethod]
+		public void DumpStmtAst6()
+		{
+			var block = StmtAst6();
 			block.SurroundWith(Environment.SolarSystem);
 			block.PrintCode();
 		}
