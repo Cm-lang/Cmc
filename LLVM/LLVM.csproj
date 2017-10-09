@@ -21,9 +21,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="JetBrains.Annotations" Version="11.0.0" />
     <PackageReference Include="LLVMSharp" Version="5.0.0" />
   </ItemGroup>
