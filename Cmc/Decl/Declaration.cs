@@ -13,14 +13,17 @@ namespace Cmc.Decl
 	{
 		public readonly Modifier[] Modifiers;
 		[NotNull] public readonly string Name;
+		[NotNull] public readonly List<TypeDeclaration> DupParams;
 		public ulong UsageCount;
 
 		public Declaration(
 			MetaData metaData,
 			[NotNull] string name,
-			Modifier[] modifiers = null) : base(metaData)
+			Modifier[] modifiers = null,
+			[CanBeNull] List<TypeDeclaration> dupParams = null) : base(metaData)
 		{
 			Name = name;
+			DupParams = dupParams ?? new List<TypeDeclaration>();
 			Modifiers = modifiers;
 		}
 	}
@@ -82,7 +85,7 @@ namespace Cmc.Decl
 
 	public class ExternDeclaration : Declaration
 	{
-		public Type Type;
+		public readonly Type Type;
 		public readonly bool Mutability;
 
 		public ExternDeclaration(
@@ -100,26 +103,6 @@ namespace Cmc.Decl
 		public override IEnumerable<string> Dump() => new[]
 				{$"extern declaration [{Name}]:\n"}
 			.Concat(Type.Dump());
-	}
-
-	public class DuplicateDeclaration : Declaration
-	{
-		public List<Duplicate> Instances;
-
-		public DuplicateDeclaration(
-			MetaData metaData,
-			[NotNull] string name,
-			[CanBeNull] List<Duplicate> instances = null,
-			Modifier[] modifiers = null) :
-			base(metaData, name, modifiers)
-		{
-			Instances = instances ?? new List<Duplicate>();
-		}
-
-		public void Instantiate([NotNull] Type type)
-		{
-			Instances.ForEach(i => i.ConvertedType = type);
-		}
 	}
 
 	/// <summary>
