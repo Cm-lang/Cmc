@@ -48,6 +48,7 @@ namespace CmcTest
 		{
 			var example = FuncCallAst5();
 			example.SurroundWith(Environment.SolarSystem);
+			example.Transform();
 			example.PrintCode();
 		}
 
