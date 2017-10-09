@@ -8,24 +8,26 @@ using Environment = Cmc.Core.Environment;
 
 namespace Cmc.Stmt
 {
-	public class IfStatement : WhileStatement
+	public class IfStatement : ConditionalStatement
 	{
+		[NotNull] public StatementList OkStatementList;
 		[NotNull] public StatementList ElseStatementList;
+		public int Optimized;
 
 		public IfStatement(
 			MetaData metaData,
 			[NotNull] Expression condition,
 			[NotNull] StatementList ifStatementList,
-			[CanBeNull] StatementList elseStatementList = null) : base(metaData, condition, ifStatementList) =>
+			[CanBeNull] StatementList elseStatementList = null) :
+			base(metaData, condition)
+		{
+			OkStatementList = ifStatementList;
 			ElseStatementList = elseStatementList ?? new StatementList(MetaData);
+		}
 
 		public override void SurroundWith(Environment environment)
 		{
-			// base.SurroundWith(environment);
-			// don't call base, because it will raise error
-			// as a while expression
-			Env = environment;
-			Condition.SurroundWith(Env);
+			base.SurroundWith(environment);
 			// FEATURE #1
 			var conditionType = Condition.GetExpressionType().ToString();
 			if (!string.Equals(conditionType, PrimaryType.BoolType, StringComparison.Ordinal))
