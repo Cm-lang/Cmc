@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Cmc.Core;
@@ -8,20 +8,20 @@ using Environment = Cmc.Core.Environment;
 
 namespace Cmc.Stmt
 {
-	public class IfStatement : ConditionalStatement
+	public class IfExpression : ConditionalExpression
 	{
-		[NotNull] public StatementList OkStatementList;
+		[NotNull] public StatementList IfStatementList;
 		[NotNull] public StatementList ElseStatementList;
 		public int Optimized;
 
-		public IfStatement(
+		public IfExpression(
 			MetaData metaData,
 			[NotNull] Expression condition,
 			[NotNull] StatementList ifStatementList,
 			[CanBeNull] StatementList elseStatementList = null) :
 			base(metaData, condition)
 		{
-			OkStatementList = ifStatementList;
+			IfStatementList = ifStatementList;
 			ElseStatementList = elseStatementList ?? new StatementList(MetaData);
 		}
 
@@ -33,7 +33,7 @@ namespace Cmc.Stmt
 			if (!string.Equals(conditionType, PrimaryType.BoolType, StringComparison.Ordinal))
 				Errors.Add(
 					$"{MetaData.GetErrorHeader()}expected a bool as the \"if\" statement\'s condition, found {conditionType}");
-			OkStatementList.SurroundWith(new Environment(Env));
+			IfStatementList.SurroundWith(new Environment(Env));
 			ElseStatementList.SurroundWith(new Environment(Env));
 			// FEATURE #17
 			if (Pragma.KeepAll || !(Condition is BoolLiteralExpression boolean)) return;
@@ -44,14 +44,16 @@ namespace Cmc.Stmt
 			}
 			else
 			{
-				OkStatementList.Statements = new List<Statement>(0);
+				IfStatementList.Statements = new List<Statement>(0);
 				Optimized = 2;
 			}
 		}
 
-		public override IEnumerable<JumpStatement> FindJumpStatements() =>
-			OkStatementList.FindJumpStatements()
-				.Concat(ElseStatementList.FindJumpStatements());
+		public override void ConvertGoto()
+		{
+			IfStatementList.ConvertGoto();
+			ElseStatementList.ConvertGoto();
+		}
 
 		public override IEnumerable<string> Dump() => new[]
 			{
@@ -60,15 +62,17 @@ namespace Cmc.Stmt
 			}
 			.Concat(Condition.Dump().Select(MapFunc2))
 			.Concat(new[] {$"  true branch{(Optimized == 2 ? " [optimized]" : "")}:\n"})
-			.Concat(OkStatementList.Dump().Select(MapFunc2))
+			.Concat(IfStatementList.Dump().Select(MapFunc2))
 			.Concat(new[] {$"  false branch{(Optimized == 1 ? " [optimized]" : "")}:\n"})
 			.Concat(ElseStatementList.Dump().Select(MapFunc2));
 
 		public override IEnumerable<string> DumpCode() =>
 			new[] {$"if ({string.Join("", Condition.DumpCode())}) {{\n"}
-				.Concat(OkStatementList.DumpCode().Select(MapFunc))
+				.Concat(IfStatementList.DumpCode().Select(MapFunc))
 				.Append("} else {\n")
 				.Concat(ElseStatementList.DumpCode().Select(MapFunc))
-				.Append("}\n");
+				.Append("}");
+
+		public override Type GetExpressionType() => new PrimaryType(MetaData, "void");
 	}
 }

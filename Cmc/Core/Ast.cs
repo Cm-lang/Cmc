@@ -22,6 +22,10 @@ namespace Cmc.Core
 
 		public virtual void SurroundWith([NotNull] Environment environment) => Env = Env ?? environment;
 
+		public virtual void ConvertGoto()
+		{
+		}
+
 		/// <summary>
 		///   FEATURE #15
 		/// </summary>

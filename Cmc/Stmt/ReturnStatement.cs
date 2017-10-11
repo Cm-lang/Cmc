@@ -14,8 +14,8 @@ namespace Cmc.Stmt
 	{
 		public ReturnLabelDeclaration ReturnLabel;
 		[CanBeNull] private readonly string _labelName;
-		private VariableDeclaration _convertedVariableDeclaration;
-		private ReturnStatement _convertedReturnStatement;
+		public VariableDeclaration ConvertedVariableDeclaration;
+		public ReturnStatement ConvertedReturnStatement;
 
 		public ReturnStatement(
 			MetaData metaData,
@@ -35,45 +35,67 @@ namespace Cmc.Stmt
 			var returnLabel = Env.FindReturnLabelByName(_labelName ?? "");
 			if (null == returnLabel)
 				Errors.AddAndThrow($"{MetaData.GetErrorHeader()}cannot return outside a lambda");
-			ReturnLabel = returnLabel;
-			ReturnLabel.StatementsUsingThis.Add(this);
+			else
+			{
+				ReturnLabel = returnLabel;
+				ReturnLabel.StatementsUsingThis.Add(this);
+			}
 			if (Expression is AtomicExpression) return;
-			var variableName = $"{MetaData.TrimedFileName}{MetaData.LineNumber}{GetHashCode()}";
-			_convertedVariableDeclaration =
+			var variableName = $"genRet{(ulong) GetHashCode()}";
+			ConvertedVariableDeclaration =
 				new VariableDeclaration(MetaData, variableName, Expression, type: Expression.GetExpressionType());
-			_convertedReturnStatement = new ReturnStatement(MetaData,
+			ConvertedReturnStatement = new ReturnStatement(MetaData,
 				new VariableExpression(MetaData, variableName), _labelName)
 			{
 				ReturnLabel = ReturnLabel
 			};
 			ConvertedStatementList = new StatementList(MetaData,
-				_convertedVariableDeclaration,
-				_convertedReturnStatement);
+				ConvertedVariableDeclaration,
+				ConvertedReturnStatement);
 		}
 
 		/// <summary>
+		///   FEATURE #45
 		///   make this an inlined return statement
 		/// </summary>
 		/// <param name="returnValueStorer">the variable used to store the return value</param>
-		public void Unify(VariableExpression returnValueStorer)
+		public void Unify([NotNull] VariableExpression returnValueStorer)
 		{
 			if (null != ConvertedStatementList)
 				ConvertedStatementList = new StatementList(MetaData,
-					_convertedVariableDeclaration,
-					new AssignmentStatement(MetaData, returnValueStorer,
-						_convertedReturnStatement.Expression));
+					ConvertedVariableDeclaration,
+					new ExpressionStatement(MetaData,
+						new AssignmentExpression(MetaData, returnValueStorer,
+							ConvertedReturnStatement.Expression)),
+					new GotoStatement(MetaData, ReturnLabel.GetLabel().Name));
 			else
 				ConvertedStatementList = new StatementList(MetaData,
-					new AssignmentStatement(MetaData, returnValueStorer, Expression));
+					new ExpressionStatement(MetaData,
+						new AssignmentExpression(MetaData, returnValueStorer, Expression)),
+					new GotoStatement(MetaData, ReturnLabel.GetLabel().Name));
 		}
 
 		public override IEnumerable<string> Dump() => new[]
-			{
-				$"return statement [{ReturnLabel}]:\n"
-			}
+				{$"return statement [{ReturnLabel}]:\n"}
 			.Concat(Expression.Dump().Select(MapFunc));
 
 		public override IEnumerable<string> DumpCode() =>
-			new[] {$"return:{ReturnLabel} {string.Join("  ", Expression.DumpCode())};\n"};
+			new[] {$"return:{ReturnLabel} {string.Join("", Expression.DumpCode())};\n"};
+	}
+
+	public class ExitStatement : Statement
+	{
+		[NotNull] public readonly AtomicExpression Expression;
+
+		public ExitStatement(
+			MetaData metaData,
+			[NotNull] AtomicExpression expression) : base(metaData) => Expression = expression;
+
+		public override IEnumerable<string> Dump() => new[]
+				{"return statement:\n"}
+			.Concat(Expression.Dump().Select(MapFunc));
+
+		public override IEnumerable<string> DumpCode() =>
+			new[] {$"return {string.Join("", Expression.DumpCode())};\n"};
 	}
 }

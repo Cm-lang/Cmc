@@ -24,6 +24,7 @@ namespace CmcTest
 		{
 			var example = FuncCallAst1();
 			example.SurroundWith(Environment.SolarSystem);
+			example.ConvertGoto();
 			example.PrintCode();
 		}
 
@@ -48,6 +49,16 @@ namespace CmcTest
 		{
 			var example = FuncCallAst5();
 			example.SurroundWith(Environment.SolarSystem);
+			example.ConvertGoto();
+			example.PrintCode();
+		}
+
+		[TestMethod]
+		public void TestDump6()
+		{
+			var example = FuncCallAst6();
+			example.SurroundWith(Environment.SolarSystem);
+			example.ConvertGoto();
 			example.PrintCode();
 		}
 
@@ -62,7 +73,18 @@ namespace CmcTest
 
 		[TestMethod]
 		public void TestSplittingDump1() =>
-			ExpressionSplittingTestCore(new IntLiteralExpression(MetaData.Empty, "123", true, 8),
+			ExpressionSplittingTestCore(false,
+				new IntLiteralExpression(MetaData.Empty, "123", true, 8),
+				lambdaExpression =>
+				{
+					lambdaExpression.PrintCode();
+					Assert.IsTrue(0 == Errors.ErrList.Count);
+				});
+
+		[TestMethod]
+		public void TestSplittingDump2() =>
+			ExpressionSplittingTestCore(true,
+				new IntLiteralExpression(MetaData.Empty, "123", true, 8),
 				lambdaExpression =>
 				{
 					lambdaExpression.PrintCode();
@@ -74,6 +96,7 @@ namespace CmcTest
 		{
 			var block = Block1();
 			block.SurroundWith(Environment.SolarSystem);
+			block.ConvertGoto();
 			block.PrintCode();
 		}
 
@@ -82,6 +105,7 @@ namespace CmcTest
 		{
 			var block = Block2();
 			block.SurroundWith(Environment.SolarSystem);
+			block.ConvertGoto();
 			block.PrintCode();
 		}
 
@@ -106,6 +130,7 @@ namespace CmcTest
 		{
 			var block = StmtAst3();
 			block.SurroundWith(Environment.SolarSystem);
+			block.ConvertGoto();
 			block.PrintCode();
 		}
 
@@ -114,6 +139,7 @@ namespace CmcTest
 		{
 			var block = StmtAst4();
 			block.SurroundWith(Environment.SolarSystem);
+			block.ConvertGoto();
 			block.PrintCode();
 		}
 

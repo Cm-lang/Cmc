@@ -38,6 +38,12 @@ and you see the result.
 + [ ] traits or interfaces
 + [ ] generic with boundaries
 
+## generics
+
++ [ ] generic lambdas
++ [ ] generic structs
++ [ ] type inference
+
 ## variables
 
 + [X] initialize variable with null or given expression (#13)
@@ -54,8 +60,9 @@ and you see the result.
 + [ ] general inline
 + [ ] inline lambda parameters
 + [X] inline when directly invoke a lambda expression (#44)
-+ [ ] keep returning currect when inline
-+ [ ] keep label return when inline
++ [X] convert returns into assignment \+ goto (#45)
++ [X] keep returning currect when inline (#46)
++ [X] keep label return when inline (#47)
 
 ## functions and lambdas
 + [X] check for parameter type (#32)

@@ -56,7 +56,10 @@ namespace Cmc.Core
 			}
 			CheckMutualRec(declarations);
 			foreach (var declaration in declarations)
+			{
 				declaration.SurroundWith(planet);
+				if (!Pragma.KeepAll) declaration.ConvertGoto();
+			}
 			return declarations;
 		}
 
