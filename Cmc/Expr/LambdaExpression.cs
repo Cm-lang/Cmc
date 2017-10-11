@@ -88,6 +88,8 @@ namespace Cmc.Expr
 				              ? retTypes.First()
 				              // FEATURE #19
 				              : new PrimaryType(MetaData, PrimaryType.NullType));
+			// FEATURE #46
+			// FEATURE #47
 			if (retTypes.Count > 1)
 			{
 				var varName = $"retClctor{(ulong) GetHashCode()}";

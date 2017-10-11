@@ -35,8 +35,11 @@ namespace Cmc.Stmt
 			var returnLabel = Env.FindReturnLabelByName(_labelName ?? "");
 			if (null == returnLabel)
 				Errors.AddAndThrow($"{MetaData.GetErrorHeader()}cannot return outside a lambda");
-			ReturnLabel = returnLabel;
-			ReturnLabel.StatementsUsingThis.Add(this);
+			else
+			{
+				ReturnLabel = returnLabel;
+				ReturnLabel.StatementsUsingThis.Add(this);
+			}
 			if (Expression is AtomicExpression) return;
 			var variableName = $"genRet{(ulong) GetHashCode()}";
 			ConvertedVariableDeclaration =
@@ -52,10 +55,11 @@ namespace Cmc.Stmt
 		}
 
 		/// <summary>
+		///   FEATURE #45
 		///   make this an inlined return statement
 		/// </summary>
 		/// <param name="returnValueStorer">the variable used to store the return value</param>
-		public void Unify(VariableExpression returnValueStorer)
+		public void Unify([NotNull] VariableExpression returnValueStorer)
 		{
 			if (null != ConvertedStatementList)
 				ConvertedStatementList = new StatementList(MetaData,

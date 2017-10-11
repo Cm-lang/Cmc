@@ -70,6 +70,8 @@ namespace Cmc.Stmt
 
 		/// <summary>
 		///  FEATURE #45
+		///  FEATURE #46
+		///  FEATURE #47
 		/// </summary>
 		public override void ConvertGoto()
 		{
