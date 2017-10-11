@@ -126,6 +126,15 @@ and you see the result.
 
 <br/><br/><br/><br/><br/>
 
+## LLVM Code Gen
+
++ [ ] types
++ [ ] expressions
++ [ ] declarations
++ [ ] statements
+
+<br/><br/><br/><br/><br/>
+
 ### Features given up
 
 Those features will never be available.
