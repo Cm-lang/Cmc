@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
-using Cmc;
+using System.Linq;
 using Cmc.Core;
 using Cmc.Decl;
 using Cmc.Expr;
 using JetBrains.Annotations;
-using static LLVM.GenAstHolder;
-using System.Linq;
 
 namespace LLVM
 {
@@ -28,24 +24,31 @@ namespace LLVM
 	{
 		[NotNull]
 		public static string Generate(
+			[NotNull] string moduleName,
 			[NotNull] params Declaration[] declarations)
 		{
 			Attr.Restore();
 			var core = new Core();
 			var analyzedDeclarations = core.Analyze(declarations);
+			var moduleRef = LLVMSharp.LLVM.ModuleCreateWithName(moduleName);
+			var builder = LLVMSharp.LLVM.CreateBuilder();
+			foreach (var analyzedDeclaration in analyzedDeclarations)
+				GenAstHolder.GenAst(builder, analyzedDeclaration);
 			for (var i = 0; i < Constants.StringConstants.Count; i++)
 			{
 				var str = Constants.StringConstants[i];
 				var len = Constants.StringConstantLengths[i];
 			}
-			return ""; // TODO
+			LLVMSharp.LLVM.DumpModule(moduleRef);
+			return "";
 		}
 
 		public static void RunLlvm(
+			[NotNull] string moduleName,
 			[NotNull] string outputFile,
 			[NotNull] params Declaration[] declarations)
 		{
-			var generate = Generate(declarations);
+			var generate = Generate(moduleName, declarations);
 			if (Pragma.PrintDumpInfo) declarations.ToList().ForEach(i => i.PrintDumpInfo());
 			Console.WriteLine(generate);
 			File.WriteAllText($"{outputFile}.ll", generate);

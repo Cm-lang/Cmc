@@ -1,13 +1,13 @@
-﻿using System.Text;
-using Cmc.Expr;
+﻿using Cmc.Expr;
 using JetBrains.Annotations;
+using LLVMSharp;
 
 namespace LLVM
 {
 	public static class GenExpression
 	{
 		public static void StoreAtomicExpression(
-			[NotNull] StringBuilder builder,
+			LLVMBuilderRef builder,
 			[NotNull] AtomicExpression expression)
 		{
 			switch (expression)
@@ -19,9 +19,7 @@ namespace LLVM
 			}
 		}
 
-		public static void GenAstExpression(
-			[NotNull] StringBuilder builder,
-			[NotNull] Expression element)
+		public static void GenAstExpression(LLVMModuleRef module, LLVMBuilderRef builder, [NotNull] Expression element)
 		{
 			switch (element)
 			{

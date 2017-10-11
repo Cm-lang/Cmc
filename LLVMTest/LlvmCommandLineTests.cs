@@ -19,6 +19,7 @@ namespace LLVMTest
 		public void CommandLineTest1()
 		{
 			Gen.RunLlvm(
+				"my module",
 				"out.exe",
 				new VariableDeclaration(MetaData.Empty,
 					"i", new IntLiteralExpression(MetaData.Empty, "1", true)),

@@ -5,6 +5,7 @@ using Cmc.Decl;
 using Cmc.Expr;
 using Cmc.Stmt;
 using JetBrains.Annotations;
+using LLVMSharp;
 using static LLVM.GenDeclaration;
 using static LLVM.GenExpression;
 using static LLVM.GenStatement;
@@ -18,11 +19,10 @@ namespace LLVM
 		/// </summary>
 		/// <param name="builder">the string builder used to append ir</param>
 		/// <param name="element">the ast element waiting to be generated</param>
-		/// <param name="varName">local variable counter</param>
 		public static void GenAst(
-			[NotNull] StringBuilder builder,
-			[NotNull] Ast element,
-			ref ulong varName)
+			LLVMModuleRef module,
+			LLVMBuilderRef builder,
+			[NotNull] Ast element)
 		{
 			// convertion
 			while (element is Statement statement && statement.ConvertedStatementList != null)
@@ -33,13 +33,13 @@ namespace LLVM
 			switch (element)
 			{
 				case Expression expression:
-					GenAstExpression(builder, expression);
+					GenAstExpression(module, builder, expression);
 					break;
 				case Declaration declaration:
-					GenAstDeclaration(builder, declaration);
+					GenAstDeclaration(module, builder, declaration);
 					break;
 				case Statement statement:
-					GenAstStatement(builder, statement);
+					GenAstStatement(module, builder, statement);
 					break;
 			}
 		}
