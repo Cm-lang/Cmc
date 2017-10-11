@@ -30,12 +30,6 @@ namespace Cmc.Stmt
 			Statements = statements.ToList();
 		}
 
-		public void Flatten() => Statements =
-			new List<Statement>(
-				from i in Statements
-				from j in i.ConvertedStatementList?.Statements ?? new[] {i}.ToList()
-				select j);
-
 		public override void SurroundWith(Environment environment)
 		{
 			base.SurroundWith(environment);
@@ -74,6 +68,11 @@ namespace Cmc.Stmt
 			ConvertedStatementList = new StatementList(MetaData, converted);
 		}
 
+		/// <summary>
+		///  FEATURE #45
+		///  FEATURE #46
+		///  FEATURE #47
+		/// </summary>
 		public override void ConvertGoto()
 		{
 			var res = new List<Statement>();
