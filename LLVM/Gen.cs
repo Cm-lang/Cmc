@@ -33,7 +33,7 @@ namespace LLVM
 			var moduleRef = LLVMSharp.LLVM.ModuleCreateWithName(moduleName);
 			var builder = LLVMSharp.LLVM.CreateBuilder();
 			foreach (var analyzedDeclaration in analyzedDeclarations)
-				GenAstHolder.GenAst(builder, analyzedDeclaration);
+				GenAstHolder.GenAst(moduleRef, builder, analyzedDeclaration);
 			for (var i = 0; i < Constants.StringConstants.Count; i++)
 			{
 				var str = Constants.StringConstants[i];
