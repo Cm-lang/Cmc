@@ -1,14 +1,14 @@
-﻿using System.Text;
-using Cmc.Decl;
+﻿using Cmc.Decl;
 using Cmc.Stmt;
 using JetBrains.Annotations;
+using LLVMSharp;
 
 namespace LLVM
 {
 	public static class GenStatement
 	{
 		public static void GenAstStatement(
-			[NotNull] StringBuilder builder,
+			LLVMBuilderRef builder,
 			[NotNull] Statement element)
 		{
 			switch (element)
