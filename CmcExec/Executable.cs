@@ -10,6 +10,7 @@ namespace CmcExec
 	internal static class Executable
 	{
 		private static void TestOk() => Gen.RunLlvm(
+			"main",
 			"out.exe",
 			new VariableDeclaration(MetaData.Empty,
 				"i", new IntLiteralExpression(MetaData.Empty, "1", true)),

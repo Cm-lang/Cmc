@@ -30,7 +30,7 @@ namespace LLVMTest
 		[TestMethod]
 		public void LlvmGenTest1()
 		{
-			var res = Gen.Generate(
+			var res = Gen.Generate("my module",
 				new VariableDeclaration(MetaData.Empty,
 					"i", new IntLiteralExpression(MetaData.Empty, "1", true)),
 				new VariableDeclaration(MetaData.Empty,
@@ -74,6 +74,7 @@ namespace LLVMTest
 								}))
 						}))));
 			var res = Gen.Generate(
+				"my module",
 				IdDeclaration,
 				new VariableDeclaration(MetaData.Empty,
 					"main", new LambdaExpression(MetaData.Empty, body)));
@@ -84,6 +85,7 @@ namespace LLVMTest
 		[TestMethod]
 		public void CodeGenFailTest2() => Assert.ThrowsException<CompilerException>(() =>
 			Gen.RunLlvm(
+				"my module",
 				"out.exe",
 				new VariableDeclaration(MetaData.Empty,
 					"i", new IntLiteralExpression(MetaData.Empty, "1", true)),
@@ -126,6 +128,7 @@ namespace LLVMTest
 		[TestMethod]
 		public void CodeGenFailTest1() => Assert.ThrowsException<CompilerException>(() =>
 			Gen.RunLlvm(
+				"my module",
 				"out.exe",
 				new VariableDeclaration(MetaData.Empty,
 					"i", new IntLiteralExpression(MetaData.Empty, "1", true)),
