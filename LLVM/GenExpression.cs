@@ -19,9 +19,7 @@ namespace LLVM
 			}
 		}
 
-		public static void GenAstExpression(
-			LLVMBuilderRef builder,
-			[NotNull] Expression element)
+		public static void GenAstExpression(LLVMModuleRef module, LLVMBuilderRef builder, [NotNull] Expression element)
 		{
 			switch (element)
 			{

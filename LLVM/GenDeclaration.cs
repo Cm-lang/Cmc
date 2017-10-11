@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using Cmc;
 using Cmc.Decl;
+using Cmc.Expr;
 using JetBrains.Annotations;
 using LLVMSharp;
 using static System.StringComparison;
@@ -11,6 +13,7 @@ namespace LLVM
 	public static class GenDeclaration
 	{
 		public static void GenAstDeclaration(
+			LLVMModuleRef module,
 			LLVMBuilderRef builder,
 			[NotNull] Declaration element)
 		{
@@ -20,22 +23,21 @@ namespace LLVM
 					break;
 				case VariableDeclaration variable:
 					if (variable.Type is LambdaType lambdaType)
-						GenFunction(builder, variable, lambdaType);
+						GenFunction(module, builder, variable, lambdaType);
 					break;
 			}
 		}
 
 		private static void GenFunction(
+			LLVMModuleRef module,
 			LLVMBuilderRef builder,
 			[NotNull] VariableDeclaration variable,
 			[NotNull] LambdaType lambdaType)
 		{
-			var argc = (uint) lambdaType.ParamsList.Count;
-			var args = new LLVMTypeRef[Math.Max(1, argc)];
-			for (var i = 0; i < argc; i++)
-			{
-				args[i] = GetLlvmType(lambdaType.ParamsList[i]);
-			}
+			var function = LLVMSharp.LLVM.AddFunction(module, variable.Name, GetLlvmType(lambdaType));
+			LLVMSharp.LLVM.PositionBuilderAtEnd(builder, LLVMSharp.LLVM.AppendBasicBlock(function, "entry"));
+			GenAstHolder.GenAst(module, builder, (LambdaExpression) variable.Expression);
+			LLVMSharp.LLVM.VerifyFunction(function, LLVMVerifierFailureAction.LLVMPrintMessageAction);
 		}
 
 		private static LLVMTypeRef GetLlvmType([NotNull] Type lambdaTypeParam)
@@ -56,6 +58,9 @@ namespace LLVM
 					if (string.Equals(primaryType.Name, "i64", Ordinal))
 						return LLVMTypeRef.Int64Type();
 					break;
+				case LambdaType lambdaType:
+					return LLVMTypeRef.FunctionType(GetLlvmType(lambdaType.RetType),
+						(from type in lambdaType.ParamsList select GetLlvmType(type)).ToArray(), false);
 				case SecondaryType secondaryType:
 					break;
 			}

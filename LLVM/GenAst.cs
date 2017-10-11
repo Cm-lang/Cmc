@@ -20,6 +20,7 @@ namespace LLVM
 		/// <param name="builder">the string builder used to append ir</param>
 		/// <param name="element">the ast element waiting to be generated</param>
 		public static void GenAst(
+			LLVMModuleRef module,
 			LLVMBuilderRef builder,
 			[NotNull] Ast element)
 		{
@@ -32,13 +33,13 @@ namespace LLVM
 			switch (element)
 			{
 				case Expression expression:
-					GenAstExpression(builder, expression);
+					GenAstExpression(module, builder, expression);
 					break;
 				case Declaration declaration:
-					GenAstDeclaration(builder, declaration);
+					GenAstDeclaration(module, builder, declaration);
 					break;
 				case Statement statement:
-					GenAstStatement(builder, statement);
+					GenAstStatement(module, builder, statement);
 					break;
 			}
 		}

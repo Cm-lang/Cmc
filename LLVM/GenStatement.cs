@@ -8,6 +8,7 @@ namespace LLVM
 	public static class GenStatement
 	{
 		public static void GenAstStatement(
+			LLVMModuleRef module,
 			LLVMBuilderRef builder,
 			[NotNull] Statement element)
 		{
