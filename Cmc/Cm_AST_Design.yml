@@ -5,9 +5,6 @@ Ast:
       ReturnStatement
     JumpStatement
     StatementList
-    ConditionalStatement:
-      WhileStatement
-      IfStatement
     Declaration:
       VariableDeclaration
       StructDeclaration
@@ -17,6 +14,9 @@ Ast:
   Expression:
     FunctionCallExpression
     MemberAccessExpression
+    ConditionalExpression:
+      IfExpression
+      WhileExpression
     AtomicExpression:
       VariableExpression
       LiteralExpression:
