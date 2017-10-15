@@ -27,7 +27,7 @@ namespace LLVMTest
 							new UnknownType(MetaData.Empty, "i8"))
 					})));
 
-		[TestMethod]
+		// [TestMethod]
 		public void LlvmGenTest1()
 		{
 			var res = Gen.Generate("my module",
@@ -51,7 +51,7 @@ namespace LLVMTest
 			Console.WriteLine(res);
 		}
 
-		[TestMethod]
+		// [TestMethod]
 		public void LlvmGenTest2()
 		{
 			var body = new StatementList(MetaData.Empty,
@@ -82,7 +82,7 @@ namespace LLVMTest
 		}
 
 
-		[TestMethod]
+		// [TestMethod]
 		public void CodeGenFailTest2() => Assert.ThrowsException<CompilerException>(() =>
 			Gen.RunLlvm(
 				"my module",
@@ -125,7 +125,7 @@ namespace LLVMTest
 		/// <summary>
 		///  ambiguous main definition
 		/// </summary>
-		[TestMethod]
+		// [TestMethod]
 		public void CodeGenFailTest1() => Assert.ThrowsException<CompilerException>(() =>
 			Gen.RunLlvm(
 				"my module",

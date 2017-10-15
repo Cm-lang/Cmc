@@ -17,7 +17,8 @@ namespace LLVM
 		/// <summary>
 		///  generate llvm ir by the given ast
 		/// </summary>
-		/// <param name="builder">the string builder used to append ir</param>
+		/// <param name="module"></param>
+		/// <param name="builder"></param>
 		/// <param name="element">the ast element waiting to be generated</param>
 		public static void GenAst(
 			LLVMModuleRef module,
