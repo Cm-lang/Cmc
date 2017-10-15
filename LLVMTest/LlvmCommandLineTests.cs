@@ -15,7 +15,7 @@ namespace LLVMTest
 		[TestInitialize]
 		public void Init() => Errors.ErrList.Clear();
 
-		[TestMethod]
+		// [TestMethod]
 		public void CommandLineTest1()
 		{
 			Gen.RunLlvm(
