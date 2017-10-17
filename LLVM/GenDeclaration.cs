@@ -58,6 +58,7 @@ namespace LLVM
 						ret = LLVMTypeRef.Int32Type();
 					if (string.Equals(primaryType.Name, "i64", Ordinal))
 						ret = LLVMTypeRef.Int64Type();
+					else throw new CompilerException("unknown type");
 					return ret;
 				case LambdaType lambdaType:
 					return LLVMTypeRef.FunctionType(GetLlvmType(lambdaType.RetType), (
