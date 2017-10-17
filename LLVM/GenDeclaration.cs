@@ -45,22 +45,25 @@ namespace LLVM
 			switch (lambdaTypeParam)
 			{
 				case PrimaryType primaryType:
+					LLVMTypeRef ret;
 					if (string.Equals(primaryType.Name, "f64", Ordinal))
-						return LLVMSharp.LLVM.DoubleType();
+						ret = LLVMSharp.LLVM.DoubleType();
 					if (string.Equals(primaryType.Name, "f32", Ordinal))
-						return LLVMTypeRef.FloatType();
+						ret = LLVMTypeRef.FloatType();
 					if (string.Equals(primaryType.Name, "i8", Ordinal))
-						return LLVMTypeRef.Int8Type();
+						ret = LLVMTypeRef.Int8Type();
 					if (string.Equals(primaryType.Name, "i16", Ordinal))
-						return LLVMTypeRef.Int16Type();
+						ret = LLVMTypeRef.Int16Type();
 					if (string.Equals(primaryType.Name, "i32", Ordinal))
-						return LLVMTypeRef.Int32Type();
+						ret = LLVMTypeRef.Int32Type();
 					if (string.Equals(primaryType.Name, "i64", Ordinal))
-						return LLVMTypeRef.Int64Type();
-					break;
+						ret = LLVMTypeRef.Int64Type();
+					return ret;
 				case LambdaType lambdaType:
-					return LLVMTypeRef.FunctionType(GetLlvmType(lambdaType.RetType),
-						(from type in lambdaType.ParamsList select GetLlvmType(type)).ToArray(), false);
+					return LLVMTypeRef.FunctionType(GetLlvmType(lambdaType.RetType), (
+						from type in lambdaType.ParamsList
+						select GetLlvmType(type)
+					).ToArray(), false);
 				case SecondaryType secondaryType:
 					break;
 			}
