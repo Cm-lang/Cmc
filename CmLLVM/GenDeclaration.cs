@@ -8,7 +8,7 @@ using LLVMSharp;
 using static System.StringComparison;
 using Type = Cmc.Type;
 
-namespace LLVM
+namespace CmLLVM
 {
 	public static class GenDeclaration
 	{

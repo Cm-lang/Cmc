@@ -14,7 +14,7 @@ cache:
 script:
   - dotnet restore
   - dotnet test ./CmcTest/CmcTest.csproj
-  - dotnet test ./LLVMTest/LLVMTest.csproj
+  - dotnet test ./CmLLVMTest/CmLLVMTest.csproj
   - dotnet test ./ParserTest/ParserTest.csproj
   #- xbuild /p:Configuration=Release Cmc.sln
   #- mono ./testrunner/NUnit.ConsoleRunner.3.2.0/tools/nunit3-console.exe ./Cmc-Test/bin/Release/Cmc_Test.dll

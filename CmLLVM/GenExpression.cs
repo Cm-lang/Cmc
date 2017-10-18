@@ -2,7 +2,7 @@
 using JetBrains.Annotations;
 using LLVMSharp;
 
-namespace LLVM
+namespace CmLLVM
 {
 	public static class GenExpression
 	{
@@ -13,13 +13,17 @@ namespace LLVM
 			switch (expression)
 			{
 				case IntLiteralExpression integer:
+					
 				case BoolLiteralExpression boolean:
 				case VariableExpression variable:
 					break;
 			}
 		}
 
-		public static void GenAstExpression(LLVMModuleRef module, LLVMBuilderRef builder, [NotNull] Expression element)
+		public static void GenAstExpression(
+			LLVMModuleRef module,
+			LLVMBuilderRef builder,
+			[NotNull] Expression element)
 		{
 			switch (element)
 			{

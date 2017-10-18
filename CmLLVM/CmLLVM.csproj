@@ -7,8 +7,8 @@
     <ProjectTypeGuids>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>LLVM</RootNamespace>
-    <AssemblyName>LLVM</AssemblyName>
+    <RootNamespace>CmLLVM</RootNamespace>
+    <AssemblyName>CmLLVM</AssemblyName>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

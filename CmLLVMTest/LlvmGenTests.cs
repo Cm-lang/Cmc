@@ -5,7 +5,7 @@ using Cmc.Core;
 using Cmc.Decl;
 using Cmc.Expr;
 using Cmc.Stmt;
-using LLVM;
+using CmLLVM;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LLVMTest

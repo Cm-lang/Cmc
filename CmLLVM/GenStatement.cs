@@ -3,7 +3,7 @@ using Cmc.Stmt;
 using JetBrains.Annotations;
 using LLVMSharp;
 
-namespace LLVM
+namespace CmLLVM
 {
 	public static class GenStatement
 	{

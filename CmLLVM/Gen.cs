@@ -6,7 +6,7 @@ using Cmc.Decl;
 using Cmc.Expr;
 using JetBrains.Annotations;
 
-namespace LLVM
+namespace CmLLVM
 {
 	public static class Gen
 	{
