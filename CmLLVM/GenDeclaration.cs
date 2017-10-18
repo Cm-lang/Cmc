@@ -34,10 +34,10 @@ namespace CmLLVM
 			[NotNull] VariableDeclaration variable,
 			[NotNull] LambdaType lambdaType)
 		{
-			var function = LLVMSharp.LLVM.AddFunction(module, variable.Name, GetLlvmType(lambdaType));
-			LLVMSharp.LLVM.PositionBuilderAtEnd(builder, LLVMSharp.LLVM.AppendBasicBlock(function, "entry"));
+			var function = LLVM.AddFunction(module, variable.Name, GetLlvmType(lambdaType));
+			LLVM.PositionBuilderAtEnd(builder, LLVM.AppendBasicBlock(function, "entry"));
 			GenAstHolder.GenAst(module, builder, (LambdaExpression) variable.Expression);
-			LLVMSharp.LLVM.VerifyFunction(function, LLVMVerifierFailureAction.LLVMPrintMessageAction);
+			LLVM.VerifyFunction(function, LLVMVerifierFailureAction.LLVMPrintMessageAction);
 		}
 
 		private static LLVMTypeRef GetLlvmType([NotNull] Type lambdaTypeParam)
@@ -45,21 +45,19 @@ namespace CmLLVM
 			switch (lambdaTypeParam)
 			{
 				case PrimaryType primaryType:
-					LLVMTypeRef ret;
 					if (string.Equals(primaryType.Name, "f64", Ordinal))
-						ret = LLVMSharp.LLVM.DoubleType();
+						return LLVM.DoubleType();
 					if (string.Equals(primaryType.Name, "f32", Ordinal))
-						ret = LLVMTypeRef.FloatType();
+						return LLVMTypeRef.FloatType();
 					if (string.Equals(primaryType.Name, "i8", Ordinal))
-						ret = LLVMTypeRef.Int8Type();
+						return LLVMTypeRef.Int8Type();
 					if (string.Equals(primaryType.Name, "i16", Ordinal))
-						ret = LLVMTypeRef.Int16Type();
+						return LLVMTypeRef.Int16Type();
 					if (string.Equals(primaryType.Name, "i32", Ordinal))
-						ret = LLVMTypeRef.Int32Type();
+						return LLVMTypeRef.Int32Type();
 					if (string.Equals(primaryType.Name, "i64", Ordinal))
-						ret = LLVMTypeRef.Int64Type();
-					else throw new CompilerException("unknown type");
-					return ret;
+						return LLVMTypeRef.Int64Type();
+					break;
 				case LambdaType lambdaType:
 					return LLVMTypeRef.FunctionType(GetLlvmType(lambdaType.RetType), (
 						from type in lambdaType.ParamsList
