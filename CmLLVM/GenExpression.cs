@@ -13,7 +13,7 @@ namespace CmLLVM
 			switch (expression)
 			{
 				case IntLiteralExpression integer:
-					
+
 				case BoolLiteralExpression boolean:
 				case VariableExpression variable:
 					break;

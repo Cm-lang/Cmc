@@ -7,7 +7,7 @@ using Cmc.Stmt;
 using CmLLVM;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace LLVMTest
+namespace CmLLVMTest
 {
 	[TestClass]
 	public class LlvmCommandLineTests
