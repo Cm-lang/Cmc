@@ -1,15 +1,64 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using Cmc;
 using Cmc.Core;
 using Cmc.Decl;
 using Cmc.Expr;
 using Cmc.Stmt;
 using CmLLVM;
+using LLVMSharp;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CmLLVMTest
 {
+	[TestClass]
+	public class LlvmItselfTests
+	{
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+		private delegate int Add(int a, int b);
+
+		[TestMethod]
+		public void Exmaple()
+		{
+			var success = new LLVMBool(0);
+			var moduleRef = LLVM.ModuleCreateWithName("LLVMSharpIntro");
+
+			var sum = LLVM.AddFunction(moduleRef, "sum", LLVM.FunctionType(LLVM.Int32Type(), new[] {LLVM.Int32Type(), LLVM.Int32Type()}, false));
+
+			var builder = LLVM.CreateBuilder();
+			LLVM.PositionBuilderAtEnd(builder, LLVM.AppendBasicBlock(sum, "entry"));
+			LLVM.BuildRet(builder, LLVM.BuildAdd(builder, LLVM.GetParam(sum, 0), LLVM.GetParam(sum, 1), "tmp"));
+
+			if (LLVM.VerifyModule(moduleRef, LLVMVerifierFailureAction.LLVMPrintMessageAction, out var error) != success)
+				Console.WriteLine($"Error: {error}");
+
+			LLVM.LinkInMCJIT();
+
+			LLVM.InitializeX86TargetMC();
+			LLVM.InitializeX86Target();
+			LLVM.InitializeX86TargetInfo();
+			LLVM.InitializeX86AsmParser();
+			LLVM.InitializeX86AsmPrinter();
+
+			var options = new LLVMMCJITCompilerOptions {NoFramePointerElim = 1};
+			LLVM.InitializeMCJITCompilerOptions(options);
+			if (LLVM.CreateMCJITCompilerForModule(out var engine, moduleRef, options, out error) != success)
+				Console.WriteLine($"Error: {error}");
+
+			var addMethod = (Add) Marshal.GetDelegateForFunctionPointer(LLVM.GetPointerToGlobal(engine, sum), typeof(Add));
+			var result = addMethod(10, 10);
+
+			Console.WriteLine("Result of sum is: " + result);
+
+			LLVM.DumpModule(moduleRef);
+			LLVM.DumpValue(sum);
+
+			LLVM.DisposeBuilder(builder);
+			LLVM.DisposeExecutionEngine(engine);
+		}
+	}
+
 	[TestClass]
 	public class LlvmGenTests
 	{
