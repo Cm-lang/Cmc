@@ -4,6 +4,7 @@ using Cmc.Decl;
 using Cmc.Expr;
 using Cmc.Stmt;
 using CmLLVM;
+using CmLLVMTest;
 
 namespace CmcExec
 {
@@ -32,6 +33,9 @@ namespace CmcExec
 							new IntLiteralExpression(MetaData.Empty, "0", true)))))
 		);
 
-		public static void Main(string[] args) => TestOk();
+		public static void Main(string[] args)
+		{
+			new LlvmItselfTests().Exmaple();
+		}
 	}
 }
