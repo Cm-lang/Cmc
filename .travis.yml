@@ -4,7 +4,9 @@ dotnet: 2.0.3
 dist: trusty
 solution: Cmc.sln
 
-#install:
+install:
+  - dotnet restore
+  - dotnet msbuild
   #- nuget restore Cmc.sln
   #- nuget install NUnit.Runners -Version 3.2.0 -OutputDirectory testrunner
 
@@ -12,10 +14,10 @@ cache:
   apt: true
 
 script:
-  - dotnet restore
   - dotnet test ./CmcTest/CmcTest.csproj
   - dotnet test ./CmLLVMTest/CmLLVMTest.csproj
   - dotnet test ./ParserTest/ParserTest.csproj
+
   #- xbuild /p:Configuration=Release Cmc.sln
   #- mono ./testrunner/NUnit.ConsoleRunner.3.2.0/tools/nunit3-console.exe ./Cmc-Test/bin/Release/Cmc_Test.dll
   # local:
