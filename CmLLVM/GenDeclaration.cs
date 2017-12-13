@@ -10,7 +10,7 @@ using Type = Cmc.Type;
 
 namespace CmLLVM
 {
-	public static class GenDeclaration
+	public static partial class Gen
 	{
 		public static void GenAstDeclaration(
 			LLVMModuleRef module,
@@ -36,7 +36,7 @@ namespace CmLLVM
 		{
 			var function = LLVM.AddFunction(module, variable.Name, GetLlvmType(lambdaType));
 			LLVM.PositionBuilderAtEnd(builder, LLVM.AppendBasicBlock(function, "entry"));
-			GenAstHolder.GenAst(module, builder, (LambdaExpression) variable.Expression);
+			GenAst(module, builder, (LambdaExpression) variable.Expression);
 			LLVM.VerifyFunction(function, LLVMVerifierFailureAction.LLVMPrintMessageAction);
 		}
 

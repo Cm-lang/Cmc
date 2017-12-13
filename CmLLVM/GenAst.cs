@@ -4,13 +4,10 @@ using Cmc.Expr;
 using Cmc.Stmt;
 using JetBrains.Annotations;
 using LLVMSharp;
-using static CmLLVM.GenDeclaration;
-using static CmLLVM.GenExpression;
-using static CmLLVM.GenStatement;
 
 namespace CmLLVM
 {
-	public static class GenAstHolder
+	public static partial class Gen
 	{
 		/// <summary>
 		///  generate llvm ir by the given ast

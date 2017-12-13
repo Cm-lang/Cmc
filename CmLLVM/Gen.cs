@@ -8,7 +8,7 @@ using JetBrains.Annotations;
 
 namespace CmLLVM
 {
-	public static class Gen
+	public static partial class Gen
 	{
 		[NotNull]
 		public static string Generate(
@@ -20,7 +20,7 @@ namespace CmLLVM
 			var moduleRef = LLVMSharp.LLVM.ModuleCreateWithName(moduleName);
 			var builder = LLVMSharp.LLVM.CreateBuilder();
 			foreach (var analyzedDeclaration in analyzedDeclarations)
-				GenAstHolder.GenAst(moduleRef, builder, analyzedDeclaration);
+				GenAst(moduleRef, builder, analyzedDeclaration);
 //			for (var i = 0; i < Constants.StringConstants.Count; i++)
 //			{
 //				var str = Constants.StringConstants[i];

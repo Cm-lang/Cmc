@@ -5,7 +5,7 @@ using LLVMSharp;
 
 namespace CmLLVM
 {
-	public static class GenStatement
+	public static partial class Gen
 	{
 		public static void GenAstStatement(
 			LLVMModuleRef module,

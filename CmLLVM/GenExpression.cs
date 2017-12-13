@@ -4,7 +4,7 @@ using LLVMSharp;
 
 namespace CmLLVM
 {
-	public static class GenExpression
+	public static partial class Gen
 	{
 		public static void StoreAtomicExpression(
 			LLVMBuilderRef builder,

@@ -35,7 +35,7 @@ namespace CmcExec
 
 		public static void Main(string[] args)
 		{
-			new LlvmItselfTests().Exmaple();
+			new LlvmGenTests().LlvmGenTest1();
 		}
 	}
 }
